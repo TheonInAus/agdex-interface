@@ -21,7 +21,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum, base, zora],
   [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_ID || "ac4a73bdd03e406791589e87f1043121" }),
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_API_KEY || "ac4a73bdd03e406791589e87f1043121" }),
     publicProvider()
   ]
 );
