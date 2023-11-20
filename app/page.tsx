@@ -37,10 +37,11 @@ export default function IndexPage() {
         </p>
       </div>
       <div className="flex gap-4">
-        <Button>Action Button</Button>
-        <Button variant="secondary">Secondary Button</Button>
-        <Button variant="green">Active Button</Button>
-        <Button variant="red">Error Button</Button>
+        <Button>Action</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="green">Active</Button>
+        <Button variant="red">Error</Button>
+        <Button variant="yellow">Warning</Button>
       </div>
     </section>
   )
