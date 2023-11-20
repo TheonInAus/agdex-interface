@@ -21,14 +21,14 @@ import '@rainbow-me/rainbowkit/styles.css';
 const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum, base, zora],
   [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_ID || "" }),
+    alchemyProvider({ apiKey: process.env.ALCHEMY_ID || "ac4a73bdd03e406791589e87f1043121" }),
     publicProvider()
   ]
 );
 
 const { connectors } = getDefaultWallets({
   appName: 'Oxx interface',
-  projectId: process.env.PROJECT_ID || "368ee5791bcf5b7032b8b1da8630c6d9",
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "368ee5791bcf5b7032b8b1da8630c6d9",
   chains
 });
 
