@@ -27,6 +27,26 @@ module.exports = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        "0xgreen": {
+          DEFAULT: "hsl(142.1 70.6% 45.3%)",
+          foreground: "hsl(144.9 80.4% 10%)",
+        },
+        "0xred": {
+          DEFAULT: "hsl(0 72.2% 50.6%)",
+          foreground: "hsl(0 85.7% 97.3%)",
+        },
+        "0xred-lighter": {
+          DEFAULT: "#FF4A4A",
+          foreground: "#FF4A4A",
+        },
+        "0xyellow": {
+          DEFAULT: "hsl(20.5 90.2% 48.2%)",
+          foreground: "hsl(60 9.1% 97.8%)",
+        },
+        "0xyellow-lighter": {
+          DEFAULT: "#E0A202",
+          foreground: "#E0A202",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
