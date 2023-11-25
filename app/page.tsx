@@ -9,12 +9,12 @@ import { InputBox } from "@/components/ui/inputBox";
 
 export default function IndexPage() {
   const indexPrice = "57.5938"
-  const [inputValue, setInputValue] = React.useState(""); // This will hold the value of the input
+  // const [inputValue, setInputValue] = React.useState(""); // This will hold the value of the input
   
-  // Define a handler for when the input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+  // // Define a handler for when the input changes
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputValue(e.target.value);
+  // };
 
   return (
     <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
@@ -70,9 +70,9 @@ export default function IndexPage() {
       <div className="w-full md:w-1/2 lg:w-1/3">
         <InputBox
           title="Pay"
-          value={inputValue}
+          value={'0.00'}
           suffix="USDT"
-          onValueChange={handleInputChange}
+          // onValueChange={handleInputChange}
         />
       </div>
     </section>
