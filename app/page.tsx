@@ -65,13 +65,22 @@ export default function IndexPage() {
         />
       </div>
       <div className="w-1/4">
-        <ListItem keyText="Entry Price" value={10} info="llll" />
+        <ListItem keyText="Entry Price" value={10} info="llll"/>
+        <ListItem keyText="Acceptable Price" value={''} percentage="0.30%"/>
       </div>
       <div className="w-full md:w-1/2 lg:w-1/3">
         <InputBox
           title="Pay"
           value={'0.00'}
           suffix="USDT"
+          // onValueChange={handleInputChange}
+        />
+        <br></br>
+        <InputBox
+          title="Size"
+          value={'0.00'}
+          suffix="SOL"
+          prefix="Leverage:"
           // onValueChange={handleInputChange}
         />
       </div>
