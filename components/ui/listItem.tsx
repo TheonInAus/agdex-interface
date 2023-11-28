@@ -72,7 +72,7 @@ const ListItem: React.FC<ListItemProps> = ({
             <button className="ml-1">
               <Edit3
                 className="text-white text-opacity-70 hover:text-opacity-100"
-                size={14}
+                size={13}
               />
             </button>
           </>

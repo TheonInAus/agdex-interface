@@ -26,13 +26,13 @@ const SiteFooter = () => {
             size={22}
           />
         </Link>
-        <Link href={siteConfig.links.telegram}>
+        {/* <Link href={siteConfig.links.telegram}>
           <Iconify
             icon="uit:telegram-alt"
             className="rounded-xl bg-boxBackground p-2"
             size={22}
           />
-        </Link>
+        </Link> */}
         <Link href={siteConfig.links.medium}>
           <Iconify
             icon="arcticons:medium-alt"
