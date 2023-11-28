@@ -44,14 +44,14 @@ const Stats: React.FC<StatsProps> = ({
     <div className="flex flex-col">
       <div className="flex items-center gap-0.5">
         <span className="text-xs text-0xgrey">{title}</span>
-        {info && (
+        {info ? (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <button className="p-1">
                 <AlertCircle
                   className="text-white text-opacity-70 hover:text-opacity-100"
-                  size={16}
+                  size={12}
                 />
               </button>
             </TooltipTrigger>
@@ -60,6 +60,8 @@ const Stats: React.FC<StatsProps> = ({
             </TooltipContent>
           </Tooltip>
           </TooltipProvider>
+        ) : (
+          <span className="w-5 h-5"></span>
         )}
       </div>
       <div className="flex items-center gap-2">

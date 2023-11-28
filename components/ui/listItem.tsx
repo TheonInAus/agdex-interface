@@ -50,7 +50,7 @@ const ListItem: React.FC<ListItemProps> = ({
                 <button className="p-1">
                   <AlertCircle
                     className="text-white text-opacity-70 hover:text-opacity-100"
-                    size={16}
+                    size={12}
                   />
                 </button>
               </TooltipTrigger>

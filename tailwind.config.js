@@ -19,6 +19,7 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        boxBackground: '#FFFFFF15',
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -31,9 +32,13 @@ module.exports = {
           DEFAULT: "#CFCFCF",
           foreground: "#CFCFCF",
         },
-        "0xbox": {
+        "0xbox1": {
           DEFAULT: "#FFFFFF10",
           foreground: "#FFFFFF10",
+        },
+        "0xbox": {
+          DEFAULT: "#FFFFFF08",
+          foreground: "#FFFFFF08",
         },
         "0xgreen": {
           DEFAULT: "#03BB70",
@@ -77,6 +82,7 @@ module.exports = {
         },
       },
       borderRadius: {
+        xl: `calc(var(--radius) + 2px)`,
         lg: `var(--radius)`,
         md: `calc(var(--radius) - 2px)`,
         sm: "calc(var(--radius) - 4px)",
