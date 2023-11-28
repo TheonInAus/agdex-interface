@@ -65,9 +65,9 @@ const Stats: React.FC<StatsProps> = ({
         )}
       </div>
       <div className="flex items-center gap-2">
-        <span className={cn(valueTextColor, "text-base")}>{value}</span>
+        <span className={cn(valueTextColor, "text-sm")}>{value}</span>
         {additionalText && (
-          <span className="text-base text-0xgrey">{additionalText}</span>
+          <span className="text-sm text-0xgrey">{additionalText}</span>
         )}
       </div>
     </div>

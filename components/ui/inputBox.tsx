@@ -47,12 +47,12 @@ export const InputBox: React.FC<InputBoxProps> = ({
     >
       <div className="flex h-full w-full flex-col justify-between">
         <div className="mb-2 ml-3 flex flex-row">
-          <span className="block text-0xgrey">{title}</span>
+          <span className="block text-0xgrey text-sm">{title}</span>
           {prefix && (
             <>
               <span className="block w-full text-right text-sm text-0xgrey">{prefix}</span>
               <Input
-                className="focus-visible:ring-none h-5 w-3/12 border-none bg-transparent p-1 text-left text-sm text-white shadow-none outline-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="focus-visible:ring-none h-5 w-3/12 border-none bg-transparent p-1 text-right text-sm text-white shadow-none outline-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                 value={value}
                 placeholder="0.00"
               />
@@ -61,12 +61,12 @@ export const InputBox: React.FC<InputBoxProps> = ({
         </div>
         <div className="flex">
           <Input
-            className="focus-visible:ring-none w-1/2 border-none bg-transparent text-left text-lg text-white shadow-none outline-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="focus-visible:ring-none w-1/2 border-none bg-transparent text-left text-md text-white shadow-none outline-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
             value={value}
             placeholder="0.00"
             // onChange={onValueChange} // Assuming you have a handler function for this
           />
-          <span className="mr-7 mt-1 w-full text-right text-lg text-white">{suffix}</span>
+          <span className="mt-2 w-full text-right text-md text-white">{suffix}</span>
         </div>
       </div>
     </Card>

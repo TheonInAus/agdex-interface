@@ -26,15 +26,12 @@ export default function TradePage() {
             {/* Wide Block 1 */}
             <div className="mb-6 rounded-lg bg-0xbox  p-6">
               <div className="flex gap-6">
-                <div className="text-xl">Token/Asset</div>
-                <div className="text-xl text-0xred-lighter">Price</div>
-                <Stats
-                  title={"Index Price"}
-                  value={indexPrice}
-                />
+                <div className="text-lg">Token/Asset</div>
+                <div className="text-lg text-0xred-lighter">Price</div>
+                <Stats title={"Index Price"} value={indexPrice} />
                 <Stats
                   title={"24h Change"}
-                  value={'-2.01%'}
+                  value={"-2.01%"}
                   textColor={"text-0xred-lighter"}
                 />
                 <Stats
@@ -52,6 +49,7 @@ export default function TradePage() {
                   info={"lll"}
                 />
               </div>
+              <div className="border-b-5 my-2 border-0xred-lighter" />
             </div>
             <br></br>
             {/* Wide Block 2 */}
@@ -66,7 +64,7 @@ export default function TradePage() {
             </div>
           </div>
           {/* Right Column */}
-          <div className="basis-auto px-3">
+          <div className="basis-1/3 px-3">
             {/* Narrow Block 1 */}
             <div className="mb-6 rounded-lg bg-0xbox p-6">
               <div className="w-full">
@@ -85,12 +83,16 @@ export default function TradePage() {
                   // onValueChange={handleInputChange}
                 />
                 <br></br>
-                <ListItem keyText="Entry Price" value={10} info="llll" />
+                <ListItem keyText="Entry Price" value={''} />
+                <ListItem keyText="Price Impact" value={''} />
                 <ListItem
                   keyText="Acceptable Price"
                   value={""}
                   percentage="0.30%"
                 />
+                <ListItem keyText="Liq. Price" value={''} />
+                <ListItem keyText="Est. Margin" value={''} />
+                <ListItem keyText="Fees" value={''} />
               </div>
             </div>
             {/* Narrow Block 2 */}
