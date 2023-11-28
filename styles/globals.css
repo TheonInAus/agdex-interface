@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -26,7 +25,7 @@
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -48,8 +47,31 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
   }
+  body {
+    min-height: 100vh; /* Full viewport height */
+    background: var(
+      --background-color
+    ); /* Use CSS variables or direct values */
+    font-family: "sans-serif", sans-serif;
+    -webkit-font-smoothing: antialiased; /* for smoother fonts on Webkit browsers */
+    /* Add any other global styles */
+  }
+  .underline-effect {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 0.5px; /* Adjust space between text and underline */
+  }
+  
+  .underline-effect::after {
+    content: '';
+    display: block;
+    width: 115%; 
+    height: 1.5px;
+    background: #ffffff; 
+    position: absolute;
+    bottom: 0;
+  }
 }
-
 
 @layer base {
   * {
