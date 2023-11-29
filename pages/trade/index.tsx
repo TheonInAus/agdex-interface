@@ -11,6 +11,12 @@ import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
 import { Stats } from "@/components/ui/stats"
+import {
+  StyledTabs,
+  StyledTabsContent,
+  StyledTabsList,
+  StyledTabsTrigger,
+} from "@/components/ui/styledTab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TradingViewWidget from "@/components/tradingView"
 import RootLayout from "@/app/layout"
@@ -56,13 +62,8 @@ export default function TradePage() {
               style={{ width: 900, height: 600 }}
             >
               <div className="flex">
-                <div className="text-lg" style={{ marginRight: 40 }}>
-                  Token/Asset
-                </div>
-                <div
-                  className="text-lg text-0xredLighter"
-                  style={{ marginRight: 40 }}
-                >
+                <div className="text-lg mr-10 mt-1">Token/Asset</div>
+                <div className="text-lg text-0xredLighter mr-10 mt-1">
                   Price
                 </div>
                 <Stats title={"Index Price"} value={indexPrice} />
@@ -86,20 +87,57 @@ export default function TradePage() {
                   info={"lll"}
                 />
               </div>
-              <br></br>
-              {/* <div className="border-t-4 border-0xred"></div> */}
+              <div className="border-t border-0xline my-5"></div>
               <TradingViewWidget />
             </div>
-            <br></br>
             {/* Wide Block 2 */}
             <div className="p-6 rounded-lg bg-0xboxBackground">
-              <Stats
-                title={"Index Price"}
-                value={indexPrice}
-                textColor={"text-0xyellow-lighter"}
-                additionalText={"(time)"}
-                info={"lll"}
-              />
+              <StyledTabs
+                defaultValue="Position"
+                className="my-custom-class-for-tabs"
+              >
+                <StyledTabsList aria-label="Manage your account">
+                  <StyledTabsTrigger
+                    value="Position"
+                  >
+                    Position  
+                  </StyledTabsTrigger>
+                  <StyledTabsTrigger
+                    value="Orders"
+                  >
+                    Orders
+                  </StyledTabsTrigger>
+                  <StyledTabsTrigger
+                    value="History"
+                  >
+                    History
+                  </StyledTabsTrigger>
+                </StyledTabsList>
+                <StyledTabsContent
+                  value="Position"
+                  className="ml-3"
+                >
+                  {/* Content for Position tab */}
+                  <div className="border-t border-0xline mt-2 mb-4"></div>
+                  <div>Position tab content goes here.</div>
+                </StyledTabsContent>
+                <StyledTabsContent
+                  value="Orders"
+                  className="ml-3"
+                >
+                  {/* Content for Orders tab */}
+                  <div className="border-t border-0xline mt-2 mb-4"></div>
+                  <div>Orders tab content goes here.</div>
+                </StyledTabsContent>
+                <StyledTabsContent
+                  value="History"
+                  className="ml-3"
+                >
+                  {/* Content for History tab */}
+                  <div className="border-t border-0xline mt-2 mb-4"></div>
+                  <div>History tab content goes here.</div>
+                </StyledTabsContent>
+              </StyledTabs>
             </div>
           </div>
           {/* Right Column */}
@@ -239,15 +277,14 @@ export default function TradePage() {
               </Tabs>
             </div>
             {/* Narrow Block 2 */}
-            <br></br>
             <div className="p-6 rounded-lg bg-0xboxBackground">
               <div className="w-full">
-                <ListItem keyText="Entry Price" value={10} info="llll" />
-                <ListItem
-                  keyText="Acceptable Price"
-                  value={""}
-                  percentage="0.30%"
-                />
+                <div className="text-base">Token/Asset</div>
+                <div className="border-t border-0xline my-3"></div>
+                <ListItem keyText="Max Leverage" value={"200x"} />
+                <ListItem keyText="Average Leverage" value={"7.71x"} />
+                <ListItem keyText="Liquidity" value={"26,601,123.63"} />
+                <ListItem keyText="Balance Rate" value={"-0.08%"} />
               </div>
             </div>
           </div>

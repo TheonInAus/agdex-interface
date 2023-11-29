@@ -36,6 +36,14 @@ module.exports = {
           DEFAULT: "#CFCFCF",
           foreground: "#CFCFCF",
         },
+        "0xline": {
+          DEFAULT: "#4B4B4B",
+          foreground: "#4B4B4B",
+        },
+        "0xtrans": {
+          DEFAULT: "#FFFFFF00",
+          foreground: "#FFFFFF00",
+        },
         "0xbox": {
           DEFAULT: "#FFFFFF10",
           foreground: "#FFFFFF10",
