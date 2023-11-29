@@ -5,8 +5,10 @@ import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
+import { Slider } from "@/components/ui/slider"
 import { Stats } from "@/components/ui/stats"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import RootLayout from "@/app/layout"
@@ -107,6 +109,19 @@ export default function TradePage() {
                       prefix="Leverage:"
                       // onValueChange={handleInputChange}
                     />
+                    <br></br>
+                    <div>
+                      <div
+                        className="flex flex-row"
+                        style={{ marginBottom: 15 }}
+                      >
+                        <div className="text-sm">
+                          Leverage Slider
+                        </div>
+                        <Checkbox style={{ marginLeft: 160, marginTop: 5 }}/>
+                      </div>
+                      <Slider defaultValue={[33]} max={100} step={1} style={{ height: 1 }}/>
+                    </div>
                     <br></br>
                     <ListItem keyText="Entry Price" value={""} />
                     <ListItem keyText="Price Impact" value={""} />

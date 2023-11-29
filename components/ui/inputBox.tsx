@@ -52,7 +52,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
             <>
               <span className="block w-full text-right text-sm text-0xgrey">{prefix}</span>
               <Input
-                className="focus-visible:ring-none h-5 w-3/12 border-none bg-transparent p-1 text-right text-sm text-white shadow-none outline-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                className=" h-5 w-3/12 border-none bg-transparent p-1 text-right text-sm text-white shadow-none outline-none placeholder:text-gray-300"
                 value={value}
                 placeholder="0.00"
               />
@@ -61,7 +61,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
         </div>
         <div className="flex">
           <Input
-            className="focus-visible:ring-none w-1/2 border-none bg-transparent text-left text-md text-white shadow-none outline-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="text-md w-1/2 border-none bg-transparent text-left text-white shadow-none outline-none placeholder:text-gray-300"
             value={value}
             placeholder="0.00"
             // onChange={onValueChange} // Assuming you have a handler function for this
