@@ -53,11 +53,11 @@ export const InputBox: React.FC<InputBoxProps> = ({
               <span className="block w-full text-sm text-right text-0xgrey">
                 {prefix}
               </span>
-              {/* <Input
+              <Input
                 className="w-3/12 h-5 p-1 text-sm text-right text-white bg-transparent border-none shadow-none outline-none placeholder:text-gray-300"
                 value={value}
-                placeholder="0.00"
-              /> */}
+                placeholder="0"
+              />
             </>
           )}
         </div>

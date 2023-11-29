@@ -1,4 +1,4 @@
-"ues client"
+"use client"
 
 import React, { useEffect, useState } from "react"
 import Link from "next/link"
@@ -51,11 +51,21 @@ export default function TradePage() {
           {/* Left Column */}
           <div className="px-3 mb-6 basis-auto">
             {/* Wide Block 1 */}
-            <div className="p-6 mb-6 rounded-lg bg-0xboxBackground" style={{ width: 900, height: 600 }}>
+            <div
+              className="p-6 mb-6 rounded-lg bg-0xboxBackground"
+              style={{ width: 900, height: 600 }}
+            >
               <div className="flex">
-                <div className="text-lg" style={{ marginRight: 40 }}>Token/Asset</div>
-                <div className="text-lg text-0xredLighter" style={{ marginRight: 40 }}>Price</div>
-                <Stats title={"Index Price"} value={indexPrice}/>
+                <div className="text-lg" style={{ marginRight: 40 }}>
+                  Token/Asset
+                </div>
+                <div
+                  className="text-lg text-0xredLighter"
+                  style={{ marginRight: 40 }}
+                >
+                  Price
+                </div>
+                <Stats title={"Index Price"} value={indexPrice} />
                 <Stats
                   title={"24h Change"}
                   value={"-2.01%"}
@@ -95,13 +105,16 @@ export default function TradePage() {
           {/* Right Column */}
           <div className="px-3">
             {/* Narrow Block 1 */}
-            <div className="p-6 mb-6 rounded-lg bg-0xboxBackground" style={{ width: 350 }}>
+            <div
+              className="p-6 mb-6 rounded-lg bg-0xboxBackground"
+              style={{ width: 350 }}
+            >
               <Tabs defaultValue={"long"} className="w-full">
-                <TabsList style={{ marginBottom: 20, width: '100%' }}>
-                  <TabsTrigger style={{ width: '50%' }} value={"long"}>
+                <TabsList style={{ marginBottom: 20, width: "100%" }}>
+                  <TabsTrigger style={{ width: "50%" }} value={"long"}>
                     Long
                   </TabsTrigger>
-                  <TabsTrigger style={{ width: '50%' }} value={"short"}>
+                  <TabsTrigger style={{ width: "50%" }} value={"short"}>
                     Short
                   </TabsTrigger>
                 </TabsList>
@@ -121,9 +134,9 @@ export default function TradePage() {
                       value={tradingSize}
                       suffix="ETH"
                       prefix={`Leverage:${leverageNumber}x`}
-                      // onValueChange={(e) => {
-                      //   setUsdMargin(e.target.value)
-                      // }}
+                      onValueChange={(e) => {
+                        // setUsdMargin(e.target.value)
+                      }}
                     />
                     <br></br>
                     <div>
@@ -155,10 +168,15 @@ export default function TradePage() {
                     <ListItem keyText="Est. Margin" value={""} />
                     <ListItem keyText="Fees" value={""} />
                   </div>
-                  <button className="item-center text-center bg-0xgreen w-full rounded-md h-9" style={{ marginTop: 20, color: '#000000' }}>Long</button>
+                  <button
+                    className="item-center text-center bg-0xgreen w-full rounded-md h-9"
+                    style={{ marginTop: 20, color: "#000000" }}
+                  >
+                    Long
+                  </button>
                 </TabsContent>
                 <TabsContent value="short">
-                <div className="w-full">
+                  <div className="w-full">
                     <InputBox
                       title="Pay"
                       value={usdMargin}
@@ -173,9 +191,9 @@ export default function TradePage() {
                       value={tradingSize}
                       suffix="ETH"
                       prefix={`Leverage:${leverageNumber}x`}
-                      // onValueChange={(e) => {
-                      //   setUsdMargin(e.target.value)
-                      // }}
+                      onValueChange={(e) => {
+                        //   setUsdMargin(e.target.value)
+                      }}
                     />
                     <br></br>
                     <div>
@@ -207,7 +225,16 @@ export default function TradePage() {
                     <ListItem keyText="Est. Margin" value={""} />
                     <ListItem keyText="Fees" value={""} />
                   </div>
-                  <button className="item-center text-center w-full bg-0xredLighter rounded-md h-9" style={{ marginTop: 20, backgroundColor: '#FF4A4A', color: '#000000' }}>Short</button>
+                  <button
+                    className="item-center text-center w-full bg-0xredLighter rounded-md h-9"
+                    style={{
+                      marginTop: 20,
+                      backgroundColor: "#FF4A4A",
+                      color: "#000000",
+                    }}
+                  >
+                    Short
+                  </button>
                 </TabsContent>
               </Tabs>
             </div>
