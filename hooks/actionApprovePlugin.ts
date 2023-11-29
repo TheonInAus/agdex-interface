@@ -2,7 +2,7 @@ import { useContractWrite } from "wagmi"
 import { routerABI } from "@/abis/routerABI"
 import { useEffect, useRef } from "react"
 import { waitForTransaction } from 'wagmi/actions';
-import { positionRouterAddress, routerAddress } from "./addressHelper";
+import { positionRouterAddress, routerAddress } from "./zAddressHelper";
 
 export const useApprovePlugin = () => {
 

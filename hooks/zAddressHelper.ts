@@ -1,4 +1,4 @@
-import contractAddress from "../hooks/contractAddress.json"
+import contractAddress from "./contractAddress.json"
 
 export const positionRouterAddress = contractAddress.deployments.PositionRouter as `0x${string}`
 export const routerAddress = contractAddress.deployments.Router as `0x${string}`
