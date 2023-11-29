@@ -1,7 +1,8 @@
 "ues client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Link from "next/link"
+import Decimal from "decimal.js"
 
 import { siteConfig } from "@/config/site"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -11,12 +12,31 @@ import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
 import { Stats } from "@/components/ui/stats"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import TradingViewWidget from "@/components/tradingView"
 import RootLayout from "@/app/layout"
 
 export default function TradePage() {
   const indexPrice = "57.5938"
-
+  const ethPrice = "2333"
   const [activeTab, setActiveTab] = useState("long")
+  const [usdMargin, setUsdMargin] = useState("")
+  const [tradingSize, setTradingSize] = useState("")
+  const [leverageNumber, setLeverageNumber] = useState([0])
+
+  useEffect(() => {
+    if (usdMargin !== "") {
+      const tradingSize = new Decimal(usdMargin)
+        .dividedBy(new Decimal(ethPrice))
+        .toFixed(18)
+        .toString()
+      setTradingSize(tradingSize)
+    }
+  }, [usdMargin])
+
+  const handleSliderValueChange = (value: any) => {
+    setLeverageNumber(value)
+  }
+
   // const [inputValue, setInputValue] = React.useState(""); // This will hold the value of the input
 
   // // Define a handler for when the input changes
@@ -59,6 +79,7 @@ export default function TradePage() {
               {/* <div className="border-t-4 border-0xred"></div> */}
             </div>
             <br></br>
+            <TradingViewWidget />
             {/* Wide Block 2 */}
             <div className="p-6 rounded-lg bg-0xbox">
               <Stats
@@ -87,27 +108,36 @@ export default function TradePage() {
                   <div className="w-full">
                     <InputBox
                       title="Pay"
-                      value={""}
-                      suffix="USDT"
-                      // onValueChange={handleInputChange}
+                      value={usdMargin}
+                      suffix="USDX"
+                      onValueChange={(e) => {
+                        setUsdMargin(e.target.value)
+                      }}
                     />
                     <br></br>
                     <InputBox
                       title="Size"
-                      value={"0.00"}
-                      suffix="SOL"
-                      prefix="Leverage:"
-                      // onValueChange={handleInputChange}
+                      value={tradingSize}
+                      suffix="ETH"
+                      prefix={`Leverage:${leverageNumber}x`}
+                      // onValueChange={(e) => {
+                      //   setUsdMargin(e.target.value)
+                      // }}
                     />
                     <br></br>
                     <div>
-                      <div className="flex flex-row items-center justify-between" style={{ marginBottom: 10}}>
+                      <div
+                        className="flex flex-row items-center justify-between"
+                        style={{ marginBottom: 10 }}
+                      >
                         <div className="text-sm">Leverage Slider</div>
                         <Checkbox />
                       </div>
                       <Slider
-                        defaultValue={[33]}
-                        max={100}
+                        defaultValue={[1]}
+                        onValueChange={handleSliderValueChange}
+                        max={200}
+                        min={1}
                         step={1}
                         style={{ height: 1 }}
                       />

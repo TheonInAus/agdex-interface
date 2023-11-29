@@ -39,7 +39,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "hooks/zContractConstantsHelper.js"
+    "hooks/zContractConstantsHelper.js",
+    "components/tradingView.js"
   ],
   "exclude": [
     "node_modules"

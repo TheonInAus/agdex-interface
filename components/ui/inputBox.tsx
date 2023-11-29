@@ -27,7 +27,7 @@ export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
   value: string
   suffix: string
   prefix?: string
-  // onValueChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Assuming you are handling state in a parent component
+  onValueChange?: (e: React.ChangeEvent<HTMLInputElement>) => void // Assuming you are handling state in a parent component
 }
 
 // The PayInput component definition.
@@ -36,7 +36,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
   value,
   suffix,
   prefix,
-  // onValueChange,
+  onValueChange,
   ...props
 }) => {
   return (
@@ -53,24 +53,22 @@ export const InputBox: React.FC<InputBoxProps> = ({
               <span className="block w-full text-sm text-right text-0xgrey">
                 {prefix}
               </span>
-              <Input
-                className="w-3/12 h-5 p-1 text-sm text-right text-white bg-transparent border-none shadow-none outline-none  placeholder:text-gray-300"
+              {/* <Input
+                className="w-3/12 h-5 p-1 text-sm text-right text-white bg-transparent border-none shadow-none outline-none placeholder:text-gray-300"
                 value={value}
                 placeholder="0.00"
-              />
+              /> */}
             </>
           )}
         </div>
         <div className="flex">
           <Input
-            className="w-1/2 text-left text-white bg-transparent border-none shadow-none outline-none text-md placeholder:text-gray-300"
+            className="w-full text-left text-white bg-transparent border-none shadow-none outline-none text-md placeholder:text-gray-300"
             value={value}
             placeholder="0.00"
-            // onChange={onValueChange} // Assuming you have a handler function for this
+            onChange={onValueChange} // Assuming you have a handler function for this
           />
-          <span className="w-full mt-2 text-right text-white text-md">
-            {suffix}
-          </span>
+          <span className="mt-2 text-right text-white text-md">{suffix}</span>
         </div>
       </div>
     </Card>
