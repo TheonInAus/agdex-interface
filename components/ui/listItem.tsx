@@ -65,7 +65,7 @@ const ListItem: React.FC<ListItemProps> = ({
         )}
       </div>
       <div className="flex items-center">
-        <span className="text-xs text-white">{value || "_"}</span>
+        <span className="text-xs text-white">{value || "-"}</span>
         {percentage && (
           <>
             <span className="ml-1 text-xs text-white"> ({percentage})</span>
