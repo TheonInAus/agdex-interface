@@ -1,0 +1,55 @@
+{
+  "block": 57109304,
+  "usd": "0x3A47D0BACC92AB8BC30c62607AE2525E2aD3CCA5",
+  "poolBytecodeHash": "0xb31f22f4c28b594d7338197a99ec8c1f55630ec195369ac10a5f6a65f517dd6c",
+  "deployments": {
+    "PoolUtil": "0x8D00791D3A9a50c480b982dF12A647C9fc489526",
+    "FundingRateUtil": "0x11F7f8E923E2184457F0328894d5249554E8beB8",
+    "PriceUtil": "0x9B83174A446949d9c4b3De23d00fe5537CCC08D0",
+    "PositionUtil": "0x09177D060F046399f0e4e60fB2447B4DbE42B573",
+    "LiquidityPositionUtil": "0x537212E29fC5eF73072fBc3Ff329CCD309963714",
+    "EQU": "0xdE57Dba12f8752A5A7cAb855f83Bc127B22393dF",
+    "veEQU": "0x16f014DE27ffE260447Ca7dA83084c35d658A3E9",
+    "EFC": "0x201866caB3165C15093F91B2B493C7ed3ac3e669",
+    "Router": "0x38EBAf2e639Fc411203806C70c85f9528BDea6F3",
+    "RewardCollector": "0x67C203Ae043CfA5e513AC1A7D170d7c341057c79",
+    "OrderBook": "0xe3ADf13ee06e45ee14226f337C0E203E65d7B6D7",
+    "PositionRouter": "0xf02f08261ffA464E044FF63FDC60bDA63819c393",
+    "PriceFeed": "0xbd5988849AbCDAc705cCe4Ac6dcd2698AD5F3C14",
+    "RewardFarm": "0xfBd42387F507039e38613aBbDDfB44924564cB59",
+    "FeeDistributor": "0x37f1A31293fBD8A1480dD5bEdC1f5E96002806d3",
+    "PoolFactory": "0xA9a8C42e858bD83224fD28C5b48cC2a41DEFF166",
+    "MixedExecutor": "0x428ff9e04D42806103d5D1A0f22D7673f5EeE966",
+    "ExecutorAssistant": "0xb7ADCE4985428C9b37A2810763cBCEA641cAF63a",
+    "Liquidator": "0xf2FFf5eab06837F965a86ED774C7D51439D18B06",
+    "registerPools": [
+      {
+        "name": "ETH",
+        "token": "0xECF628c20E5E1C0e0A90226d60FAd547AF850E0F",
+        "pool": "0xFaDB7b750262d3dc93AEAd060FE070C7A73A960B"
+      },
+      {
+        "name": "BTC",
+        "token": "0x6f0763010F979B83837327FF9a37Ff93cC95A51c",
+        "pool": "0x13801E9F03922846AEdeE4FC5373110E861622Ea"
+      },
+      {
+        "name": "ARB",
+        "token": "0x3eF7a2C0fA0dBAc93421692e7E6f1551b4af696A",
+        "pool": "0x32367eF40F0dAD53eB6E3670018B1253235fDDCB"
+      },
+      {
+        "name": "LINK",
+        "token": "0x12fA61ac9929BD6a4FecFcad7316af92eC32bED6",
+        "pool": "0x3552C531f7C648E801dE262b39fAD8347D071e08"
+      }
+    ],
+    "PositionFarmRewardDistributor": "0xad400b49316F7CE7cB9D725F3577f5FD0860734C",
+    "RewardCollectorV2": "0x98978179800F92f24ccFB9f152dAB4a1Fb4bD659",
+    "PoolIndexer": "0x3D92D959BE05c6b63dD39B6152bae12C71Ee0e94",
+    "FarmRewardDistributorV2": "0x35550f28A0480f1E18722329D4bFDBCE26aD7d2c",
+    "RewardCollectorV3": "0x1a4cc22d963f88215c9AdE35CD95f09B6f7c598c",
+    "OrderBookAssistant": "0xF693c6A6C775E7BDFaB0673d31cD14BEce864dDb",
+    "MixedExecutorV2": "0xCECd5ac096C9Ea7C744c14aad8527A8A99851436"
+  }
+}

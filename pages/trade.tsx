@@ -24,12 +24,12 @@ export default function TradePage() {
 
   return (
     <RootLayout>
-      <section className="container items-center gap-6 pb-8 pt-6">
-        <div className="flex w-full flex-row">
+      <section className="container items-center gap-6 pt-6 pb-8">
+        <div className="flex flex-row w-full">
           {/* Left Column */}
-          <div className="mb-6 basis-auto px-3">
+          <div className="px-3 mb-6 basis-auto">
             {/* Wide Block 1 */}
-            <div className="mb-6 rounded-lg bg-0xbox  p-6">
+            <div className="p-6 mb-6 rounded-lg bg-0xbox">
               <div className="flex gap-6">
                 <div className="text-lg">Token/Asset</div>
                 <div className="text-lg text-0xred-lighter">Price</div>
@@ -58,7 +58,7 @@ export default function TradePage() {
             </div>
             <br></br>
             {/* Wide Block 2 */}
-            <div className="rounded-lg bg-0xbox p-6">
+            <div className="p-6 rounded-lg bg-0xbox">
               <Stats
                 title={"Index Price"}
                 value={indexPrice}
@@ -69,25 +69,15 @@ export default function TradePage() {
             </div>
           </div>
           {/* Right Column */}
-          <div className="basis-1/3 px-3">
+          <div className="px-3 basis-1/3">
             {/* Narrow Block 1 */}
-            <div className="mb-6 rounded-lg bg-0xbox p-6">
+            <div className="p-6 mb-6 rounded-lg bg-0xbox">
               <Tabs defaultValue={"long"} className="w-full">
                 <TabsList className="w-full">
-                  <TabsTrigger
-                    className={`w-1/2 ${
-                      activeTab === "long" ? "bg-0xgreen text-white" : ""
-                    }`}
-                    value={"long"}
-                  >
+                  <TabsTrigger className={"w-1/2"} value={"long"}>
                     Long
                   </TabsTrigger>
-                  <TabsTrigger
-                    className={`w-1/2 ${
-                      activeTab === "short" ? "bg-0xred-lighter text-white" : ""
-                    }`}
-                    value={"short"}
-                  >
+                  <TabsTrigger value={"short"} className={"w-1/2"}>
                     Short
                   </TabsTrigger>
                 </TabsList>
@@ -95,7 +85,7 @@ export default function TradePage() {
                   <div className="w-full">
                     <InputBox
                       title="Pay"
-                      value={"0.00"}
+                      value={""}
                       suffix="USDT"
                       // onValueChange={handleInputChange}
                     />
@@ -153,7 +143,7 @@ export default function TradePage() {
             </div>
             {/* Narrow Block 2 */}
             <br></br>
-            <div className="rounded-lg bg-0xbox p-6">
+            <div className="p-6 rounded-lg bg-0xbox">
               <div className="w-full">
                 <ListItem keyText="Entry Price" value={10} info="llll" />
                 <ListItem

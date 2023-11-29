@@ -45,14 +45,16 @@ export const InputBox: React.FC<InputBoxProps> = ({
         props
       )} w-full rounded-xl border-none bg-0xbox1 outline-none`}
     >
-      <div className="flex h-full w-full flex-col justify-between">
-        <div className="mb-2 ml-3 flex flex-row">
-          <span className="block text-0xgrey text-sm">{title}</span>
+      <div className="flex flex-col justify-between w-full h-full">
+        <div className="flex flex-row mb-2 ml-3">
+          <span className="block text-sm text-0xgrey">{title}</span>
           {prefix && (
             <>
-              <span className="block w-full text-right text-sm text-0xgrey">{prefix}</span>
+              <span className="block w-full text-sm text-right text-0xgrey">
+                {prefix}
+              </span>
               <Input
-                className="focus-visible:ring-none h-5 w-3/12 border-none bg-transparent p-1 text-right text-sm text-white shadow-none outline-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="w-3/12 h-5 p-1 text-sm text-right text-white bg-transparent border-none shadow-none outline-none focus-visible:ring-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                 value={value}
                 placeholder="0.00"
               />
@@ -61,12 +63,14 @@ export const InputBox: React.FC<InputBoxProps> = ({
         </div>
         <div className="flex">
           <Input
-            className="focus-visible:ring-none w-1/2 border-none bg-transparent text-left text-md text-white shadow-none outline-none placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="w-1/2 text-left text-white bg-transparent border-none shadow-none outline-none focus-visible:ring-none text-md placeholder:text-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0"
             value={value}
             placeholder="0.00"
             // onChange={onValueChange} // Assuming you have a handler function for this
           />
-          <span className="mt-2 w-full text-right text-md text-white">{suffix}</span>
+          <span className="w-full mt-2 text-right text-white text-md">
+            {suffix}
+          </span>
         </div>
       </div>
     </Card>
