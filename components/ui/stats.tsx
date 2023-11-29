@@ -41,7 +41,7 @@ const Stats: React.FC<StatsProps> = ({
 }) => {
   const valueTextColor = textColor || "text-white"
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mr-9">
       <div className="flex items-center gap-0.5">
         <span className="text-xs text-0xgrey">{title}</span>
         {info ? (

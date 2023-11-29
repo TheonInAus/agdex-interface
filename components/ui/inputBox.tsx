@@ -43,7 +43,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
     <Card
       className={`${inputBoxVariants(
         props
-      )} w-full rounded-xl border-none bg-0xbox1 outline-none`}
+      )} w-full rounded-xl border-none bg-0xbox outline-none`}
     >
       <div className="flex flex-col justify-between w-full h-full">
         <div className="flex flex-row mb-2 ml-3">

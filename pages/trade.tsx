@@ -46,20 +46,20 @@ export default function TradePage() {
 
   return (
     <RootLayout>
-      <section className="container items-center gap-6 pt-6 pb-8">
-        <div className="flex flex-row w-full">
+      <section className="container flex justify-center items-center gap-6 pt-6 pb-8">
+        <div className="flex flex-row">
           {/* Left Column */}
           <div className="px-3 mb-6 basis-auto">
             {/* Wide Block 1 */}
-            <div className="p-6 mb-6 rounded-lg bg-0xbox">
-              <div className="flex gap-6">
-                <div className="text-lg">Token/Asset</div>
-                <div className="text-lg text-0xred-lighter">Price</div>
-                <Stats title={"Index Price"} value={indexPrice} />
+            <div className="p-6 mb-6 rounded-lg bg-0xboxBackground" style={{ width: 900, height: 600 }}>
+              <div className="flex">
+                <div className="text-lg" style={{ marginRight: 40 }}>Token/Asset</div>
+                <div className="text-lg text-0xredLighter" style={{ marginRight: 40 }}>Price</div>
+                <Stats title={"Index Price"} value={indexPrice}/>
                 <Stats
                   title={"24h Change"}
                   value={"-2.01%"}
-                  textColor={"text-0xred-lighter"}
+                  textColor={"text-0xredLighter"}
                 />
                 <Stats
                   title={"1h Funding"}
@@ -76,12 +76,13 @@ export default function TradePage() {
                   info={"lll"}
                 />
               </div>
+              <br></br>
               {/* <div className="border-t-4 border-0xred"></div> */}
+              <TradingViewWidget />
             </div>
             <br></br>
-            <TradingViewWidget />
             {/* Wide Block 2 */}
-            <div className="p-6 rounded-lg bg-0xbox">
+            <div className="p-6 rounded-lg bg-0xboxBackground">
               <Stats
                 title={"Index Price"}
                 value={indexPrice}
@@ -92,15 +93,15 @@ export default function TradePage() {
             </div>
           </div>
           {/* Right Column */}
-          <div className="px-3 basis-1/3">
+          <div className="px-3">
             {/* Narrow Block 1 */}
-            <div className="p-6 mb-6 rounded-lg bg-0xbox">
+            <div className="p-6 mb-6 rounded-lg bg-0xboxBackground" style={{ width: 350 }}>
               <Tabs defaultValue={"long"} className="w-full">
-                <TabsList className="w-full">
-                  <TabsTrigger className={"w-1/2"} value={"long"}>
+                <TabsList style={{ marginBottom: 20, width: '100%' }}>
+                  <TabsTrigger style={{ width: '50%' }} value={"long"}>
                     Long
                   </TabsTrigger>
-                  <TabsTrigger value={"short"} className={"w-1/2"}>
+                  <TabsTrigger style={{ width: '50%' }} value={"short"}>
                     Short
                   </TabsTrigger>
                 </TabsList>
@@ -109,7 +110,7 @@ export default function TradePage() {
                     <InputBox
                       title="Pay"
                       value={usdMargin}
-                      suffix="USDX"
+                      suffix="USDT"
                       onValueChange={(e) => {
                         setUsdMargin(e.target.value)
                       }}
@@ -139,7 +140,7 @@ export default function TradePage() {
                         max={200}
                         min={1}
                         step={1}
-                        style={{ height: 1 }}
+                        style={{ marginBottom: 10 }}
                       />
                     </div>
                     <br></br>
@@ -154,23 +155,46 @@ export default function TradePage() {
                     <ListItem keyText="Est. Margin" value={""} />
                     <ListItem keyText="Fees" value={""} />
                   </div>
+                  <button className="item-center text-center bg-0xgreen w-full rounded-md h-9" style={{ marginTop: 20, color: '#000000' }}>Long</button>
                 </TabsContent>
                 <TabsContent value="short">
-                  <div className="w-full">
+                <div className="w-full">
                     <InputBox
                       title="Pay"
-                      value={"0.00"}
+                      value={usdMargin}
                       suffix="USDT"
-                      // onValueChange={handleInputChange}
+                      onValueChange={(e) => {
+                        setUsdMargin(e.target.value)
+                      }}
                     />
                     <br></br>
                     <InputBox
                       title="Size"
-                      value={"0.00"}
-                      suffix="SOL"
-                      prefix="Leverage:"
-                      // onValueChange={handleInputChange}
+                      value={tradingSize}
+                      suffix="ETH"
+                      prefix={`Leverage:${leverageNumber}x`}
+                      // onValueChange={(e) => {
+                      //   setUsdMargin(e.target.value)
+                      // }}
                     />
+                    <br></br>
+                    <div>
+                      <div
+                        className="flex flex-row items-center justify-between"
+                        style={{ marginBottom: 10 }}
+                      >
+                        <div className="text-sm">Leverage Slider</div>
+                        <Checkbox />
+                      </div>
+                      <Slider
+                        defaultValue={[1]}
+                        onValueChange={handleSliderValueChange}
+                        max={200}
+                        min={1}
+                        step={1}
+                        style={{ marginBottom: 10 }}
+                      />
+                    </div>
                     <br></br>
                     <ListItem keyText="Entry Price" value={""} />
                     <ListItem keyText="Price Impact" value={""} />
@@ -183,12 +207,13 @@ export default function TradePage() {
                     <ListItem keyText="Est. Margin" value={""} />
                     <ListItem keyText="Fees" value={""} />
                   </div>
+                  <button className="item-center text-center w-full bg-0xredLighter rounded-md h-9" style={{ marginTop: 20, backgroundColor: '#FF4A4A', color: '#000000' }}>Short</button>
                 </TabsContent>
               </Tabs>
             </div>
             {/* Narrow Block 2 */}
             <br></br>
-            <div className="p-6 rounded-lg bg-0xbox">
+            <div className="p-6 rounded-lg bg-0xboxBackground">
               <div className="w-full">
                 <ListItem keyText="Entry Price" value={10} info="llll" />
                 <ListItem

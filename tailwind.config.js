@@ -32,11 +32,11 @@ module.exports = {
           DEFAULT: "#CFCFCF",
           foreground: "#CFCFCF",
         },
-        "0xbox1": {
+        "0xbox": {
           DEFAULT: "#FFFFFF10",
           foreground: "#FFFFFF10",
         },
-        "0xbox": {
+        "0xboxBackground": {
           DEFAULT: "#FFFFFF08",
           foreground: "#FFFFFF08",
         },
@@ -48,7 +48,7 @@ module.exports = {
           DEFAULT: "hsl(0 72.2% 50.6%)",
           foreground: "hsl(0 85.7% 97.3%)",
         },
-        "0xred-lighter": {
+        "0xredLighter": {
           DEFAULT: "#FF4A4A",
           foreground: "#FF4A4A",
         },
