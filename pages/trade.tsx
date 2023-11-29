@@ -111,16 +111,16 @@ export default function TradePage() {
                     />
                     <br></br>
                     <div>
-                      <div
-                        className="flex flex-row"
-                        style={{ marginBottom: 15 }}
-                      >
-                        <div className="text-sm">
-                          Leverage Slider
-                        </div>
-                        <Checkbox style={{ marginLeft: 160, marginTop: 5 }}/>
+                      <div className="flex flex-row items-center justify-between" style={{ marginBottom: 10}}>
+                        <div className="text-sm">Leverage Slider</div>
+                        <Checkbox />
                       </div>
-                      <Slider defaultValue={[33]} max={100} step={1} style={{ height: 1 }}/>
+                      <Slider
+                        defaultValue={[33]}
+                        max={100}
+                        step={1}
+                        style={{ height: 1 }}
+                      />
                     </div>
                     <br></br>
                     <ListItem keyText="Entry Price" value={""} />
