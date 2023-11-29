@@ -5,6 +5,9 @@ import Link from "next/link"
 import Decimal from "decimal.js"
 
 import { siteConfig } from "@/config/site"
+import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
+import { ethPoolAddress } from "@/hooks/zAddressHelper"
+import { SIDE_LONG, to0xxPriceX96 } from "@/hooks/zContractConstantsHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
@@ -26,22 +29,51 @@ export default function TradePage() {
   const ethPrice = "2333"
   const [activeTab, setActiveTab] = useState("long")
   const [usdMargin, setUsdMargin] = useState("")
+  const [usdAfterMargin, setUsdAfterMargin] = useState("")
   const [tradingSize, setTradingSize] = useState("")
-  const [leverageNumber, setLeverageNumber] = useState([0])
+  const [leverageNumber, setLeverageNumber] = useState(1)
+
+  console.log("check ethPoolAddress => ", ethPoolAddress)
+
+  // const { incPositionData, incPositionLoading, incPositionWrite } =
+  //   useCreateIncreasePostion(
+  //     ethPoolAddress,
+  //     SIDE_LONG,
+  //     usdMargin,
+  //     tradingSize,
+  //     to0xxPriceX96("2005")
+  //   )
 
   useEffect(() => {
-    if (usdMargin !== "") {
-      const tradingSize = new Decimal(usdMargin)
+    if (usdAfterMargin !== "") {
+      const tradingSize = new Decimal(usdAfterMargin)
         .dividedBy(new Decimal(ethPrice))
         .toFixed(18)
         .toString()
       setTradingSize(tradingSize)
+    } else {
+      setTradingSize("")
     }
-  }, [usdMargin])
+  }, [usdAfterMargin])
 
   const handleSliderValueChange = (value: any) => {
     setLeverageNumber(value)
   }
+
+  const handleIncPostionTemp = () => {
+    incPositionWrite()
+  }
+
+  useEffect(() => {
+    if (usdMargin !== "") {
+      const tempMargin = parseFloat(usdMargin)
+      setUsdAfterMargin(
+        (isNaN(tempMargin) ? 0 : tempMargin * leverageNumber).toString()
+      )
+    } else {
+      setTradingSize("")
+    }
+  }, [leverageNumber, usdMargin])
 
   // const [inputValue, setInputValue] = React.useState(""); // This will hold the value of the input
 
@@ -171,9 +203,23 @@ export default function TradePage() {
                       title="Size"
                       value={tradingSize}
                       suffix="ETH"
-                      prefix={`Leverage:${leverageNumber}x`}
+                      prefix={`Leverage:`}
+                      prefixValue={leverageNumber}
                       onValueChange={(e) => {
                         // setUsdMargin(e.target.value)
+                      }}
+                      onPrefixChange={(e) => {
+                        const intValue = parseInt(e.target.value, 10)
+
+                        if (!isNaN(intValue)) {
+                          setLeverageNumber(intValue)
+                        } else if (intValue < 1) {
+                          setLeverageNumber(1)
+                        } else if (intValue > 200) {
+                          setLeverageNumber(200)
+                        } else {
+                          setLeverageNumber(1)
+                        }
                       }}
                     />
                     <br></br>
@@ -191,6 +237,7 @@ export default function TradePage() {
                         max={200}
                         min={1}
                         step={1}
+                        value={[leverageNumber]}
                         style={{ marginBottom: 10 }}
                       />
                     </div>
@@ -207,6 +254,7 @@ export default function TradePage() {
                     <ListItem keyText="Fees" value={""} />
                   </div>
                   <button
+                    onClick={handleIncPostionTemp}
                     className="item-center text-center bg-0xgreen w-full rounded-md h-9"
                     style={{ marginTop: 20, color: "#000000" }}
                   >

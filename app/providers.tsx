@@ -1,41 +1,45 @@
 "use client"
 
+import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit"
+import { WagmiConfig, configureChains, createConfig } from "wagmi"
 import {
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import {
-  mainnet,
-  polygon,
-  optimism,
   arbitrum,
+  arbitrumGoerli,
   base,
+  mainnet,
+  optimism,
+  polygon,
   zora,
-} from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
-import "@/styles/globals.css"
-import '@rainbow-me/rainbowkit/styles.css';
+} from "wagmi/chains"
+import { publicProvider } from "wagmi/providers/public"
 
+import "@/styles/globals.css"
+import "@rainbow-me/rainbowkit/styles.css"
+import { infuraProvider } from "wagmi/providers/infura"
+
+const appKey = process.env.INFURA_API_KEY || "default_app_key"
+console.log("check api key => ", appKey)
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora],
+  [arbitrumGoerli],
   [
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_API_KEY || "ac4a73bdd03e406791589e87f1043121" }),
-    publicProvider()
+    infuraProvider({
+      apiKey: "72580f581a484c32a2009a8f798b01e8",
+    }),
+    publicProvider(),
   ]
-);
+)
 
 const { connectors } = getDefaultWallets({
-  appName: 'Oxx interface',
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "368ee5791bcf5b7032b8b1da8630c6d9",
-  chains
-});
+  appName: "Oxx interface",
+  projectId:
+    process.env.NEXT_PUBLIC_PROJECT_ID || "368ee5791bcf5b7032b8b1da8630c6d9",
+  chains,
+})
 
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  publicClient
+  publicClient,
 })
 
 interface ProvidersProps {
@@ -45,9 +49,7 @@ interface ProvidersProps {
 export default function Providers({ children }: ProvidersProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        {children}
-      </RainbowKitProvider>
+      <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
     </WagmiConfig>
   )
 }

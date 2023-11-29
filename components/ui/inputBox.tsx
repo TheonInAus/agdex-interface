@@ -25,18 +25,22 @@ const inputBoxVariants = cva(
 export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
   title: string
   value: string
+  prefixValue?: number
   suffix: string
   prefix?: string
   onValueChange?: (e: React.ChangeEvent<HTMLInputElement>) => void // Assuming you are handling state in a parent component
+  onPrefixChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 // The PayInput component definition.
 export const InputBox: React.FC<InputBoxProps> = ({
   title,
   value,
+  prefixValue,
   suffix,
   prefix,
   onValueChange,
+  onPrefixChange,
   ...props
 }) => {
   return (
@@ -46,7 +50,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
       )} w-full rounded-xl border-none bg-0xbox outline-none`}
     >
       <div className="flex flex-col justify-between w-full h-full">
-        <div className="flex flex-row mb-2 ml-3">
+        <div className="flex flex-row mb-2 ml-3 items-center">
           <span className="block text-sm text-0xgrey">{title}</span>
           {prefix && (
             <>
@@ -54,10 +58,13 @@ export const InputBox: React.FC<InputBoxProps> = ({
                 {prefix}
               </span>
               <Input
-                className="w-3/12 h-5 p-1 text-sm text-right text-white bg-transparent border-none shadow-none outline-none placeholder:text-gray-300"
-                value={value}
+                className="w-8 h-4 p-0 bg-transparent text-sm text-right text-white  border-none shadow-none outline-none placeholder:text-gray-300 number-input"
+                value={prefixValue}
+                type="number"
                 placeholder="0"
+                onChange={onPrefixChange} // Assuming you have a handler function for this
               />
+              <span className="block text-sm text-right text-white">x</span>
             </>
           )}
         </div>
