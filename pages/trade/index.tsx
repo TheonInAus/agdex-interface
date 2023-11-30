@@ -114,7 +114,7 @@ export default function TradePage() {
           {/* Wide Block 1 */}
           <div
             className="p-6 mb-6 rounded-lg bg-0xboxBackground"
-            style={{ width: 900, height: 600 }}
+            style={{ width: 950, height: 600 }}
           >
             <div className="flex">
               <div className="mt-1 mr-10 text-lg">Token/Asset</div>
