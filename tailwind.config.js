@@ -15,6 +15,15 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
+      borderWidth: {
+        DEFAULT: '1px',
+        '0': '0',
+        '1': '0.2px',
+        '3': '3px',
+        '4': '4px',
+        '6': '6px',
+        '8': '8px',
+      }
     },
     extend: {
       colors: {

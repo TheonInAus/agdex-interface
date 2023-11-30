@@ -55,8 +55,8 @@ const ListItem: React.FC<ListItemProps> = ({
                   />
                 </button>
               </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                <p>{info}</p>
+              <TooltipContent>
+                <p className="w-52">{info}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
