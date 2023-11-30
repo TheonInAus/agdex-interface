@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import Decimal from "decimal.js"
-import { Loader2 } from "lucide-react"
+import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { siteConfig } from "@/config/site"
 import {
@@ -18,6 +18,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
+import { PositionItem } from "@/components/ui/positionItem"
 import { Slider } from "@/components/ui/slider"
 import { Stats } from "@/components/ui/stats"
 import {
@@ -157,8 +158,96 @@ export default function TradePage() {
                 {/* Content for Position tab */}
                 <div className="mt-2 mb-4 border-t border-0xline"></div>
 
-                <div className="text-0xgreen">Long Position</div>
-                <div>
+                <div className="flex flex-row gap-2">
+                  <div className="text-white">Token/Asset</div>
+                  <div className="text-0xgreen">
+                    Long{" "}
+                    {
+                      "[Size (Eth number * Eth Price)/ Margin eth is 18 decimals] "
+                    }
+                    {Array.isArray(longPositionData) &&
+                    longPositionData.length > 2 &&
+                    Number(longPositionData) > 0
+                      ? (
+                          (longPositionData[2] * 2000n) /
+                          longPositionData[1]
+                        ).toString()
+                      : "error"}{" "}
+                    x
+                  </div>
+                  <div className="text-white">measure position risk</div>
+                </div>
+                <div className="flex flex-row gap-5">
+                  <div className="flex flex-col">
+                    <PositionItem
+                      keyText="Size"
+                      value={
+                        Array.isArray(longPositionData)
+                          ? longPositionData[1].toString()
+                          : "error"
+                      }
+                    />
+                    <div className="flex flex-row">
+                      <PositionItem
+                        keyText="Margin"
+                        value={
+                          Array.isArray(longPositionData)
+                            ? longPositionData[0].toString()
+                            : "error"
+                        }
+                        info="ll"
+                      />
+                      <button className="ml-1">
+                        <Edit3
+                          className="text-white text-opacity-70 hover:text-opacity-100"
+                          size={13}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <PositionItem
+                      keyText="Entry Price"
+                      value={
+                        Array.isArray(longPositionData)
+                          ? longPositionData[2].toString()
+                          : "error"
+                      }
+                    />
+                    <PositionItem keyText="Lig. Price" value={""} info="ll" />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="flex flex-row">
+                      <PositionItem
+                        keyText="Unrealized Pnl."
+                        value={""}
+                        info=""
+                      />
+                      <ExternalLink
+                        className="text-white text-opacity-70 hover:text-opacity-100 ml-1"
+                        size={13}
+                      />
+                    </div>
+                    <PositionItem
+                      keyText="Net Funding"
+                      value={
+                        Array.isArray(longPositionData)
+                          ? longPositionData[3].toString()
+                          : "error"
+                      }
+                      info={""}
+                    />
+                  </div>
+                  <div className="flex flex-row gap-3">
+                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3">
+                      TP/SL
+                    </Button>
+                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3">
+                      Close
+                    </Button>
+                  </div>
+                </div>
+                {/* <div>
                   Position Margin :{" "}
                   {Array.isArray(longPositionData)
                     ? longPositionData[0].toString()
@@ -176,7 +265,8 @@ export default function TradePage() {
                     "[Size (Eth number * Eth Price)/ Margin eth is 18 decimals] "
                   }
                   {Array.isArray(longPositionData) &&
-                  longPositionData.length > 2
+                  longPositionData.length > 2 &&
+                  Number(longPositionData) > 0
                     ? (
                         (longPositionData[2] * 2000n) /
                         longPositionData[1]
@@ -194,9 +284,97 @@ export default function TradePage() {
                   {Array.isArray(longPositionData)
                     ? longPositionData[3].toString()
                     : "error"}
+                </div> */}
+                <div className="my-5 border-t border-0xline"></div>
+                <div className="flex flex-row gap-2">
+                  <div className="text-white">Token/Asset</div>
+                  <div className="text-0xredLighter">
+                    Short{" "}
+                    {
+                      "[Size (Eth number * Eth Price)/ Margin eth is 18 decimals] "
+                    }
+                    {Array.isArray(shortPositionData) &&
+                    shortPositionData.length > 2 &&
+                    Number(shortPositionData) > 0
+                      ? (
+                          (shortPositionData[2] * 2000n) /
+                          shortPositionData[1]
+                        ).toString()
+                      : "error"}{" "}
+                    x
+                  </div>
+                  <div className="text-white">measure position risk</div>
                 </div>
-
-                <div className="mt-1 text-0xyellow">SHORT Position</div>
+                <div className="flex flex-row gap-5">
+                  <div className="flex flex-col">
+                    <PositionItem
+                      keyText="Size"
+                      value={
+                        Array.isArray(shortPositionData)
+                          ? shortPositionData[1].toString()
+                          : "error"
+                      }
+                    />
+                    <div className="flex flex-row">
+                      <PositionItem
+                        keyText="Margin"
+                        value={
+                          Array.isArray(longPositionData)
+                            ? longPositionData[0].toString()
+                            : "error"
+                        }
+                        info="ll"
+                      />
+                      <button className="ml-1">
+                        <Edit3
+                          className="text-white text-opacity-70 hover:text-opacity-100"
+                          size={13}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <PositionItem
+                      keyText="Entry Price"
+                      value={
+                        Array.isArray(shortPositionData)
+                          ? shortPositionData[2].toString()
+                          : "error"
+                      }
+                    />
+                    <PositionItem keyText="Lig. Price" value={""} info="ll" />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="flex flex-row">
+                      <PositionItem
+                        keyText="Unrealized Pnl."
+                        value={""}
+                        info=""
+                      />
+                      <ExternalLink
+                        className="text-white text-opacity-70 hover:text-opacity-100 ml-1"
+                        size={13}
+                      />
+                    </div>
+                    <PositionItem
+                      keyText="Net Funding"
+                      value={
+                        Array.isArray(shortPositionData)
+                          ? shortPositionData[3].toString()
+                          : "error"
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-row gap-3">
+                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3">
+                      TP/SL
+                    </Button>
+                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3">
+                      Close
+                    </Button>
+                  </div>
+                </div>
+                {/* <div className="mt-1 text-0xyellow">SHORT Position</div>
                 <div>
                   Position Margin :{" "}
                   {Array.isArray(shortPositionData)
@@ -213,7 +391,8 @@ export default function TradePage() {
                   Position Leverage :
                   {"[Size (Eth number * Eth Price)/ Margin] eth is 18 decimals"}
                   {Array.isArray(shortPositionData) &&
-                  shortPositionData.length > 2
+                  shortPositionData.length > 2 &&
+                  Number(shortPositionData) > 0
                     ? (
                         (shortPositionData[2] * 2000n) /
                         shortPositionData[1]
@@ -231,7 +410,7 @@ export default function TradePage() {
                   {Array.isArray(shortPositionData)
                     ? shortPositionData[3].toString()
                     : "error"}
-                </div>
+                </div> */}
               </StyledTabsContent>
               <StyledTabsContent value="Orders" className="ml-3">
                 {/* Content for Orders tab */}

@@ -60,7 +60,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
                 {prefix}
               </span>
               <Input
-                className="w-8 h-4 p-0 text-sm text-right text-white bg-transparent border-none shadow-none outline-none placeholder:text-gray-300 number-input"
+                className="w-6 h-4 p-0 text-sm text-right text-white bg-transparent border-none shadow-none outline-none placeholder:text-gray-300 number-input"
                 value={prefixValue}
                 type="number"
                 placeholder="0"
