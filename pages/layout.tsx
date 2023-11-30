@@ -1,8 +1,6 @@
 "use client"
 
-import "@/styles/globals.css"
 import Head from "next/head"
-
 
 // import { Metadata } from "next"
 
@@ -13,8 +11,6 @@ import SiteFooter from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
-
-import Providers from "./providers"
 
 // export const metadata: Metadata = {
 //   title: {
@@ -54,16 +50,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
       </body> */}
-      <Providers>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="relative flex min-h-screen flex-col">
-            <SiteHeader />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-          </div>
-          <TailwindIndicator />
-        </ThemeProvider>
-      </Providers>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <div className="relative flex flex-col min-h-screen">
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+        </div>
+        <TailwindIndicator />
+      </ThemeProvider>
     </>
   )
 }

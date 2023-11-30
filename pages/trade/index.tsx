@@ -3,8 +3,14 @@
 import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import Decimal from "decimal.js"
+import { Loader2 } from "lucide-react"
 
 import { siteConfig } from "@/config/site"
+import {
+  useUserPositionsLONG,
+  useUserPositionsSHORT,
+  useUserUsdxBalance,
+} from "@/hooks/aUserState"
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
 import { ethPoolAddress } from "@/hooks/zAddressHelper"
 import { SIDE_LONG, to0xxPriceX96 } from "@/hooks/zContractConstantsHelper"
@@ -22,7 +28,6 @@ import {
 } from "@/components/ui/styledTab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TradingViewWidget from "@/components/tradingView"
-import RootLayout from "@/app/layout"
 
 export default function TradePage() {
   const indexPrice = "57.5938"
@@ -35,14 +40,32 @@ export default function TradePage() {
 
   console.log("check ethPoolAddress => ", ethPoolAddress)
 
-  // const { incPositionData, incPositionLoading, incPositionWrite } =
-  //   useCreateIncreasePostion(
-  //     ethPoolAddress,
-  //     SIDE_LONG,
-  //     usdMargin,
-  //     tradingSize,
-  //     to0xxPriceX96("2005")
-  //   )
+  const { incPositionData, incPositionLoading, incPositionWrite } =
+    useCreateIncreasePostion(
+      ethPoolAddress,
+      SIDE_LONG,
+      usdMargin,
+      tradingSize,
+      to0xxPriceX96("2005")
+    )
+
+  const {
+    data: balanceData,
+    isError: isBalanceError,
+    isLoading: isBalanceLoading,
+  } = useUserUsdxBalance()
+
+  const {
+    data: longPositionData,
+    isLoading: longPositionLoading,
+    isError: longPositionError,
+  } = useUserPositionsLONG()
+
+  const {
+    data: shortPositionData,
+    isLoading: shortPositionLoading,
+    isError: shortPositionError,
+  } = useUserPositionsSHORT()
 
   useEffect(() => {
     if (usdAfterMargin !== "") {
@@ -83,261 +106,331 @@ export default function TradePage() {
   // };
 
   return (
-    <RootLayout>
-      <section className="container flex justify-center items-center gap-6 pt-6 pb-8">
-        <div className="flex flex-row">
-          {/* Left Column */}
-          <div className="px-3 mb-6 basis-auto">
-            {/* Wide Block 1 */}
-            <div
-              className="p-6 mb-6 rounded-lg bg-0xboxBackground"
-              style={{ width: 900, height: 600 }}
-            >
-              <div className="flex">
-                <div className="text-lg mr-10 mt-1">Token/Asset</div>
-                <div className="text-lg text-0xredLighter mr-10 mt-1">
-                  Price
-                </div>
-                <Stats title={"Index Price"} value={indexPrice} />
-                <Stats
-                  title={"24h Change"}
-                  value={"-2.01%"}
-                  textColor={"text-0xredLighter"}
-                />
-                <Stats
-                  title={"1h Funding"}
-                  value={"+0.001250%"}
-                  textColor={"text-0xyellow-lighter"}
-                  additionalText={"(27:15)"}
-                  info={"lll"}
-                />
-                <Stats
-                  title={"Open Interest"}
-                  value={"20.10k SOL"}
-                  textColor={"text-0xyellow-lighter"}
-                  additionalText={"($1,144,535.35)"}
-                  info={"lll"}
-                />
-              </div>
-              <div className="border-t border-0xline my-5"></div>
-              <TradingViewWidget />
+    <section className="container flex items-center justify-center gap-6 pt-6 pb-8">
+      <div className="flex flex-row">
+        {/* Left Column */}
+        <div className="px-3 mb-6 basis-auto">
+          {/* Wide Block 1 */}
+          <div
+            className="p-6 mb-6 rounded-lg bg-0xboxBackground"
+            style={{ width: 900, height: 600 }}
+          >
+            <div className="flex">
+              <div className="mt-1 mr-10 text-lg">Token/Asset</div>
+              <div className="mt-1 mr-10 text-lg text-0xredLighter">Price</div>
+              <Stats title={"Index Price"} value={indexPrice} />
+              <Stats
+                title={"24h Change"}
+                value={"-2.01%"}
+                textColor={"text-0xredLighter"}
+              />
+              <Stats
+                title={"1h Funding"}
+                value={"+0.001250%"}
+                textColor={"text-0xyellow-lighter"}
+                additionalText={"(27:15)"}
+                info={"lll"}
+              />
+              <Stats
+                title={"Open Interest"}
+                value={"20.10k SOL"}
+                textColor={"text-0xyellow-lighter"}
+                additionalText={"($1,144,535.35)"}
+                info={"lll"}
+              />
             </div>
-            {/* Wide Block 2 */}
-            <div className="p-6 rounded-lg bg-0xboxBackground">
-              <StyledTabs
-                defaultValue="Position"
-                className="my-custom-class-for-tabs"
-              >
-                <StyledTabsList aria-label="Manage your account">
-                  <StyledTabsTrigger
-                    value="Position"
-                  >
-                    Position  
-                  </StyledTabsTrigger>
-                  <StyledTabsTrigger
-                    value="Orders"
-                  >
-                    Orders
-                  </StyledTabsTrigger>
-                  <StyledTabsTrigger
-                    value="History"
-                  >
-                    History
-                  </StyledTabsTrigger>
-                </StyledTabsList>
-                <StyledTabsContent
-                  value="Position"
-                  className="ml-3"
-                >
-                  {/* Content for Position tab */}
-                  <div className="border-t border-0xline mt-2 mb-4"></div>
-                  <div>Position tab content goes here.</div>
-                </StyledTabsContent>
-                <StyledTabsContent
-                  value="Orders"
-                  className="ml-3"
-                >
-                  {/* Content for Orders tab */}
-                  <div className="border-t border-0xline mt-2 mb-4"></div>
-                  <div>Orders tab content goes here.</div>
-                </StyledTabsContent>
-                <StyledTabsContent
-                  value="History"
-                  className="ml-3"
-                >
-                  {/* Content for History tab */}
-                  <div className="border-t border-0xline mt-2 mb-4"></div>
-                  <div>History tab content goes here.</div>
-                </StyledTabsContent>
-              </StyledTabs>
-            </div>
+            <div className="my-5 border-t border-0xline"></div>
+            <TradingViewWidget />
           </div>
-          {/* Right Column */}
-          <div className="px-3">
-            {/* Narrow Block 1 */}
-            <div
-              className="p-6 mb-6 rounded-lg bg-0xboxBackground"
-              style={{ width: 350 }}
+          {/* Wide Block 2 */}
+          <div className="p-6 rounded-lg bg-0xboxBackground">
+            <StyledTabs
+              defaultValue="Position"
+              className="my-custom-class-for-tabs"
             >
-              <Tabs defaultValue={"long"} className="w-full">
-                <TabsList style={{ marginBottom: 20, width: "100%" }}>
-                  <TabsTrigger style={{ width: "50%" }} value={"long"}>
-                    Long
-                  </TabsTrigger>
-                  <TabsTrigger style={{ width: "50%" }} value={"short"}>
-                    Short
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="long">
-                  <div className="w-full">
-                    <InputBox
-                      title="Pay"
-                      value={usdMargin}
-                      suffix="USDT"
-                      onValueChange={(e) => {
-                        setUsdMargin(e.target.value)
-                      }}
-                    />
-                    <br></br>
-                    <InputBox
-                      title="Size"
-                      value={tradingSize}
-                      suffix="ETH"
-                      prefix={`Leverage:`}
-                      prefixValue={leverageNumber}
-                      onValueChange={(e) => {
-                        // setUsdMargin(e.target.value)
-                      }}
-                      onPrefixChange={(e) => {
-                        const intValue = parseInt(e.target.value, 10)
+              <StyledTabsList aria-label="Manage your account">
+                <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
+                <StyledTabsTrigger value="Orders">Orders</StyledTabsTrigger>
+                <StyledTabsTrigger value="History">History</StyledTabsTrigger>
+              </StyledTabsList>
+              <StyledTabsContent value="Position" className="ml-3">
+                {/* Content for Position tab */}
+                <div className="mt-2 mb-4 border-t border-0xline"></div>
 
-                        if (!isNaN(intValue)) {
-                          setLeverageNumber(intValue)
-                        } else if (intValue < 1) {
-                          setLeverageNumber(1)
-                        } else if (intValue > 200) {
-                          setLeverageNumber(200)
-                        } else {
-                          setLeverageNumber(1)
-                        }
-                      }}
-                    />
-                    <br></br>
-                    <div>
-                      <div
-                        className="flex flex-row items-center justify-between"
-                        style={{ marginBottom: 10 }}
-                      >
-                        <div className="text-sm">Leverage Slider</div>
-                        <Checkbox />
-                      </div>
-                      <Slider
-                        defaultValue={[1]}
-                        onValueChange={handleSliderValueChange}
-                        max={200}
-                        min={1}
-                        step={1}
-                        value={[leverageNumber]}
-                        style={{ marginBottom: 10 }}
-                      />
-                    </div>
-                    <br></br>
-                    <ListItem keyText="Entry Price" value={""} />
-                    <ListItem keyText="Price Impact" value={""} />
-                    <ListItem
-                      keyText="Acceptable Price"
-                      value={""}
-                      percentage="0.30%"
-                    />
-                    <ListItem keyText="Liq. Price" value={""} />
-                    <ListItem keyText="Est. Margin" value={""} />
-                    <ListItem keyText="Fees" value={""} />
-                  </div>
-                  <button
-                    onClick={handleIncPostionTemp}
-                    className="item-center text-center bg-0xgreen w-full rounded-md h-9"
-                    style={{ marginTop: 20, color: "#000000" }}
-                  >
-                    Long
-                  </button>
-                </TabsContent>
-                <TabsContent value="short">
-                  <div className="w-full">
-                    <InputBox
-                      title="Pay"
-                      value={usdMargin}
-                      suffix="USDT"
-                      onValueChange={(e) => {
-                        setUsdMargin(e.target.value)
-                      }}
-                    />
-                    <br></br>
-                    <InputBox
-                      title="Size"
-                      value={tradingSize}
-                      suffix="ETH"
-                      prefix={`Leverage:${leverageNumber}x`}
-                      onValueChange={(e) => {
-                        //   setUsdMargin(e.target.value)
-                      }}
-                    />
-                    <br></br>
-                    <div>
-                      <div
-                        className="flex flex-row items-center justify-between"
-                        style={{ marginBottom: 10 }}
-                      >
-                        <div className="text-sm">Leverage Slider</div>
-                        <Checkbox />
-                      </div>
-                      <Slider
-                        defaultValue={[1]}
-                        onValueChange={handleSliderValueChange}
-                        max={200}
-                        min={1}
-                        step={1}
-                        style={{ marginBottom: 10 }}
-                      />
-                    </div>
-                    <br></br>
-                    <ListItem keyText="Entry Price" value={""} />
-                    <ListItem keyText="Price Impact" value={""} />
-                    <ListItem
-                      keyText="Acceptable Price"
-                      value={""}
-                      percentage="0.30%"
-                    />
-                    <ListItem keyText="Liq. Price" value={""} />
-                    <ListItem keyText="Est. Margin" value={""} />
-                    <ListItem keyText="Fees" value={""} />
-                  </div>
-                  <button
-                    className="item-center text-center w-full bg-0xredLighter rounded-md h-9"
-                    style={{
-                      marginTop: 20,
-                      backgroundColor: "#FF4A4A",
-                      color: "#000000",
+                <div className="text-0xgreen">Long Position</div>
+                <div>
+                  Position Margin :{" "}
+                  {Array.isArray(longPositionData)
+                    ? longPositionData[0].toString()
+                    : "error"}
+                </div>
+                <div>
+                  Position Size :{" "}
+                  {Array.isArray(longPositionData)
+                    ? longPositionData[1].toString()
+                    : "error"}
+                </div>
+                <div>
+                  Position Leverage :
+                  {
+                    "[Size (Eth number * Eth Price)/ Margin eth is 18 decimals] "
+                  }
+                  {Array.isArray(longPositionData) &&
+                  longPositionData.length > 2
+                    ? (
+                        (longPositionData[2] * 2000n) /
+                        longPositionData[1]
+                      ).toString()
+                    : "error"}
+                </div>
+                <div>
+                  Position entryPriceX96 :{" "}
+                  {Array.isArray(longPositionData)
+                    ? longPositionData[2].toString()
+                    : "error"}
+                </div>
+                <div>
+                  Position entryFundingRateGrowthX96 :{" "}
+                  {Array.isArray(longPositionData)
+                    ? longPositionData[3].toString()
+                    : "error"}
+                </div>
+
+                <div className="mt-1 text-0xyellow">SHORT Position</div>
+                <div>
+                  Position Margin :{" "}
+                  {Array.isArray(shortPositionData)
+                    ? shortPositionData[0].toString()
+                    : "error"}
+                </div>
+                <div>
+                  Position Size :{" "}
+                  {Array.isArray(shortPositionData)
+                    ? shortPositionData[1].toString()
+                    : "error"}
+                </div>
+                <div>
+                  Position Leverage :
+                  {"[Size (Eth number * Eth Price)/ Margin] eth is 18 decimals"}
+                  {Array.isArray(shortPositionData) &&
+                  shortPositionData.length > 2
+                    ? (
+                        (shortPositionData[2] * 2000n) /
+                        shortPositionData[1]
+                      ).toString()
+                    : "error"}
+                </div>
+                <div>
+                  Position entryPriceX96 :{" "}
+                  {Array.isArray(shortPositionData)
+                    ? shortPositionData[2].toString()
+                    : "error"}
+                </div>
+                <div>
+                  Position entryFundingRateGrowthX96 :{" "}
+                  {Array.isArray(shortPositionData)
+                    ? shortPositionData[3].toString()
+                    : "error"}
+                </div>
+              </StyledTabsContent>
+              <StyledTabsContent value="Orders" className="ml-3">
+                {/* Content for Orders tab */}
+                <div className="mt-2 mb-4 border-t border-0xline"></div>
+                <div>Orders tab content goes here.</div>
+              </StyledTabsContent>
+              <StyledTabsContent value="History" className="ml-3">
+                {/* Content for History tab */}
+                <div className="mt-2 mb-4 border-t border-0xline"></div>
+                <div>History tab content goes here.</div>
+              </StyledTabsContent>
+            </StyledTabs>
+          </div>
+        </div>
+        {/* Right Column */}
+        <div className="px-3">
+          {/* Narrow Block 1 */}
+          <div
+            className="p-6 mb-6 rounded-lg bg-0xboxBackground"
+            style={{ width: 350 }}
+          >
+            <Tabs defaultValue={"long"} className="w-full">
+              <TabsList style={{ marginBottom: 20, width: "100%" }}>
+                <TabsTrigger style={{ width: "50%" }} value={"long"}>
+                  Long
+                </TabsTrigger>
+                <TabsTrigger style={{ width: "50%" }} value={"short"}>
+                  Short
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="long">
+                <div className="w-full">
+                  <InputBox
+                    title="Pay"
+                    value={usdMargin}
+                    suffix="USDT"
+                    balanceNode={
+                      isBalanceLoading ? (
+                        <div>Fetching balance…</div>
+                      ) : isBalanceError ? (
+                        <div>Error fetching balance</div>
+                      ) : (
+                        <div>
+                          Balance: {balanceData?.formatted}{" "}
+                          {balanceData?.symbol}
+                        </div>
+                      )
+                    }
+                    onValueChange={(e) => {
+                      setUsdMargin(e.target.value)
                     }}
-                  >
-                    Short
-                  </button>
-                </TabsContent>
-              </Tabs>
-            </div>
-            {/* Narrow Block 2 */}
-            <div className="p-6 rounded-lg bg-0xboxBackground">
-              <div className="w-full">
-                <div className="text-base">Token/Asset</div>
-                <div className="border-t border-0xline my-3"></div>
-                <ListItem keyText="Max Leverage" value={"200x"} />
-                <ListItem keyText="Average Leverage" value={"7.71x"} />
-                <ListItem keyText="Liquidity" value={"26,601,123.63"} />
-                <ListItem keyText="Balance Rate" value={"-0.08%"} />
-              </div>
+                  />
+                  <br></br>
+                  <InputBox
+                    title="Size"
+                    value={tradingSize}
+                    suffix="ETH"
+                    prefix={`Leverage:`}
+                    prefixValue={leverageNumber}
+                    onValueChange={(e) => {
+                      // setUsdMargin(e.target.value)
+                    }}
+                    onPrefixChange={(e) => {
+                      const intValue = parseInt(e.target.value, 10)
+
+                      if (!isNaN(intValue)) {
+                        setLeverageNumber(intValue)
+                      } else if (intValue < 1) {
+                        setLeverageNumber(1)
+                      } else if (intValue > 200) {
+                        setLeverageNumber(200)
+                      } else {
+                        setLeverageNumber(1)
+                      }
+                    }}
+                  />
+                  <br></br>
+                  <div>
+                    <div
+                      className="flex flex-row items-center justify-between"
+                      style={{ marginBottom: 10 }}
+                    >
+                      <div className="text-sm">Leverage Slider</div>
+                      <Checkbox />
+                    </div>
+                    <Slider
+                      defaultValue={[1]}
+                      onValueChange={handleSliderValueChange}
+                      max={200}
+                      min={1}
+                      step={1}
+                      value={[leverageNumber]}
+                      style={{ marginBottom: 10 }}
+                    />
+                  </div>
+                  <br></br>
+                  <ListItem keyText="Entry Price" value={""} />
+                  <ListItem keyText="Price Impact" value={""} />
+                  <ListItem
+                    keyText="Acceptable Price"
+                    value={""}
+                    percentage="0.30%"
+                  />
+                  <ListItem keyText="Liq. Price" value={""} />
+                  <ListItem keyText="Est. Margin" value={""} />
+                  <ListItem keyText="Fees" value={""} />
+                </div>
+                <Button
+                  disabled={incPositionLoading}
+                  onClick={handleIncPostionTemp}
+                  className="w-full text-center rounded-md item-center bg-0xgreen h-9"
+                  style={{ marginTop: 20, color: "#000000" }}
+                >
+                  {incPositionLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Please wait
+                    </>
+                  ) : (
+                    "Long"
+                  )}
+                </Button>
+              </TabsContent>
+              <TabsContent value="short">
+                <div className="w-full">
+                  <InputBox
+                    title="Pay"
+                    value={usdMargin}
+                    suffix="USDT"
+                    onValueChange={(e) => {
+                      setUsdMargin(e.target.value)
+                    }}
+                  />
+                  <br></br>
+                  <InputBox
+                    title="Size"
+                    value={tradingSize}
+                    suffix="ETH"
+                    prefix={`Leverage:${leverageNumber}x`}
+                    onValueChange={(e) => {
+                      //   setUsdMargin(e.target.value)
+                    }}
+                  />
+                  <br></br>
+                  <div>
+                    <div
+                      className="flex flex-row items-center justify-between"
+                      style={{ marginBottom: 10 }}
+                    >
+                      <div className="text-sm">Leverage Slider</div>
+                      <Checkbox />
+                    </div>
+                    <Slider
+                      defaultValue={[1]}
+                      onValueChange={handleSliderValueChange}
+                      max={200}
+                      min={1}
+                      step={1}
+                      style={{ marginBottom: 10 }}
+                    />
+                  </div>
+                  <br></br>
+                  <ListItem keyText="Entry Price" value={""} />
+                  <ListItem keyText="Price Impact" value={""} />
+                  <ListItem
+                    keyText="Acceptable Price"
+                    value={""}
+                    percentage="0.30%"
+                  />
+                  <ListItem keyText="Liq. Price" value={""} />
+                  <ListItem keyText="Est. Margin" value={""} />
+                  <ListItem keyText="Fees" value={""} />
+                </div>
+                <button
+                  className="w-full text-center rounded-md item-center bg-0xredLighter h-9"
+                  style={{
+                    marginTop: 20,
+                    backgroundColor: "#FF4A4A",
+                    color: "#000000",
+                  }}
+                >
+                  Short
+                </button>
+              </TabsContent>
+            </Tabs>
+          </div>
+          {/* Narrow Block 2 */}
+          <div className="p-6 rounded-lg bg-0xboxBackground">
+            <div className="w-full">
+              <div className="text-base">Token/Asset</div>
+              <div className="my-3 border-t border-0xline"></div>
+              <ListItem keyText="Max Leverage" value={"200x"} />
+              <ListItem keyText="Average Leverage" value={"7.71x"} />
+              <ListItem keyText="Liquidity" value={"26,601,123.63"} />
+              <ListItem keyText="Balance Rate" value={"-0.08%"} />
             </div>
           </div>
         </div>
-      </section>
-    </RootLayout>
+      </div>
+    </section>
   )
 }

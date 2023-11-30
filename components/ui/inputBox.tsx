@@ -28,6 +28,7 @@ export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
   prefixValue?: number
   suffix: string
   prefix?: string
+  balanceNode?: React.ReactNode
   onValueChange?: (e: React.ChangeEvent<HTMLInputElement>) => void // Assuming you are handling state in a parent component
   onPrefixChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -39,6 +40,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
   prefixValue,
   suffix,
   prefix,
+  balanceNode,
   onValueChange,
   onPrefixChange,
   ...props
@@ -50,7 +52,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
       )} w-full rounded-xl border-none bg-0xbox outline-none`}
     >
       <div className="flex flex-col justify-between w-full h-full">
-        <div className="flex flex-row mb-2 ml-3 items-center">
+        <div className="flex flex-row items-center mb-2 ml-3">
           <span className="block text-sm text-0xgrey">{title}</span>
           {prefix && (
             <>
@@ -58,7 +60,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
                 {prefix}
               </span>
               <Input
-                className="w-8 h-4 p-0 bg-transparent text-sm text-right text-white  border-none shadow-none outline-none placeholder:text-gray-300 number-input"
+                className="w-8 h-4 p-0 text-sm text-right text-white bg-transparent border-none shadow-none outline-none placeholder:text-gray-300 number-input"
                 value={prefixValue}
                 type="number"
                 placeholder="0"
@@ -66,6 +68,11 @@ export const InputBox: React.FC<InputBoxProps> = ({
               />
               <span className="block text-sm text-right text-white">x</span>
             </>
+          )}
+          {balanceNode && (
+            <div className="flex flex-row justify-end w-full text-sm">
+              {balanceNode}
+            </div>
           )}
         </div>
         <div className="flex">
