@@ -145,10 +145,7 @@ export default function TradePage() {
           </div>
           {/* Wide Block 2 */}
           <div className="p-6 rounded-lg bg-0xboxBackground">
-            <StyledTabs
-              defaultValue="Position"
-              className="my-custom-class-for-tabs"
-            >
+            <StyledTabs defaultValue="Position">
               <StyledTabsList aria-label="Manage your account">
                 <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
                 <StyledTabsTrigger value="Orders">Orders</StyledTabsTrigger>
@@ -433,7 +430,7 @@ export default function TradePage() {
             style={{ width: 350 }}
           >
             <Tabs defaultValue={"long"} className="w-full">
-              <TabsList style={{ marginBottom: 20, width: "100%" }}>
+              <TabsList style={{ width: "100%" }}>
                 <TabsTrigger style={{ width: "50%" }} value={"long"}>
                   Long
                 </TabsTrigger>
@@ -442,158 +439,355 @@ export default function TradePage() {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="long">
-                <div className="w-full">
-                  <InputBox
-                    title="Pay"
-                    value={usdMargin}
-                    suffix="USDT"
-                    balanceNode={
-                      isBalanceLoading ? (
-                        <div>Fetching balance…</div>
-                      ) : isBalanceError ? (
-                        <div>Error fetching balance</div>
-                      ) : (
-                        <div>
-                          Balance: {balanceData?.formatted}{" "}
-                          {balanceData?.symbol}
-                        </div>
-                      )
-                    }
-                    onValueChange={(e) => {
-                      setUsdMargin(e.target.value)
-                    }}
-                  />
-                  <br></br>
-                  <InputBox
-                    title="Size"
-                    value={tradingSize}
-                    suffix="ETH"
-                    prefix={`Leverage:`}
-                    prefixValue={leverageNumber}
-                    onValueChange={(e) => {
-                      // setUsdMargin(e.target.value)
-                    }}
-                    onPrefixChange={(e) => {
-                      const intValue = parseInt(e.target.value, 10)
+                <StyledTabs defaultValue="Market">
+                  <StyledTabsList aria-label="Manage your account">
+                    <StyledTabsTrigger value="Market">Market</StyledTabsTrigger>
+                    <StyledTabsTrigger value="Limit">Limit</StyledTabsTrigger>
+                  </StyledTabsList>
+                  <StyledTabsContent value="Market" className="ml-3">
+                    <div className="w-full">
+                      <InputBox
+                        title="Pay"
+                        value={usdMargin}
+                        suffix="USDT"
+                        balanceNode={
+                          isBalanceLoading ? (
+                            <div>Fetching balance…</div>
+                          ) : isBalanceError ? (
+                            <div>Error fetching balance</div>
+                          ) : (
+                            <div>
+                              Balance: {balanceData?.formatted}{" "}
+                              {balanceData?.symbol}
+                            </div>
+                          )
+                        }
+                        onValueChange={(e) => {
+                          setUsdMargin(e.target.value)
+                        }}
+                      />
+                      <br></br>
+                      <InputBox
+                        title="Size"
+                        value={tradingSize}
+                        suffix="ETH"
+                        prefix={`Leverage:`}
+                        prefixValue={leverageNumber}
+                        onValueChange={(e) => {
+                          // setUsdMargin(e.target.value)
+                        }}
+                        onPrefixChange={(e) => {
+                          const intValue = parseInt(e.target.value, 10)
 
-                      if (!isNaN(intValue)) {
-                        setLeverageNumber(intValue)
-                      } else if (intValue < 1) {
-                        setLeverageNumber(1)
-                      } else if (intValue > 200) {
-                        setLeverageNumber(200)
-                      } else {
-                        setLeverageNumber(1)
-                      }
-                    }}
-                  />
-                  <br></br>
-                  <div>
-                    <div
-                      className="flex flex-row items-center justify-between"
-                      style={{ marginBottom: 10 }}
-                    >
-                      <div className="text-sm">Leverage Slider</div>
-                      <Checkbox />
+                          if (!isNaN(intValue)) {
+                            setLeverageNumber(intValue)
+                          } else if (intValue < 1) {
+                            setLeverageNumber(1)
+                          } else if (intValue > 200) {
+                            setLeverageNumber(200)
+                          } else {
+                            setLeverageNumber(1)
+                          }
+                        }}
+                      />
+                      <br></br>
+                      <div>
+                        <div
+                          className="flex flex-row items-center justify-between"
+                          style={{ marginBottom: 10 }}
+                        >
+                          <div className="text-sm">Leverage Slider</div>
+                          <Checkbox />
+                        </div>
+                        <Slider
+                          defaultValue={[1]}
+                          onValueChange={handleSliderValueChange}
+                          max={200}
+                          min={1}
+                          step={1}
+                          value={[leverageNumber]}
+                          style={{ marginBottom: 10 }}
+                        />
+                      </div>
+                      <br></br>
+                      <ListItem keyText="Entry Price" value={""} />
+                      <ListItem keyText="Price Impact" value={""} />
+                      <div className="flex">
+                      <ListItem
+                        className="flex gap-28"
+                        keyText="Acceptable Price"
+                        value={""}
+                        percentage="0.30%"
+                      />
+                      <button className="ml-1">
+                        <Edit3
+                          className="text-white text-opacity-70 hover:text-opacity-100"
+                          size={13}
+                        />
+                      </button>
+                      </div>
+                      <ListItem keyText="Liq. Price" value={""} />
+                      <ListItem keyText="Est. Margin" value={""} />
+                      <ListItem keyText="Fees" value={""} />
                     </div>
-                    <Slider
-                      defaultValue={[1]}
-                      onValueChange={handleSliderValueChange}
-                      max={200}
-                      min={1}
-                      step={1}
-                      value={[leverageNumber]}
-                      style={{ marginBottom: 10 }}
-                    />
-                  </div>
-                  <br></br>
-                  <ListItem keyText="Entry Price" value={""} />
-                  <ListItem keyText="Price Impact" value={""} />
-                  <ListItem
-                    keyText="Acceptable Price"
-                    value={""}
-                    percentage="0.30%"
-                  />
-                  <ListItem keyText="Liq. Price" value={""} />
-                  <ListItem keyText="Est. Margin" value={""} />
-                  <ListItem keyText="Fees" value={""} />
-                </div>
-                <Button
-                  disabled={incPositionLoading}
-                  onClick={handleIncPostionTemp}
-                  className="w-full text-center rounded-md item-center bg-0xgreen h-9"
-                  style={{ marginTop: 20, color: "#000000" }}
-                >
-                  {incPositionLoading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Please wait
-                    </>
-                  ) : (
-                    "Long"
-                  )}
-                </Button>
+                    <Button
+                      disabled={incPositionLoading}
+                      onClick={handleIncPostionTemp}
+                      className="w-full text-center rounded-md item-center bg-0xgreen h-9 font-bold"
+                      style={{ marginTop: 20, color: "#000000" }}
+                    >
+                      {incPositionLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Please wait
+                        </>
+                      ) : (
+                        "Long"
+                      )}
+                    </Button>
+                  </StyledTabsContent>
+                  <StyledTabsContent value="Limit" className="ml-3">
+                    <div className="w-full">
+                      <InputBox
+                        title="Price"
+                        value={usdMargin}
+                        suffix="USDT"
+                        onValueChange={(e) => {
+                          setUsdMargin(e.target.value)
+                        }}
+                      />
+                      <br></br>
+                      <InputBox
+                        title="Pay"
+                        value={usdMargin}
+                        suffix="USDT"
+                        balanceNode={
+                          isBalanceLoading ? (
+                            <div>Fetching balance…</div>
+                          ) : isBalanceError ? (
+                            <div>Error fetching balance</div>
+                          ) : (
+                            <div>
+                              Balance: {balanceData?.formatted}{" "}
+                              {balanceData?.symbol}
+                            </div>
+                          )
+                        }
+                        onValueChange={(e) => {
+                          setUsdMargin(e.target.value)
+                        }}
+                      />
+                      <br></br>
+                      <InputBox
+                        title="Size"
+                        value={tradingSize}
+                        suffix="ETH"
+                        prefix={`Leverage:`}
+                        prefixValue={leverageNumber}
+                        onValueChange={(e) => {
+                          // setUsdMargin(e.target.value)
+                        }}
+                        onPrefixChange={(e) => {
+                          const intValue = parseInt(e.target.value, 10)
+
+                          if (!isNaN(intValue)) {
+                            setLeverageNumber(intValue)
+                          } else if (intValue < 1) {
+                            setLeverageNumber(1)
+                          } else if (intValue > 200) {
+                            setLeverageNumber(200)
+                          } else {
+                            setLeverageNumber(1)
+                          }
+                        }}
+                      />
+                      <br></br>
+                      <div>
+                        <div
+                          className="flex flex-row items-center justify-between"
+                          style={{ marginBottom: 10 }}
+                        >
+                          <div className="text-sm">Leverage Slider</div>
+                          <Checkbox />
+                        </div>
+                        <Slider
+                          defaultValue={[1]}
+                          onValueChange={handleSliderValueChange}
+                          max={200}
+                          min={1}
+                          step={1}
+                          value={[leverageNumber]}
+                          style={{ marginBottom: 10 }}
+                        />
+                      </div>
+                      <br></br>
+                      <ListItem keyText="Entry Price" value={""} />
+                      <ListItem keyText="Price Impact" value={""} />
+                      <ListItem
+                        keyText="Acceptable Price"
+                        value={""}
+                        percentage="0.30%"
+                      />
+                      <ListItem keyText="Liq. Price" value={""} />
+                      <ListItem keyText="Est. Margin" value={""} />
+                      <ListItem keyText="Fees" value={""} />
+                    </div>
+                    <Button
+                      disabled={incPositionLoading}
+                      onClick={handleIncPostionTemp}
+                      className="w-full text-center rounded-md item-center bg-0xgreen h-9 font-bold"
+                      style={{ marginTop: 20, color: "#000000" }}
+                    >
+                      {incPositionLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Please wait
+                        </>
+                      ) : (
+                        "Long"
+                      )}
+                    </Button>
+                  </StyledTabsContent>
+                </StyledTabs>
               </TabsContent>
               <TabsContent value="short">
-                <div className="w-full">
-                  <InputBox
-                    title="Pay"
-                    value={usdMargin}
-                    suffix="USDT"
-                    onValueChange={(e) => {
-                      setUsdMargin(e.target.value)
-                    }}
-                  />
-                  <br></br>
-                  <InputBox
-                    title="Size"
-                    value={tradingSize}
-                    suffix="ETH"
-                    prefix={`Leverage:${leverageNumber}x`}
-                    onValueChange={(e) => {
-                      //   setUsdMargin(e.target.value)
-                    }}
-                  />
-                  <br></br>
-                  <div>
-                    <div
-                      className="flex flex-row items-center justify-between"
-                      style={{ marginBottom: 10 }}
-                    >
-                      <div className="text-sm">Leverage Slider</div>
-                      <Checkbox />
+                <StyledTabs defaultValue="Market">
+                  <StyledTabsList aria-label="Manage your account">
+                    <StyledTabsTrigger value="Market">Market</StyledTabsTrigger>
+                    <StyledTabsTrigger value="Limit">Limit</StyledTabsTrigger>
+                  </StyledTabsList>
+                  <StyledTabsContent value="Market" className="ml-3">
+                    <div className="w-full">
+                      <InputBox
+                        title="Pay"
+                        value={usdMargin}
+                        suffix="USDT"
+                        onValueChange={(e) => {
+                          setUsdMargin(e.target.value)
+                        }}
+                      />
+                      <br></br>
+                      <InputBox
+                        title="Size"
+                        value={tradingSize}
+                        suffix="ETH"
+                        prefix={`Leverage:${leverageNumber}x`}
+                        onValueChange={(e) => {
+                          //   setUsdMargin(e.target.value)
+                        }}
+                      />
+                      <br></br>
+                      <div>
+                        <div
+                          className="flex flex-row items-center justify-between"
+                          style={{ marginBottom: 10 }}
+                        >
+                          <div className="text-sm">Leverage Slider</div>
+                          <Checkbox />
+                        </div>
+                        <Slider
+                          defaultValue={[1]}
+                          onValueChange={handleSliderValueChange}
+                          max={200}
+                          min={1}
+                          step={1}
+                          style={{ marginBottom: 10 }}
+                        />
+                      </div>
+                      <br></br>
+                      <ListItem keyText="Entry Price" value={""} />
+                      <ListItem keyText="Price Impact" value={""} />
+                      <ListItem
+                        keyText="Acceptable Price"
+                        value={""}
+                        percentage="0.30%"
+                      />
+                      <ListItem keyText="Liq. Price" value={""} />
+                      <ListItem keyText="Est. Margin" value={""} />
+                      <ListItem keyText="Fees" value={""} />
                     </div>
-                    <Slider
-                      defaultValue={[1]}
-                      onValueChange={handleSliderValueChange}
-                      max={200}
-                      min={1}
-                      step={1}
-                      style={{ marginBottom: 10 }}
-                    />
-                  </div>
-                  <br></br>
-                  <ListItem keyText="Entry Price" value={""} />
-                  <ListItem keyText="Price Impact" value={""} />
-                  <ListItem
-                    keyText="Acceptable Price"
-                    value={""}
-                    percentage="0.30%"
-                  />
-                  <ListItem keyText="Liq. Price" value={""} />
-                  <ListItem keyText="Est. Margin" value={""} />
-                  <ListItem keyText="Fees" value={""} />
-                </div>
-                <button
-                  className="w-full text-center rounded-md item-center bg-0xredLighter h-9"
-                  style={{
-                    marginTop: 20,
-                    backgroundColor: "#FF4A4A",
-                    color: "#000000",
-                  }}
-                >
-                  Short
-                </button>
+                    <button
+                      className="w-full text-center rounded-md item-center bg-0xredLighter h-9"
+                      style={{
+                        marginTop: 20,
+                        backgroundColor: "#FF4A4A",
+                        color: "#000000",
+                      }}
+                    >
+                      Short
+                    </button>
+                  </StyledTabsContent>
+                  <StyledTabsContent value="Limit" className="ml-3">
+                    <div className="w-full">
+                      <InputBox
+                        title="Price"
+                        value={usdMargin}
+                        suffix="USDT"
+                        onValueChange={(e) => {
+                          setUsdMargin(e.target.value)
+                        }}
+                      />
+                      <br></br>
+                      <InputBox
+                        title="Pay"
+                        value={usdMargin}
+                        suffix="USDT"
+                        onValueChange={(e) => {
+                          setUsdMargin(e.target.value)
+                        }}
+                      />
+                      <br></br>
+                      <InputBox
+                        title="Size"
+                        value={tradingSize}
+                        suffix="ETH"
+                        prefix={`Leverage:${leverageNumber}x`}
+                        onValueChange={(e) => {
+                          //   setUsdMargin(e.target.value)
+                        }}
+                      />
+                      <br></br>
+                      <div>
+                        <div
+                          className="flex flex-row items-center justify-between"
+                          style={{ marginBottom: 10 }}
+                        >
+                          <div className="text-sm">Leverage Slider</div>
+                          <Checkbox />
+                        </div>
+                        <Slider
+                          defaultValue={[1]}
+                          onValueChange={handleSliderValueChange}
+                          max={200}
+                          min={1}
+                          step={1}
+                          style={{ marginBottom: 10 }}
+                        />
+                      </div>
+                      <br></br>
+                      <ListItem keyText="Entry Price" value={""} />
+                      <ListItem keyText="Price Impact" value={""} />
+                      <ListItem
+                        keyText="Acceptable Price"
+                        value={""}
+                        percentage="0.30%"
+                      />
+                      <ListItem keyText="Liq. Price" value={""} />
+                      <ListItem keyText="Est. Margin" value={""} />
+                      <ListItem keyText="Fees" value={""} />
+                    </div>
+                    <button
+                      className="w-full text-center rounded-md item-center bg-0xredLighter h-9"
+                      style={{
+                        marginTop: 20,
+                        backgroundColor: "#FF4A4A",
+                        color: "#000000",
+                      }}
+                    >
+                      Short
+                    </button>
+                  </StyledTabsContent>
+                </StyledTabs>
               </TabsContent>
             </Tabs>
           </div>

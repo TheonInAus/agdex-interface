@@ -52,7 +52,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
       )} w-full rounded-xl border-none bg-0xbox outline-none`}
     >
       <div className="flex flex-col justify-between w-full h-full">
-        <div className="flex flex-row items-center mb-2 ml-3">
+        <div className="flex flex-row items-center mb-2">
           <span className="block text-sm text-0xgrey">{title}</span>
           {prefix && (
             <>

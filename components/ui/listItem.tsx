@@ -69,12 +69,6 @@ const ListItem: React.FC<ListItemProps> = ({
         {percentage && (
           <>
             <span className="ml-1 text-xs text-white"> ({percentage})</span>
-            <button className="ml-1">
-              <Edit3
-                className="text-white text-opacity-70 hover:text-opacity-100"
-                size={13}
-              />
-            </button>
           </>
         )}
       </div>
