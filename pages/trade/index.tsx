@@ -241,10 +241,10 @@ export default function TradePage() {
                     />
                   </div>
                   <div className="flex flex-row gap-3">
-                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3">
+                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3 hover:bg-0xbox">
                       TP/SL
                     </Button>
-                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3">
+                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3 hover:bg-0xbox">
                       Close
                     </Button>
                   </div>
@@ -368,10 +368,10 @@ export default function TradePage() {
                     />
                   </div>
                   <div className="flex flex-row gap-3">
-                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3">
+                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3 hover:bg-0xbox">
                       TP/SL
                     </Button>
-                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3">
+                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3 hover:bg-0xbox">
                       Close
                     </Button>
                   </div>
