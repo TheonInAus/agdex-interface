@@ -36,20 +36,20 @@ const PoolRow = ({ pool }) => {
   return (
     <>
       <div
-        className="flex flex-row space-x-20 p-5 mb-1 text-white text-sm cursor-pointer"
+        className="flex flex-row p-5 mb-1 text-white text-sm cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <div className="text-base">{pool.name}</div>
-        <div>{pool.maxAPR}</div>
-        <div>{pool.volume}</div>
-        <div>{pool.fees}</div>
-        <div>{pool.liquidity}</div>
+        <div className="text-base w-[15%]">{pool.name}</div>
+        <div className="w-[16%]">{pool.maxAPR}</div>
+        <div className="w-[20%]">{pool.volume}</div>
+        <div className="w-[15%]">{pool.fees}</div>
+        <div className="w-[20%]">{pool.liquidity}</div>
         <div>{pool.myLiquidity}</div>
       </div>
       {isExpanded && (
-        <div className="p-3" style={{ backgroundColor: 'transparent' }}>
+        <div className="p-3" style={{ backgroundColor: "transparent" }}>
           <StyledTabs defaultValue="Position">
-            <StyledTabsList aria-label="Manage your account">
+            <StyledTabsList>
               <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
               <StyledTabsTrigger value="History">History</StyledTabsTrigger>
             </StyledTabsList>
@@ -84,12 +84,12 @@ export default function PoolsPage() {
           className="p-6 mb-6 rounded-lg bg-0xboxBackground"
           style={{ width: 950, height: 600 }}
         >
-          <div className="flex flex-row space-x-20 p-5 mb-1 text-sm text-0xgrey">
-            <div>Pool</div>
-            <div>Max APR</div>
-            <div>24h Volume (USDT)</div>
-            <div>24h Fees</div>
-            <div>Liquidity</div>
+          <div className="flex flex-row p-5 mb-1 text-sm text-0xgrey">
+            <div className="w-[15%]">Pool</div>
+            <div className="w-[16%]">Max APR</div>
+            <div className="w-[20%]">24h Volume (USDT)</div>
+            <div className="w-[15%]">24h Fees</div>
+            <div className="w-[20%]">Liquidity</div>
             <div>My Liquidity</div>
           </div>
           <div className="mb-6 rounded-lg bg-0xbox border border-0xline">
