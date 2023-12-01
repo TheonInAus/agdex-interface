@@ -27,54 +27,79 @@ const poolsData = [
     liquidity: "204,070,998.48",
     myLiquidity: "0.00",
   },
+  {
+    name: "ETH/USDT",
+    maxAPR: "80.58%",
+    volume: "8,924,967.61",
+    fees: "4,057.64",
+    liquidity: "204,070,998.48",
+    myLiquidity: "0.00",
+  },
+
   // Repeat for as many pools as you have
 ]
 
-const PoolRow = ({ pool }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+const PoolRow = ({ pool, isExpanded, onToggle }) => {
+  // const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <>
       <div
-        className="flex flex-row p-5 mb-1 text-white text-sm cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
+        className="rounded-lg border border-0xline bg-0xbox m-2 text-white text-sm cursor-pointer"
+        onClick={onToggle}
       >
-        <div className="text-base w-[15%]">{pool.name}</div>
-        <div className="w-[16%]">{pool.maxAPR}</div>
-        <div className="w-[20%]">{pool.volume}</div>
-        <div className="w-[15%]">{pool.fees}</div>
-        <div className="w-[20%]">{pool.liquidity}</div>
-        <div>{pool.myLiquidity}</div>
-      </div>
-      {isExpanded && (
-        <div className="p-3 rounded-b-lg" style={{ backgroundColor: "#080808" }}>
-          <StyledTabs defaultValue="Position">
-            <StyledTabsList>
-              <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
-              <StyledTabsTrigger value="History">History</StyledTabsTrigger>
-            </StyledTabsList>
-            <StyledTabsContent value="Position" className="ml-3">
-              <div>
-                <div className="mt-2 mb-4 border-t border-0xline"></div>
-                <div>No open positions</div>
-              </div>
-            </StyledTabsContent>
-            <StyledTabsContent
-              value="History"
-              className="ml-3"
-            ></StyledTabsContent>
-          </StyledTabs>
+        <div className="p-5 cursor-pointer">
+          <div className="grid grid-cols-6" style={{ gridTemplateColumns: '15% 16% 20% 15% 21% auto' }}>
+            <div className="text-base col-span-1">{pool.name}</div>
+            <div className="col-span-1">{pool.maxAPR}</div>
+            <div className="col-span-1">{pool.volume}</div>
+            <div className="col-span-1">{pool.fees}</div>
+            <div className="col-span-1">{pool.liquidity}</div>
+            <div className="col-span-1">{pool.myLiquidity}</div>
+          </div>
         </div>
-      )}
+        {isExpanded && (
+          <div
+            className="p-3 rounded-b-lg"
+            style={{ backgroundColor: "#080808" }}
+          >
+            <StyledTabs defaultValue="Position">
+              <StyledTabsList>
+                <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
+                <StyledTabsTrigger value="History">History</StyledTabsTrigger>
+              </StyledTabsList>
+              <StyledTabsContent value="Position" className="ml-3">
+                <div>
+                  <div className="mt-2 mb-4 border-t border-0xline"></div>
+                  <div>No open positions</div>
+                </div>
+              </StyledTabsContent>
+              <StyledTabsContent
+                value="History"
+                className="ml-3"
+              ></StyledTabsContent>
+            </StyledTabs>
+          </div>
+        )}
+      </div>
     </>
   )
 }
 
 export default function PoolsPage() {
   const [leverageNumber, setLeverageNumber] = useState(1)
+  const [expandedPool, setExpandedPool] = useState(null)
 
   const handleSliderValueChange = (value: any) => {
     setLeverageNumber(value)
+  }
+
+  const toggleExpansion = (index) => {
+    if (expandedPool === index) {
+      setExpandedPool(null) // Collapse the currently expanded pool
+    } else {
+      setExpandedPool(index) // Expand the clicked pool
+    }
   }
 
   return (
@@ -82,7 +107,7 @@ export default function PoolsPage() {
       <div className="flex flex-row gap-4">
         <div
           className="p-6 mb-6 rounded-lg bg-0xboxBackground"
-          style={{ width: 950, height: 600 }}
+          style={{ width: 950, height: 750 }}
         >
           <div className="flex flex-row p-5 mb-1 text-sm text-0xgrey rounded-lg">
             <div className="w-[15%]">Pool</div>
@@ -92,9 +117,14 @@ export default function PoolsPage() {
             <div className="w-[20%]">Liquidity</div>
             <div>My Liquidity</div>
           </div>
-          <div className="mb-6 rounded-lg bg-0xbox border border-0xline">
+          <div className="rounded-lg flex flex-col">
             {poolsData.map((pool, index) => (
-              <PoolRow key={index} pool={pool} />
+              <PoolRow
+                key={index}
+                pool={pool}
+                isExpanded={expandedPool === index}
+                onToggle={() => toggleExpansion(index)}
+              />
             ))}
           </div>
         </div>
