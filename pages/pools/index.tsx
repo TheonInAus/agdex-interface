@@ -47,7 +47,7 @@ const PoolRow = ({ pool }) => {
         <div>{pool.myLiquidity}</div>
       </div>
       {isExpanded && (
-        <div className="p-3" style={{ backgroundColor: "transparent" }}>
+        <div className="p-3 rounded-b-lg" style={{ backgroundColor: "#080808" }}>
           <StyledTabs defaultValue="Position">
             <StyledTabsList>
               <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
@@ -84,7 +84,7 @@ export default function PoolsPage() {
           className="p-6 mb-6 rounded-lg bg-0xboxBackground"
           style={{ width: 950, height: 600 }}
         >
-          <div className="flex flex-row p-5 mb-1 text-sm text-0xgrey">
+          <div className="flex flex-row p-5 mb-1 text-sm text-0xgrey rounded-lg">
             <div className="w-[15%]">Pool</div>
             <div className="w-[16%]">Max APR</div>
             <div className="w-[20%]">24h Volume (USDT)</div>
