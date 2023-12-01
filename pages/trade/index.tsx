@@ -38,6 +38,8 @@ export default function TradePage() {
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
   const [tradingSize, setTradingSize] = useState("")
   const [leverageNumber, setLeverageNumber] = useState(1)
+  const [showSlider, setShowSlider] = useState(true)
+  const [isChecked, setIsChecked] = useState(true)
 
   console.log("check ethPoolAddress => ", ethPoolAddress)
 
@@ -88,6 +90,16 @@ export default function TradePage() {
     incPositionWrite()
   }
 
+  const toggleSliderVisibility = () => {
+    setShowSlider(!showSlider)
+  }
+
+  const handleCheckboxChange = (checked) => {
+    setIsChecked(checked)
+    // Now, use the isChecked state to control the visibility of the Slider
+    setShowSlider(checked) // Assuming setShowSlider is defined elsewhere
+  }
+
   useEffect(() => {
     if (usdMargin !== "") {
       const tempMargin = parseFloat(usdMargin)
@@ -98,13 +110,6 @@ export default function TradePage() {
       setTradingSize("")
     }
   }, [leverageNumber, usdMargin])
-
-  // const [inputValue, setInputValue] = React.useState(""); // This will hold the value of the input
-
-  // // Define a handler for when the input changes
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setInputValue(e.target.value);
-  // };
 
   return (
     <section className="container flex items-center justify-center gap-6 pt-6 pb-8">
@@ -494,37 +499,41 @@ export default function TradePage() {
                       <div>
                         <div
                           className="flex flex-row items-center justify-between"
-                          style={{ marginBottom: 10 }}
                         >
                           <div className="text-sm">Leverage Slider</div>
-                          <Checkbox />
+                          <Checkbox
+                            checked={isChecked}
+                            onCheckedChange={handleCheckboxChange}
+                          />
                         </div>
-                        <Slider
-                          defaultValue={[1]}
-                          onValueChange={handleSliderValueChange}
-                          max={200}
-                          min={1}
-                          step={1}
-                          value={[leverageNumber]}
-                          style={{ marginBottom: 10 }}
-                        />
+                        {showSlider && (
+                          <Slider
+                            defaultValue={[1]}
+                            onValueChange={handleSliderValueChange}
+                            max={200}
+                            min={1}
+                            step={1}
+                            value={[leverageNumber]}
+                            style={{ marginBottom: 10, marginTop: 10 }}
+                          />
+                        )}
                       </div>
                       <br></br>
                       <ListItem keyText="Entry Price" value={""} />
                       <ListItem keyText="Price Impact" value={""} />
                       <div className="flex">
-                      <ListItem
-                        className="flex gap-28"
-                        keyText="Acceptable Price"
-                        value={""}
-                        percentage="0.30%"
-                      />
-                      <button className="ml-1">
-                        <Edit3
-                          className="text-white text-opacity-70 hover:text-opacity-100"
-                          size={13}
+                        <ListItem
+                          className="flex gap-28"
+                          keyText="Acceptable Price"
+                          value={""}
+                          percentage="0.30%"
                         />
-                      </button>
+                        <button className="ml-1">
+                          <Edit3
+                            className="text-white text-opacity-70 hover:text-opacity-100"
+                            size={13}
+                          />
+                        </button>
                       </div>
                       <ListItem keyText="Liq. Price" value={""} />
                       <ListItem keyText="Est. Margin" value={""} />
@@ -605,20 +614,24 @@ export default function TradePage() {
                       <div>
                         <div
                           className="flex flex-row items-center justify-between"
-                          style={{ marginBottom: 10 }}
                         >
                           <div className="text-sm">Leverage Slider</div>
-                          <Checkbox />
+                          <Checkbox
+                            checked={isChecked}
+                            onCheckedChange={handleCheckboxChange}
+                          />
                         </div>
-                        <Slider
-                          defaultValue={[1]}
-                          onValueChange={handleSliderValueChange}
-                          max={200}
-                          min={1}
-                          step={1}
-                          value={[leverageNumber]}
-                          style={{ marginBottom: 10 }}
-                        />
+                        {showSlider && (
+                          <Slider
+                            defaultValue={[1]}
+                            onValueChange={handleSliderValueChange}
+                            max={200}
+                            min={1}
+                            step={1}
+                            value={[leverageNumber]}
+                            style={{ marginBottom: 10, marginTop: 10 }}
+                          />
+                        )}
                       </div>
                       <br></br>
                       <ListItem keyText="Entry Price" value={""} />
@@ -671,28 +684,47 @@ export default function TradePage() {
                         title="Size"
                         value={tradingSize}
                         suffix="ETH"
-                        prefix={`Leverage:${leverageNumber}x`}
+                        prefix={`Leverage:`}
+                        prefixValue={leverageNumber}
                         onValueChange={(e) => {
-                          //   setUsdMargin(e.target.value)
+                          // setUsdMargin(e.target.value)
+                        }}
+                        onPrefixChange={(e) => {
+                          const intValue = parseInt(e.target.value, 10)
+
+                          if (!isNaN(intValue)) {
+                            setLeverageNumber(intValue)
+                          } else if (intValue < 1) {
+                            setLeverageNumber(1)
+                          } else if (intValue > 200) {
+                            setLeverageNumber(200)
+                          } else {
+                            setLeverageNumber(1)
+                          }
                         }}
                       />
                       <br></br>
                       <div>
                         <div
                           className="flex flex-row items-center justify-between"
-                          style={{ marginBottom: 10 }}
                         >
                           <div className="text-sm">Leverage Slider</div>
-                          <Checkbox />
+                          <Checkbox
+                            checked={isChecked}
+                            onCheckedChange={handleCheckboxChange}
+                          />
                         </div>
-                        <Slider
-                          defaultValue={[1]}
-                          onValueChange={handleSliderValueChange}
-                          max={200}
-                          min={1}
-                          step={1}
-                          style={{ marginBottom: 10 }}
-                        />
+                        {showSlider && (
+                          <Slider
+                            defaultValue={[1]}
+                            onValueChange={handleSliderValueChange}
+                            max={200}
+                            min={1}
+                            step={1}
+                            value={[leverageNumber]}
+                            style={{ marginBottom: 10, marginTop: 10 }}
+                          />
+                        )}
                       </div>
                       <br></br>
                       <ListItem keyText="Entry Price" value={""} />
@@ -741,28 +773,47 @@ export default function TradePage() {
                         title="Size"
                         value={tradingSize}
                         suffix="ETH"
-                        prefix={`Leverage:${leverageNumber}x`}
+                        prefix={`Leverage:`}
+                        prefixValue={leverageNumber}
                         onValueChange={(e) => {
-                          //   setUsdMargin(e.target.value)
+                          // setUsdMargin(e.target.value)
+                        }}
+                        onPrefixChange={(e) => {
+                          const intValue = parseInt(e.target.value, 10)
+
+                          if (!isNaN(intValue)) {
+                            setLeverageNumber(intValue)
+                          } else if (intValue < 1) {
+                            setLeverageNumber(1)
+                          } else if (intValue > 200) {
+                            setLeverageNumber(200)
+                          } else {
+                            setLeverageNumber(1)
+                          }
                         }}
                       />
                       <br></br>
                       <div>
                         <div
                           className="flex flex-row items-center justify-between"
-                          style={{ marginBottom: 10 }}
                         >
                           <div className="text-sm">Leverage Slider</div>
-                          <Checkbox />
+                          <Checkbox
+                            checked={isChecked}
+                            onCheckedChange={handleCheckboxChange}
+                          />
                         </div>
-                        <Slider
-                          defaultValue={[1]}
-                          onValueChange={handleSliderValueChange}
-                          max={200}
-                          min={1}
-                          step={1}
-                          style={{ marginBottom: 10 }}
-                        />
+                        {showSlider && (
+                          <Slider
+                            defaultValue={[1]}
+                            onValueChange={handleSliderValueChange}
+                            max={200}
+                            min={1}
+                            step={1}
+                            value={[leverageNumber]}
+                            style={{ marginBottom: 10, marginTop: 10 }}
+                          />
+                        )}
                       </div>
                       <br></br>
                       <ListItem keyText="Entry Price" value={""} />
