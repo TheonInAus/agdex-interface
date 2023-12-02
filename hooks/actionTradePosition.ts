@@ -4,7 +4,7 @@ import { positionRouterABI } from "@/abis/positionRouterABI"
 import { useEffect, useRef } from "react"
 import { waitForTransaction } from 'wagmi/actions';
 import { positionRouterAddress } from "./zAddressHelper";
-import { Side, minExecutionFee } from "./zContractConstantsHelper";
+import { Side, minExecutionFee } from "./zContractHelper";
 
 export const useCreateIncreasePostion = (tokenPoolAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any) => {
 

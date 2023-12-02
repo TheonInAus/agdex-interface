@@ -1,5 +1,5 @@
 import { parseEther } from "viem";
-import { BigNumber, BigNumberish } from "ethers";
+import { BigNumberish } from "ethers";
 import Decimal from "decimal.js";
 
 export const minExecutionFee = parseEther('0.00021')
@@ -45,16 +45,16 @@ export enum Rounding {
     Up,
 }
 
-export function mulDiv(a: BigNumberish, b: BigNumberish, c: BigNumberish, rounding?: Rounding): bigint {
-    const mul = BigNumber.from(a).mul(b);
-    let ans = mul.div(c);
-    if (rounding != undefined && rounding == Rounding.Up) {
-        if (!ans.mul(c).eq(mul)) {
-            ans = ans.add(1);
-        }
-    }
-    return ans.toBigInt();
-}
+// export function mulDiv(a: BigNumberish, b: BigNumberish, c: BigNumberish, rounding?: Rounding): bigint {
+//     const mul = BigNumber.from(a).mul(b);
+//     let ans = mul.div(c);
+//     if (rounding != undefined && rounding == Rounding.Up) {
+//         if (!ans.mul(c).eq(mul)) {
+//             ans = ans.add(1);
+//         }
+//     }
+//     return ans.toBigInt();
+// }
 
 export function toX96(value: string): bigint {
     return BigInt(new Decimal(value).mul(new Decimal(2).pow(96)).toFixed(0));
@@ -73,3 +73,10 @@ export function toPriceX96(price: string, tokenDecimals: number, usdDecimals: nu
             .toFixed(0)
     );
 }
+
+
+export const giveMeFormattedToShow = (number: number) => tempCurrenyFormat(number);
+export const giveMeNotNaNFormattedToShow = (param: any) => (param === 'NaN' || param === 'Infinity' || Number(param) < 0) ? ' -' : param;
+
+export const tempCurrenyFormat = (number: number) => number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+

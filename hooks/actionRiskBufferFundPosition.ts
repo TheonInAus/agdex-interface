@@ -3,7 +3,7 @@ import { positionRouterABI } from "@/abis/positionRouterABI"
 import { useEffect, useRef } from "react"
 import { waitForTransaction } from 'wagmi/actions';
 import { positionRouterAddress } from "./zAddressHelper";
-import { minExecutionFee } from "./zContractConstantsHelper";
+import { minExecutionFee } from "./zContractHelper";
 
 
 export const useRiskBufferFundPosition = (tokenPoolAddress: any, liquidityDelta: any) => {

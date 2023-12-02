@@ -1,105 +1,85 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
+import { Loader } from "lucide-react"
 
 import { siteConfig } from "@/config/site"
+import { useUserUsdxBalance } from "@/hooks/aUserState"
+import { useOpenLiquidityPosition } from "@/hooks/actionLiquidityPosition"
+import { useAllLiquidityPools } from "@/hooks/liquidityPoolInfo"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
 import { Stats } from "@/components/ui/stats"
-import {
-  StyledTabs,
-  StyledTabsContent,
-  StyledTabsList,
-  StyledTabsTrigger,
-} from "@/components/ui/styledTab"
 
-const poolsData = [
-  // Add your real pool data here
-  {
-    name: "ETH/USDT",
-    maxAPR: "80.58%",
-    volume: "8,924,967.61",
-    fees: "4,057.64",
-    liquidity: "204,070,998.48",
-    myLiquidity: "0.00",
-  },
-  {
-    name: "ETH/USDT",
-    maxAPR: "80.58%",
-    volume: "8,924,967.61",
-    fees: "4,057.64",
-    liquidity: "204,070,998.48",
-    myLiquidity: "0.00",
-  },
-
-  // Repeat for as many pools as you have
-]
-
-const PoolRow = ({ pool, isExpanded, onToggle }) => {
-  // const [isExpanded, setIsExpanded] = useState(false)
-
-  return (
-    <>
-      <div
-        className="rounded-lg border border-0xline bg-0xbox m-2 text-white text-sm cursor-pointer"
-        onClick={onToggle}
-      >
-        <div className="p-5 cursor-pointer">
-          <div className="grid grid-cols-6" style={{ gridTemplateColumns: '15% 16% 20% 15% 21% auto' }}>
-            <div className="text-base col-span-1">{pool.name}</div>
-            <div className="col-span-1">{pool.maxAPR}</div>
-            <div className="col-span-1">{pool.volume}</div>
-            <div className="col-span-1">{pool.fees}</div>
-            <div className="col-span-1">{pool.liquidity}</div>
-            <div className="col-span-1">{pool.myLiquidity}</div>
-          </div>
-        </div>
-        {isExpanded && (
-          <div
-            className="p-3 rounded-b-lg"
-            style={{ backgroundColor: "#080808" }}
-          >
-            <StyledTabs defaultValue="Position">
-              <StyledTabsList>
-                <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
-                <StyledTabsTrigger value="History">History</StyledTabsTrigger>
-              </StyledTabsList>
-              <StyledTabsContent value="Position" className="ml-3">
-                <div>
-                  <div className="mt-2 mb-4 border-t border-0xline"></div>
-                  <div>No open positions</div>
-                </div>
-              </StyledTabsContent>
-              <StyledTabsContent
-                value="History"
-                className="ml-3"
-              ></StyledTabsContent>
-            </StyledTabs>
-          </div>
-        )}
-      </div>
-    </>
-  )
-}
+import { PoolDataType, PoolRow } from "./PoolRow"
 
 export default function PoolsPage() {
   const [leverageNumber, setLeverageNumber] = useState(1)
-  const [expandedPool, setExpandedPool] = useState(null)
+  const [expandedPool, setExpandedPool] = useState(0)
+  const [usdMargin, setUsdMargin] = useState("")
+  const [usdAfterMargin, setUsdAfterMargin] = useState("")
+  //0 is for input Margin => afterMargin will change
+  //1 is for input afterMaring => margin will change
+  //2 is for change expanded pool => everything will be reset
+  const [dataChangeMode, setDataChangeMode] = useState(0)
+  const {
+    data: balanceData,
+    isError: isBalanceError,
+    isLoading: isBalanceLoading,
+  } = useUserUsdxBalance()
+
+  const { poolsConfig } = useAllLiquidityPools()
+  const currentPool = useCallback(() => {
+    return poolsConfig.filter((item) => item.index === expandedPool)
+  }, [expandedPool, poolsConfig])
 
   const handleSliderValueChange = (value: any) => {
     setLeverageNumber(value)
   }
 
-  const toggleExpansion = (index) => {
-    if (expandedPool === index) {
-      setExpandedPool(null) // Collapse the currently expanded pool
-    } else {
-      setExpandedPool(index) // Expand the clicked pool
+  useEffect(() => {
+    if (dataChangeMode === 0 && usdMargin !== "") {
+      const tempMargin = parseFloat(usdMargin)
+      const newUsdAfterMargin = (
+        isNaN(tempMargin) ? 0 : tempMargin * leverageNumber
+      ).toString()
+      if (usdAfterMargin !== newUsdAfterMargin) {
+        setUsdAfterMargin(newUsdAfterMargin)
+      }
+    } else if (dataChangeMode === 1 && usdAfterMargin !== "") {
+      const tempMargin = parseFloat(usdAfterMargin)
+      const newUsdMargin = (
+        isNaN(tempMargin) ? 0 : tempMargin / leverageNumber
+      ).toString()
+      if (usdMargin !== newUsdMargin) {
+        setUsdMargin(newUsdMargin)
+      }
+    } else if (dataChangeMode === 2) {
+      setUsdMargin("")
+      setUsdAfterMargin("")
+      setLeverageNumber(1)
     }
+  }, [leverageNumber, usdMargin, usdAfterMargin, dataChangeMode])
+
+  const toggleExpansion = (index: any) => {
+    console.log("check toglle expansion => ", index)
+    setDataChangeMode(2)
+    setExpandedPool(index)
+  }
+
+  const { openLiqPositionData, openLiqPositionLoading, openLiqPositionWrite } =
+    useOpenLiquidityPosition(
+      poolsConfig[0].poolAddress,
+      usdMargin,
+      usdAfterMargin
+    )
+
+  const handlOpenLiqTemp = () => {
+    openLiqPositionWrite()
   }
 
   return (
@@ -109,7 +89,7 @@ export default function PoolsPage() {
           className="p-6 mb-6 rounded-lg bg-0xboxBackground"
           style={{ width: 950, height: 750 }}
         >
-          <div className="flex flex-row p-5 mb-1 text-sm text-0xgrey rounded-lg">
+          <div className="flex flex-row p-5 mb-1 text-sm rounded-lg text-0xgrey">
             <div className="w-[15%]">Pool</div>
             <div className="w-[16%]">Max APR</div>
             <div className="w-[20%]">24h Volume (USDT)</div>
@@ -117,12 +97,12 @@ export default function PoolsPage() {
             <div className="w-[20%]">Liquidity</div>
             <div>My Liquidity</div>
           </div>
-          <div className="rounded-lg flex flex-col">
-            {poolsData.map((pool, index) => (
+          <div className="flex flex-col rounded-lg">
+            {poolsConfig?.map((pool, index) => (
               <PoolRow
                 key={index}
                 pool={pool}
-                isExpanded={expandedPool === index}
+                expandIndex={expandedPool}
                 onToggle={() => toggleExpansion(index)}
               />
             ))}
@@ -133,20 +113,38 @@ export default function PoolsPage() {
             className="p-6 mb-6 rounded-lg bg-0xboxBackground"
             style={{ width: 350, height: 550 }}
           >
-            <div>Add ETH/USDT Liquidity</div>
+            <div>{`Add ${currentPool.name}/USDT Liquidity`}</div>
             <br></br>
             <div className="w-full">
-              <InputBox title="Margin" value={0.0} suffix="USDT" />
+              <InputBox
+                title="Margin"
+                value={usdMargin}
+                suffix="USDT"
+                balanceNode={
+                  isBalanceLoading ? (
+                    <div>Fetching balance…</div>
+                  ) : isBalanceError ? (
+                    <div>Error fetching balance</div>
+                  ) : (
+                    <div>
+                      Balance: {balanceData?.formatted} {balanceData?.symbol}
+                    </div>
+                  )
+                }
+                onValueChange={(e) => {
+                  setDataChangeMode(0)
+                  setUsdMargin(e.target.value)
+                }}
+              />
               <br></br>
               <InputBox
                 title="Liquidity"
-                value={0.0}
+                value={usdAfterMargin}
                 suffix="USDT"
                 prefix={`Leverage:`}
                 prefixValue={leverageNumber}
                 onPrefixChange={(e) => {
                   const intValue = parseInt(e.target.value, 10)
-
                   if (!isNaN(intValue)) {
                     setLeverageNumber(intValue)
                   } else if (intValue < 1) {
@@ -156,6 +154,10 @@ export default function PoolsPage() {
                   } else {
                     setLeverageNumber(1)
                   }
+                }}
+                onValueChange={(e) => {
+                  setDataChangeMode(1)
+                  setUsdAfterMargin(e.target.value)
                 }}
               />
               <br></br>
@@ -184,10 +186,21 @@ export default function PoolsPage() {
               <ListItem keyText="Execution Fee" value={""} />
             </div>
             <Button
-              className="w-full text-center rounded-md item-center bg-0xgreen h-9 font-bold"
+              disabled={openLiqPositionLoading}
+              className="w-full font-bold text-center rounded-md item-center bg-0xgreen h-9"
               style={{ marginTop: 20, color: "#000000" }}
+              onClick={handlOpenLiqTemp}
             >
-              Long
+              {openLiqPositionLoading ? (
+                <>
+                  <Loader className="w-4 h-4 mr-2 animate-spin" />
+                  Please wait
+                </>
+              ) : (Number(balanceData?.formatted) || 0) < Number(usdMargin) ? (
+                "Insiffuient Balance"
+              ) : (
+                "Add"
+              )}
             </Button>
           </div>
           <div className="p-6 rounded-lg bg-0xboxBackground">

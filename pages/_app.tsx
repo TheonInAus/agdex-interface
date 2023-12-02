@@ -7,6 +7,7 @@ import { publicProvider } from "wagmi/providers/public"
 
 import "@/styles/globals.css"
 import "@rainbow-me/rainbowkit/styles.css"
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit"
 import { infuraProvider } from "wagmi/providers/infura"
 
@@ -41,13 +42,21 @@ interface ProvidersProps {
   children: React.ReactNode
 }
 
+// 初始化Apollo Client
+const client = new ApolloClient({
+  uri: "https://api.studio.thegraph.com/query/54949/0xx/version/latest",
+  cache: new InMemoryCache(),
+})
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <RootLayout>
-          <Component {...pageProps} />
-        </RootLayout>
+        <ApolloProvider client={client}>
+          <RootLayout>
+            <Component {...pageProps} />
+          </RootLayout>
+        </ApolloProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   )

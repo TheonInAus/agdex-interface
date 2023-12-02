@@ -3,10 +3,16 @@ import { positionRouterABI } from "@/abis/positionRouterABI"
 import { useEffect, useRef } from "react"
 import { waitForTransaction } from 'wagmi/actions';
 import { positionRouterAddress } from "./zAddressHelper";
-import { minExecutionFee } from "./zContractConstantsHelper";
+import { minExecutionFee } from "./zContractHelper";
+import { parseUnits } from "viem";
 
 export const useOpenLiquidityPosition = (tokenPoolAddress: any, margin: any, liquidity: any) => {
-
+    if (margin === '') margin = '0'
+    if (liquidity === '') liquidity = '0'
+    margin = parseUnits(margin, 6)
+    liquidity = parseUnits(liquidity, 6)
+    console.log('check margin => ', margin)
+    console.log('check liquidity => ', liquidity)
     const { data: openLiqPositionData, isLoading: openLiqPositionLoading, write: openLiqPositionWrite } = useContractWrite({
         address: positionRouterAddress,
         abi: positionRouterABI,

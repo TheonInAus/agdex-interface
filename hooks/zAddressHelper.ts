@@ -8,4 +8,6 @@ export const btcPoolAddress = contractAddress.deployments.registerPools[1].pool 
 export const arbPoolAddress = contractAddress.deployments.registerPools[2].pool as `0x${string}`
 export const linkPoolAddress = contractAddress.deployments.registerPools[3].pool as `0x${string}`
 
+export const registerPoolsInfos = contractAddress.deployments.registerPools
+
 export const usdxAddress = contractAddress.usd as `0x${string}`

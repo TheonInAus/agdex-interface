@@ -11,9 +11,10 @@ import {
   useUserPositionsSHORT,
   useUserUsdxBalance,
 } from "@/hooks/aUserState"
+import { useCheckPluginState } from "@/hooks/actionApprovePlugin"
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
 import { ethPoolAddress } from "@/hooks/zAddressHelper"
-import { SIDE_LONG, to0xxPriceX96 } from "@/hooks/zContractConstantsHelper"
+import { SIDE_LONG, to0xxPriceX96 } from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
@@ -53,6 +54,12 @@ export default function TradePage() {
     )
 
   const {
+    data: isPluginData,
+    isLoading: isPluginLoading,
+    isError: isPluginError,
+  } = useCheckPluginState()
+
+  const {
     data: balanceData,
     isError: isBalanceError,
     isLoading: isBalanceLoading,
@@ -90,11 +97,13 @@ export default function TradePage() {
     incPositionWrite()
   }
 
+  const approvePluginTemp = () => {}
+
   const toggleSliderVisibility = () => {
     setShowSlider(!showSlider)
   }
 
-  const handleCheckboxChange = (checked) => {
+  const handleCheckboxChange = (checked: any) => {
     setIsChecked(checked)
     // Now, use the isChecked state to control the visibility of the Slider
     setShowSlider(checked) // Assuming setShowSlider is defined elsewhere
@@ -226,7 +235,7 @@ export default function TradePage() {
                         info=""
                       />
                       <ExternalLink
-                        className="text-white text-opacity-70 hover:text-opacity-100 ml-1"
+                        className="ml-1 text-white text-opacity-70 hover:text-opacity-100"
                         size={13}
                       />
                     </div>
@@ -241,52 +250,15 @@ export default function TradePage() {
                     />
                   </div>
                   <div className="flex flex-row gap-3">
-                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3 hover:bg-0xbox">
+                    <Button className="h-5 mt-3 text-sm text-white bg-transparent border border-white">
                       TP/SL
                     </Button>
-                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3 hover:bg-0xbox">
+                    <Button className="h-5 mt-3 text-sm text-white bg-transparent border border-white">
                       Close
                     </Button>
                   </div>
                 </div>
-                {/* <div>
-                  Position Margin :{" "}
-                  {Array.isArray(longPositionData)
-                    ? longPositionData[0].toString()
-                    : "error"}
-                </div>
-                <div>
-                  Position Size :{" "}
-                  {Array.isArray(longPositionData)
-                    ? longPositionData[1].toString()
-                    : "error"}
-                </div>
-                <div>
-                  Position Leverage :
-                  {
-                    "[Size (Eth number * Eth Price)/ Margin eth is 18 decimals] "
-                  }
-                  {Array.isArray(longPositionData) &&
-                  longPositionData.length > 2 &&
-                  Number(longPositionData) > 0
-                    ? (
-                        (longPositionData[2] * 2000n) /
-                        longPositionData[1]
-                      ).toString()
-                    : "error"}
-                </div>
-                <div>
-                  Position entryPriceX96 :{" "}
-                  {Array.isArray(longPositionData)
-                    ? longPositionData[2].toString()
-                    : "error"}
-                </div>
-                <div>
-                  Position entryFundingRateGrowthX96 :{" "}
-                  {Array.isArray(longPositionData)
-                    ? longPositionData[3].toString()
-                    : "error"}
-                </div> */}
+
                 <div className="my-5 border-t border-0xline"></div>
                 <div className="flex flex-row gap-2">
                   <div className="text-white">Token/Asset</div>
@@ -354,7 +326,7 @@ export default function TradePage() {
                         info=""
                       />
                       <ExternalLink
-                        className="text-white text-opacity-70 hover:text-opacity-100 ml-1"
+                        className="ml-1 text-white text-opacity-70 hover:text-opacity-100"
                         size={13}
                       />
                     </div>
@@ -368,10 +340,10 @@ export default function TradePage() {
                     />
                   </div>
                   <div className="flex flex-row gap-3">
-                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3 hover:bg-0xbox">
+                    <Button className="h-5 mt-3 text-sm text-white bg-transparent border border-white">
                       TP/SL
                     </Button>
-                    <Button className="bg-transparent text-white border-white border h-5 text-sm mt-3 hover:bg-0xbox">
+                    <Button className="h-5 mt-3 text-sm text-white bg-transparent border border-white">
                       Close
                     </Button>
                   </div>
@@ -497,9 +469,7 @@ export default function TradePage() {
                       />
                       <br></br>
                       <div>
-                        <div
-                          className="flex flex-row items-center justify-between"
-                        >
+                        <div className="flex flex-row items-center justify-between">
                           <div className="text-sm">Leverage Slider</div>
                           <Checkbox
                             checked={isChecked}
@@ -542,12 +512,12 @@ export default function TradePage() {
                     <Button
                       disabled={incPositionLoading}
                       onClick={handleIncPostionTemp}
-                      className="w-full text-center rounded-md item-center bg-0xgreen h-9 font-bold"
+                      className="w-full font-bold text-center rounded-md item-center bg-0xgreen h-9"
                       style={{ marginTop: 20, color: "#000000" }}
                     >
                       {incPositionLoading ? (
                         <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          <Loader className="w-4 h-4 mr-2 animate-spin" />
                           Please wait
                         </>
                       ) : (
@@ -612,9 +582,7 @@ export default function TradePage() {
                       />
                       <br></br>
                       <div>
-                        <div
-                          className="flex flex-row items-center justify-between"
-                        >
+                        <div className="flex flex-row items-center justify-between">
                           <div className="text-sm">Leverage Slider</div>
                           <Checkbox
                             checked={isChecked}
@@ -648,12 +616,12 @@ export default function TradePage() {
                     <Button
                       disabled={incPositionLoading}
                       onClick={handleIncPostionTemp}
-                      className="w-full text-center rounded-md item-center bg-0xgreen h-9 font-bold"
+                      className="w-full font-bold text-center rounded-md item-center bg-0xgreen h-9"
                       style={{ marginTop: 20, color: "#000000" }}
                     >
                       {incPositionLoading ? (
                         <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          <Loader className="w-4 h-4 mr-2 animate-spin" />
                           Please wait
                         </>
                       ) : (
@@ -705,9 +673,7 @@ export default function TradePage() {
                       />
                       <br></br>
                       <div>
-                        <div
-                          className="flex flex-row items-center justify-between"
-                        >
+                        <div className="flex flex-row items-center justify-between">
                           <div className="text-sm">Leverage Slider</div>
                           <Checkbox
                             checked={isChecked}
@@ -794,9 +760,7 @@ export default function TradePage() {
                       />
                       <br></br>
                       <div>
-                        <div
-                          className="flex flex-row items-center justify-between"
-                        >
+                        <div className="flex flex-row items-center justify-between">
                           <div className="text-sm">Leverage Slider</div>
                           <Checkbox
                             checked={isChecked}
@@ -853,6 +817,14 @@ export default function TradePage() {
               <ListItem keyText="Balance Rate" value={"-0.08%"} />
             </div>
           </div>
+          <Button
+            disabled={incPositionLoading}
+            onClick={handleIncPostionTemp}
+            className="w-full font-bold text-center rounded-md item-center bg-0xgreen h-9"
+            style={{ marginTop: 20, color: "#000000" }}
+          >
+            Approve Plugin
+          </Button>
         </div>
       </div>
     </section>

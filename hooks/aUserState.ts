@@ -3,7 +3,7 @@ import { ethPoolAddress, usdxAddress } from "./zAddressHelper"
 import { useWalletClient } from 'wagmi'
 import { arbitrumGoerli } from 'wagmi/chains'
 import { poolABI } from "@/abis/poolABI"
-import { SIDE_LONG, SIDE_SHORT } from "./zContractConstantsHelper"
+import { SIDE_LONG, SIDE_SHORT } from "./zContractHelper"
 
 export const useUserUsdxBalance = () => {
     const { data: walletClient } = useWalletClient({
@@ -28,7 +28,6 @@ export const useUserPositionsLONG = () => {
         args: [walletClient?.account.address, SIDE_LONG]
     })
 
-    console.log('check long position data => ', data)
     return { data, isLoading, isError }
 }
 
