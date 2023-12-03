@@ -1,6 +1,7 @@
-import { parseEther } from "viem";
-import { BigNumberish } from "ethers";
+import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
 import Decimal from "decimal.js";
+import { BigNumberish } from "ethers";
+
 
 export const minExecutionFee = parseEther('0.00021')
 
@@ -64,6 +65,34 @@ export function to0xxPriceX96(price: string) {
     return toPriceX96(price, DECIMALS_18, DECIMALS_6)
 }
 
+export function x96Price2Readable(value: bigint) {
+    const factor = BigInt(2) ** BigInt(96);
+    const x96ToWei = parseEther(value.toString()) / factor;
+    const readable = formatUnits(x96ToWei, 6)
+    return readable.toString();
+}
+
+export function wrapperParseEther6e(value: string) {
+    return Number(parseUnits(value, 6))
+}
+
+export function wrapperFormatEther6e(value: bigint) {
+    return Number(formatUnits(value, 6))
+}
+
+export function wrapperFormatEther18e(value: bigint) {
+    return Number(formatEther(value))
+}
+
+//margin size
+export function e6DivideE18(e6Number: bigint, e18Number: bigint, tokenPrice: bigint) {
+    const factor = BigInt(10 ** 12);
+    const adjustedE18Number = e18Number / factor;
+    if (Number(adjustedE18Number) === 0) return 0
+    const result = tokenPrice * adjustedE18Number / e6Number;
+    return Number(result);
+}
+
 export function toPriceX96(price: string, tokenDecimals: number, usdDecimals: number): bigint {
     return BigInt(
         new Decimal(price)
@@ -73,6 +102,7 @@ export function toPriceX96(price: string, tokenDecimals: number, usdDecimals: nu
             .toFixed(0)
     );
 }
+
 
 
 export const giveMeFormattedToShow = (number: number) => tempCurrenyFormat(number);

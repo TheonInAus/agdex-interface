@@ -1,10 +1,11 @@
 import { parseEther } from 'viem';
-import { useContractWrite } from "wagmi"
+import { useContractWrite, useWalletClient } from "wagmi"
 import { positionRouterABI } from "@/abis/positionRouterABI"
 import { useEffect, useRef } from "react"
 import { waitForTransaction } from 'wagmi/actions';
 import { positionRouterAddress } from "./zAddressHelper";
-import { Side, minExecutionFee } from "./zContractHelper";
+import { Side, minExecutionFee, wrapperParseEther6e } from "./zContractHelper";
+import { arbitrumGoerli } from 'viem/chains';
 
 export const useCreateIncreasePostion = (tokenPoolAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any) => {
 
@@ -12,7 +13,7 @@ export const useCreateIncreasePostion = (tokenPoolAddress: any, side: Side, marg
         address: positionRouterAddress,
         abi: positionRouterABI,
         functionName: 'createIncreasePosition',
-        args: [tokenPoolAddress, side, marginDelta, parseEther(sizeDelta), acceptableTradePriceX96],
+        args: [tokenPoolAddress, side, wrapperParseEther6e(marginDelta), parseEther(sizeDelta), acceptableTradePriceX96],
         value: minExecutionFee
     })
 
@@ -41,6 +42,11 @@ export const useCreateIncreasePostion = (tokenPoolAddress: any, side: Side, marg
 }
 
 export const useCreateDecreasePosition = (tokenPoolAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any, receiverAddress: any) => {
+    const { data: walletClient } = useWalletClient({
+        chainId: arbitrumGoerli.id,
+    })
+    console.log('check decrease position params => ', tokenPoolAddress, side, marginDelta, sizeDelta, acceptableTradePriceX96)
+    if (receiverAddress === '') receiverAddress = walletClient?.account.address
     const { data: decPositionData, isLoading: decPositionLoading, write: decPositionWrite } = useContractWrite({
         address: positionRouterAddress,
         abi: positionRouterABI,

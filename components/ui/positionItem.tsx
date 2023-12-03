@@ -26,11 +26,13 @@ const positionItemVariants = cva(
   }
 )
 
-export interface positionItemProps extends VariantProps<typeof positionItemVariants> {
+export interface positionItemProps
+  extends VariantProps<typeof positionItemVariants> {
   keyText: string
   value: string | number
   info?: string
   percentage?: string
+  plusCss?: string
 }
 
 const PositionItem: React.FC<positionItemProps> = ({
@@ -38,6 +40,7 @@ const PositionItem: React.FC<positionItemProps> = ({
   value,
   info,
   percentage,
+  plusCss,
   ...props
 }) => {
   return (
@@ -60,14 +63,16 @@ const PositionItem: React.FC<positionItemProps> = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          ) : (
-            <span className="w-5 h-5"></span>
+        ) : (
+          <span className="w-5 h-5"></span>
         )}
-         <span className="text-sm text-left ml-3 text-white">{value || "-"}</span>
+        <span className={`text-sm text-left ml-3 ${plusCss}`}>
+          {value || "-"}
+        </span>
       </div>
       {/* <div className="flex flex-row"> */}
-        {/* <span className="text-base text-left text-white">{value || "-"}</span> */}
-        {/* {percentage && (
+      {/* <span className="text-base text-left text-white">{value || "-"}</span> */}
+      {/* {percentage && (
           <>
             <button className="ml-1">
               <Edit3

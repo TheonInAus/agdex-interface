@@ -9,5 +9,6 @@ export const arbPoolAddress = contractAddress.deployments.registerPools[2].pool 
 export const linkPoolAddress = contractAddress.deployments.registerPools[3].pool as `0x${string}`
 
 export const registerPoolsInfos = contractAddress.deployments.registerPools
+export const mixExecutorAddress = contractAddress.deployments.MixedExecutor as `0x${string}`//V1 
 
 export const usdxAddress = contractAddress.usd as `0x${string}`

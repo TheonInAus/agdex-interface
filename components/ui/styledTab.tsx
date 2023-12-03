@@ -1,9 +1,10 @@
 // styledTab.tsx
-import * as React from 'react';
-import * as TabsPrimitive from '@radix-ui/react-tabs';
-import { cn } from '@/lib/utils';
+import * as React from "react"
+import * as TabsPrimitive from "@radix-ui/react-tabs"
 
-const StyledTabs = TabsPrimitive.Root;
+import { cn } from "@/lib/utils"
+
+const StyledTabs = TabsPrimitive.Root
 
 const StyledTabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
@@ -17,8 +18,8 @@ const StyledTabsList = React.forwardRef<
     )}
     {...props}
   />
-));
-StyledTabsList.displayName = 'StyledTabsList';
+))
+StyledTabsList.displayName = "StyledTabsList"
 
 const StyledTabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
@@ -27,15 +28,15 @@ const StyledTabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "relative inline-flex whitespace-nowrap  data-[state=active]:underline data-[state=active]:underline-offset-4 data-[state=active]:text-white rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:text-0xgrey",
+      "relative inline-flex whitespace-nowrap data-[state=active]:underline data-[state=active]:underline-offset-4 rounded-sm px-3 py-1.5 text-base font-bold  transition-all focus-visible:outline-none disabled:pointer-events-none disabled:text-0xgrey data-[state=active]:text-0xyellow-lighter ",
       className
     )}
     {...props}
   >
     {props.children}
   </TabsPrimitive.Trigger>
-));
-StyledTabsTrigger.displayName = 'StyledTabsTrigger';
+))
+StyledTabsTrigger.displayName = "StyledTabsTrigger"
 
 const StyledTabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
@@ -49,7 +50,7 @@ const StyledTabsContent = React.forwardRef<
     )}
     {...props}
   />
-));
-StyledTabsContent.displayName = 'TabsContent';
+))
+StyledTabsContent.displayName = "TabsContent"
 
-export { StyledTabs, StyledTabsList, StyledTabsTrigger, StyledTabsContent };
+export { StyledTabs, StyledTabsList, StyledTabsTrigger, StyledTabsContent }
