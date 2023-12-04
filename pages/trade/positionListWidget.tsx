@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Edit3, ExternalLink, Loader2 } from "lucide-react"
+import { AlertCircle, Edit3, ExternalLink, Loader2 } from "lucide-react"
 
 import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
 import { useUserPositionList } from "@/hooks/cUserState"
@@ -14,8 +14,30 @@ import {
   wrapperFormatEther18e,
   x96Price2Readable,
 } from "@/hooks/zContractHelper"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { InputBox } from "@/components/ui/inputBox"
+import { Label } from "@/components/ui/label"
+import { PercentageSlider } from "@/components/ui/percentageSlider"
+import { ListItem } from "@/components/ui/listItem"
 import { PositionItem } from "@/components/ui/positionItem"
+import {
+  StyledTabs,
+  StyledTabsContent,
+  StyledTabsList,
+  StyledTabsTrigger,
+} from "@/components/ui/styledTab"
+import { TpsLInput } from "@/components/ui/tpslIput"
 
 type PositionInfo = {
   poolAddress: any
@@ -112,12 +134,63 @@ export const PositionListWidget = () => {
                       }
                       info="ll"
                     />
-                    <button className="ml-1">
-                      <Edit3
-                        className="text-white text-opacity-70 hover:text-opacity-100"
-                        size={13}
-                      />
-                    </button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="ml-1">
+                          <Edit3
+                            className="text-white text-opacity-70 hover:text-opacity-100"
+                            size={13}
+                          />
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px] bg-0xdialog">
+                        <DialogHeader>
+                          <DialogTitle className="text-center mb-2">Edit Margin</DialogTitle>
+                          <DialogDescription></DialogDescription>
+                        </DialogHeader>
+                        <StyledTabs defaultValue="Add Margin">
+                          <StyledTabsList className="border-none">
+                            <StyledTabsTrigger
+                              value="Add Margin"
+                              className="text-sm  px-0 py-0 mr-3"
+                            >
+                              Add Margin
+                            </StyledTabsTrigger>
+                            <StyledTabsTrigger
+                              value="Reduce Margin"
+                              className="text-sm  px-0 py-0"
+                            >
+                              Reduce Margin
+                            </StyledTabsTrigger>
+                          </StyledTabsList>
+                          <StyledTabsContent value="Add Margin">
+                            <InputBox title="Amount" value={""} suffix={""} />
+                            <div className="flex flex-row gap-2 mb-3 mt-5">
+                              <div className="text-white text-base">
+                                Token/Asset
+                              </div>
+                              <div className="text-0xgreen text-sm mt-[2px]">
+                                Long 35.98x
+                              </div>
+                            </div>
+                            <ListItem keyText={"Margin"} value={""} />
+                            <ListItem keyText={"Leverage"} value={""} />
+                            <ListItem keyText={"Size"} value={""} />
+                            <ListItem keyText={"Index Price"} value={""} />
+                            <ListItem keyText={"Liq. Price"} value={""} />
+                            <div className="mt-3 border-t border-0xline"></div>
+                            <div className="flex flex-row w-full justify-between text-sm mt-2">
+                              <div>Execution Fee</div>
+                              <div>- ($-)</div>
+                            </div>
+                          </StyledTabsContent>
+                          <StyledTabsContent value="Reduce Margin"></StyledTabsContent>
+                        </StyledTabs>
+                        <DialogFooter>
+                          <Button className="w-full">Confirm</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
                 <div className="flex flex-col w-full">
@@ -143,7 +216,7 @@ export const PositionListWidget = () => {
                     />
 
                     <ExternalLink
-                      className="ml-1 text-white text-opacity-70 hover:text-opacity-100"
+                      className="ml-1 mt-1 text-white text-opacity-70 hover:text-opacity-100"
                       size={13}
                     />
                   </div>
@@ -152,9 +225,353 @@ export const PositionListWidget = () => {
                   </div>
                 </div>
                 <div className="flex flex-row justify-end w-full gap-3">
-                  <Button className="h-5 text-sm text-white bg-transparent hover:bg-0xbox border border-white">
-                    TP/SL
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="h-5 text-sm text-white bg-transparent hover:bg-0xbox border border-white">
+                        TP/SL
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px] bg-0xdialog">
+                      <DialogHeader>
+                        <DialogTitle className="text-center mb-5">
+                          TP/SL
+                        </DialogTitle>
+                        <DialogDescription>
+                          <div className="flex flex-row gap-2 mb-3">
+                            <div className="text-white text-base">
+                              Token/Asset
+                            </div>
+                            <div className="text-0xgreen text-sm mt-[2px]">
+                              Long 35.98x
+                            </div>
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="flex flex-row w-full space-x-24">
+                              <PositionItem
+                                keyText={"Entry Price"}
+                                value={""}
+                              />
+                              <PositionItem
+                                keyText={"Market Price"}
+                                value={""}
+                              />
+                            </div>
+                            <PositionItem keyText={"Liq Price"} value={""} />
+                          </div>
+                          <div className="mt-3 border-t border-0xline"></div>
+                        </DialogDescription>
+                      </DialogHeader>
+                      <StyledTabs defaultValue="Entire Position">
+                        <StyledTabsList className="border-none">
+                          <StyledTabsTrigger
+                            value="Entire Position"
+                            className="text-sm  px-0 py-0 mr-3"
+                          >
+                            Entire Position
+                          </StyledTabsTrigger>
+                          <StyledTabsTrigger
+                            value="Partial Position"
+                            className="text-sm  px-0 py-0"
+                          >
+                            Partial Position
+                          </StyledTabsTrigger>
+                        </StyledTabsList>
+                        <StyledTabsContent value="Entire Position">
+                          <div className="flex flex-row gap-[2%] mb-5">
+                            <div className="flex flex-col gap-3 w-[60%]">
+                              <div className="flex flex-row gap-2">
+                                <Checkbox className="h-4 w-4" />
+                                <Label htmlFor="name" className="text-left">
+                                  Take Profit ≥
+                                </Label>
+                              </div>
+                              <TpsLInput
+                                id="name"
+                                value="0.00"
+                                className="col-span-3"
+                                suffix="USDT"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-[14px] w-[38%]">
+                              <Label
+                                htmlFor="name"
+                                className="text-right mr-1 text-0xgrey"
+                              >
+                                Exp. PnL -(-)
+                              </Label>
+                              <TpsLInput
+                                id="name"
+                                value="0.00"
+                                className="col-span-3"
+                                suffix="%"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex flex-row gap-[2%]">
+                            <div className="flex flex-col gap-3 w-[60%]">
+                              <div className="flex flex-row gap-2">
+                                <Checkbox className="h-4 w-4" />
+                                <Label htmlFor="name" className="text-left">
+                                  Stop Loss ≤
+                                </Label>
+                              </div>
+                              <TpsLInput
+                                id="name"
+                                value="0.00"
+                                className="col-span-3"
+                                suffix="USDT"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-[14px] w-[38%]">
+                              <Label
+                                htmlFor="name"
+                                className="text-right mr-1 text-0xgrey"
+                              >
+                                Exp. PnL -(-)
+                              </Label>
+                              <TpsLInput
+                                id="name"
+                                value="0.00"
+                                className="col-span-3"
+                                suffix="%"
+                              />
+                            </div>
+                          </div>
+                          <div className="mt-2 w-full text-sm">
+                            <div className="flex flex-row justify-between">
+                              <div className="text-0xgrey">Size</div>
+                              <div>-</div>
+                            </div>
+                            <div className="flex flex-row justify-between">
+                              <div>Execution Fee</div>
+                              <div>-</div>
+                            </div>
+                            <div className="mt-4 text-0xgrey">
+                              When the market price reaches the trigger price,
+                              the system will close the position at the{" "}
+                              <span className="text-white">market price</span>.
+                            </div>
+                          </div>
+                        </StyledTabsContent>
+                        <StyledTabsContent value="Partial Position">
+                          <div className="flex flex-row gap-[2%] mb-5">
+                            <div className="flex flex-col gap-3 w-[60%]">
+                              <div className="flex flex-row gap-2">
+                                <Checkbox className="h-4 w-4" />
+                                <Label htmlFor="name" className="text-left">
+                                  Take Profit ≥
+                                </Label>
+                              </div>
+                              <TpsLInput
+                                id="name"
+                                value="0.00"
+                                className="col-span-3"
+                                suffix="USDT"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-[14px] w-[38%]">
+                              <Label
+                                htmlFor="name"
+                                className="text-right mr-1 text-0xgrey"
+                              >
+                                Exp. PnL -(-)
+                              </Label>
+                              <TpsLInput
+                                id="name"
+                                value="0.00"
+                                className="col-span-3"
+                                suffix="%"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex flex-row gap-[2%]">
+                            <div className="flex flex-col gap-3 w-[60%]">
+                              <div className="flex flex-row gap-2">
+                                <Checkbox className="h-4 w-4" />
+                                <Label htmlFor="name" className="text-left">
+                                  Stop Loss ≤
+                                </Label>
+                              </div>
+                              <TpsLInput
+                                id="name"
+                                value="0.00"
+                                className="col-span-3"
+                                suffix="USDT"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-[14px] w-[38%]">
+                              <Label
+                                htmlFor="name"
+                                className="text-right mr-1 text-0xgrey"
+                              >
+                                Exp. PnL -(-)
+                              </Label>
+                              <TpsLInput
+                                id="name"
+                                value="0.00"
+                                className="col-span-3"
+                                suffix="%"
+                              />
+                            </div>
+                          </div>
+                          <div className="w-full mt-4">
+                            <TpsLInput
+                              id="name"
+                              value="Size"
+                              className="col-span-3"
+                              suffix="ETH"
+                            />
+                            <PercentageSlider
+                              defaultValue={[1]}
+                              // onValueChange={handleSliderValueChange}
+                              max={100}
+                              min={1}
+                              step={1}
+                              // value={[leverageNumber]}
+                              style={{ marginBottom: 40, marginTop: 20 }}
+                            />
+                          </div>
+                          <div className="mt-2 w-full text-sm">
+                            <div className="flex flex-row justify-between">
+                              <div className="text-0xgrey">Size</div>
+                              <div>-</div>
+                            </div>
+                            <div className="flex flex-row justify-between">
+                              <div>Execution Fee</div>
+                              <div>-</div>
+                            </div>
+                            <div className="mt-4 text-0xgrey">
+                              When the market price reaches the trigger price,
+                              the system will close the position at the{" "}
+                              <span className="text-white">market price</span>.
+                            </div>
+                          </div>
+                          <Alert className="bg-0xdialog-foreground border-gray-100 mt-4 h-[70px]">
+                            <AlertCircle
+                              className="text-0xredLighter hover:text-opacity-100 mt-2"
+                              size={22}
+                            />
+                            <AlertDescription className="text-0xyellow-lighter ml-1">
+                              Margin settlement has a 10% slippage to prevent
+                              order failure due to insufficient margin.
+                            </AlertDescription>
+                          </Alert>
+                        </StyledTabsContent>
+                      </StyledTabs>
+                      {/* <div className="flex flex-row gap-[2%] mb-5">
+                        <div className="flex flex-col gap-3 w-[60%]">
+                          <div className="flex flex-row gap-3">
+                            <Checkbox className="h-4 w-4" />
+                            <Label htmlFor="name" className="text-left">
+                              Take Profit ≥
+                            </Label>
+                          </div>
+                          <Input
+                            id="name"
+                            value="0.00"
+                            className="col-span-3"
+                            suffix="USDT"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-[14px] w-[38%]">
+                          <Label
+                            htmlFor="name"
+                            className="text-right mr-1 text-0xgrey"
+                          >
+                            Exp. PnL -(-)
+                          </Label>
+                          <Input
+                            id="name"
+                            value="0.00"
+                            className="col-span-3"
+                            suffix="%"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-row gap-[2%]">
+                        <div className="flex flex-col gap-3 w-[60%]">
+                          <div className="flex flex-row gap-1">
+                            <Checkbox className="h-4 w-4" />
+                            <Label htmlFor="name" className="text-left">
+                              Stop Loss ≤
+                            </Label>
+                          </div>
+                          <Input
+                            id="name"
+                            value="0.00"
+                            className="col-span-3"
+                            suffix="USDT"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-[14px] w-[38%]">
+                          <Label
+                            htmlFor="name"
+                            className="text-right mr-1 text-0xgrey"
+                          >
+                            Exp. PnL -(-)
+                          </Label>
+                          <Input
+                            id="name"
+                            value="0.00"
+                            className="col-span-3"
+                            suffix="%"
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-2 w-full text-sm">
+                        <div className="flex flex-row justify-between">
+                          <div className="text-0xgrey">Size</div>
+                          <div>-</div>
+                        </div>
+                        <div className="flex flex-row justify-between">
+                          <div>Execution Fee</div>
+                          <div>-</div>
+                        </div>
+                        <div className="mt-4 text-0xgrey">
+                          When the market price reaches the trigger price, the
+                          system will close the position at the{" "}
+                          <span className="text-white">market price</span>.
+                        </div>
+                      </div>
+                      <Alert className="bg-0xdialog-foreground border-gray-100">
+                        <AlertCircle
+                          className="text-0xredLighter hover:text-opacity-100 mt-2"
+                          size={22}
+                        />
+                        <AlertDescription className="text-0xyellow-lighter ml-1">
+                          Margin settlement has a 10% slippage to prevent order
+                          failure due to insufficient margin.
+                        </AlertDescription>
+                      </Alert> */}
+                      {/* <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Name
+                          </Label>
+                          <Input
+                            id="name"
+                            value="Pedro Duarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="username" className="text-right">
+                            Username
+                          </Label>
+                          <Input
+                            id="username"
+                            value="@peduarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                      </div> */}
+                      <DialogFooter>
+                        <Button className="text-sm w-full text-black bg-white hover:bg-0xgrey">
+                          Confirm
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                   <Button
                     disabled={decPositionLoading}
                     className="h-5 text-sm text-white bg-transparent hover:bg-0xbox border border-white"

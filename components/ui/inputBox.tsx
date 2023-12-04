@@ -64,7 +64,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
                 value={prefixValue}
                 type="number"
                 placeholder="0"
-                onChange={onPrefixChange} // Assuming you have a handler function for this
+                onChange={onPrefixChange}
               />
               <span className="block text-sm text-right text-white">x</span>
             </>

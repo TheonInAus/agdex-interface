@@ -7,7 +7,7 @@ import Iconify from "./Iconify"
 
 const SiteFooter = () => {
   return (
-    <footer className="flex flex-col items-center space-y-4 py-4 text-white">
+    <footer className="flex flex-col items-center space-y-4 py-4 text-white mt-10">
       <div>
         <Image src="/0xx_logo.svg" alt="Logo" width={46} height={23} className="mb-2" />
       </div>

@@ -53,6 +53,10 @@ module.exports = {
           DEFAULT: "#4B4B4B",
           foreground: "#4B4B4B",
         },
+        "0xdialog": {
+          DEFAULT: "#171717",
+          foreground: "#1E1E1E",
+        },
         "0xtrans": {
           DEFAULT: "#FFFFFF00",
           foreground: "#FFFFFF00",
