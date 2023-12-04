@@ -27,7 +27,6 @@ type PositionInfo = {
 
 export const PositionListWidget = () => {
   const { data: positionDataList, isLoading, isError } = useUserPositionList()
-  console.log("positionDataList => ", positionDataList)
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
   const { decPositionData, decPositionLoading, decPositionWrite } =
@@ -54,21 +53,21 @@ export const PositionListWidget = () => {
     decPositionWrite()
   }
 
-  useEffect(() => {
-    if (positionDataList.length > 0) {
-      const position = positionDataList[0]
-      setCurrentPosition({
-        poolAddress: position.tokenPool,
-        side: position.tokenSide === "Long" ? SIDE_LONG : SIDE_SHORT,
-        marginDelta: 0,
-        sizeDelta: position.size,
-        acceptableTradePriceX96:
-          position.tokenSide === "Long"
-            ? to0xxPriceX96("1999")
-            : to0xxPriceX96("2002"),
-      })
-    }
-  }, [positionDataList])
+  //   useEffect(() => {
+  //     if (positionDataList.length > 0) {
+  //       const position = positionDataList[0]
+  //       setCurrentPosition({
+  //         poolAddress: position.tokenPool,
+  //         side: position.tokenSide === "Long" ? SIDE_LONG : SIDE_SHORT,
+  //         marginDelta: 0,
+  //         sizeDelta: position.size,
+  //         acceptableTradePriceX96:
+  //           position.tokenSide === "Long"
+  //             ? to0xxPriceX96("1999")
+  //             : to0xxPriceX96("2002"),
+  //       })
+  //     }
+  //   }, [positionDataList])
 
   return (
     <div>

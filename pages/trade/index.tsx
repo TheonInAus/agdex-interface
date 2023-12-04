@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import {
@@ -11,7 +11,13 @@ import {
   useExeDecreasePosition,
   useExeIncreasePosition,
 } from "@/hooks/actionMixExecutorHelper"
-import { SIDE_LONG, SIDE_SHORT } from "@/hooks/zContractHelper"
+import { useTokenPrice } from "@/hooks/cTokenState"
+import { ethTokenAddress } from "@/hooks/zAddressHelper"
+import {
+  SIDE_LONG,
+  SIDE_SHORT,
+  giveMeFormattedToShow,
+} from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { ListItem } from "@/components/ui/listItem"
 import { Stats } from "@/components/ui/stats"
@@ -58,6 +64,13 @@ export default function TradePage() {
     approvePluginWrite()
   }
 
+  const [tokenPrice, setTokenPrice] = useState("0")
+  const { maxPrice, minPrice } = useTokenPrice(ethTokenAddress)
+  useEffect(() => {
+    if (maxPrice) {
+      setTokenPrice(maxPrice)
+    }
+  }, [maxPrice])
   /**
    * just for testing ********************************
    */
@@ -82,8 +95,10 @@ export default function TradePage() {
             style={{ width: 950, height: 600 }}
           >
             <div className="flex">
-              <div className="mt-1 mr-10 text-lg">Token/Asset</div>
-              <div className="mt-1 mr-10 text-lg text-0xredLighter">Price</div>
+              <div className="mt-1 mr-10 text-lg">ETH/USDX</div>
+              <div className="mt-1 mr-10 text-lg text-0xredLighter">
+                {giveMeFormattedToShow(Number(tokenPrice) || 0)}
+              </div>
               <Stats title={"Index Price"} value={indexPrice} />
               <Stats
                 title={"24h Change"}

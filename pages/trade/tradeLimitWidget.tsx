@@ -2,7 +2,10 @@ import { useEffect, useState } from "react"
 import Decimal from "decimal.js"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
-import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
+import {
+  useCreateIncreaseOrder,
+  useCreateIncreasePostion,
+} from "@/hooks/actionTradePosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
 import { ethPoolAddress } from "@/hooks/zAddressHelper"
 import { SIDE_LONG, Side, to0xxPriceX96 } from "@/hooks/zContractHelper"
@@ -23,22 +26,36 @@ export const TradeLimitWidget = ({ side }: TradeMarketType) => {
   const [leverageNumber, setLeverageNumber] = useState(1)
   const [isChecked, setIsChecked] = useState(true)
   const [showSlider, setShowSlider] = useState(true)
-  const ethPrice = "2333"
-
+  const [limitPrice, setLimitPrice] = useState("")
+  const [acceptableLimit, setAcceptableLimit] = useState("")
+  useEffect(() => {
+    if (limitPrice) {
+      const accLimit = Number(limitPrice) * (1 + limitAcceptableRate)
+      setAcceptableLimit(accLimit.toString())
+    }
+  }, [limitPrice])
+  const ethPrice = "2000"
+  const limitAcceptableRate = 0.03
   const {
     data: balanceData,
     isError: isBalanceError,
     isLoading: isBalanceLoading,
   } = useUserUsdxBalance()
 
-  const { incPositionData, incPositionLoading, incPositionWrite } =
-    useCreateIncreasePostion(
-      ethPoolAddress,
-      side,
-      usdMargin,
-      tradingSize,
-      to0xxPriceX96("2005")
-    )
+  const {
+    createIncOrderData,
+    isCreateIncOrderLoading,
+    isCreateIncOrderError,
+    createIncOrderWrite,
+  } = useCreateIncreaseOrder(
+    ethPoolAddress,
+    side,
+    usdMargin,
+    tradingSize,
+    to0xxPriceX96(limitPrice ? limitPrice : "0"),
+    false,
+    to0xxPriceX96(acceptableLimit ? acceptableLimit : "0")
+  )
 
   const handleCheckboxChange = (checked: any) => {
     setIsChecked(checked)
@@ -49,8 +66,8 @@ export const TradeLimitWidget = ({ side }: TradeMarketType) => {
     setLeverageNumber(value)
   }
 
-  const handleIncPostionTemp = () => {
-    incPositionWrite()
+  const handleIncOrderTemp = () => {
+    createIncOrderWrite()
   }
 
   useEffect(() => {
@@ -81,10 +98,10 @@ export const TradeLimitWidget = ({ side }: TradeMarketType) => {
       <div className="w-full">
         <InputBox
           title="Price"
-          value={usdMargin}
+          value={limitPrice}
           suffix="USDT"
           onValueChange={(e) => {
-            setUsdMargin(e.target.value)
+            setLimitPrice(e.target.value)
           }}
         />
         <br></br>
@@ -161,15 +178,15 @@ export const TradeLimitWidget = ({ side }: TradeMarketType) => {
         <ListItem keyText="Fees" value={""} />
       </div>
       <Button
-        disabled={incPositionLoading}
+        disabled={isCreateIncOrderLoading}
         onClick={() => {
-          handleIncPostionTemp()
+          handleIncOrderTemp()
         }}
         className={`w-full font-bold text-center rounded-md item-center mt-4 ${
           side === SIDE_LONG ? "bg-0xgreen" : "bg-0xredLighter"
         } h-9 text-white`}
       >
-        {incPositionLoading ? (
+        {isCreateIncOrderLoading ? (
           <>
             <Loader className="w-4 h-4 mr-2 animate-spin" />
             Please wait

@@ -28,7 +28,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
   const [leverageNumber, setLeverageNumber] = useState(1)
   const [isChecked, setIsChecked] = useState(true)
   const [showSlider, setShowSlider] = useState(true)
-  const ethPrice = "2333"
+  const ethPrice = "2000"
 
   const {
     data: balanceData,

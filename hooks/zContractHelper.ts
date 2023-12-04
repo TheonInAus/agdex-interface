@@ -4,6 +4,7 @@ import { BigNumberish } from "ethers";
 
 
 export const minExecutionFee = parseEther('0.00021')
+export const minOrderBookExecutionFee = parseEther('0.0003')
 
 
 export const Q64 = 1n << 64n;
@@ -87,6 +88,8 @@ export function wrapperFormatEther18e(value: bigint) {
 //margin size
 export function e6DivideE18(e6Number: bigint, e18Number: bigint, tokenPrice: bigint) {
     const factor = BigInt(10 ** 12);
+    // const e18Margin = e6Number * factor
+    // const result = e18Number * tokenPrice / e18Margin
     const adjustedE18Number = e18Number / factor;
     if (Number(adjustedE18Number) === 0) return 0
     const result = tokenPrice * adjustedE18Number / e6Number;
