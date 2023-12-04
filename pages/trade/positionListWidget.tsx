@@ -28,8 +28,8 @@ import {
 } from "@/components/ui/dialog"
 import { InputBox } from "@/components/ui/inputBox"
 import { Label } from "@/components/ui/label"
-import { PercentageSlider } from "@/components/ui/percentageSlider"
 import { ListItem } from "@/components/ui/listItem"
+import { PercentageSlider } from "@/components/ui/percentageSlider"
 import { PositionItem } from "@/components/ui/positionItem"
 import {
   StyledTabs,
@@ -145,7 +145,9 @@ export const PositionListWidget = () => {
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px] bg-0xdialog">
                         <DialogHeader>
-                          <DialogTitle className="text-center mb-2">Edit Margin</DialogTitle>
+                          <DialogTitle className="text-center mb-2">
+                            Edit Margin
+                          </DialogTitle>
                           <DialogDescription></DialogDescription>
                         </DialogHeader>
                         <StyledTabs defaultValue="Add Margin">
@@ -572,7 +574,73 @@ export const PositionListWidget = () => {
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
-                  <Button
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        disabled={decPositionLoading}
+                        className="h-5 text-sm text-white bg-transparent hover:bg-0xbox border border-white"
+                      >
+                        Close
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px] bg-0xdialog">
+                      <DialogHeader>
+                        <DialogTitle className="text-center mb-5">
+                          Close
+                        </DialogTitle>
+                        <DialogDescription>
+                          <InputBox title="Amount" value={""} suffix={""} />
+                          <div className="mt-3">
+                            <div className="flex flex-row justify-between">
+                              <div className="text-sm">Pure Reduction</div>
+                              <Checkbox className="w-4 h-4"/>
+                            </div>
+                            <ListItem keyText={"Max Slippage"} value={""} />
+                          </div>
+                          <div className="my-3 border-t border-0xline"></div>
+                          <div className="flex flex-row gap-2 mb-3">
+                            <div className="text-white text-base">
+                              Token/Asset
+                            </div>
+                            <div className="text-0xgreen text-sm mt-[2px]">
+                              Long 35.98x
+                            </div>
+                          </div>
+                          <ListItem keyText={"Leverage"} value={""} />
+                          <ListItem keyText={"Margin"} value={""} />
+                          <ListItem keyText={"Entry Price"} value={""} />
+                          <ListItem keyText={"Liq. Price"} value={""} />
+                          <div className="my-3 border-t border-0xline"></div>
+                          <ListItem keyText={"Price Impact"} value={""} />
+                          <ListItem keyText={"Est. Close Price"} value={""} />
+                          <ListItem keyText={"PnL"} value={""} />
+                          <ListItem keyText={"Fees"} value={""} />
+                          <div className="mt-3 border-t border-0xline"></div>
+                        </DialogDescription>
+                      </DialogHeader>
+                      <ListItem keyText={"Receive"} value={""} />
+                      <DialogFooter>
+                        <Button
+                          disabled={decPositionLoading}
+                          className="text-sm w-full text-black bg-white hover:bg-0xgrey"
+                          onClick={() => {
+                            handleClosePosition(position)
+                          }}
+                        >
+                          {" "}
+                          {decPositionLoading ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Please wait
+                            </>
+                          ) : (
+                            "Close"
+                          )}
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                  {/* <Button
                     disabled={decPositionLoading}
                     className="h-5 text-sm text-white bg-transparent hover:bg-0xbox border border-white"
                     onClick={() => {
@@ -587,7 +655,7 @@ export const PositionListWidget = () => {
                     ) : (
                       "Close"
                     )}
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>
