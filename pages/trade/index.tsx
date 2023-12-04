@@ -12,7 +12,11 @@ import {
   useExeIncreasePosition,
 } from "@/hooks/actionMixExecutorHelper"
 import { useTokenPrice } from "@/hooks/cTokenState"
-import { ethTokenAddress } from "@/hooks/zAddressHelper"
+import {
+  ethTokenAddress,
+  orderBookAddress,
+  positionRouterAddress,
+} from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   SIDE_SHORT,
@@ -37,14 +41,24 @@ import { TradeMarketWidget } from "./tradeMarketWidget"
 export default function TradePage() {
   const indexPrice = "57.5938"
 
-  const { approvePluginData, approvePluginLoading, approvePluginWrite } =
-    useApprovePlugin()
+  const {
+    data: positionRouterPluginData,
+    isLoading: isPositionRouterPluginLoading,
+    isError: isPositionRouterPluginError,
+  } = useCheckPluginState(positionRouterAddress)
 
   const {
-    data: pluginData,
-    isLoading: isPluginLoading,
-    isError: isPluginError,
-  } = useCheckPluginState()
+    data: orderBookPluginData,
+    isLoading: isOrderBookPluginLoading,
+    isError: isOrderBookPluginError,
+  } = useCheckPluginState(orderBookAddress)
+
+  const { approvePluginWrite: positionRouterWrite } = useApprovePlugin(
+    positionRouterAddress
+  )
+
+  const { approvePluginWrite: orderBookWrite } =
+    useApprovePlugin(orderBookAddress)
 
   const {
     data: exeIncPositionData,
@@ -60,8 +74,12 @@ export default function TradePage() {
     write: exeDecPositionWrite,
   } = useExeDecreasePosition()
 
-  const approvePluginTemp = () => {
-    approvePluginWrite()
+  const approvePositionRouterPluginTemp = () => {
+    positionRouterWrite()
+  }
+
+  const approveOrderBookPluginTemp = () => {
+    orderBookWrite()
   }
 
   const [tokenPrice, setTokenPrice] = useState("0")
@@ -204,16 +222,33 @@ export default function TradePage() {
               <ListItem keyText="Balance Rate" value={"-0.08%"} />
             </div>
           </div>
-          <Button
-            disabled={!pluginData as unknown as boolean}
-            onClick={approvePluginTemp}
-            className={`w-full font-bold text-center rounded-md item-center ${
-              pluginData ? "bg-0xgrey" : "bg-0xgreen"
-            } h-9`}
-            style={{ marginTop: 20, color: "#000000" }}
-          >
-            {pluginData ? "Plugin Has Been Approved" : " Approve Plugin"}
-          </Button>
+          <div className="flex flex-row w-full gap-3">
+            <Button
+              disabled={positionRouterPluginData as unknown as boolean}
+              onClick={approvePositionRouterPluginTemp}
+              className={`w-full font-bold text-center rounded-md item-center ${
+                positionRouterPluginData ? "bg-0xgrey" : "bg-0xgreen"
+              } h-9`}
+              style={{ marginTop: 20, color: "#000000" }}
+            >
+              {positionRouterPluginData
+                ? "PostionRouter Approved"
+                : " Approve PostionRouter"}
+            </Button>
+
+            <Button
+              disabled={orderBookPluginData as unknown as boolean}
+              onClick={approveOrderBookPluginTemp}
+              className={`w-full font-bold text-center rounded-md item-center ${
+                orderBookPluginData ? "bg-0xgrey" : "bg-0xgreen"
+              } h-9`}
+              style={{ marginTop: 20, color: "#000000" }}
+            >
+              {orderBookPluginData
+                ? "OrderBook Approved"
+                : " Approve OrderBook"}
+            </Button>
+          </div>
 
           <div className="flex flex-row w-full gap-3">
             <Button

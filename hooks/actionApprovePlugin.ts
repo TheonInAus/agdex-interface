@@ -5,12 +5,12 @@ import { waitForTransaction } from 'wagmi/actions';
 import { positionRouterAddress, routerAddress } from "./zAddressHelper";
 import { arbitrumGoerli } from "viem/chains";
 
-export const useApprovePlugin = () => {
+export const useApprovePlugin = (pluginAddress: any) => {
     const { data: approvePluginData, isLoading: approvePluginLoading, write: approvePluginWrite } = useContractWrite({
         address: routerAddress,
         abi: routerABI,
         functionName: 'approvePlugin',
-        args: [positionRouterAddress]
+        args: [pluginAddress]
     })
 
     const previousHashRef = useRef<string | undefined>();
@@ -36,7 +36,7 @@ export const useApprovePlugin = () => {
     }
 }
 
-export const useCheckPluginState = () => {
+export const useCheckPluginState = (pluginAddress: any) => {
     const { data: walletClient } = useWalletClient({
         chainId: arbitrumGoerli.id,
     })
@@ -45,9 +45,9 @@ export const useCheckPluginState = () => {
         address: routerAddress,
         functionName: 'isPluginApproved',
         abi: routerABI,
-        args: [walletClient?.account.address, positionRouterAddress]
+        args: [walletClient?.account.address, pluginAddress],
+        watch: true
     })
-    console.log('check isPluginApproved => ', data)
     return {
         data,
         isLoading,
