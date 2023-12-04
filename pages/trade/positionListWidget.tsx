@@ -152,12 +152,12 @@ export const PositionListWidget = () => {
                   </div>
                 </div>
                 <div className="flex flex-row justify-end w-full gap-3">
-                  <Button className="h-5 text-sm text-white bg-transparent border border-white">
+                  <Button className="h-5 text-sm text-white bg-transparent hover:bg-0xbox border border-white">
                     TP/SL
                   </Button>
                   <Button
                     disabled={decPositionLoading}
-                    className="h-5 text-sm text-white bg-transparent border border-white"
+                    className="h-5 text-sm text-white bg-transparent hover:bg-0xbox border border-white"
                     onClick={() => {
                       handleClosePosition(position)
                     }}

@@ -41,6 +41,10 @@ module.exports = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        "0xblack": {
+          DEFAULT: "#080808",
+          foreground: "#080808",
+        },
         "0xgrey": {
           DEFAULT: "#CFCFCF",
           foreground: "#CFCFCF",

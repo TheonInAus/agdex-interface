@@ -22,6 +22,8 @@ export default function PoolsPage() {
   const [expandedPool, setExpandedPool] = useState(0)
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
+  const [isChecked, setIsChecked] = useState(true)
+  const [showSlider, setShowSlider] = useState(true)
   //0 is for input Margin => afterMargin will change
   //1 is for input afterMaring => margin will change
   //2 is for change expanded pool => everything will be reset
@@ -39,6 +41,12 @@ export default function PoolsPage() {
 
   const handleSliderValueChange = (value: any) => {
     setLeverageNumber(value)
+  }
+
+  const handleCheckboxChange = (checked: any) => {
+    setIsChecked(checked)
+    // Now, use the isChecked state to control the visibility of the Slider
+    setShowSlider(checked) // Assuming setShowSlider is defined elsewhere
   }
 
   useEffect(() => {
@@ -167,17 +175,22 @@ export default function PoolsPage() {
                   style={{ marginBottom: 10 }}
                 >
                   <div className="text-sm">Leverage Slider</div>
-                  <Checkbox />
+                  <Checkbox
+                    checked={isChecked}
+                    onCheckedChange={handleCheckboxChange}
+                  />
                 </div>
-                <Slider
-                  defaultValue={[1]}
-                  onValueChange={handleSliderValueChange}
-                  max={200}
-                  min={1}
-                  step={1}
-                  style={{ marginBottom: 10 }}
-                  value={[leverageNumber]}
-                />
+                {showSlider && (
+                  <Slider
+                    defaultValue={[1]}
+                    onValueChange={handleSliderValueChange}
+                    max={200}
+                    min={1}
+                    step={1}
+                    value={[leverageNumber]}
+                    style={{ marginBottom: 10, marginTop: 10 }}
+                  />
+                )}
               </div>
               <br></br>
               <ListItem keyText="Liquidity" value={""} />
