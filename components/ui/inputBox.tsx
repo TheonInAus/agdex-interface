@@ -29,6 +29,8 @@ export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
   suffix: string
   prefix?: string
   balanceNode?: React.ReactNode
+  maxNode?: React.ReactNode
+  onMaxClick?: (e: React.MouseEvent<HTMLInputElement>) => void
   onValueChange?: (e: React.ChangeEvent<HTMLInputElement>) => void // Assuming you are handling state in a parent component
   onPrefixChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -41,6 +43,8 @@ export const InputBox: React.FC<InputBoxProps> = ({
   suffix,
   prefix,
   balanceNode,
+  maxNode,
+  onMaxClick,
   onValueChange,
   onPrefixChange,
   ...props
@@ -75,14 +79,22 @@ export const InputBox: React.FC<InputBoxProps> = ({
             </div>
           )}
         </div>
-        <div className="flex">
+        <div className="flex flex-row items-center">
           <Input
             className="w-full text-left text-white bg-transparent border-none shadow-none outline-none text-md placeholder:text-gray-300"
             value={value}
             placeholder="0.00"
             onChange={onValueChange} // Assuming you have a handler function for this
           />
-          <span className="mt-2 text-right text-white text-md">{suffix}</span>
+          {maxNode && (
+            <div
+              className="px-2 py-1 mr-2 text-xs border border-gray-300 rounded-md hover:cursor-pointer"
+              onClick={onMaxClick}
+            >
+              <span>Max</span>
+            </div>
+          )}
+          <span className="text-right text-white text-md">{suffix}</span>
         </div>
       </div>
     </Card>

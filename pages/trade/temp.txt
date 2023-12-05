@@ -1,0 +1,107 @@
+  {/* <div className="flex flex-row gap-[2%] mb-5">
+                        <div className="flex flex-col gap-3 w-[60%]">
+                          <div className="flex flex-row gap-3">
+                            <Checkbox className="h-4 w-4" />
+                            <Label htmlFor="name" className="text-left">
+                              Take Profit ≥
+                            </Label>
+                          </div>
+                          <Input
+                            id="name"
+                            value="0.00"
+                            className="col-span-3"
+                            suffix="USDT"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-[14px] w-[38%]">
+                          <Label
+                            htmlFor="name"
+                            className="text-right mr-1 text-0xgrey"
+                          >
+                            Exp. PnL -(-)
+                          </Label>
+                          <Input
+                            id="name"
+                            value="0.00"
+                            className="col-span-3"
+                            suffix="%"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-row gap-[2%]">
+                        <div className="flex flex-col gap-3 w-[60%]">
+                          <div className="flex flex-row gap-1">
+                            <Checkbox className="h-4 w-4" />
+                            <Label htmlFor="name" className="text-left">
+                              Stop Loss ≤
+                            </Label>
+                          </div>
+                          <Input
+                            id="name"
+                            value="0.00"
+                            className="col-span-3"
+                            suffix="USDT"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-[14px] w-[38%]">
+                          <Label
+                            htmlFor="name"
+                            className="text-right mr-1 text-0xgrey"
+                          >
+                            Exp. PnL -(-)
+                          </Label>
+                          <Input
+                            id="name"
+                            value="0.00"
+                            className="col-span-3"
+                            suffix="%"
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-2 w-full text-sm">
+                        <div className="flex flex-row justify-between">
+                          <div className="text-0xgrey">Size</div>
+                          <div>-</div>
+                        </div>
+                        <div className="flex flex-row justify-between">
+                          <div>Execution Fee</div>
+                          <div>-</div>
+                        </div>
+                        <div className="mt-4 text-0xgrey">
+                          When the market price reaches the trigger price, the
+                          system will close the position at the{" "}
+                          <span className="text-white">market price</span>.
+                        </div>
+                      </div>
+                      <Alert className="bg-0xdialog-foreground border-gray-100">
+                        <AlertCircle
+                          className="text-0xredLighter hover:text-opacity-100 mt-2"
+                          size={22}
+                        />
+                        <AlertDescription className="text-0xyellow-lighter ml-1">
+                          Margin settlement has a 10% slippage to prevent order
+                          failure due to insufficient margin.
+                        </AlertDescription>
+                      </Alert> */}
+                      {/* <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Name
+                          </Label>
+                          <Input
+                            id="name"
+                            value="Pedro Duarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="username" className="text-right">
+                            Username
+                          </Label>
+                          <Input
+                            id="username"
+                            value="@peduarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                      </div> */}

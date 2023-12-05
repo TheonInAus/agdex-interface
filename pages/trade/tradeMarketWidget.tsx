@@ -87,7 +87,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
         <InputBox
           title="Pay"
           value={usdMargin}
-          suffix="USDT"
+          suffix="USDX"
           balanceNode={
             isBalanceLoading ? (
               <div>Fetching balance…</div>
@@ -154,7 +154,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
         <ListItem keyText="Entry Price" value={""} />
         <ListItem keyText="Price Impact" value={""} />
         <div className="flex">
-          <ListItem keyText="Acceptable Price" value={""} percentage="0.30%" className="flex gap-28" />
+          <ListItem keyText="Acceptable Price" value={""} percentage="0.30%" />
           <button className="ml-1">
             <Edit3
               className="text-white text-opacity-70 hover:text-opacity-100"

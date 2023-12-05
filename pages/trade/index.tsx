@@ -34,6 +34,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TradingViewWidget from "@/components/tradingView"
 
+import { OrderListWidget } from "./orderListWidget"
 import { PositionListWidget } from "./positionListWidget"
 import { TradeLimitWidget } from "./tradeLimitWidget"
 import { TradeMarketWidget } from "./tradeMarketWidget"
@@ -154,8 +155,7 @@ export default function TradePage() {
               </StyledTabsContent>
               <StyledTabsContent value="Orders" className="ml-3">
                 {/* Content for Orders tab */}
-                <div className="mt-2 mb-4 border-t border-0xline"></div>
-                <div>Orders tab content goes here.</div>
+                <OrderListWidget />
               </StyledTabsContent>
               <StyledTabsContent value="History" className="ml-3">
                 {/* Content for History tab */}

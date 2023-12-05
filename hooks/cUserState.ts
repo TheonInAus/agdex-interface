@@ -4,6 +4,7 @@ import { useWalletClient } from 'wagmi'
 import { arbitrumGoerli } from 'wagmi/chains'
 import { poolABI } from "@/abis/poolABI"
 import { SIDE_LONG, SIDE_SHORT } from "./zContractHelper"
+import { useQuery, gql } from '@apollo/client';
 
 // struct Position {
 //     uint128 margin;
@@ -83,4 +84,85 @@ export const useUserPositionList = () => {
     }
     const positionDataList = positionDatas.filter(position => position.margin !== 0n && position.size !== 0n)
     return { data: positionDataList, isLoading, isError }
+}
+
+type IncreaseOrderCreated = {
+    account: string;
+    blockNumber: string;
+    executionFee: string;
+    marginDelta: string;
+    orderIndex: string;
+    pool: string;
+    side: string;
+    sizeDelta: string;
+    triggerAbove: string;
+    triggerMarketPriceX96: string;
+};
+
+type DecreaseOrderCreated = {
+    account: string;
+    blockNumber: string;
+    id: string;
+    marginDelta: string;
+    orderIndex: string;
+    pool: string;
+    side: string;
+};
+
+type QueryResult = {
+    increaseOrderCreateds: IncreaseOrderCreated[];
+    decreaseOrderCreateds: DecreaseOrderCreated[];
+};
+export const useUserOrderList = (poolAddress: any) => {
+    const { data: walletClient } = useWalletClient({
+        chainId: arbitrumGoerli.id,
+    })
+    const GET_DATA = gql`
+    query GetOrderBookList($address: String!) {
+        increaseOrderCreateds(
+            orderBy: blockTimestamp
+            orderDirection: desc
+            where:{account: $address}
+        ) {
+            account
+            blockNumber
+            executionFee
+            marginDelta
+            orderIndex
+            pool
+            side
+            sizeDelta
+            triggerAbove
+            triggerMarketPriceX96
+        }
+        decreaseOrderCreateds(
+            orderBy: blockTimestamp
+            orderDirection: desc
+            where:{account: $address}
+        ) {
+            account
+            blockNumber
+            id
+            marginDelta
+            orderIndex
+            pool
+            side
+        }
+    }
+  `;
+
+    const { loading, error, data } = useQuery<QueryResult>(GET_DATA, {
+        skip: !walletClient?.account.address,
+        variables: { address: walletClient?.account.address },
+    });
+
+    console.log('result graph result order book=> ', data?.increaseOrderCreateds)
+    // console.log('result graph result order book=> ', data?.decreaseOrderCreateds)
+
+
+    return {
+        isLoading: loading,
+        isError: error,
+        orderBookList: data
+    }
 }
