@@ -154,7 +154,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
         <ListItem keyText="Entry Price" value={""} />
         <ListItem keyText="Price Impact" value={""} />
         <div className="flex">
-          <ListItem keyText="Acceptable Price" value={""} percentage="0.30%" />
+          <ListItem keyText="Acceptable Price" value={""} percentage="0.30%" className="w-full"/>
           <button className="ml-1">
             <Edit3
               className="text-white text-opacity-70 hover:text-opacity-100"

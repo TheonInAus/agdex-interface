@@ -31,6 +31,7 @@ export interface ListItemProps extends VariantProps<typeof listItemVariants> {
   value: string | number
   info?: string
   percentage?: string
+  className?: string
 }
 
 const ListItem: React.FC<ListItemProps> = ({
@@ -38,10 +39,11 @@ const ListItem: React.FC<ListItemProps> = ({
   value,
   info,
   percentage,
+  className,
   ...props
 }) => {
   return (
-    <div className={listItemVariants(props)} {...props}>
+    <div className={`${listItemVariants(props)} ${className || ''}`} {...props} {...props}>
       <div className="flex items-center">
         <span className="text-xs text-0xgrey">{keyText}</span>
         {info ? (
