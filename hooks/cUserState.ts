@@ -1,5 +1,5 @@
 import { useBalance, useContractRead, useContractReads } from "wagmi"
-import { ethPoolAddress, registerPoolsInfos, usdxAddress } from "./zAddressHelper"
+import { arbPoolAddress, btcPoolAddress, ethPoolAddress, linkPoolAddress, registerPoolsInfos, usdxAddress } from "./zAddressHelper"
 import { useWalletClient } from 'wagmi'
 import { arbitrumGoerli } from 'wagmi/chains'
 import { poolABI } from "@/abis/poolABI"
@@ -86,34 +86,28 @@ export const useUserPositionList = () => {
     return { data: positionDataList, isLoading, isError }
 }
 
-type IncreaseOrderCreated = {
-    account: string;
-    blockNumber: string;
-    executionFee: string;
-    marginDelta: string;
-    orderIndex: string;
-    pool: string;
-    side: string;
-    sizeDelta: string;
-    triggerAbove: string;
-    triggerMarketPriceX96: string;
+type OrderBookItemType = {
+    blockTimestamp: string
+    blockNumber: string
+    account: string
+    id: string
+    marginDelta: string
+    sizeDelta: string
+    orderIndex: string
+    pool: string
+    side: number
+    triggerAbove: boolean
+    triggerMarketPriceX96: string
+    acceptableTradePriceX96: string
+    __typeName: string
 };
 
-type DecreaseOrderCreated = {
-    account: string;
-    blockNumber: string;
-    id: string;
-    marginDelta: string;
-    orderIndex: string;
-    pool: string;
-    side: string;
-};
 
 type QueryResult = {
-    increaseOrderCreateds: IncreaseOrderCreated[];
-    decreaseOrderCreateds: DecreaseOrderCreated[];
+    increaseOrderCreateds: OrderBookItemType[];
+    decreaseOrderCreateds: OrderBookItemType[];
 };
-export const useUserOrderList = (poolAddress: any) => {
+export const useUserOrderList = () => {
     const { data: walletClient } = useWalletClient({
         chainId: arbitrumGoerli.id,
     })
@@ -124,29 +118,35 @@ export const useUserOrderList = (poolAddress: any) => {
             orderDirection: desc
             where:{account: $address}
         ) {
-            account
+            blockTimestamp
             blockNumber
-            executionFee
+            account
             marginDelta
+            sizeDelta
             orderIndex
             pool
             side
-            sizeDelta
             triggerAbove
             triggerMarketPriceX96
+            acceptableTradePriceX96
         }
         decreaseOrderCreateds(
             orderBy: blockTimestamp
             orderDirection: desc
             where:{account: $address}
         ) {
-            account
+            blockTimestamp
             blockNumber
+            account
             id
             marginDelta
+            sizeDelta
             orderIndex
             pool
             side
+            triggerAbove
+            triggerMarketPriceX96
+            acceptableTradePriceX96
         }
     }
   `;
@@ -156,13 +156,15 @@ export const useUserOrderList = (poolAddress: any) => {
         variables: { address: walletClient?.account.address },
     });
 
-    console.log('result graph result order book=> ', data?.increaseOrderCreateds)
-    // console.log('result graph result order book=> ', data?.decreaseOrderCreateds)
 
+    const combineData = data?.increaseOrderCreateds.concat(data?.decreaseOrderCreateds)
+    combineData?.sort((a, b) => Number(b.blockTimestamp) - Number(a.blockTimestamp));
+
+    console.log('result graph result order combineData=> ', combineData)
 
     return {
         isLoading: loading,
         isError: error,
-        orderBookList: data
+        orderBookList: combineData
     }
 }

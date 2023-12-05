@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react"
+import { Loader } from "lucide-react"
 
 import {
+  useCreateDecreaseOrder,
+  useCreateTakeProfitAndStopLossOrders,
+} from "@/hooks/actionTradePosition"
+import { ethPoolAddress } from "@/hooks/zAddressHelper"
+import {
   minOrderBookExecutionFee,
+  to0xxPriceX96,
   wrapperFormatEther18e,
 } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
@@ -17,8 +24,10 @@ export const TpslTabsEntirePositionWidget = ({
   positionInfo,
 }: TpslTabsEntirePositionProps) => {
   const [takeProfitAmount, setTakeProfitAmount] = useState("")
+  const [afterTPAmount, setAfterTPAmount] = useState(0)
   const [takeProfitPnL, setTakeProfitPnL] = useState("")
   const [stopLossAmount, setStopLossAmount] = useState("")
+  const [afterSLAmount, setAfterSLAmount] = useState(0)
   const [stopLossPnL, setStopLossPnL] = useState("")
   const [takeProfitChecked, setTakeProfitChecked] = useState(true)
   const [stopLossChecked, setStopLossChecked] = useState(true)
@@ -40,6 +49,7 @@ export const TpslTabsEntirePositionWidget = ({
       return takeProfitValid && stopLossValid
     }
   }
+
   useEffect(() => {
     if (takeProfitChecked && stopLossChecked) {
       setOrderBookExecutionFee(doubleExecutionFee)
@@ -47,6 +57,71 @@ export const TpslTabsEntirePositionWidget = ({
       setOrderBookExecutionFee(minOrderBookExecutionFee)
     }
   }, [takeProfitChecked, stopLossChecked, doubleExecutionFee])
+
+  const checkTriggerAbove = () => {
+    if (takeProfitChecked && !stopLossChecked) {
+      return true
+    }
+    if (!takeProfitChecked && stopLossChecked) {
+      return false
+    }
+    return true
+  }
+
+  const handleTPAfterAmount = () => {
+    if (!takeProfitAmount) return "0"
+    return (Number(takeProfitAmount) * 1.1).toString()
+  }
+
+  const handleSLAfterAmount = () => {
+    if (!stopLossAmount) return "0"
+    return (Number(stopLossAmount) * 1.1).toString()
+  }
+  const {
+    createDecOrderData,
+    isCreateDecOrderLoading,
+    isCreateDecOrderError,
+    createDecOrderWrite,
+  } = useCreateDecreaseOrder(
+    ethPoolAddress,
+    positionInfo.tokenSide === "Long" ? 1 : 2,
+    "0",
+    "0",
+    checkTriggerAbove()
+      ? to0xxPriceX96(takeProfitAmount)
+      : to0xxPriceX96(stopLossAmount),
+    checkTriggerAbove(),
+    checkTriggerAbove()
+      ? to0xxPriceX96(handleTPAfterAmount())
+      : to0xxPriceX96(handleSLAfterAmount()),
+    ""
+  )
+
+  const {
+    createTPSLData,
+    isCreateTPSLLoading,
+    isCreateTPSLError,
+    createTPSLWrite,
+  } = useCreateTakeProfitAndStopLossOrders(
+    ethPoolAddress,
+    positionInfo.tokenSide === "Long" ? 1 : 2,
+    [0, 0],
+    [0, 0],
+    [to0xxPriceX96(takeProfitAmount), to0xxPriceX96(stopLossAmount)],
+    [
+      to0xxPriceX96(handleTPAfterAmount()),
+      to0xxPriceX96(handleSLAfterAmount()),
+    ],
+    ""
+  )
+
+  const handleConfirmClick = () => {
+    if (takeProfitChecked && stopLossChecked) {
+      createTPSLWrite()
+    } else {
+      createDecOrderWrite()
+    }
+  }
   return (
     <>
       <div className="flex flex-row gap-[2%] mb-5">
@@ -159,8 +234,18 @@ export const TpslTabsEntirePositionWidget = ({
       <Button
         className="w-full mt-4 text-sm text-black bg-0xyellow-lighter hover:bg-0xgrey"
         disabled={!checkDisabled()}
+        onClick={() => {
+          handleConfirmClick()
+        }}
       >
-        Confirm
+        {isCreateDecOrderLoading || isCreateTPSLLoading ? (
+          <>
+            <Loader className="w-4 h-4 mr-2 animate-spin" />
+            Please wait
+          </>
+        ) : (
+          "Confirm"
+        )}
       </Button>
     </>
   )

@@ -3,11 +3,15 @@ import { Edit3, ExternalLink, Loader2 } from "lucide-react"
 
 import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
 import { useUserOrderList } from "@/hooks/cUserState"
+import { ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   SIDE_SHORT,
   Side,
+  convertOrderBookTypeData,
+  convertPoolAddressToShownData,
   e6DivideE18,
+  formatTimestampX1000,
   giveMeFormattedToShow,
   to0xxPriceX96,
   wrapperFormatEther6e,
@@ -26,145 +30,94 @@ type PositionInfo = {
 }
 
 export const OrderListWidget = () => {
-  // const { orderBookList, isLoading, isError } = useUserOrderList()
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
-  const { decPositionData, decPositionLoading, decPositionWrite } =
-    useCreateDecreasePosition(
-      currentPosition?.poolAddress,
-      currentPosition?.side || 1,
-      currentPosition?.marginDelta,
-      currentPosition?.sizeDelta,
-      currentPosition?.acceptableTradePriceX96,
-      ""
-    )
-
-  const handleClosePosition = (position: any) => {
-    setCurrentPosition({
-      poolAddress: position.tokenPool,
-      side: position.tokenSide === "Long" ? SIDE_LONG : SIDE_SHORT,
-      marginDelta: 0,
-      sizeDelta: position.size,
-      acceptableTradePriceX96:
-        position.tokenSide === "Long"
-          ? to0xxPriceX96("1999")
-          : to0xxPriceX96("2002"),
-    })
-    decPositionWrite()
-  }
+  const handleCancelOrder = (position: any) => {}
+  const {
+    isLoading: loading,
+    isError: error,
+    orderBookList,
+  } = useUserOrderList()
 
   return (
     <div>
-      {/* {orderBookList && orderBookList.length > 0 ? (
+      <div className="flex flex-row items-center justify-evenly">
+        <div className="w-2/6 text-sm text-start">Time</div>
+        <div className="w-2/12 text-sm text-start">Market</div>
+        <div className="w-2/12 text-sm text-start">Type</div>
+        <div className="w-2/12 text-sm text-start">Side</div>
+        <div className="w-2/12 text-sm text-start">Size</div>
+        <div className="w-3/12 text-sm text-start">Trigger Price</div>
+        <div className="w-3/12 text-sm text-start">Market Price</div>
+        <div className="w-3/12 text-sm text-start">Acceptable Price</div>
+        <div className="w-2/12 text-sm text-end">Cancel All !</div>
+      </div>
+      {orderBookList && orderBookList.length > 0 ? (
         <>
-          {orderBookList.map((position, index) => (
-            <div key={index}>
-              <div className="mt-2 mb-4 border-t border-0xline"></div>
-              <div className="flex flex-row gap-2">
-                <div className="text-white">{`${position.tokenName}/USDX`}</div>
-                <div
-                  className={`${
-                    position.tokenSide === "Long"
-                      ? "text-0xgreen"
-                      : "text-0xredLighter"
-                  }`}
+          {orderBookList.map((orderItem, index) => (
+            <div key={index} className="flex">
+              <div className="w-2/6 text-sm text-start">
+                {formatTimestampX1000(orderItem.blockTimestamp)}
+              </div>
+              <div className="w-2/12 text-sm text-start">
+                {convertPoolAddressToShownData(orderItem.pool)}
+              </div>
+              <div className="w-2/12 text-sm text-start">
+                {convertOrderBookTypeData(
+                  orderItem.__typeName,
+                  orderItem.triggerAbove
+                )}
+              </div>
+              <div
+                className={`w-2/12 text-sm text-start ${
+                  orderItem.side === 1 ? "text-0xgreen" : "text-0xredLighter"
+                }`}
+              >
+                {" "}
+                {orderItem.side === 1 ? "Long" : "Short"}
+              </div>
+              <div className="w-2/12 text-sm text-start">
+                {giveMeFormattedToShow(
+                  wrapperFormatEther18e(BigInt(orderItem.sizeDelta))
+                )}
+              </div>
+              <div className="w-3/12 text-sm text-start">
+                {x96Price2Readable(BigInt(orderItem.triggerMarketPriceX96))}
+              </div>
+              <div className="w-3/12 text-sm text-start">
+                {x96Price2Readable(BigInt(orderItem.triggerMarketPriceX96))}
+              </div>
+              <div className="w-3/12 text-sm text-start">
+                {x96Price2Readable(BigInt(orderItem.acceptableTradePriceX96))}
+              </div>
+              <div className="w-2/12 text-sm text-end">
+                {" "}
+                <Button
+                  disabled={false}
+                  className="h-5 text-sm text-white bg-transparent border border-white hover:bg-0xbox"
+                  onClick={() => {
+                    handleCancelOrder(orderItem)
+                  }}
                 >
-                  {position.tokenSide}{" "}
-                  {e6DivideE18(position.margin, position.size, 2000n)} x
-                </div>
-                <div className="text-gray-600">
-                  [ todo measure position risk]
-                </div>
+                  {false ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Please wait
+                    </>
+                  ) : (
+                    "Cancel"
+                  )}
+                </Button>
               </div>
-              <div className="flex flex-row w-full mt-3 justify-evenly">
-                <div className="flex flex-col w-full">
-                  <PositionItem
-                    keyText="Size"
-                    value={
-                      giveMeFormattedToShow(
-                        wrapperFormatEther18e(position.size)
-                      ) + " ETH"
-                    }
-                  />
-                  <div className="flex flex-row mt-2">
-                    <PositionItem
-                      keyText="Margin"
-                      value={
-                        giveMeFormattedToShow(
-                          wrapperFormatEther6e(position.margin)
-                        ) + " USDX"
-                      }
-                      info="ll"
-                    />
-                    <button className="ml-1">
-                      <Edit3
-                        className="text-white text-opacity-70 hover:text-opacity-100"
-                        size={13}
-                      />
-                    </button>
-                  </div>
-                </div>
-                <div className="flex flex-col w-full">
-                  <PositionItem
-                    keyText="Entry Price"
-                    value={x96Price2Readable(position.entryPrice)}
-                  />
-                  <div className="mt-2">
-                    <PositionItem keyText="Lig. Price" value={""} info="ll" />
-                  </div>
-                </div>
-                <div className="flex flex-col w-full">
-                  <div className="flex flex-row">
-                    <PositionItem
-                      plusCss={`${
-                        Number(x96Price2Readable(position.unrealizedPnL)) >= 0
-                          ? "text-0xgreen"
-                          : "text-0xredLighter"
-                      }`}
-                      keyText="Unrealized Pnl."
-                      value={x96Price2Readable(position.unrealizedPnL)}
-                      info=""
-                    />
-
-                    <ExternalLink
-                      className="ml-1 text-white text-opacity-70 hover:text-opacity-100"
-                      size={13}
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <PositionItem keyText="Net Funding" value={"-"} info={""} />
-                  </div>
-                </div>
-                <div className="flex flex-row justify-end w-full gap-3">
-                  <Button className="h-5 text-sm text-white bg-transparent border border-white hover:bg-0xbox">
-                    TP/SL
-                  </Button>
-                  <Button
-                    disabled={decPositionLoading}
-                    className="h-5 text-sm text-white bg-transparent border border-white hover:bg-0xbox"
-                    onClick={() => {
-                      handleClosePosition(position)
-                    }}
-                  >
-                    {decPositionLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Please wait
-                      </>
-                    ) : (
-                      "Close"
-                    )}
-                  </Button>
-                </div>
-              </div>
+              <div className="mt-2 mb-4 border-t border-0xline"></div>
             </div>
           ))}
         </>
-      ) : ( */}
-      <>
-        <div>No Position</div>
-      </>
-      {/* )} */}
+      ) : (
+        <>
+          <div>No Position</div>
+        </>
+      )}
     </div>
   )
 }

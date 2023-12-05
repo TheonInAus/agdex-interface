@@ -1,6 +1,9 @@
 import { useState } from "react"
+import { Loader } from "lucide-react"
 
+import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
+import { ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   e6DivideE18,
@@ -24,6 +27,19 @@ export const AddMarginWidget = ({ positionInfo }: AddMarginProps) => {
     isLoading: isBalanceLoading,
   } = useUserUsdxBalance()
 
+  const { incPositionData, incPositionLoading, incPositionWrite } =
+    useCreateIncreasePostion(
+      ethPoolAddress,
+      positionInfo.tokenSide === "Long" ? 1 : 2,
+      afterMargin,
+      "0",
+      "0"
+    )
+
+  const handleIncPostionTemp = () => {
+    incPositionWrite()
+  }
+
   const handleMaxClick = () => {
     setAfterMargin(balanceData?.formatted as string)
   }
@@ -35,6 +51,9 @@ export const AddMarginWidget = ({ positionInfo }: AddMarginProps) => {
         suffix={"USDX"}
         maxNode={true}
         onMaxClick={handleMaxClick}
+        onValueChange={(e) => {
+          setAfterMargin(e.target.value)
+        }}
         balanceNode={
           isBalanceLoading ? (
             <div>Fetching balance…</div>
@@ -77,8 +96,18 @@ export const AddMarginWidget = ({ positionInfo }: AddMarginProps) => {
       <Button
         className={`w-full font-bold text-center rounded-md item-center mt-4 h-9 text-white bg-0xyellow-lighter`}
         disabled={afterMargin === ""}
+        onClick={() => {
+          handleIncPostionTemp()
+        }}
       >
-        Confirm
+        {incPositionLoading ? (
+          <>
+            <Loader className="w-4 h-4 mr-2 animate-spin" />
+            Please wait
+          </>
+        ) : (
+          "Confirm"
+        )}
       </Button>
     </>
   )

@@ -46,12 +46,14 @@ export const useCreateDecreasePosition = (tokenPoolAddress: any, side: Side, mar
     const { data: walletClient } = useWalletClient({
         chainId: arbitrumGoerli.id,
     })
+    if (!marginDelta) marginDelta = '0'
+    if (!sizeDelta) sizeDelta = '0'
     if (receiverAddress === '') receiverAddress = walletClient?.account.address
     const { data: decPositionData, isLoading: decPositionLoading, write: decPositionWrite } = useContractWrite({
         address: positionRouterAddress,
         abi: positionRouterABI,
         functionName: 'createDecreasePosition',
-        args: [tokenPoolAddress, side, marginDelta, sizeDelta, acceptableTradePriceX96, receiverAddress],
+        args: [tokenPoolAddress, side, wrapperParseEther6e(marginDelta), parseEther(sizeDelta), acceptableTradePriceX96, receiverAddress],
         value: minExecutionFee
     })
 
@@ -181,12 +183,17 @@ export const useCancelIncreaseOrder = (orderIndex: any, receiverAddress: any) =>
 }
 
 export const useCreateDecreaseOrder = (tokenPoolAddress: any, side: Side, marginDelta: any, sizeDelta: any, triggerMarketPriceX96: any, triggerAbove: any, acceptableTradePriceX96: any, receiverAddress: any) => {
-
+    const { data: walletClient } = useWalletClient({
+        chainId: arbitrumGoerli.id,
+    })
+    if (receiverAddress === '') receiverAddress = walletClient?.account.address
     const { data: createDecOrderData, isLoading: isCreateDecOrderLoading, isError: isCreateDecOrderError, write: createDecOrderWrite } = useContractWrite({
         address: orderBookAddress,
         abi: orderBookABI,
         functionName: 'createDecreaseOrder',
-        args: [tokenPoolAddress, side, marginDelta, sizeDelta, triggerMarketPriceX96, triggerAbove, acceptableTradePriceX96, receiverAddress]
+        args: [tokenPoolAddress, side, marginDelta, sizeDelta, triggerMarketPriceX96, triggerAbove, acceptableTradePriceX96, receiverAddress],
+        value: minOrderBookExecutionFee
+
     })
 
     const previousHashRef = useRef<string | undefined>();
@@ -278,5 +285,44 @@ export const useCancelDecreaseOrder = (orderIndex: any, receiverAddress: any) =>
         isCancelDecOrderLoading,
         isCancelDecOrderError,
         cancelDecOrderWrite
+    }
+}
+
+
+export const useCreateTakeProfitAndStopLossOrders = (tokenPoolAddresss: any, side: Side, marginDeltas: Number[], sizeDeltas: Number[], triggerMarketPriceX96s: any[], acceptableTradePriceX96s: any[], receiverAddress: any) => {
+    const { data: walletClient } = useWalletClient({
+        chainId: arbitrumGoerli.id,
+    })
+    if (receiverAddress === '') receiverAddress = walletClient?.account.address
+
+
+    const { data: createTPSLData, isLoading: isCreateTPSLLoading, isError: isCreateTPSLError, write: createTPSLWrite } = useContractWrite({
+        address: orderBookAddress,
+        abi: orderBookABI,
+        functionName: 'createTakeProfitAndStopLossOrders',
+        args: [tokenPoolAddresss, side, marginDeltas, sizeDeltas, triggerMarketPriceX96s, acceptableTradePriceX96s, receiverAddress],
+        value: minOrderBookExecutionFee * 2n
+    })
+    const previousHashRef = useRef<string | undefined>();
+
+    useEffect(() => {
+        if (createTPSLData?.hash && createTPSLData.hash !== previousHashRef.current) {
+            (async () => {
+                if (createTPSLData?.hash) {
+                    const receipt = await waitForTransaction({ hash: createTPSLData?.hash });
+                    previousHashRef.current = createTPSLData.hash;
+                    if (receipt.status === 'success') {
+                    } else {
+                    }
+                }
+            })();
+        }
+    }, [createTPSLData]);
+
+    return {
+        createTPSLData,
+        isCreateTPSLLoading,
+        isCreateTPSLError,
+        createTPSLWrite
     }
 }

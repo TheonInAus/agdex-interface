@@ -1,5 +1,8 @@
 import { useState } from "react"
+import { Loader } from "lucide-react"
 
+import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
+import { ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   e6DivideE18,
@@ -24,6 +27,19 @@ export const ReduceMarginWidget = ({ positionInfo }: ReduceMarginProps) => {
     setAfterMargin(marginShow)
   }
 
+  const { decPositionData, decPositionLoading, decPositionWrite } =
+    useCreateDecreasePosition(
+      ethPoolAddress,
+      positionInfo.tokenSide === "Long" ? 1 : 2,
+      afterMargin,
+      "0",
+      "0",
+      ""
+    )
+
+  const handleIncPostionTemp = () => {
+    decPositionWrite()
+  }
   return (
     <>
       <InputBox
@@ -33,6 +49,9 @@ export const ReduceMarginWidget = ({ positionInfo }: ReduceMarginProps) => {
         maxNode={true}
         onMaxClick={handleMaxClick}
         balanceNode={`${marginShow} USDX`}
+        onValueChange={(e) => {
+          setAfterMargin(e.target.value)
+        }}
       />
       <div className="flex flex-row gap-2 mt-5 mb-3">
         <div className="text-base text-white">
@@ -62,8 +81,18 @@ export const ReduceMarginWidget = ({ positionInfo }: ReduceMarginProps) => {
       <Button
         className={`w-full font-bold text-center rounded-md item-center mt-4 h-9 text-white bg-0xyellow-lighter`}
         disabled={afterMargin === ""}
+        onClick={() => {
+          handleIncPostionTemp()
+        }}
       >
-        Confirm
+        {decPositionLoading ? (
+          <>
+            <Loader className="w-4 h-4 mr-2 animate-spin" />
+            Please wait
+          </>
+        ) : (
+          "Confirm"
+        )}
       </Button>
     </>
   )

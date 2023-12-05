@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { AlertCircle, Edit3, ExternalLink, Loader2 } from "lucide-react"
 
 import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
-import { useUserPositionList } from "@/hooks/cUserState"
+import { useUserOrderList, useUserPositionList } from "@/hooks/cUserState"
+import { ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   SIDE_SHORT,

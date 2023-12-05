@@ -1,6 +1,7 @@
 import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
 import Decimal from "decimal.js";
 import { BigNumberish } from "ethers";
+import { arbPoolAddress, btcPoolAddress, ethPoolAddress, linkPoolAddress } from "./zAddressHelper";
 
 
 export const minExecutionFee = parseEther('0.00021')
@@ -63,6 +64,7 @@ export function toX96(value: string): bigint {
 }
 
 export function to0xxPriceX96(price: string) {
+    if (!price) price = "0"
     return toPriceX96(price, DECIMALS_18, DECIMALS_6)
 }
 
@@ -113,3 +115,42 @@ export const giveMeNotNaNFormattedToShow = (param: any) => (param === 'NaN' || p
 
 export const tempCurrenyFormat = (number: number) => number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 
+export const formatTimestampX1000 = (timestamp: number | string) => {
+    let date = new Date(Number(timestamp) * 1000);
+    let formattedDate =
+        ("0" + (date.getMonth() + 1)).slice(-2) + "-" + // 月份
+        ("0" + date.getDate()).slice(-2) + " " + // 日
+        ("0" + date.getHours()).slice(-2) + ":" + // 小时
+        ("0" + date.getMinutes()).slice(-2) + ":" + // 分钟
+        ("0" + date.getSeconds()).slice(-2); // 秒
+
+    return formattedDate;
+}
+
+export const convertPoolAddressToShownData = (poolAddress: string) => {
+    if (poolAddress === ethPoolAddress) {
+        return 'ETH/USDX'
+    } else if (poolAddress === btcPoolAddress) {
+        return 'BTC/USDX'
+    } else if (poolAddress === arbPoolAddress) {
+        return 'ARB/USDX'
+    } else if (poolAddress === linkPoolAddress) {
+        return 'LINK/USDX'
+    } else {
+        return '-error'
+    }
+}
+
+export const convertOrderBookTypeData = (__typeName: string, triggerAbove: boolean) => {
+    if (__typeName === 'IncreaseOrderCreated') {
+        return 'Limit'
+    } else if (__typeName === 'DecreaseOrderCreated') {
+        if (triggerAbove) {
+            return 'Position TP'
+        } else {
+            return 'Position SL'
+        }
+    } else {
+        return 'Position Err'
+    }
+}
