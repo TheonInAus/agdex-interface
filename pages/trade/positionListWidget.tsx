@@ -100,7 +100,6 @@ export const PositionListWidget = () => {
         <>
           {positionDataList.map((position, index) => (
             <div key={index}>
-              <div className="mt-2 mb-4 border-t border-0xline"></div>
               <div className="flex flex-row gap-2">
                 <div className="text-white">{`${position.tokenName}/USDX`}</div>
                 <div

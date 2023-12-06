@@ -13,9 +13,19 @@ import {
 } from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
+import { TpsLInput } from "@/components/ui/tpslIput"
 
 type TradeMarketType = {
   side: Side
@@ -154,13 +164,58 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
         <ListItem keyText="Entry Price" value={""} />
         <ListItem keyText="Price Impact" value={""} />
         <div className="flex">
-          <ListItem keyText="Acceptable Price" value={""} percentage="0.30%" className="w-full"/>
-          <button className="ml-1">
-            <Edit3
-              className="text-white text-opacity-70 hover:text-opacity-100"
-              size={13}
-            />
-          </button>
+          <ListItem
+            keyText="Acceptable Price"
+            value={""}
+            percentage="0.30%"
+            className="w-full"
+          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="ml-1">
+                <Edit3
+                  className="text-white text-opacity-70 hover:text-opacity-100"
+                  size={13}
+                />
+              </button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] bg-0xdialog w-[370px]">
+              <DialogHeader>
+                <DialogTitle className="mb-2 text-center">
+                  Slippage Settings
+                </DialogTitle>
+                <DialogDescription>
+                  <div className="flex justify-between mb-2">
+                    <div>Max slippage</div>
+                    <label className="text-white">0.30%</label>
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    <div className="w-[60%]">auto/custom</div>
+                    <div className="w-[40%]">
+                      <TpsLInput
+                        value={0}
+                        // className="col-span-3"
+                        suffix="%"
+                        placeholder="TP trigger price"
+                        // onChange={(e) => {
+                        //   setTakeProfitAmount(e.target.value)
+                        // }}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-5">
+                    If the price change exceeds this percentage, your
+                    transaction will revert.
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="mt-3">
+                <Button className="w-full text-sm text-black bg-white hover:bg-0xgrey">
+                  Save
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
         <ListItem keyText="Liq. Price" value={""} />
         <ListItem keyText="Est. Margin" value={""} />
