@@ -143,7 +143,7 @@ export default function TradePage() {
             <TradingViewWidget />
           </div>
           {/* Wide Block 2 */}
-          <div className="p-4 pb-16 rounded-lg bg-0xboxBackground">
+          <div className="p-4 pb-16 rounded-lg bg-0xboxBackground" style={{ width: 950 }}>
             <StyledTabs defaultValue="Position">
               <StyledTabsList aria-label="Manage your account">
                 <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>

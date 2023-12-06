@@ -95,6 +95,7 @@ export const PositionListWidget = () => {
 
   return (
     <div>
+      <div className="mt-2 mb-4 border-t border-0xline"></div>
       {positionDataList.length > 0 ? (
         <>
           {positionDataList.map((position, index) => (
@@ -317,7 +318,7 @@ export const PositionListWidget = () => {
         </>
       ) : (
         <>
-          <div>No Position</div>
+          <div>No open positions</div>
         </>
       )}
     </div>
