@@ -20,6 +20,16 @@ export const siteConfig = {
       title: "Pools",
       href: "/pools",
     },
+    {
+      name: 'Earn',
+      title: "Earn",
+      href: "/earn",
+    },
+    {
+      name: 'Referrals',
+      title: "Referrals",
+      href: "/referrals",
+    },
   ],
   links: {
     twitter: "https://twitter.com/shadcn",
