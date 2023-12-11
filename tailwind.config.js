@@ -69,6 +69,10 @@ module.exports = {
           DEFAULT: "#FFFFFF08",
           foreground: "#FFFFFF08",
         },
+        "0xsmallBoxBackground": {
+          DEFAULT: "#2F2F2F",
+          foreground: "#2F2F2F",
+        },
         "0xgreen": {
           DEFAULT: "#03BB70",
           foreground: "#02A864",
