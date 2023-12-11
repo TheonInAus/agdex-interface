@@ -4,6 +4,7 @@ import React from "react"
 import { AlertCircle, ChevronRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { CustomTooltip } from "@/components/ui/customToolTip"
 import {
   Dialog,
   DialogContent,
@@ -30,12 +31,6 @@ import {
   StyledTabsList,
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 
 import { AddMarginWidget } from "../trade/marginEdit/addMarginWidget"
 import { ReduceMarginWidget } from "../trade/marginEdit/reduceMarginWidget"
@@ -74,37 +69,30 @@ export default function EarnPage() {
             <div className="text-lg text-white">33,422.10</div>
           </div>
           <div className="flex flex-col gap-1">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-0xgrey text-sm">Total Staked</div>
-                </TooltipTrigger>
-                <TooltipContent className="w-80">
-                  <p>
-                    The calculated figure may slightly differ from the actual
-                    amount because the 0XX in the 0XX/ETH LP NFT is based on the
-                    EQU quantity in the LP Token at the time of staking.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-lg text-white">309,426.90</div>
-                </TooltipTrigger>
-                <TooltipContent className="w-80">
-                  <p className="mb-2">
-                    Total Staked = Staked 0XX in 0XX/ETH LP NFT + Staked 0XX
-                  </p>
-                  <ListItem
-                    keyText={"Staked 0XX in 0XX/ETH LP NFT"}
-                    value={""}
-                  />
-                  <ListItem keyText={"Staked 0XX"} value={""} />
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <CustomTooltip
+              triggerContent={
+                <div className="text-0xgrey text-sm">Total Staked</div>
+              }
+            >
+              <p>
+                The calculated figure may slightly differ from the actual amount
+                because the 0XX in the 0XX/ETH LP NFT is based on the EQU
+                quantity in the LP Token at the time of staking.
+              </p>
+              <ListItem keyText={"Staking"} value={"-"} />
+              <ListItem keyText={"Staking LP NFT"} value={"-"} />
+            </CustomTooltip>
+            <CustomTooltip
+              triggerContent={
+                <div className="text-lg text-white">309,426.90</div>
+              }
+            >
+              <p className="mb-2">
+                Total Staked = Staked 0XX in 0XX/ETH LP NFT + Staked 0XX
+              </p>
+              <ListItem keyText={"Staked 0XX in 0XX/ETH LP NFT"} value={""} />
+              <ListItem keyText={"Staked 0XX"} value={""} />
+            </CustomTooltip>
           </div>
           <div className="flex flex-col gap-1">
             <div className="text-0xgrey">Current Emissions</div>
@@ -115,33 +103,21 @@ export default function EarnPage() {
       <div className="p-6 mb-3 rounded-lg bg-0xboxBackground w-[85%] mt-4">
         <div>Claimable Rewards</div>
         <div className="flex mt-8 justify-between w-[75%]">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="w-[16%] text-lg">0 USDT</div>
-              </TooltipTrigger>
-              <TooltipContent className="w-80">
-                <p>The trading fee income is settled every hour.</p>
-                <ListItem keyText={"Staking"} value={""} />
-                <ListItem keyText={"Staking LP NFT"} value={""} />
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="w-[16%] text-lg">0 0XX</div>
-              </TooltipTrigger>
-              <TooltipContent className="w-80">
-                <ListItem keyText={"Position Mining"} value={""} />
-                <ListItem keyText={"Pool2 Mining"} value={""} />
-                <ListItem keyText={"Liquidity Mining"} value={""} />
-                <ListItem keyText={"RBF Mining"} value={""} />
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          {/* <div className="w-[16%] text-lg">0 USDT</div> */}
-          {/* <div className="w-[16%] text-lg">0 0XX</div> */}
+          <CustomTooltip
+            triggerContent={<div className="w-[16%] text-lg">0 USDT</div>}
+          >
+            <p>The trading fee income is settled every hour.</p>
+            <ListItem keyText={"Staking"} value={"-"} />
+            <ListItem keyText={"Staking LP NFT"} value={"-"} />
+          </CustomTooltip>
+          <CustomTooltip
+            triggerContent={<div className="w-[16%] text-lg">0 0XX</div>}
+          >
+            <ListItem keyText={"Position Mining"} value={""} />
+            <ListItem keyText={"Pool2 Mining"} value={""} />
+            <ListItem keyText={"Liquidity Mining"} value={""} />
+            <ListItem keyText={"RBF Mining"} value={""} />
+          </CustomTooltip>
           <div className="w-[40%]">
             <Dialog>
               <DialogTrigger asChild>
@@ -245,15 +221,25 @@ export default function EarnPage() {
           <div className="mt-2 mb-3 border-t border-0xline"></div>
           <StyledTabsContent value="Staking">
             <div className="flex w-full mt-8 justify-center text-center">
-              <div className="flex flex-col w-[30%]">
+              <div className="flex gap-1 flex-col w-[30%]">
                 <div className="text-0xgrey text-sm">Staked 0XX</div>
                 <div className="text-white">412,232.06 0XX</div>
               </div>
-              <div className="flex flex-col w-[30%]">
-                <div className="text-0xgrey text-sm">Staked 0XX in LP NFT</div>
+              <div className="flex gap-1 flex-col w-[30%]">
+                <CustomTooltip
+                  triggerContent={
+                    <div className="text-0xgrey">Staked 0XX in LP NFT</div>
+                  }
+                >
+                  <p className="mb-2">
+                    The calculated figure may slightly differ from the actual
+                    amount because the 0XX in the 0XX/ETH LP NFT is based on the
+                    0XX quantity in the LP Token at the time of staking.
+                  </p>
+                </CustomTooltip>
                 <div className="text-white">365,989.41 0XX</div>
               </div>
-              <div className="flex flex-col w-[30%]">
+              <div className="flex gap-1 flex-col w-[30%]">
                 <div className="text-0xgrey text-sm">Total Staking Rewards</div>
                 <div className="text-white">33,422.10 USDT</div>
               </div>
@@ -264,21 +250,18 @@ export default function EarnPage() {
                 <div className="font-semibold">Stake EQU</div>
                 <div className="mx-2 border-l border-0xline h-[80%] text-center"></div>
                 <div className="text-0xgrey text-sm mt-[1px]">Max APR</div>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="text-0xgreen ml-2 text-sm mt-[1px]">
-                        16.11%
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent className="w-80">
-                      <p className="mb-2">
-                        Max APR (3x) = 24h Rewards Value / Σ(Staked EQU Value *
-                        Multiplier) * Max Multiplier * 365 * 100%
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <CustomTooltip
+                  triggerContent={
+                    <div className="text-0xgreen ml-2 text-sm mt-[1px]">
+                      16.11%
+                    </div>
+                  }
+                >
+                  <p className="mb-2">
+                    Max APR (3x) = 24h Rewards Value / Σ(Staked EQU Value *
+                    Multiplier) * Max Multiplier * 365 * 100%
+                  </p>
+                </CustomTooltip>
               </div>
               <Dialog>
                 <DialogTrigger asChild>
@@ -377,14 +360,35 @@ export default function EarnPage() {
                 <div className="font-medium">Overview</div>
                 <div className="flex justify-between text-sm">
                   <div className="text-0xgrey">APR (Multiplier = 3x)</div>
-                  <div className="text-0xgreen">1663.32%</div>
+                  <CustomTooltip
+                    triggerContent={
+                      <div className="text-0xgreen">1663.32%</div>
+                    }
+                  >
+                    <p className="mb-2">
+                      APR (Multiplier = 3x) = EQU/ETH LP APR + Staking APR (3x)
+                      + Mining APR (3x)
+                    </p>
+                    <ListItem keyText={"0XX/ETH LP APR"} value={""} />
+                    <ListItem keyText={"Staking APR (3x)"} value={""} />
+                    <ListItem keyText={"Mining APR (3x)"} value={""} />
+                  </CustomTooltip>
                 </div>
                 <div className="flex justify-between text-sm">
                   <div className="text-0xgrey">Daily Emission</div>
                   <div>2,000 0XX</div>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <div className="text-0xgrey">Staked 0XX in LP NFT</div>
+                  <CustomTooltip
+                    triggerContent={
+                      <div className="text-0xgrey">Staked 0XX in LP NFT</div>
+                    }
+                  >
+                    <p className="mb-2">
+                      Staked amount is calculated as the amount of 0XX in LP
+                      Token at the time of staking.
+                    </p>
+                  </CustomTooltip>
                   <div>34,677.9356 0XX</div>
                 </div>
                 <div className="flex justify-between text-sm">
@@ -395,7 +399,16 @@ export default function EarnPage() {
               <div className="space-y-3 py-2 w-[100%] underLg:px-3">
                 <div className="font-medium">My Data</div>
                 <div className="flex justify-between text-sm">
-                  <div className="text-0xgrey">Staked EQU in LP NFT</div>
+                  <CustomTooltip
+                    triggerContent={
+                      <div className="text-0xgrey">Staked 0XX in LP NFT</div>
+                    }
+                  >
+                    <p className="mb-2">
+                      Staked amount is calculated as the amount of 0XX in LP
+                      Token at the time of staking.
+                    </p>
+                  </CustomTooltip>
                   <div>0 0XX</div>
                 </div>
                 <div className="flex justify-between text-sm">
@@ -414,7 +427,16 @@ export default function EarnPage() {
             </div>
             <div className="mt-3 mb-3 border-t border-0xline w-[100%] text-center"></div>
             <div className="flex justify-between">
-              <div className="mt-3">Stake EQU/ETH LP NFT</div>
+              <CustomTooltip
+                triggerContent={
+                  <div className="mt-3">Stake EQU/ETH LP NFT</div>
+                }
+              >
+                <p className="mb-2">
+                  Staking amount is calculated as the amount of 0XX in LP Token
+                  at the time of staking.
+                </p>
+              </CustomTooltip>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="h-8 text-xs">Stake NFT</Button>
@@ -535,7 +557,14 @@ export default function EarnPage() {
           <StyledTabsContent value="RBF Mining" className="ml-3">
             <div className="flex flex-row mb-1 ml-1 text-sm rounded-lg text-0xgrey">
               <div className="w-[12%]">Pool</div>
-              <div className="w-[15%]">APR</div>
+              <CustomTooltip
+                triggerContent={<div className="w-[15%]">APR</div>}
+              >
+                <p className="mb-2">
+                  RBF Mining APR = Daily 0XX Emission Value / Total Contribution
+                  * 365 * 100%
+                </p>
+              </CustomTooltip>
               <div className="w-[17%]">Daily Emission</div>
               <div className="w-[17%]">Total Contribution</div>
               <div className="w-[18%]">My Contribution</div>
