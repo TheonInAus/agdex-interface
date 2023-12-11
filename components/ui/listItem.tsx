@@ -58,7 +58,7 @@ const ListItem: React.FC<ListItemProps> = ({
                 </button>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="w-52">{info}</p>
+                <div className="w-52">{info}</div>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

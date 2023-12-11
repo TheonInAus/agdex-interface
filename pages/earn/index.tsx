@@ -76,7 +76,7 @@ export default function EarnPage() {
             >
               <p>
                 The calculated figure may slightly differ from the actual amount
-                because the 0XX in the 0XX/ETH LP NFT is based on the EQU
+                because the 0XX in the 0XX/ETH LP NFT is based on the 0XX
                 quantity in the LP Token at the time of staking.
               </p>
               <ListItem keyText={"Staking"} value={"-"} />
@@ -247,7 +247,7 @@ export default function EarnPage() {
             <div className="mt-7 mb-3 border-t border-0xline w-[100%] text-center"></div>
             <div className="flex justify-between">
               <div className="flex mt-3">
-                <div className="font-semibold">Stake EQU</div>
+                <div className="font-semibold">Stake 0XX</div>
                 <div className="mx-2 border-l border-0xline h-[80%] text-center"></div>
                 <div className="text-0xgrey text-sm mt-[1px]">Max APR</div>
                 <CustomTooltip
@@ -258,7 +258,7 @@ export default function EarnPage() {
                   }
                 >
                   <p className="mb-2">
-                    Max APR (3x) = 24h Rewards Value / Σ(Staked EQU Value *
+                    Max APR (3x) = 24h Rewards Value / Σ(Staked 0XX Value *
                     Multiplier) * Max Multiplier * 365 * 100%
                   </p>
                 </CustomTooltip>
@@ -366,7 +366,7 @@ export default function EarnPage() {
                     }
                   >
                     <p className="mb-2">
-                      APR (Multiplier = 3x) = EQU/ETH LP APR + Staking APR (3x)
+                      APR (Multiplier = 3x) = 0XX/ETH LP APR + Staking APR (3x)
                       + Mining APR (3x)
                     </p>
                     <ListItem keyText={"0XX/ETH LP APR"} value={""} />
@@ -429,7 +429,7 @@ export default function EarnPage() {
             <div className="flex justify-between">
               <CustomTooltip
                 triggerContent={
-                  <div className="mt-3">Stake EQU/ETH LP NFT</div>
+                  <div className="mt-3">Stake 0XX/ETH LP NFT</div>
                 }
               >
                 <p className="mb-2">
@@ -454,7 +454,7 @@ export default function EarnPage() {
                         />
                         <div className="text-0xgrey text-xs">
                           Only <span className="text-white">full range</span>{" "}
-                          EQU/ETH LP NFTs are acceptable.
+                          0XX/ETH LP NFTs are acceptable.
                         </div>
                       </div>
                       <Select>
@@ -465,7 +465,7 @@ export default function EarnPage() {
                           <SelectGroup>
                             <SelectLabel className="p-5 text-sm font-normal">
                               There are currently no LP NFTs available for
-                              staking. Add liquidity to Uniswap EQU/ETH pool
+                              staking. Add liquidity to Uniswap 0XX/ETH pool
                               (full range) to receive your LP NFT.
                             </SelectLabel>
                             {/* <SelectItem value="apple">Apple</SelectItem>
@@ -531,7 +531,7 @@ export default function EarnPage() {
             </div>
             <div className="flex mt-2">
               <div className="text-sm text-0xgrey mt-[10px]">
-                Add liquidity to Uniswap EQU/ETH pool (
+                Add liquidity to Uniswap 0XX/ETH pool (
                 <span className="text-white">full range</span>) to receive your
                 LP NFT.
               </div>

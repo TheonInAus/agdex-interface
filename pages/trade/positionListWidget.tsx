@@ -17,6 +17,7 @@ import {
 } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { CustomTooltip } from "@/components/ui/customToolTip"
 import {
   Dialog,
   DialogContent,
@@ -127,15 +128,24 @@ export const PositionListWidget = () => {
                     }
                   />
                   <div className="flex flex-row mt-2">
-                    <PositionItem
-                      keyText="Margin"
-                      value={
-                        giveMeFormattedToShow(
-                          wrapperFormatEther6e(position.margin)
-                        ) + " USDX"
+                    <CustomTooltip
+                      triggerContent={
+                        <div className="text-0xgrey text-sm mr-7">Margin</div>
                       }
-                      info="ll"
-                    />
+                    >
+                      <p>llll</p>
+                    </CustomTooltip>
+                    <CustomTooltip
+                      triggerContent={
+                        <div className="text-white text-sm">
+                          {giveMeFormattedToShow(
+                            wrapperFormatEther6e(position.margin)
+                          ) + " USDX"}
+                        </div>
+                      }
+                    >
+                      <p>llll</p>
+                    </CustomTooltip>
                     <Dialog>
                       <DialogTrigger asChild>
                         <button className="ml-1">
@@ -183,13 +193,38 @@ export const PositionListWidget = () => {
                     keyText="Entry Price"
                     value={x96Price2Readable(position.entryPrice)}
                   />
-                  <div className="mt-2">
-                    <PositionItem keyText="Lig. Price" value={""} info="ll" />
+                  <div className="mt-2 flex gap-7">
+                    <CustomTooltip
+                      triggerContent={
+                        <div className="text-0xgrey text-sm">Liq. Price</div>
+                      }
+                    >
+                      <p>llll</p>
+                    </CustomTooltip>
+                    <div className="text-white">-</div>
                   </div>
                 </div>
                 <div className="flex flex-col w-full">
                   <div className="flex flex-row">
-                    <PositionItem
+                    <CustomTooltip
+                      triggerContent={
+                        <div className="text-0xgrey text-sm mr-7">
+                          Unrealized Pnl.
+                        </div>
+                      }
+                    >
+                      <p>llll</p>
+                    </CustomTooltip>
+                    <div
+                      className={`text-sm ${
+                        Number(x96Price2Readable(position.unrealizedPnL)) >= 0
+                          ? "text-0xgreen"
+                          : "text-0xredLighter"
+                      }`}
+                    >
+                      {x96Price2Readable(position.unrealizedPnL)}
+                    </div>
+                    {/* <PositionItem
                       plusCss={`${
                         Number(x96Price2Readable(position.unrealizedPnL)) >= 0
                           ? "text-0xgreen"
@@ -198,7 +233,7 @@ export const PositionListWidget = () => {
                       keyText="Unrealized Pnl."
                       value={x96Price2Readable(position.unrealizedPnL)}
                       info=""
-                    />
+                    /> */}
 
                     <ExternalLink
                       className="mt-1 ml-1 text-white text-opacity-70 hover:text-opacity-100"

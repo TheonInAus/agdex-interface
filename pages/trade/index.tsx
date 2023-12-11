@@ -23,6 +23,7 @@ import {
   giveMeFormattedToShow,
 } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
+import { CustomTooltip } from "@/components/ui/customToolTip"
 import { ListItem } from "@/components/ui/listItem"
 import { Stats } from "@/components/ui/stats"
 import {
@@ -124,26 +125,45 @@ export default function TradePage() {
                 value={"-2.01%"}
                 textColor={"text-0xredLighter"}
               />
-              <Stats
-                title={"1h Funding"}
-                value={"+0.001250%"}
-                textColor={"text-0xyellow-lighter"}
-                additionalText={"(27:15)"}
-                info={"lll"}
-              />
-              <Stats
-                title={"Open Interest"}
-                value={"20.10k SOL"}
-                textColor={"text-0xyellow-lighter"}
-                additionalText={"($1,144,535.35)"}
-                info={"lll"}
-              />
+              <div className="mr-10">
+                <CustomTooltip
+                  triggerContent={
+                    <div className="text-0xgrey text-xs">1h Funding</div>
+                  }
+                >
+                  <p>llll</p>
+                </CustomTooltip>
+                <div className="flex mt-1">
+                  <div className="text-0xyellow-lighter text-sm mr-1">
+                    +0.001250%
+                  </div>
+                  <div className="text-0xgrey text-sm">(27:15)</div>
+                </div>
+              </div>
+              <div className="mr-10">
+                <CustomTooltip
+                  triggerContent={
+                    <div className="text-0xgrey text-xs">Open Interest</div>
+                  }
+                >
+                  <p>llll</p>
+                </CustomTooltip>
+                <div className="flex mt-1">
+                  <div className="text-0xyellow-lighter text-sm mr-1">
+                    20.10k SOL
+                  </div>
+                  <div className="text-0xgrey text-sm">($1,144,535.35)</div>
+                </div>
+              </div>
             </div>
             <div className="my-5 border-t border-0xline"></div>
             <TradingViewWidget />
           </div>
           {/* Wide Block 2 */}
-          <div className="p-4 pb-16 rounded-lg bg-0xboxBackground" style={{ width: 950 }}>
+          <div
+            className="p-4 pb-16 rounded-lg bg-0xboxBackground"
+            style={{ width: 950 }}
+          >
             <StyledTabs defaultValue="Position">
               <StyledTabsList>
                 <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
