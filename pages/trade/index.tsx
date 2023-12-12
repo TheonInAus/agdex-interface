@@ -131,7 +131,7 @@ export default function TradePage() {
                     <div className="text-0xgrey text-xs">1h Funding</div>
                   }
                 >
-                  <p>llll</p>
+                  <p>Funding fees are settled every hour. When the funding rate is positive, long positions pay short positions; when it's negative, short positions pay long positions.</p>
                 </CustomTooltip>
                 <div className="flex mt-1">
                   <div className="text-0xyellow-lighter text-sm mr-1">
