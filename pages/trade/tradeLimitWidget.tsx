@@ -170,10 +170,10 @@ export const TradeLimitWidget = ({ side }: TradeMarketType) => {
           )}
         </div>
         <br></br>
-        <ListItem keyText="Entry Price" value={""} />
-        <ListItem keyText="Price Impact" value={""} />
+        {/* <ListItem keyText="Entry Price" value={""} /> */}
+        {/* <ListItem keyText="Price Impact" value={""} /> */}
         <ListItem keyText="Acceptable Price" value={""} percentage="0.30%" />
-        <ListItem keyText="Liq. Price" value={""} />
+        {/* <ListItem keyText="Liq. Price" value={""} /> */}
         <ListItem keyText="Est. Margin" value={""} />
         <ListItem keyText="Fees" value={""} />
       </div>

@@ -13,6 +13,7 @@ import {
 } from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { CustomTooltip } from "@/components/ui/customToolTip"
 import {
   Dialog,
   DialogContent,
@@ -162,7 +163,21 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
         </div>
         <br></br>
         <ListItem keyText="Entry Price" value={""} />
-        <ListItem keyText="Price Impact" value={""} />
+        <div className="flex justify-between">
+          <CustomTooltip
+            triggerContent={
+              <div className="text-0xgrey text-xs">Price Impact</div>
+            }
+          >
+            <p>
+              The price impact is the deviation between the estimated
+              transaction price of the order and the current index price. When
+              it is positive number, it means that the estimated transaction
+              price is more advantageous, and negative number is vice versa.
+            </p>
+          </CustomTooltip>
+          <div className="text-white text-xs">-</div>
+        </div>
         <div className="flex">
           <ListItem
             keyText="Acceptable Price"
@@ -227,7 +242,9 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
           handleIncPostionTemp()
         }}
         className={`w-full font-bold text-center rounded-md item-center mt-4 ${
-          side === SIDE_LONG ? "bg-0xgreen hover:bg-0xgreen-foreground" : "bg-0xredLighter hover:bg-0xredLighter-foreground"
+          side === SIDE_LONG
+            ? "bg-0xgreen hover:bg-0xgreen-foreground"
+            : "bg-0xredLighter hover:bg-0xredLighter-foreground"
         } h-9 text-white`}
       >
         {incPositionLoading ? (
