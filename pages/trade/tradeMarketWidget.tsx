@@ -227,7 +227,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
           handleIncPostionTemp()
         }}
         className={`w-full font-bold text-center rounded-md item-center mt-4 ${
-          side === SIDE_LONG ? "bg-0xgreen" : "bg-0xredLighter"
+          side === SIDE_LONG ? "bg-0xgreen hover:bg-0xgreen-foreground" : "bg-0xredLighter hover:bg-0xredLighter-foreground"
         } h-9 text-white`}
       >
         {incPositionLoading ? (

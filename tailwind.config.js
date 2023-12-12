@@ -83,7 +83,7 @@ module.exports = {
         },
         "0xredLighter": {
           DEFAULT: "#FF4A4A",
-          foreground: "#FF4A4A",
+          foreground: "#DB4242",
         },
         "0xyellow": {
           DEFAULT: "hsl(20.5 90.2% 48.2%)",
