@@ -10,6 +10,7 @@ import {
   Side,
   convertOrderBookTypeData,
   convertPoolAddressToShownData,
+  convertPoolAddressToTokenName,
   e6DivideE18,
   formatTimestampX1000,
   giveMeFormattedToShow,
@@ -53,9 +54,9 @@ export const OrderListWidget = () => {
           <div className="flex flex-row items-center mb-3 text-0xgrey">
             <div className="w-[16%] text-sm text-start">Time</div>
             <div className="w-[11%] text-sm text-start">Market</div>
-            <div className="w-[16%] text-sm text-start">Type</div>
+            <div className="w-[13%] text-sm text-start">Type</div>
             <div className="w-[9%] text-sm text-start">Side</div>
-            <div className="w-[9%] text-sm text-start">Size</div>
+            <div className="w-[12%] text-sm text-start">Size</div>
             <div className="w-[16%] text-sm text-start">Trigger Price</div>
             <div className="w-[16%] text-sm text-start">Market Price</div>
             <div className="w-[15%] text-sm text-start">Acceptable Price</div>
@@ -86,9 +87,9 @@ export const OrderListWidget = () => {
               <div className="w-[11%] text-sm text-start">
                 {convertPoolAddressToShownData(orderItem.pool)}
               </div>
-              <div className="w-[16%] text-sm text-start">
+              <div className="w-[13%] text-sm text-start">
                 {convertOrderBookTypeData(
-                  orderItem.__typeName,
+                  orderItem.__typename,
                   orderItem.triggerAbove
                 )}
               </div>
@@ -100,10 +101,11 @@ export const OrderListWidget = () => {
                 {" "}
                 {orderItem.side === 1 ? "Long" : "Short"}
               </div>
-              <div className="w-[9%] text-sm text-start">
+              <div className="w-[12%] text-sm text-start">
                 {giveMeFormattedToShow(
                   wrapperFormatEther18e(BigInt(orderItem.sizeDelta))
-                )}
+                )}{" "}
+                {convertPoolAddressToTokenName(orderItem.pool)}
               </div>
               <div className="w-[16%] text-sm text-start flex">
                 <div className="mr-1">≥</div>

@@ -1,9 +1,16 @@
+import { Edit3 } from "lucide-react"
 import { formatEther } from "viem"
 
 import { useLiqPoolsForAccount } from "@/hooks/liquidityPoolInfo"
+import {
+  giveMeFormattedToShow,
+  wrapperFormatEther6e,
+  wrapperParseEther6e,
+  x64Price2Readable,
+  x96Price2Readable,
+} from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { PositionItem } from "@/components/ui/positionItem"
-import { Edit3 } from "lucide-react"
 import {
   StyledTabs,
   StyledTabsContent,
@@ -66,13 +73,20 @@ export const PoolRow = ({ pool, expandIndex, onToggle }: PoolPowProps) => {
                   poolDatas.liquidityPositionOpeneds.length > 0 ? (
                     poolDatas.liquidityPositionOpeneds.map(
                       (position, index) => (
-                        <div className="flex w-full p-2 mb-1 bg-0xblack">
+                        <div
+                          className="flex w-full p-2 mb-1 bg-0xblack"
+                          key={index}
+                        >
                           <div className="flex flex-row w-full mt-3">
                             <div className="flex flex-col w-[22%]">
                               <PositionItem
                                 keyText="Liquidity"
-                                value={`${formatEther(
-                                  (position.liquidity as bigint) || 0n
+                                value={`${giveMeFormattedToShow(
+                                  Number(
+                                    wrapperFormatEther6e(
+                                      position.liquidity as bigint
+                                    )
+                                  )
                                 )}`}
                               />
                               <PositionItem
@@ -90,9 +104,12 @@ export const PoolRow = ({ pool, expandIndex, onToggle }: PoolPowProps) => {
                             <div className="flex flex-col w-[35%]">
                               <PositionItem
                                 keyText="Realized Profit"
-                                value={`${formatEther(
-                                  (position.realizedProfitGrowthX64 as bigint) ||
-                                    0n
+                                value={`${giveMeFormattedToShow(
+                                  Number(
+                                    x64Price2Readable(
+                                      position.realizedProfitGrowthX64 as unknown as string
+                                    )
+                                  )
                                 )}`}
                               />
                               <PositionItem keyText="Risk" value={""} />
@@ -101,8 +118,12 @@ export const PoolRow = ({ pool, expandIndex, onToggle }: PoolPowProps) => {
                               <div className="flex flex-row">
                                 <PositionItem
                                   keyText="Margin"
-                                  value={`${formatEther(
-                                    (position.margin as bigint) || 0n
+                                  value={`${giveMeFormattedToShow(
+                                    Number(
+                                      wrapperFormatEther6e(
+                                        position.margin as bigint
+                                      )
+                                    )
                                   )}`}
                                   info="ll"
                                 />
@@ -113,7 +134,7 @@ export const PoolRow = ({ pool, expandIndex, onToggle }: PoolPowProps) => {
                                   />
                                 </button>
                               </div>
-                              <Button className="h-5 w-20 text-sm text-white bg-transparent hover:bg-0xbox border border-white mt-1">
+                              <Button className="w-20 h-5 mt-1 text-sm text-white bg-transparent border border-white hover:bg-0xbox">
                                 Remove
                               </Button>
                             </div>

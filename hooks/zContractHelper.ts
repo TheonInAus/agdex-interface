@@ -75,6 +75,12 @@ export function x96Price2Readable(value: bigint) {
     return readable.toString();
 }
 
+export function x64Price2Readable(value: string) {
+    const factor = BigInt(2 ** 64);
+    const x64Result = parseUnits(value, 6) / factor;
+    return x64Result
+}
+
 export function wrapperParseEther6e(value: string) {
     return Number(parseUnits(value, 6))
 }
@@ -128,23 +134,39 @@ export const formatTimestampX1000 = (timestamp: number | string) => {
 }
 
 export const convertPoolAddressToShownData = (poolAddress: string) => {
-    if (poolAddress === ethPoolAddress) {
+    if (poolAddress === ethPoolAddress.toLocaleLowerCase()) {
         return 'ETH/USDX'
-    } else if (poolAddress === btcPoolAddress) {
+    } else if (poolAddress === btcPoolAddress.toLocaleLowerCase()) {
         return 'BTC/USDX'
-    } else if (poolAddress === arbPoolAddress) {
+    } else if (poolAddress === arbPoolAddress.toLocaleLowerCase()) {
         return 'ARB/USDX'
-    } else if (poolAddress === linkPoolAddress) {
+    } else if (poolAddress === linkPoolAddress.toLocaleLowerCase()) {
         return 'LINK/USDX'
     } else {
         return '-error'
     }
 }
 
-export const convertOrderBookTypeData = (__typeName: string, triggerAbove: boolean) => {
-    if (__typeName === 'IncreaseOrderCreated') {
+export const convertPoolAddressToTokenName = (poolAddress: string) => {
+    if (poolAddress === ethPoolAddress.toLocaleLowerCase()) {
+        return 'ETH'
+    } else if (poolAddress === btcPoolAddress.toLocaleLowerCase()) {
+        return 'BTC'
+    } else if (poolAddress === arbPoolAddress.toLocaleLowerCase()) {
+        return 'ARB'
+    } else if (poolAddress === linkPoolAddress.toLocaleLowerCase()) {
+        return 'LINK'
+    } else {
+        return '-error'
+    }
+}
+
+export const convertOrderBookTypeData = (__typename: string, triggerAbove: boolean) => {
+    console.log('check pool __typeName => ', __typename, triggerAbove)
+
+    if (__typename === 'IncreaseOrderCreated') {
         return 'Limit'
-    } else if (__typeName === 'DecreaseOrderCreated') {
+    } else if (__typename === 'DecreaseOrderCreated') {
         if (triggerAbove) {
             return 'Position TP'
         } else {

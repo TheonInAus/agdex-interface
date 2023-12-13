@@ -104,11 +104,13 @@ export default function PoolsPage() {
               triggerContent={<div className="w-[16%]">Max APR</div>}
             >
               <p className="mb-2">
-                Max APR is calculated based on LPs' trading fee income in the
-                past 24 hours, 0XX daily emission, and the maximum leverage of
-                the pool.
+                {
+                  "Max APR is calculated based on LPs' trading fee income in the past 24 hours, 0XX daily emission, and the maximum leverage of the pool."
+                }
               </p>
-              <p className="mb-2">Max APR = Trading Fee Max APR + 0XX Max APR</p>
+              <p className="mb-2">
+                Max APR = Trading Fee Max APR + 0XX Max APR
+              </p>
             </CustomTooltip>
             <div className="w-[20%]">24h Volume (USDT)</div>
             <CustomTooltip
@@ -241,7 +243,7 @@ export default function PoolsPage() {
               <div className="flex justify-between">
                 <CustomTooltip
                   triggerContent={
-                    <div className="text-0xgrey text-xs">Average Leverage</div>
+                    <div className="text-xs text-0xgrey">Average Leverage</div>
                   }
                 >
                   <p className="mb-2">
@@ -250,13 +252,13 @@ export default function PoolsPage() {
                     the Avg. APR.
                   </p>
                 </CustomTooltip>
-                <div className="text-white text-xs">7.71x</div>
+                <div className="text-xs text-white">7.71x</div>
               </div>
               <ListItem keyText="Balance Rate" value={"26,601,123.63"} />
               <div className="flex justify-between">
                 <CustomTooltip
                   triggerContent={
-                    <div className="text-0xgrey text-xs">Risk Buffer Fund</div>
+                    <div className="text-xs text-0xgrey">Risk Buffer Fund</div>
                   }
                 >
                   <p className="mb-2">
@@ -268,7 +270,7 @@ export default function PoolsPage() {
                 </CustomTooltip>
                 <CustomTooltip
                   triggerContent={
-                    <div className="text-white text-xs">-0.08%</div>
+                    <div className="text-xs text-white">-0.08%</div>
                   }
                 >
                   <ListItem keyText="Realized PnL" value={"-93,922.98 USDT"} />

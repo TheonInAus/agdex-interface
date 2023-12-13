@@ -30,12 +30,12 @@ export default function TradingViewWidget() {
 
     function createWidget() {
       if (
-        document.getElementById("tradingview_8a9f1") &&
+        document.getElementById("tradingview_65e52") &&
         "TradingView" in window
       ) {
         new window.TradingView.widget({
           autosize: true,
-          symbol: "BITSTAMP:ETHUSD",
+          symbol: "BITSTAMP:BTCUSD",
           interval: "D",
           timezone: "Etc/UTC",
           theme: "dark",
@@ -43,7 +43,7 @@ export default function TradingViewWidget() {
           locale: "en",
           enable_publishing: false,
           allow_symbol_change: true,
-          container_id: "tradingview_8a9f1",
+          container_id: "tradingview_65e52",
         })
       }
     }
@@ -52,10 +52,10 @@ export default function TradingViewWidget() {
   return (
     <div
       className="tradingview-widget-container"
-      style={{ height: "80%", width: "100%" }}
+      style={{ height: "100%", width: "100%" }}
     >
       <div
-        id="tradingview_8a9f1"
+        id="tradingview_65e52"
         style={{ height: "calc(100% - 32px)", width: "100%" }}
       />
       <div className="tradingview-widget-copyright">

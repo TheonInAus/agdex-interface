@@ -11,8 +11,12 @@ import {
   useExeDecreasePosition,
   useExeIncreasePosition,
 } from "@/hooks/actionMixExecutorHelper"
-import { useTokenPrice } from "@/hooks/cTokenState"
+import { useTokenMarketPrice, useTokenPrice } from "@/hooks/cTokenState"
+import { useBtcMarketPrice, useGetPoolPriceState } from "@/hooks/usePrice"
 import {
+  btcPoolAddress,
+  btcTokenAddress,
+  ethPoolAddress,
   ethTokenAddress,
   orderBookAddress,
   positionRouterAddress,
@@ -21,6 +25,7 @@ import {
   SIDE_LONG,
   SIDE_SHORT,
   giveMeFormattedToShow,
+  x96Price2Readable,
 } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { CustomTooltip } from "@/components/ui/customToolTip"
@@ -41,7 +46,16 @@ import { TradeLimitWidget } from "./tradeLimitWidget"
 import { TradeMarketWidget } from "./tradeMarketWidget"
 
 export default function TradePage() {
-  const indexPrice = "57.5938"
+  const { marketPriceData } = useTokenMarketPrice(btcPoolAddress)
+  console.log(
+    "check btc long => ",
+    x96Price2Readable(BigInt(marketPriceData.marketPriceForLong))
+  )
+
+  console.log(
+    "check btc short => ",
+    x96Price2Readable(BigInt(marketPriceData.marketPriceForLong))
+  )
 
   const {
     data: positionRouterPluginData,
@@ -86,11 +100,21 @@ export default function TradePage() {
 
   const [tokenPrice, setTokenPrice] = useState("0")
   const { maxPrice, minPrice } = useTokenPrice(ethTokenAddress)
+  console.log("check lastest price short => ", maxPrice, minPrice)
+
+  const { price: indexPrice, change24h } = useBtcMarketPrice()
+
+  const { premiumRateX96 } = useGetPoolPriceState(btcPoolAddress)
+  console.log("check premiumRateX96 => ", premiumRateX96)
+
+  const contractPrice = indexPrice + premiumRateX96
+
   useEffect(() => {
     if (maxPrice) {
       setTokenPrice(maxPrice)
     }
   }, [maxPrice])
+
   /**
    * just for testing ********************************
    */
@@ -115,44 +139,53 @@ export default function TradePage() {
             style={{ width: 950, height: 600 }}
           >
             <div className="flex">
-              <div className="mt-1 mr-10 text-lg">ETH/USDX</div>
+              <div className="mt-1 mr-10 text-lg">BTC/USDX</div>
               <div className="mt-1 mr-10 text-lg text-0xredLighter">
-                {giveMeFormattedToShow(Number(tokenPrice) || 0)}
+                {giveMeFormattedToShow(contractPrice)}
               </div>
-              <Stats title={"Index Price"} value={indexPrice} />
+              <Stats
+                title={"Index Price"}
+                value={giveMeFormattedToShow(indexPrice)}
+              />
               <Stats
                 title={"24h Change"}
-                value={"-2.01%"}
-                textColor={"text-0xredLighter"}
+                value={`${change24h.toFixed(2)}%`}
+                textColor={
+                  change24h >= 0 ? "text-0xgreen" : "text-0xredLighter"
+                }
               />
               <div className="mr-10">
                 <CustomTooltip
                   triggerContent={
-                    <div className="text-0xgrey text-xs">1h Funding</div>
+                    <div className="text-xs text-0xgrey">1h Funding</div>
                   }
                 >
-                  <p>Funding fees are settled every hour. When the funding rate is positive, long positions pay short positions; when it's negative, short positions pay long positions.</p>
+                  <p>
+                    {
+                      "Funding fees are settled every hour. When the funding rate is positive, long positions pay short positions; when it's negative, short positions pay long positions."
+                    }
+                  </p>
                 </CustomTooltip>
                 <div className="flex mt-1">
-                  <div className="text-0xyellow-lighter text-sm mr-1">
+                  <div className="mr-1 text-sm text-0xyellow-lighter">
                     +0.001250%
                   </div>
-                  <div className="text-0xgrey text-sm">(27:15)</div>
+                  <div className="text-sm text-0xgrey">(27:15)</div>
                 </div>
               </div>
               <div className="mr-10">
                 <CustomTooltip
                   triggerContent={
-                    <div className="text-0xgrey text-xs">Open Interest</div>
+                    <div className="text-xs text-0xgrey">Open Interest</div>
                   }
                 >
                   <p>llll</p>
                 </CustomTooltip>
                 <div className="flex mt-1">
-                  <div className="text-0xyellow-lighter text-sm mr-1">
+                  <div className="mr-1 text-sm text-0xyellow-lighter">
                     20.10k SOL
                   </div>
-                  <div className="text-0xgrey text-sm">($1,144,535.35)</div>
+                  <div className="text-sm text-0xgrey">($1,144,535.35)</div>
                 </div>
               </div>
             </div>

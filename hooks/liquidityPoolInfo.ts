@@ -5,6 +5,7 @@ import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { arbitrumGoerli } from "viem/chains"
 import { useBalance, useWalletClient } from "wagmi"
+import { formatEther } from 'viem';
 
 
 export const useAllLiquidityPools = () => {
@@ -51,7 +52,7 @@ export const useLiqPoolsForAccount = (poolAddress: any) => {
         where: {account: $address}
         orderBy: positionID
         orderDirection: desc
-        first: 2
+        first: 5
       ) {
         account
         entryUnrealizedLoss
@@ -67,9 +68,13 @@ export const useLiqPoolsForAccount = (poolAddress: any) => {
   const { loading, error, data } = useQuery<QueryResult>(GET_DATA, {
     skip: !walletClient?.account.address,
     variables: { address: walletClient?.account.address },
+    pollInterval: 5000
+
   });
 
-  console.log('result graph result => ', data)
+  console.log('check pool graph data => ', data)
+
+
   return {
     liqPoolsLoading: loading,
     liqPoolsError: error,

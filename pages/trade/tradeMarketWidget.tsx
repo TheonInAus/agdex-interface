@@ -4,7 +4,8 @@ import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
-import { ethPoolAddress } from "@/hooks/zAddressHelper"
+import { useBtcMarketPrice } from "@/hooks/usePrice"
+import { btcPoolAddress, ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   Side,
@@ -39,7 +40,9 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
   const [leverageNumber, setLeverageNumber] = useState(1)
   const [isChecked, setIsChecked] = useState(true)
   const [showSlider, setShowSlider] = useState(true)
-  const ethPrice = "2000"
+  const [priceSlippage, setPriceSlippage] = useState("1")
+  const { price: btcPrice } = useBtcMarketPrice()
+  const [btcAfterSlippagePrice, setBtcAfterSlippagePrice] = useState(0)
 
   const {
     data: balanceData,
@@ -49,7 +52,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
 
   const { incPositionData, incPositionLoading, incPositionWrite } =
     useCreateIncreasePostion(
-      ethPoolAddress,
+      btcPoolAddress,
       side,
       usdMargin,
       tradingSize,
@@ -83,14 +86,24 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
   useEffect(() => {
     if (usdAfterMargin !== "") {
       const tradingSize = new Decimal(usdAfterMargin)
-        .dividedBy(new Decimal(ethPrice))
+        .dividedBy(new Decimal(btcPrice))
         .toFixed(18)
         .toString()
       setTradingSize(tradingSize)
     } else {
       setTradingSize("")
     }
-  }, [usdAfterMargin])
+  }, [usdAfterMargin, btcPrice])
+
+  useEffect(() => {
+    if (btcPrice && priceSlippage) {
+      if (side === SIDE_LONG) {
+        setBtcAfterSlippagePrice(btcPrice * (1 + Number(priceSlippage) / 10000))
+      } else {
+        setBtcAfterSlippagePrice(btcPrice * (1 - Number(priceSlippage) / 10000))
+      }
+    }
+  }, [btcPrice, priceSlippage, side])
 
   return (
     <div>
@@ -120,7 +133,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
         <InputBox
           title="Size"
           value={tradingSize}
-          suffix="ETH"
+          suffix="BTC"
           prefix={`Leverage:`}
           prefixValue={leverageNumber}
           onValueChange={(e) => {
@@ -162,11 +175,14 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
           )}
         </div>
         <br></br>
-        <ListItem keyText="Entry Price" value={""} />
+        <ListItem
+          keyText="Entry Price"
+          value={giveMeFormattedToShow(btcPrice)}
+        />
         <div className="flex justify-between">
           <CustomTooltip
             triggerContent={
-              <div className="text-0xgrey text-xs">Price Impact</div>
+              <div className="text-xs text-0xgrey">Price Impact</div>
             }
           >
             <p>
@@ -176,13 +192,13 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
               price is more advantageous, and negative number is vice versa.
             </p>
           </CustomTooltip>
-          <div className="text-white text-xs">-</div>
+          <div className="text-xs text-white">-</div>
         </div>
         <div className="flex">
           <ListItem
             keyText="Acceptable Price"
-            value={""}
-            percentage="0.30%"
+            value={giveMeFormattedToShow(btcAfterSlippagePrice)}
+            percentage={`${Number(priceSlippage) / 100}%`}
             className="w-full"
           />
           <Dialog>
@@ -208,13 +224,13 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
                     <div className="w-[60%]">auto/custom</div>
                     <div className="w-[40%]">
                       <TpsLInput
-                        value={0}
+                        value={priceSlippage}
                         // className="col-span-3"
                         suffix="%"
                         placeholder="TP trigger price"
-                        // onChange={(e) => {
-                        //   setTakeProfitAmount(e.target.value)
-                        // }}
+                        onChange={(e) => {
+                          setPriceSlippage(e.target.value)
+                        }}
                       />
                     </div>
                   </div>

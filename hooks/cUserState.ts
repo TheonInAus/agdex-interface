@@ -99,7 +99,7 @@ type OrderBookItemType = {
     triggerAbove: boolean
     triggerMarketPriceX96: string
     acceptableTradePriceX96: string
-    __typeName: string
+    __typename: string
 };
 
 
@@ -154,6 +154,7 @@ export const useUserOrderList = () => {
     const { loading, error, data } = useQuery<QueryResult>(GET_DATA, {
         skip: !walletClient?.account.address,
         variables: { address: walletClient?.account.address },
+        pollInterval: 5000
     });
 
 
