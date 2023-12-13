@@ -44,6 +44,7 @@ import { OrderListWidget } from "./orderListWidget"
 import { PositionListWidget } from "./positionListWidget"
 import { TradeLimitWidget } from "./tradeLimitWidget"
 import { TradeMarketWidget } from "./tradeMarketWidget"
+import { DropDownBox } from "./dropDownBox"
 
 export default function TradePage() {
   const { marketPriceData } = useTokenMarketPrice(btcPoolAddress)
@@ -139,7 +140,7 @@ export default function TradePage() {
             style={{ width: 950, height: 600 }}
           >
             <div className="flex">
-              <div className="mt-1 mr-10 text-lg">BTC/USDX</div>
+              <div className="mr-8 text-lg"><DropDownBox/></div>
               <div className="mt-1 mr-10 text-lg text-0xredLighter">
                 {giveMeFormattedToShow(contractPrice)}
               </div>
