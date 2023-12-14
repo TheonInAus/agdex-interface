@@ -12,6 +12,7 @@ import {
   useExeIncreasePosition,
 } from "@/hooks/actionMixExecutorHelper"
 import { useTokenMarketPrice, useTokenPrice } from "@/hooks/cTokenState"
+import { useGetReferralState } from "@/hooks/cUserState"
 import { useBtcMarketPrice, useGetPoolPriceState } from "@/hooks/usePrice"
 import {
   btcPoolAddress,
@@ -98,9 +99,9 @@ export default function TradePage() {
     orderBookWrite()
   }
 
-  const [tokenPrice, setTokenPrice] = useState("0")
-  const { maxPrice, minPrice } = useTokenPrice(ethTokenAddress)
-  console.log("check lastest price short => ", maxPrice, minPrice)
+  // const [tokenPrice, setTokenPrice] = useState("0")
+  // const { maxPrice, minPrice } = useTokenPrice(ethTokenAddress)
+  // console.log("check lastest price short => ", maxPrice, minPrice)
 
   const { price: indexPrice, change24h } = useBtcMarketPrice()
 
@@ -109,11 +110,14 @@ export default function TradePage() {
 
   const contractPrice = indexPrice + premiumRateX96
 
-  useEffect(() => {
-    if (maxPrice) {
-      setTokenPrice(maxPrice)
-    }
-  }, [maxPrice])
+  const { data: referralState } = useGetReferralState()
+  console.log(referralState)
+
+  // useEffect(() => {
+  //   if (maxPrice) {
+  //     setTokenPrice(maxPrice)
+  //   }
+  // }, [maxPrice])
 
   /**
    * just for testing ********************************

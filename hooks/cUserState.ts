@@ -1,10 +1,11 @@
 import { useBalance, useContractRead, useContractReads } from "wagmi"
-import { arbPoolAddress, btcPoolAddress, ethPoolAddress, linkPoolAddress, registerPoolsInfos, usdxAddress } from "./zAddressHelper"
+import { arbPoolAddress, btcPoolAddress, ethPoolAddress, linkPoolAddress, registerPoolsInfos, usdxAddress, rewardFarmAddress } from "./zAddressHelper"
 import { useWalletClient } from 'wagmi'
 import { arbitrumGoerli } from 'wagmi/chains'
 import { poolABI } from "@/abis/poolABI"
 import { SIDE_LONG, SIDE_SHORT } from "./zContractHelper"
 import { useQuery, gql } from '@apollo/client';
+import { rewardFarmABI } from "@/abis/rewardFarmABI"
 
 // struct Position {
 //     uint128 margin;
@@ -168,4 +169,20 @@ export const useUserOrderList = () => {
         isError: error,
         orderBookList: combineData
     }
+}
+
+
+export const useGetReferralState = () => {
+    const { data: walletClient } = useWalletClient({
+        chainId: arbitrumGoerli.id,
+    })
+
+    const { data, isLoading, isError } = useContractRead({
+        address: rewardFarmAddress,
+        abi: rewardFarmABI,
+        functionName: "alreadyBoundReferralTokens",
+        args: [walletClient?.account.address]
+    })
+
+    return { data, isLoading, isError }
 }

@@ -14,12 +14,11 @@ import { infuraProvider } from "wagmi/providers/infura"
 import RootLayout from "./layout"
 
 const appKey = process.env.INFURA_API_KEY || "default_app_key"
-console.log("check api key => ", appKey)
 const { chains, publicClient } = configureChains(
   [arbitrumGoerli],
   [
     infuraProvider({
-      apiKey: "72580f581a484c32a2009a8f798b01e8",
+      apiKey: "89f6aa1d3c6e484c9aaf6c2693cdf8e5",
     }),
     publicProvider(),
   ]

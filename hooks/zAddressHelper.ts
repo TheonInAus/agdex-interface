@@ -21,3 +21,5 @@ export const priceFeedAddress = contractAddress.deployments.PriceFeed as `0x${st
 export const usdxAddress = contractAddress.usd as `0x${string}`
 
 export const orderBookAddress = contractAddress.deployments.OrderBook as `0x${string}`
+
+export const rewardFarmAddress = contractAddress.deployments.RewardCollector as `0x${string}`
