@@ -18,8 +18,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-
 const tokens = [
+  {
+    value: "btc/usdx",
+    label: "BTC/USDX",
+    volume: "19.10k BTC",
+    price: "$30,054.17",
+    percentageChange: "-0.21%",
+  },
   {
     value: "eth/usdx",
     label: "ETH/USDX",
@@ -29,16 +35,9 @@ const tokens = [
     percentageChange: "+0.11%",
   },
   {
-    value: "btc/usdx",
-    label: "BTC/USDX",
-    volume: "19.10k BTC",
-    price: "$30,054.17",
-    percentageChange: "-0.21%",
-  },
-  {
-    value: "sol/usdx",
-    label: "SOL/USDX",
-    volume: "20.10k SOL",
+    value: "ordi/usdx",
+    label: "ORDI/USDX",
+    volume: "20.10k ORDI",
     price: "$57.17",
     percentageChange: "-0.16%",
   },
@@ -60,7 +59,7 @@ export function DropDownBox() {
           {value
             ? tokens.find((token) => token.value === value)?.label
             : "Select Token..."}
-          <ChevronDown className="ml-1 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronDown className="w-4 h-4 ml-1 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[330px] p-0">
@@ -83,16 +82,16 @@ export function DropDownBox() {
                     <div className="text-xs text-0xgrey">{token.volume}</div>
                   </div>
                   <div className="flex gap-3 mt-[6px]">
-                  <div>{token.price}</div>
-                  <div
-                    className={`text-sm ${
-                      token.percentageChange.startsWith("-")
-                        ? "text-red-500"
-                        : "text-green-500"
-                    }`}
-                  >
-                    {token.percentageChange}
-                  </div>
+                    <div>{token.price}</div>
+                    <div
+                      className={`text-sm ${
+                        token.percentageChange.startsWith("-")
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }`}
+                    >
+                      {token.percentageChange}
+                    </div>
                   </div>
                 </div>
               </CommandItem>

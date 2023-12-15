@@ -1,5 +1,5 @@
 import { useBalance, useContractRead, useContractReads } from "wagmi"
-import { arbPoolAddress, btcPoolAddress, ethPoolAddress, linkPoolAddress, registerPoolsInfos, usdxAddress, rewardFarmAddress } from "./zAddressHelper"
+import { btcPoolAddress, ethPoolAddress, registerPoolsInfos, usdxAddress, rewardFarmAddress } from "./zAddressHelper"
 import { useWalletClient } from 'wagmi'
 import { arbitrumGoerli } from 'wagmi/chains'
 import { poolABI } from "@/abis/poolABI"

@@ -19,7 +19,7 @@ export const useBtcMarketPrice = () => {
         };
         fetchPrice();
 
-        const interval = setInterval(fetchPrice, 10000);
+        const interval = setInterval(fetchPrice, 30000);
 
         return () => clearInterval(interval);
     }, []);
@@ -27,6 +27,29 @@ export const useBtcMarketPrice = () => {
     return { price, change24h }
 }
 
+export const useEthMarketPrice = () => {
+    const [price, setPrice] = useState(0);
+    const [change24h, setChange24h] = useState(0)
+    useEffect(() => {
+        const fetchPrice = async () => {
+            try {
+                const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_vol=trur&include_24hr_change=true&include_last_updated_at=true`);
+                const result = await res.json();
+                setPrice(result?.ethereum.usd);
+                setChange24h(result?.ethereum.usd_24h_change);
+            } catch (error) {
+                console.error("Failed to fetch the market price:", error);
+            }
+        };
+        fetchPrice();
+
+        const interval = setInterval(fetchPrice, 30000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    return { price, change24h }
+}
 
 export const useGetPoolPriceState = (poolAddress: any) => {
 
@@ -35,8 +58,6 @@ export const useGetPoolPriceState = (poolAddress: any) => {
         abi: poolABI,
         functionName: 'priceState'
     })
-
-    console.log('check priceState => ', data)
 
     const [premiumRateX96, setPremiumRateX96] = useState(0)
     useEffect(() => {
@@ -51,6 +72,7 @@ export const useGetPoolPriceState = (poolAddress: any) => {
 
     }, [data])
 
+    console.log('check data => ', data)
 
     return { premiumRateX96, isLoading, isError }
 }

@@ -3,8 +3,12 @@ import Decimal from "decimal.js"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
-import { useUserUsdxBalance } from "@/hooks/cUserState"
-import { useBtcMarketPrice } from "@/hooks/usePrice"
+import { useGetReferralState, useUserUsdxBalance } from "@/hooks/cUserState"
+import {
+  useBtcMarketPrice,
+  useEthMarketPrice,
+  useGetPoolPriceState,
+} from "@/hooks/usePrice"
 import { btcPoolAddress, ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
@@ -42,7 +46,11 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
   const [showSlider, setShowSlider] = useState(true)
   const [priceSlippage, setPriceSlippage] = useState("1")
   const { price: btcPrice } = useBtcMarketPrice()
+  const { price: ethPrice } = useEthMarketPrice()
   const [btcAfterSlippagePrice, setBtcAfterSlippagePrice] = useState(0)
+
+  const executionFee = 0.00021 * ethPrice
+  const [liqPrice, setLiqPrice] = useState(0)
 
   const {
     data: balanceData,
@@ -72,9 +80,15 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
     incPositionWrite()
   }
 
+  const { data: referralState } = useGetReferralState()
+
+  const { premiumRateX96, isLoading, isError } =
+    useGetPoolPriceState(btcPoolAddress)
+
   useEffect(() => {
     if (usdMargin !== "") {
       const tempMargin = parseFloat(usdMargin)
+
       setUsdAfterMargin(
         (isNaN(tempMargin) ? 0 : tempMargin * leverageNumber).toString()
       )
@@ -82,6 +96,18 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
       setTradingSize("")
     }
   }, [leverageNumber, usdMargin])
+
+  useEffect(() => {
+    if (btcPrice) {
+      if (side === SIDE_LONG) {
+        const liqPrice = btcPrice * (1 - 1 / leverageNumber)
+        setLiqPrice(liqPrice)
+      } else {
+        const liqPrice = btcPrice * (1 + 1 / leverageNumber)
+        setLiqPrice(liqPrice)
+      }
+    }
+  }, [leverageNumber, usdMargin, btcPrice, side])
 
   useEffect(() => {
     if (usdAfterMargin !== "") {
@@ -104,6 +130,21 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
       }
     }
   }, [btcPrice, priceSlippage, side])
+
+  const [tradingFee, setTradingFee] = useState(0)
+
+  useEffect(() => {
+    if (tradingSize && btcPrice) {
+      if (referralState) {
+        //0.045%
+        const tradingFee = (Number(tradingSize) * btcPrice * 0.045) / 100
+        setTradingFee(tradingFee)
+      } else {
+        const tradingFee = (Number(tradingSize) * btcPrice * 0.05) / 100
+        setTradingFee(tradingFee)
+      }
+    }
+  }, [tradingSize, btcPrice, referralState])
 
   return (
     <div>
@@ -192,7 +233,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
               price is more advantageous, and negative number is vice versa.
             </p>
           </CustomTooltip>
-          <div className="text-xs text-white">-</div>
+          <div className="text-xs text-white">{premiumRateX96}%</div>
         </div>
         <div className="flex">
           <ListItem
@@ -248,9 +289,26 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
             </DialogContent>
           </Dialog>
         </div>
-        <ListItem keyText="Liq. Price" value={""} />
-        <ListItem keyText="Est. Margin" value={""} />
-        <ListItem keyText="Fees" value={""} />
+        <ListItem
+          keyText="Liq. Price"
+          value={giveMeFormattedToShow(liqPrice)}
+        />
+        <ListItem
+          keyText="Est. Margin"
+          value={`${Number(usdAfterMargin) - tradingFee}`}
+        />
+        <ListItem
+          keyText="Fees"
+          value={`$${giveMeFormattedToShow(tradingFee + executionFee)} `}
+        />
+        <ListItem
+          keyText="Trading Fee"
+          value={`$${giveMeFormattedToShow(tradingFee)}`}
+        />
+        <ListItem
+          keyText="HasReferral?"
+          value={referralState ? "YES" : "NO"}
+        ></ListItem>
       </div>
       <Button
         disabled={incPositionLoading}

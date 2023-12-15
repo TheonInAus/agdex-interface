@@ -41,23 +41,14 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TradingViewWidget from "@/components/tradingView"
 
+import { DropDownBox } from "./dropDownBox"
 import { OrderListWidget } from "./orderListWidget"
 import { PositionListWidget } from "./positionListWidget"
 import { TradeLimitWidget } from "./tradeLimitWidget"
 import { TradeMarketWidget } from "./tradeMarketWidget"
-import { DropDownBox } from "./dropDownBox"
 
 export default function TradePage() {
   const { marketPriceData } = useTokenMarketPrice(btcPoolAddress)
-  console.log(
-    "check btc long => ",
-    x96Price2Readable(BigInt(marketPriceData.marketPriceForLong))
-  )
-
-  console.log(
-    "check btc short => ",
-    x96Price2Readable(BigInt(marketPriceData.marketPriceForLong))
-  )
 
   const {
     data: positionRouterPluginData,
@@ -111,9 +102,6 @@ export default function TradePage() {
 
   const contractPrice = indexPrice + premiumRateX96
 
-  const { data: referralState } = useGetReferralState()
-  console.log(referralState)
-
   // useEffect(() => {
   //   if (maxPrice) {
   //     setTokenPrice(maxPrice)
@@ -144,7 +132,9 @@ export default function TradePage() {
             style={{ width: 950, height: 600 }}
           >
             <div className="flex">
-              <div className="mr-8 text-lg"><DropDownBox/></div>
+              <div className="mr-8 text-lg">
+                <DropDownBox />
+              </div>
               <div className="mt-1 mr-10 text-lg text-0xredLighter">
                 {giveMeFormattedToShow(contractPrice)}
               </div>

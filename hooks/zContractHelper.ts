@@ -1,7 +1,7 @@
 import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
 import Decimal from "decimal.js";
 import { BigNumberish } from "ethers";
-import { arbPoolAddress, btcPoolAddress, ethPoolAddress, linkPoolAddress } from "./zAddressHelper";
+import { btcPoolAddress, ethPoolAddress } from "./zAddressHelper";
 
 
 export const minExecutionFee = parseEther('0.00021')

@@ -2,23 +2,23 @@ import { AppProps } from "next/app"
 
 import "@/styles/globals.css"
 import { WagmiConfig, configureChains, createConfig } from "wagmi"
-import { arbitrumGoerli } from "wagmi/chains"
+import { arbitrumSepolia } from "wagmi/chains"
 import { publicProvider } from "wagmi/providers/public"
 
 import "@/styles/globals.css"
 import "@rainbow-me/rainbowkit/styles.css"
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit"
-import { infuraProvider } from "wagmi/providers/infura"
+import { alchemyProvider } from "wagmi/providers/alchemy"
 
 import RootLayout from "./layout"
 
 const appKey = process.env.INFURA_API_KEY || "default_app_key"
 const { chains, publicClient } = configureChains(
-  [arbitrumGoerli],
+  [arbitrumSepolia],
   [
-    infuraProvider({
-      apiKey: "89f6aa1d3c6e484c9aaf6c2693cdf8e5",
+    alchemyProvider({
+      apiKey: "RCtmHaPSrWs8prthWD31jNbk_0wEwp0j",
     }),
     publicProvider(),
   ]
