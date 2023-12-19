@@ -1,5 +1,8 @@
 import React from "react"
+import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { ArrowRight } from "lucide-react"
 
 import { siteConfig } from "@/config/site"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -8,81 +11,96 @@ import { ListItem } from "@/components/ui/listItem"
 import { Stats } from "@/components/ui/stats"
 
 export default function IndexPage() {
-  const indexPrice = "57.5938"
-  // const [inputValue, setInputValue] = React.useState(""); // This will hold the value of the input
-
-  // // Define a handler for when the input changes
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setInputValue(e.target.value);
-  // };
+  const router = useRouter()
+  const handleTradeNowClick = () => {
+    // Navigate to the trade page
+    router.push("/trade") // Use the path to your trade page
+  }
 
   return (
-    <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="flex max-w-[980px] flex-col items-start gap-2">
-        <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-          Beautifully designed components <br className="hidden sm:inline" />
-          built with Radix UI and Tailwind CSS.
-        </h1>
-        <p className="max-w-[700px] text-lg">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
-        <p className="max-w-[700px] text-lg text-0xred">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
-        <p className="max-w-[700px] text-lg text-0xredLighter">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
-        <p className="max-w-[700px] text-lg text-0xyellow">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
-        <p className="max-w-[700px] text-lg text-0xyellow-lighter">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
+    <section className="grid items-center">
+      <div className=" h-[500px] rounded-b-3xl" style={{ backgroundImage: 'linear-gradient(to bottom, #ADEFE7 5%, #32B4A7 95%)' }}>
+        <div className="mt-44 text-center items-center justify-center text-5xl text-black">
+          Next-Gen Decentralized Trading
+        </div>
+        <div className="text-center items-center justify-center text-base text-black mt-2">
+          Up to 200x leverage and 0 trading fees No sign up or deposit required
+        </div>
+        <div className="flex justify-center">
+          <Button
+            className="mt-5 justify-center text-base text-bronze font-semibold bg-black hover:bg-slate-900 rounded-lg"
+            onClick={handleTradeNowClick}
+          >
+            Trade Now
+            <ArrowRight className="ml-2" />
+          </Button>
+        </div>
       </div>
-      <div className="flex gap-4">
-        <Button>Action</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="green">Active</Button>
-        <Button variant="red">Error</Button>
-        <Button variant="yellow">Warning</Button>
+      <div className="flex flex-row justify-center gap-10 mt-28 w-full">
+        <div className="w-[30%] mt-32">
+          <div className="text-white text-base">Small title</div>
+          <div className="text-white text-4xl mt-1">Main title</div>
+          <div className="text-0xgrey text-base mt-2">
+            Permissionless, non-custodial, and non-KYC DEX delivering
+            cross-margined perpetual contracts with multi-chain support, up to
+            30x leverage and instant settlement.
+          </div>
+          <Button
+            className="bg-bronze text-black text-base rounded-xl mt-3"
+            onClick={handleTradeNowClick}
+          >
+            Launch App
+          </Button>
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="bg-0xbox rounded-lg w-[700px] h-[100px] flex gap-5 ">
+            <div className="mt-10 ml-10">Icon</div>
+            <div>
+              <div className="text-white text-base mt-5 ml-5">Title</div>
+              <div className="text-0xgrey text-sm mt-2 ml-5">Text</div>
+            </div>
+          </div>
+          <div className="bg-0xbox rounded-lg w-[700px] h-[100px] flex gap-5 ">
+            <div className="mt-10 ml-10">Icon</div>
+            <div>
+              <div className="text-white text-base mt-5 ml-5">Title</div>
+              <div className="text-0xgrey text-sm mt-2 ml-5">Text</div>
+            </div>
+          </div>
+          <div className="bg-0xbox rounded-lg w-[700px] h-[100px] flex gap-5 ">
+            <div className="mt-10 ml-10">Icon</div>
+            <div>
+              <div className="text-white text-base mt-5 ml-5">Title</div>
+              <div className="text-0xgrey text-sm mt-2 ml-5">Text</div>
+            </div>
+          </div>
+          <div className="bg-0xbox rounded-lg w-[700px] h-[100px] flex gap-5 ">
+            <div className="mt-10 ml-10">Icon</div>
+            <div>
+              <div className="text-white text-base mt-5 ml-5">Title</div>
+              <div className="text-0xgrey text-sm mt-2 ml-5">Text</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        <Stats
-          title={"Index Price"}
-          value={indexPrice}
-          textColor={"text-0xyellow-lighter"}
-          additionalText={"(time)"}
-          info={"lll"}
-        />
+      <div className="mt-28 flex justify-center">
+        <div className="w-[1160px] h-[170px] bg-0xbox flex gap-5 rounded-lg">
+          <div className="mt-8 ml-14">
+            <Image src="/only_logo.svg" alt="Logo" width={100} height={36} />
+          </div>
+          <div className="mx-10 mt-10">
+            <div className="text-lg text-white">Fair Launch</div>
+            <div className="text-base text-0xgrey">
+              EQU is the native token of Equation, with a maximum supply of 10
+              million, 100% of which is generated through position mining,
+              liquidity mining and referral mining, rewarded to community users.
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="w-1/4">
-        <ListItem keyText="Entry Price" value={10} info="llll" />
-        <ListItem keyText="Acceptable Price" value={""} percentage="0.30%" />
-      </div>
-      <div className="w-full md:w-1/2 lg:w-1/3">
-        <InputBox
-          title="Pay"
-          value={"0.00"}
-          suffix="USDT"
-          // onValueChange={handleInputChange}
-        />
-        <br></br>
-        <InputBox
-          title="Size"
-          value={"0.00"}
-          suffix="SOL"
-          prefix="Leverage:"
-          // onValueChange={handleInputChange}
-        />
+      <div className="mt-28 flex justify-center">
+        <div className="text-5xl text-bronze font-semibold">The Roadmap</div>
+        <div className="h-[500px]"></div>
       </div>
     </section>
   )

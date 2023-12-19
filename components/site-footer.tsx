@@ -1,6 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
+
 import { siteConfig } from "@/config/site"
 
 import Iconify from "./Iconify"
@@ -9,7 +10,13 @@ const SiteFooter = () => {
   return (
     <footer className="flex flex-col items-center space-y-4 py-4 text-white mt-10">
       <div>
-        <Image src="/0xx_logo.svg" alt="Logo" width={46} height={23} className="mb-2" />
+        <Image
+          src="/bronzes_logo.svg"
+          alt="Logo"
+          width={102}
+          height={36}
+          className="mb-2"
+        />
       </div>
       <div className="flex items-center justify-center space-x-10">
         <Link href={siteConfig.links.twitter}>

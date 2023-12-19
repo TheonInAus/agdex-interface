@@ -123,7 +123,7 @@ export default function TradePage() {
           {/* Wide Block 1 */}
           <div
             className="p-6 mb-4 rounded-lg bg-0xboxBackground"
-            style={{ width: 1200, height: 600 }}
+            style={{ width: 1100, height: 600 }}
           >
             <div className="flex">
               <div className="mr-8 text-lg">
@@ -184,7 +184,7 @@ export default function TradePage() {
           {/* Wide Block 2 */}
           <div
             className="p-4 pb-16 rounded-lg bg-0xboxBackground"
-            style={{ width: 950 }}
+            style={{ width: 1100 }}
           >
             <StyledTabs defaultValue="Position">
               <StyledTabsList>
