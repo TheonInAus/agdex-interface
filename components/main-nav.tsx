@@ -32,7 +32,7 @@ export function MainNav({ items }: MainNavProps) {
                   className={cn(
                     "flex items-center text-sm font-medium",
                     pathname === item.href
-                      ? "underline-effect text-white"
+                      ? "underline underline-offset-4 text-bronze"
                       : "text-muted-foreground"
                   )}
                 >

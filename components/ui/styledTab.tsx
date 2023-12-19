@@ -1,4 +1,3 @@
-// styledTab.tsx
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 
@@ -28,7 +27,7 @@ const StyledTabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "relative inline-flex whitespace-nowrap data-[state=active]:underline data-[state=active]:underline-offset-4 rounded-sm px-3 py-1.5 text-base font-bold  transition-all focus-visible:outline-none disabled:pointer-events-none disabled:text-0xgrey data-[state=active]:text-white ",
+      "relative inline-flex whitespace-nowrap data-[state=active]:underline data-[state=active]:underline-offset-4 rounded-sm px-3 py-1.5 text-base font-bold  transition-all focus-visible:outline-none disabled:pointer-events-none disabled:text-0xgrey data-[state=active]:text-bronze ",
       className
     )}
     {...props}
