@@ -51,8 +51,8 @@ export default function EarnPage() {
         <div className="flex justify-between">
           <div>0XX Statistics</div>
           <div className="flex gap-3">
-            <Button className="text-xs h-8">Buy</Button>
-            <Button className="text-xs h-8">Add to Wallet</Button>
+            <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Buy</Button>
+            <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Add to Wallet</Button>
           </div>
         </div>
         <div className="flex w-full mt-8 justify-between">
@@ -121,7 +121,7 @@ export default function EarnPage() {
           <div className="w-[40%]">
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="text-xs h-8">Claim All</Button>
+                <Button className="text-sm h-9 bg-bronze">Claim All</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] bg-0xdialog">
                 <DialogHeader>
@@ -136,7 +136,7 @@ export default function EarnPage() {
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="ml-1 bg-transparent text-white hover:bg-transparent hover:text-0xgrey text-xs">
+                <Button className="ml-1 bg-transparent text-white hover:bg-transparent hover:text-bronze text-sm">
                   Claim history
                   <ChevronRight className="w-4 h-4 mt-[2px]" />
                 </Button>
@@ -204,7 +204,7 @@ export default function EarnPage() {
             )}
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="text-xs h-8">Claim</Button>
+                <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Claim</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] bg-0xdialog">
                 <DialogHeader>
@@ -265,7 +265,7 @@ export default function EarnPage() {
               </div>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="text-xs h-8">Stake 0XX</Button>
+                  <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Stake 0XX</Button>
                 </DialogTrigger>
                 <DialogContent className="bg-0xdialog">
                   <DialogHeader>
@@ -337,7 +337,7 @@ export default function EarnPage() {
               </Dialog>
             </div>
             <div className="text-center justify-center mt-10 mb-5 text-0xgrey text-sm">
-              You haven't staked yet.
+              You have not staked yet.
             </div>
           </StyledTabsContent>
           <StyledTabsContent value="Position Mining">
@@ -350,7 +350,7 @@ export default function EarnPage() {
               <div className="w-[16%] mt-[6px]">My Positions</div>
               <div className="w-[16%] mt-[6px]">Claimable Rewards</div>
               <div>
-                <Button className="h-8 text-xs">Trade</Button>
+                <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Trade</Button>
               </div>
             </div>
           </StyledTabsContent>
@@ -439,7 +439,7 @@ export default function EarnPage() {
               </CustomTooltip>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="h-8 text-xs">Stake NFT</Button>
+                  <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Stake NFT</Button>
                 </DialogTrigger>
                 <DialogContent className="bg-0xdialog">
                   <DialogHeader>
@@ -550,7 +550,7 @@ export default function EarnPage() {
               <div className="w-[18%]">My Liquidity</div>
               <div className="w-[16%]">Claimable Rewards</div>
               <div>
-                <Button className="h-8 text-sm">Add</Button>
+                <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Add</Button>
               </div>
             </div>
           </StyledTabsContent>
@@ -572,7 +572,7 @@ export default function EarnPage() {
               <div>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="h-8 text-xs">Contribute</Button>
+                    <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Contribute</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px] bg-0xdialog">
                     <DialogHeader>

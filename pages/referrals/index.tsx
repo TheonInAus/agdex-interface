@@ -35,19 +35,19 @@ export default function ReferralsPage() {
                         placeholder="Enjoy the following benefits by binding"
                         className="rounded-r-none border-none bg-0xdialog-foreground h-12"
                       />
-                      <Button className="rounded-l-none h-12">Confirm</Button>
+                      <Button className="rounded-l-none h-12 bg-bronze">Confirm</Button>
                     </div>
-                    <ul className="list-disc space-y-2 pl-5 text-base text-0xgrey text-sm mt-4">
+                    <ul className="list-disc space-y-2 pl-5 text-0xgrey text-sm mt-4">
                       <li>
                         Enjoy a{" "}
-                        <span className="text-white font-semibold">
+                        <span className="text-bronze font-semibold">
                           10% discount
                         </span>{" "}
                         on trading fees.
                       </li>
                       <li>
                         Earn a{" "}
-                        <span className="text-white font-semibold">
+                        <span className="text-bronze font-semibold">
                           1.1x boosted multiplier
                         </span>{" "}
                         for liquidity mining.
@@ -79,8 +79,8 @@ export default function ReferralsPage() {
             <div className="p-6 rounded-lg bg-0xboxBackground mt-4">
                 <div className="text-center text-sm">You don't have a Member NFT yet. You can obtain one through the following methods:</div>
                 <div className="flex justify-center gap-4 mt-5">
-                    <Button>Apply for NFT</Button>
-                    <Button>Purchase NFT</Button>
+                    <Button variant="outline" className="text-sm h-10 border-0xgrey hover:border-bronze hover:bg-0xtrans">Apply for NFT</Button>
+                    <Button variant="outline" className="text-sm h-10 border-0xgrey hover:border-bronze hover:bg-0xtrans">Purchase NFT</Button>
                 </div>
                 <div className="text-0xgrey mt-5 text-center text-sm">By holding Member NFT, you can generate multiple referral codes and receive mining rewards and trading fee income.</div>
             </div>

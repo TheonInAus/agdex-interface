@@ -12,10 +12,10 @@ export const Icons = {
   twitter: Twitter,
   logo: () => (
     <Image 
-      src="/0xx_logo.svg" 
+      src="/bronzes_logo.svg" 
       alt="Logo" 
-      width={36} 
-      height={18}
+      width={102} 
+      height={36}
       />
   ),
   gitHub: (props: LucideProps) => (
