@@ -56,16 +56,16 @@ export default function TradingViewWidget() {
     >
       <div
         id="tradingview_65e52"
-        style={{ height: "calc(100% - 32px)", width: "100%" }}
+        style={{ height: "calc(100% - 80px)", width: "100%" }}
       />
       <div className="tradingview-widget-copyright">
-        <a
+        {/* <a
           href="https://www.tradingview.com/"
           rel="noopener nofollow noreferrer"
           target="_blank"
         >
           <span className="blue-text">Track all markets on TradingView</span>
-        </a>
+        </a> */}
       </div>
     </div>
   )

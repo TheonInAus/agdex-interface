@@ -1,7 +1,7 @@
 import { poolABI } from '@/abis/poolABI';
 import { useEffect, useState } from 'react';
 import { useContractRead } from 'wagmi';
-import { x96Price2Readable } from './zContractHelper';
+import { backFromX96, x96Price2Readable } from './zContractHelper';
 
 export const useBtcMarketPrice = () => {
     const [price, setPrice] = useState(0);
@@ -65,7 +65,7 @@ export const useGetPoolPriceState = (poolAddress: any) => {
             const dataArray = data as any[]
             if (dataArray.length > 0) {
                 const tempPremiumRate = dataArray[1]
-                const convert = x96Price2Readable(tempPremiumRate)
+                const convert = backFromX96(tempPremiumRate.toString())
                 setPremiumRateX96(Number(convert))
             }
         }

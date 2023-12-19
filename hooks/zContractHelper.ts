@@ -1,7 +1,7 @@
 import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
 import Decimal from "decimal.js";
 import { BigNumberish } from "ethers";
-import { btcPoolAddress, ethPoolAddress } from "./zAddressHelper";
+import { btcPoolAddress, ethPoolAddress, ordiPoolAddress } from "./zAddressHelper";
 
 
 export const minExecutionFee = parseEther('0.00021')
@@ -114,6 +114,14 @@ export function toPriceX96(price: string, tokenDecimals: number, usdDecimals: nu
     );
 }
 
+export function backFromX96(value: string): number {
+    const factor = new Decimal(2).pow(new Decimal(96));
+    return Number(
+        new Decimal(value)
+            .div(factor)
+            .toFixed(6)
+    )
+}
 
 
 export const giveMeFormattedToShow = (number: number) => tempCurrenyFormat(number);
@@ -134,28 +142,24 @@ export const formatTimestampX1000 = (timestamp: number | string) => {
 }
 
 export const convertPoolAddressToShownData = (poolAddress: string) => {
-    if (poolAddress === ethPoolAddress.toLocaleLowerCase()) {
-        return 'ETH/USDX'
-    } else if (poolAddress === btcPoolAddress.toLocaleLowerCase()) {
+    if (poolAddress === btcPoolAddress.toLocaleLowerCase()) {
         return 'BTC/USDX'
-    } else if (poolAddress === arbPoolAddress.toLocaleLowerCase()) {
-        return 'ARB/USDX'
-    } else if (poolAddress === linkPoolAddress.toLocaleLowerCase()) {
-        return 'LINK/USDX'
+    } else if (poolAddress === ethPoolAddress.toLocaleLowerCase()) {
+        return 'ETH/USDX'
+    } else if (poolAddress === ordiPoolAddress.toLocaleLowerCase()) {
+        return 'ORDI/USDX'
     } else {
         return '-error'
     }
 }
 
 export const convertPoolAddressToTokenName = (poolAddress: string) => {
-    if (poolAddress === ethPoolAddress.toLocaleLowerCase()) {
-        return 'ETH'
-    } else if (poolAddress === btcPoolAddress.toLocaleLowerCase()) {
+    if (poolAddress === btcPoolAddress.toLocaleLowerCase()) {
         return 'BTC'
-    } else if (poolAddress === arbPoolAddress.toLocaleLowerCase()) {
-        return 'ARB'
-    } else if (poolAddress === linkPoolAddress.toLocaleLowerCase()) {
-        return 'LINK'
+    } else if (poolAddress === ethPoolAddress.toLocaleLowerCase()) {
+        return 'ETH'
+    } else if (poolAddress === ordiPoolAddress.toLocaleLowerCase()) {
+        return 'ORDI'
     } else {
         return '-error'
     }

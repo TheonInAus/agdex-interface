@@ -45,7 +45,7 @@ const tokens = [
 
 export function DropDownBox() {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("eth/usdx")
+  const [value, setValue] = React.useState("btc/usdx")
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

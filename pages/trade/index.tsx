@@ -100,13 +100,7 @@ export default function TradePage() {
   const { premiumRateX96 } = useGetPoolPriceState(btcPoolAddress)
   console.log("check premiumRateX96 => ", premiumRateX96)
 
-  const contractPrice = indexPrice + premiumRateX96
-
-  // useEffect(() => {
-  //   if (maxPrice) {
-  //     setTokenPrice(maxPrice)
-  //   }
-  // }, [maxPrice])
+  const contractPrice = indexPrice * (1 + premiumRateX96)
 
   /**
    * just for testing ********************************
@@ -129,7 +123,7 @@ export default function TradePage() {
           {/* Wide Block 1 */}
           <div
             className="p-6 mb-4 rounded-lg bg-0xboxBackground"
-            style={{ width: 950, height: 600 }}
+            style={{ width: 1200, height: 600 }}
           >
             <div className="flex">
               <div className="mr-8 text-lg">
