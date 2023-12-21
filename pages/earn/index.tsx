@@ -51,27 +51,37 @@ export default function EarnPage() {
         <div className="flex justify-between">
           <div>0XX Statistics</div>
           <div className="flex gap-3">
-            <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Buy</Button>
-            <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Add to Wallet</Button>
+            <Button
+              variant="outline"
+              className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+            >
+              Buy
+            </Button>
+            <Button
+              variant="outline"
+              className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+            >
+              Add to Wallet
+            </Button>
           </div>
         </div>
-        <div className="flex w-full mt-8 justify-between">
+        <div className="flex justify-between w-full mt-8">
           <div className="flex flex-col gap-1">
-            <div className="text-0xgrey text-sm">Total Emissions</div>
+            <div className="text-sm text-0xgrey">Total Emissions</div>
             <div className="text-lg text-white">412,232.06</div>
           </div>
           <div className="flex flex-col gap-1">
-            <div className="text-0xgrey text-sm">Total Claimed</div>
+            <div className="text-sm text-0xgrey">Total Claimed</div>
             <div className="text-lg text-white">365,989.41</div>
           </div>
           <div className="flex flex-col gap-1">
-            <div className="text-0xgrey text-sm">Total Burned</div>
+            <div className="text-sm text-0xgrey">Total Burned</div>
             <div className="text-lg text-white">33,422.10</div>
           </div>
           <div className="flex flex-col gap-1">
             <CustomTooltip
               triggerContent={
-                <div className="text-0xgrey text-sm">Total Staked</div>
+                <div className="text-sm text-0xgrey">Total Staked</div>
               }
             >
               <p>
@@ -136,7 +146,7 @@ export default function EarnPage() {
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="ml-1 bg-transparent text-white hover:bg-transparent hover:text-bronze text-sm">
+                <Button className="ml-1 text-sm text-white bg-transparent hover:bg-transparent hover:text-bronze">
                   Claim history
                   <ChevronRight className="w-4 h-4 mt-[2px]" />
                 </Button>
@@ -196,15 +206,20 @@ export default function EarnPage() {
               </StyledTabsTrigger>
             </StyledTabsList>
             {activeTab === "Liquidity Mining" && (
-              <div className="flex items-center ml-2 py-1">
-                <span className="text-white text-sm w-32">
+              <div className="flex items-center py-1 ml-2">
+                <span className="w-32 text-sm text-white">
                   <span className="text-0xgrey">My Multiplier: </span>1.0x
                 </span>
               </div>
             )}
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Claim</Button>
+                <Button
+                  variant="outline"
+                  className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                >
+                  Claim
+                </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] bg-0xdialog">
                 <DialogHeader>
@@ -220,9 +235,9 @@ export default function EarnPage() {
           </div>
           <div className="mt-2 mb-3 border-t border-0xline"></div>
           <StyledTabsContent value="Staking">
-            <div className="flex w-full mt-8 justify-center text-center">
+            <div className="flex justify-center w-full mt-8 text-center">
               <div className="flex gap-1 flex-col w-[30%]">
-                <div className="text-0xgrey text-sm">Staked 0XX</div>
+                <div className="text-sm text-0xgrey">Staked 0XX</div>
                 <div className="text-white">412,232.06 0XX</div>
               </div>
               <div className="flex gap-1 flex-col w-[30%]">
@@ -240,7 +255,7 @@ export default function EarnPage() {
                 <div className="text-white">365,989.41 0XX</div>
               </div>
               <div className="flex gap-1 flex-col w-[30%]">
-                <div className="text-0xgrey text-sm">Total Staking Rewards</div>
+                <div className="text-sm text-0xgrey">Total Staking Rewards</div>
                 <div className="text-white">33,422.10 USDT</div>
               </div>
             </div>
@@ -265,7 +280,12 @@ export default function EarnPage() {
               </div>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Stake 0XX</Button>
+                  <Button
+                    variant="outline"
+                    className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                  >
+                    Stake 0XX
+                  </Button>
                 </DialogTrigger>
                 <DialogContent className="bg-0xdialog">
                   <DialogHeader>
@@ -274,16 +294,16 @@ export default function EarnPage() {
                     </DialogTitle>
                     <DialogDescription>
                       <div className="flex justify-between mb-1">
-                        <div className="text-0xgrey text-xs">Amount</div>
-                        <div className="text-0xgrey text-xs">
+                        <div className="text-xs text-0xgrey">Amount</div>
+                        <div className="text-xs text-0xgrey">
                           Balance: <span className="text-white">0 0XX</span>
                         </div>
                       </div>
                       <Input
                         placeholder="0.00"
-                        className="rounded-r-none border-none bg-0xdialog-foreground h-12"
+                        className="h-12 border-none rounded-r-none bg-0xdialog-foreground"
                       />
-                      <div className="text-0xgrey text-xs mt-7 mb-2">
+                      <div className="mb-2 text-xs text-0xgrey mt-7">
                         Lock Duration
                       </div>
                       <div className="flex justify-around">
@@ -301,7 +321,7 @@ export default function EarnPage() {
                               type="radio"
                               name="lockDuration"
                               value={duration}
-                              className="h-2 w-2 ml-3"
+                              className="w-2 h-2 ml-3"
                               checked={selectedDuration === duration}
                               onChange={() => setSelectedDuration(duration)}
                             />
@@ -336,12 +356,12 @@ export default function EarnPage() {
                 </DialogContent>
               </Dialog>
             </div>
-            <div className="text-center justify-center mt-10 mb-5 text-0xgrey text-sm">
+            <div className="justify-center mt-10 mb-5 text-sm text-center text-0xgrey">
               You have not staked yet.
             </div>
           </StyledTabsContent>
           <StyledTabsContent value="Position Mining">
-            <div className="flex flex-row mt-5 ml-3 mb-1 text-sm rounded-lg text-0xgrey">
+            <div className="flex flex-row mt-5 mb-1 ml-3 text-sm rounded-lg text-0xgrey">
               <div className="w-[12%] mt-[6px]">Market</div>
               <div className="w-[15%] mt-[6px]">Avg. APR</div>
               <div className="w-[17%] mt-[6px]">Daily Emission</div>
@@ -350,7 +370,12 @@ export default function EarnPage() {
               <div className="w-[16%] mt-[6px]">My Positions</div>
               <div className="w-[16%] mt-[6px]">Claimable Rewards</div>
               <div>
-                <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Trade</Button>
+                <Button
+                  variant="outline"
+                  className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                >
+                  Trade
+                </Button>
               </div>
             </div>
           </StyledTabsContent>
@@ -439,7 +464,12 @@ export default function EarnPage() {
               </CustomTooltip>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Stake NFT</Button>
+                  <Button
+                    variant="outline"
+                    className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                  >
+                    Stake NFT
+                  </Button>
                 </DialogTrigger>
                 <DialogContent className="bg-0xdialog">
                   <DialogHeader>
@@ -452,7 +482,7 @@ export default function EarnPage() {
                           className="text-white text-opacity-70 hover:text-opacity-100 mt-[2px] mr-1"
                           size={12}
                         />
-                        <div className="text-0xgrey text-xs">
+                        <div className="text-xs text-0xgrey">
                           Only <span className="text-white">full range</span>{" "}
                           0XX/ETH LP NFTs are acceptable.
                         </div>
@@ -476,7 +506,7 @@ export default function EarnPage() {
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      <div className="text-0xgrey text-xs mt-7 mb-2">
+                      <div className="mb-2 text-xs text-0xgrey mt-7">
                         Lock Duration
                       </div>
                       <div className="flex justify-around">
@@ -494,7 +524,7 @@ export default function EarnPage() {
                               type="radio"
                               name="lockDuration"
                               value={duration}
-                              className="h-2 w-2 ml-3"
+                              className="w-2 h-2 ml-3"
                               checked={selectedDuration === duration}
                               onChange={() => setSelectedDuration(duration)}
                             />
@@ -550,7 +580,12 @@ export default function EarnPage() {
               <div className="w-[18%]">My Liquidity</div>
               <div className="w-[16%]">Claimable Rewards</div>
               <div>
-                <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Add</Button>
+                <Button
+                  variant="outline"
+                  className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                >
+                  Add
+                </Button>
               </div>
             </div>
           </StyledTabsContent>
@@ -572,7 +607,12 @@ export default function EarnPage() {
               <div>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline" className="text-sm h-8 border-0xgrey hover:border-bronze hover:bg-0xtrans">Contribute</Button>
+                    <Button
+                      variant="outline"
+                      className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                    >
+                      Contribute
+                    </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px] bg-0xdialog">
                     <DialogHeader>
@@ -601,7 +641,7 @@ export default function EarnPage() {
                               value={"0.00"}
                               suffix={""}
                             />
-                            <div className="text-sm my-4 text-white">
+                            <div className="my-4 text-sm text-white">
                               Token/Asset
                             </div>
                             <ListItem keyText={"Net Performance"} value={""} />
@@ -615,7 +655,7 @@ export default function EarnPage() {
                               keyText={"Unlocking Countdown"}
                               value={""}
                             />
-                            <div className="bg-0xsmallBoxBackground w-full mt-3">
+                            <div className="w-full mt-3 bg-0xsmallBoxBackground">
                               <div className="flex items-start p-2">
                                 <div className="flex-shrink-0 mr-1 mt-[2.5px]">
                                   <AlertCircle
@@ -632,7 +672,7 @@ export default function EarnPage() {
                                 </div>
                               </div>
                               <div className="flex items-start p-2">
-                                <div className="flex-shrink-0 mr-1 mt-[2.5px]">
+                                <div className="shrink-0 mr-1 mt-[2.5px]">
                                   <AlertCircle
                                     className="text-white text-opacity-70 hover:text-opacity-100"
                                     size={15} // Adjust the size to match your design
@@ -640,13 +680,13 @@ export default function EarnPage() {
                                 </div>
                                 <div className="text-white">
                                   You cannot withdraw your contribution if the
-                                  fund's net performance is negative, even after
-                                  the lock-up period has expired, until the net
-                                  performance turns positive.
+                                  fund&apos;s net performance is negative, even
+                                  after the lock-up period has expired, until
+                                  the net performance turns positive.
                                 </div>
                               </div>
                             </div>
-                            <Button className="mt-4 w-full">
+                            <Button className="w-full mt-4">
                               Approve USDT
                             </Button>
                           </StyledTabsContent>
@@ -656,7 +696,7 @@ export default function EarnPage() {
                               value={"0.00"}
                               suffix={""}
                             />
-                            <div className="text-sm my-4 text-white">
+                            <div className="my-4 text-sm text-white">
                               Token/Asset
                             </div>
                             <ListItem keyText={"Net Performance"} value={""} />
@@ -670,7 +710,7 @@ export default function EarnPage() {
                               keyText={"Unlocking Countdown"}
                               value={""}
                             />
-                            <div className="bg-0xsmallBoxBackground w-full mt-3">
+                            <div className="w-full mt-3 bg-0xsmallBoxBackground">
                               <div className="flex items-start p-2">
                                 <div className="flex-shrink-0 mr-1 mt-[2.5px]">
                                   <AlertCircle
@@ -687,7 +727,7 @@ export default function EarnPage() {
                                 </div>
                               </div>
                               <div className="flex items-start p-2">
-                                <div className="flex-shrink-0 mr-1 mt-[2.5px]">
+                                <div className="shrink-0 mr-1 mt-[2.5px]">
                                   <AlertCircle
                                     className="text-white text-opacity-70 hover:text-opacity-100"
                                     size={15} // Adjust the size to match your design
@@ -695,13 +735,13 @@ export default function EarnPage() {
                                 </div>
                                 <div className="text-white">
                                   You cannot withdraw your contribution if the
-                                  fund's net performance is negative, even after
-                                  the lock-up period has expired, until the net
-                                  performance turns positive.
+                                  fund&apos;s net performance is negative, even
+                                  after the lock-up period has expired, until
+                                  the net performance turns positive.
                                 </div>
                               </div>
                             </div>
-                            <Button className="mt-4 w-full">
+                            <Button className="w-full mt-4">
                               Approve Operation (one-time)
                             </Button>
                           </StyledTabsContent>
