@@ -4,11 +4,8 @@ import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
 import { useGetReferralState, useUserUsdxBalance } from "@/hooks/cUserState"
-import {
-  useBtcMarketPrice,
-  useEthMarketPrice,
-  useGetPoolPriceState,
-} from "@/hooks/usePrice"
+import { useGetPoolPriceState, useTokenMarketPrice } from "@/hooks/usePrice"
+import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { btcPoolAddress, ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
@@ -16,6 +13,7 @@ import {
   giveMeFormattedToShow,
   to0xxPriceX96,
 } from "@/hooks/zContractHelper"
+import { tokenConfig } from "@/hooks/zTokenConfig"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
@@ -45,8 +43,11 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
   const [isChecked, setIsChecked] = useState(true)
   const [showSlider, setShowSlider] = useState(true)
   const [priceSlippage, setPriceSlippage] = useState("1")
-  const { price: btcPrice } = useBtcMarketPrice()
-  const { price: ethPrice } = useEthMarketPrice()
+  const currentTokenEntity = useTokenConfigStore(
+    (state: any) => state.currentTokenEntity
+  )
+  const { price: btcPrice } = useTokenMarketPrice(currentTokenEntity)
+  const { price: ethPrice } = useTokenMarketPrice(tokenConfig[1])
   const [btcAfterSlippagePrice, setBtcAfterSlippagePrice] = useState(0)
 
   const executionFee = 0.00021 * ethPrice

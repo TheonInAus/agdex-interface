@@ -5,7 +5,7 @@ import { SIDE_LONG, SIDE_SHORT, x96Price2Readable } from "./zContractHelper"
 import { poolABI } from "@/abis/poolABI"
 
 
-export const useTokenPrice = (tokenAddress: any) => {
+export const useContractTokenPrice = (tokenAddress: any) => {
     const { data, isLoading, isError } = useContractRead({
         address: priceFeedAddress,
         abi: priceFeedABI,

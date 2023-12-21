@@ -3,6 +3,7 @@ import { AlertCircle, Edit3, ExternalLink, Loader2 } from "lucide-react"
 
 import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
 import { useUserOrderList, useUserPositionList } from "@/hooks/cUserState"
+import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
@@ -15,6 +16,7 @@ import {
   wrapperFormatEther18e,
   x96Price2Readable,
 } from "@/hooks/zContractHelper"
+import { TokenConfigType } from "@/hooks/zTokenConfig"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
@@ -51,7 +53,15 @@ type PositionInfo = {
 }
 
 export const PositionListWidget = () => {
-  const { data: positionDataList, isLoading, isError } = useUserPositionList()
+  const currentTokenEntity = useTokenConfigStore(
+    (state) => state.currentTokenEntity
+  )
+
+  const {
+    data: positionDataList,
+    isLoading,
+    isError,
+  } = useUserPositionList(currentTokenEntity)
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
   const { decPositionData, decPositionLoading, decPositionWrite } =
@@ -102,7 +112,7 @@ export const PositionListWidget = () => {
           {positionDataList.map((position, index) => (
             <div key={index}>
               <div className="flex flex-row gap-2">
-                <div className="text-white">{`${position.tokenName}/USDX`}</div>
+                <div className="text-white">{`${currentTokenEntity.symbol}`}</div>
                 <div
                   className={`${
                     position.tokenSide === "Long"
@@ -130,14 +140,14 @@ export const PositionListWidget = () => {
                   <div className="flex flex-row mt-2">
                     <CustomTooltip
                       triggerContent={
-                        <div className="text-0xgrey text-sm mr-7">Margin</div>
+                        <div className="text-sm text-0xgrey mr-7">Margin</div>
                       }
                     >
                       <p>llll</p>
                     </CustomTooltip>
                     <CustomTooltip
                       triggerContent={
-                        <div className="text-white text-sm">
+                        <div className="text-sm text-white">
                           {giveMeFormattedToShow(
                             wrapperFormatEther6e(position.margin)
                           ) + " USDX"}
@@ -193,10 +203,10 @@ export const PositionListWidget = () => {
                     keyText="Entry Price"
                     value={x96Price2Readable(position.entryPrice)}
                   />
-                  <div className="mt-2 flex gap-7">
+                  <div className="flex mt-2 gap-7">
                     <CustomTooltip
                       triggerContent={
-                        <div className="text-0xgrey text-sm">Liq. Price</div>
+                        <div className="text-sm text-0xgrey">Liq. Price</div>
                       }
                     >
                       <p>llll</p>
@@ -208,7 +218,7 @@ export const PositionListWidget = () => {
                   <div className="flex flex-row">
                     <CustomTooltip
                       triggerContent={
-                        <div className="text-0xgrey text-sm mr-7">
+                        <div className="text-sm text-0xgrey mr-7">
                           Unrealized Pnl.
                         </div>
                       }

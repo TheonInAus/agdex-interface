@@ -11,9 +11,9 @@ import {
   useExeDecreasePosition,
   useExeIncreasePosition,
 } from "@/hooks/actionMixExecutorHelper"
-import { useTokenMarketPrice, useTokenPrice } from "@/hooks/cTokenState"
 import { useGetReferralState } from "@/hooks/cUserState"
-import { useBtcMarketPrice, useGetPoolPriceState } from "@/hooks/usePrice"
+import { useGetPoolPriceState, useTokenMarketPrice } from "@/hooks/usePrice"
+import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import {
   btcPoolAddress,
   btcTokenAddress,
@@ -48,8 +48,6 @@ import { TradeLimitWidget } from "./tradeLimitWidget"
 import { TradeMarketWidget } from "./tradeMarketWidget"
 
 export default function TradePage() {
-  const { marketPriceData } = useTokenMarketPrice(btcPoolAddress)
-
   const {
     data: positionRouterPluginData,
     isLoading: isPositionRouterPluginLoading,
@@ -91,14 +89,14 @@ export default function TradePage() {
     orderBookWrite()
   }
 
-  // const [tokenPrice, setTokenPrice] = useState("0")
-  // const { maxPrice, minPrice } = useTokenPrice(ethTokenAddress)
-  // console.log("check lastest price short => ", maxPrice, minPrice)
-
-  const { price: indexPrice, change24h } = useBtcMarketPrice()
+  const currentTokenEntity = useTokenConfigStore(
+    (state: any) => state.currentTokenEntity
+  )
+  console.log("check current token entity => ", currentTokenEntity)
+  const { price: indexPrice, change24h } =
+    useTokenMarketPrice(currentTokenEntity)
 
   const { premiumRateX96 } = useGetPoolPriceState(btcPoolAddress)
-  console.log("check premiumRateX96 => ", premiumRateX96)
 
   const contractPrice = indexPrice * (1 + premiumRateX96)
 

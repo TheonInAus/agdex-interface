@@ -6,6 +6,7 @@ import { poolABI } from "@/abis/poolABI"
 import { SIDE_LONG, SIDE_SHORT } from "./zContractHelper"
 import { useQuery, gql } from '@apollo/client';
 import { rewardFarmABI } from "@/abis/rewardFarmABI"
+import { TokenConfigType } from "./zTokenConfig"
 
 // struct Position {
 //     uint128 margin;
@@ -31,7 +32,7 @@ type TokenParamsType = {
     poolAddress: string
 }
 
-export const useUserPositionList = () => {
+export const useUserPositionList = (token: TokenConfigType) => {
     const { data: walletClient } = useWalletClient({
         chainId: arbitrumGoerli.id,
     })
@@ -42,23 +43,20 @@ export const useUserPositionList = () => {
     }
     const contractParams: any[] = []
     const tokenBaseInfo: any[] = []
-    tokensList.forEach((token) => {
-        contractParams.push({
-            ...contractBaseInfo,
-            address: token.poolAddress,
-            args: [walletClient?.account.address, SIDE_LONG]
-        });
-        tokenBaseInfo.push({ tokenName: token.tokenName, tokenSide: 'Long', tokenPool: token.poolAddress })
+    contractParams.push({
+        ...contractBaseInfo,
+        address: token.poolContract,
+        args: [walletClient?.account.address, SIDE_LONG]
+    });
+    tokenBaseInfo.push({ tokenName: token.name, tokenSide: 'Long', tokenPool: token.poolContract })
 
-        contractParams.push({
-            ...contractBaseInfo,
-            address: token.poolAddress,
-            args: [walletClient?.account.address, SIDE_SHORT]
-        });
+    contractParams.push({
+        ...contractBaseInfo,
+        address: token.poolContract,
+        args: [walletClient?.account.address, SIDE_SHORT]
+    });
 
-        tokenBaseInfo.push({ tokenName: token.tokenName, tokenSide: 'Short', tokenPool: token.poolAddress })
-
-    })
+    tokenBaseInfo.push({ tokenName: token.name, tokenSide: 'Short', tokenPool: token.poolContract })
 
     const { data, isLoading, isError } = useContractReads({
         contracts: contractParams,
