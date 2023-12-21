@@ -134,7 +134,7 @@ export const PositionListWidget = () => {
                     value={
                       giveMeFormattedToShow(
                         wrapperFormatEther18e(position.size)
-                      ) + " ETH"
+                      ) + ` ${currentTokenEntity.name}`
                     }
                   />
                   <div className="flex flex-row mt-2">

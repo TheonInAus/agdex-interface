@@ -5,7 +5,9 @@ import { btcPoolAddress, ethPoolAddress, ordiPoolAddress } from "./zAddressHelpe
 
 
 export const minExecutionFee = parseEther('0.00021')
+export const minExecutionFeeNumber = 0.00021
 export const minOrderBookExecutionFee = parseEther('0.0003')
+export const minOrderBookExecutionFeeNumber = 0.0003
 
 
 export const Q64 = 1n << 64n;
@@ -82,7 +84,7 @@ export function x64Price2Readable(value: string) {
 }
 
 export function wrapperParseEther6e(value: string) {
-    return Number(parseUnits(value, 6))
+    return parseUnits(value, 6)
 }
 
 export function wrapperFormatEther6e(value: bigint) {

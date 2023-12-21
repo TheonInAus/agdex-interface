@@ -10,6 +10,7 @@ import { orderBookABI } from '@/abis/orderBookABI';
 
 export const useCreateIncreasePostion = (tokenPoolAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any) => {
     console.log('chekc paras margin => ', marginDelta)
+    console.log('chekc paras size => ', sizeDelta)
     const { data: incPositionData, isLoading: incPositionLoading, write: incPositionWrite } = useContractWrite({
         address: positionRouterAddress,
         abi: positionRouterABI,

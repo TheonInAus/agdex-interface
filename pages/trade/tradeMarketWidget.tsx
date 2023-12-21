@@ -11,6 +11,7 @@ import {
   SIDE_LONG,
   Side,
   giveMeFormattedToShow,
+  minExecutionFeeNumber,
   to0xxPriceX96,
 } from "@/hooks/zContractHelper"
 import { tokenConfig } from "@/hooks/zTokenConfig"
@@ -46,12 +47,12 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
   const currentTokenEntity = useTokenConfigStore(
     (state: any) => state.currentTokenEntity
   )
-  const { price: btcPrice } = useTokenMarketPrice(currentTokenEntity)
+  const { price: tokenPrice } = useTokenMarketPrice(currentTokenEntity)
   const { price: ethPrice } = useTokenMarketPrice(tokenConfig[1])
   const [btcAfterSlippagePrice, setBtcAfterSlippagePrice] = useState(0)
-
-  const executionFee = 0.00021 * ethPrice
   const [liqPrice, setLiqPrice] = useState(0)
+
+  const executionFee = minExecutionFeeNumber * ethPrice
 
   const {
     data: balanceData,
@@ -83,8 +84,9 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
 
   const { data: referralState } = useGetReferralState()
 
-  const { premiumRateX96, isLoading, isError } =
-    useGetPoolPriceState(btcPoolAddress)
+  const { premiumRateX96, isLoading, isError } = useGetPoolPriceState(
+    currentTokenEntity.poolContract
+  )
 
   useEffect(() => {
     if (usdMargin !== "") {
@@ -99,53 +101,57 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
   }, [leverageNumber, usdMargin])
 
   useEffect(() => {
-    if (btcPrice) {
+    if (tokenPrice) {
       if (side === SIDE_LONG) {
-        const liqPrice = btcPrice * (1 - 1 / leverageNumber)
+        const liqPrice = tokenPrice * (1 - 1 / leverageNumber)
         setLiqPrice(liqPrice)
       } else {
-        const liqPrice = btcPrice * (1 + 1 / leverageNumber)
+        const liqPrice = tokenPrice * (1 + 1 / leverageNumber)
         setLiqPrice(liqPrice)
       }
     }
-  }, [leverageNumber, usdMargin, btcPrice, side])
+  }, [leverageNumber, usdMargin, tokenPrice, side])
 
   useEffect(() => {
-    if (usdAfterMargin !== "") {
+    if (usdAfterMargin !== "" && tokenPrice) {
       const tradingSize = new Decimal(usdAfterMargin)
-        .dividedBy(new Decimal(btcPrice))
+        .dividedBy(new Decimal(tokenPrice))
         .toFixed(18)
         .toString()
       setTradingSize(tradingSize)
     } else {
       setTradingSize("")
     }
-  }, [usdAfterMargin, btcPrice])
+  }, [usdAfterMargin, tokenPrice])
 
   useEffect(() => {
-    if (btcPrice && priceSlippage) {
+    if (tokenPrice && priceSlippage) {
       if (side === SIDE_LONG) {
-        setBtcAfterSlippagePrice(btcPrice * (1 + Number(priceSlippage) / 10000))
+        setBtcAfterSlippagePrice(
+          tokenPrice * (1 + Number(priceSlippage) / 10000)
+        )
       } else {
-        setBtcAfterSlippagePrice(btcPrice * (1 - Number(priceSlippage) / 10000))
+        setBtcAfterSlippagePrice(
+          tokenPrice * (1 - Number(priceSlippage) / 10000)
+        )
       }
     }
-  }, [btcPrice, priceSlippage, side])
+  }, [tokenPrice, priceSlippage, side])
 
   const [tradingFee, setTradingFee] = useState(0)
 
   useEffect(() => {
-    if (tradingSize && btcPrice) {
+    if (tradingSize && tokenPrice) {
       if (referralState) {
         //0.045%
-        const tradingFee = (Number(tradingSize) * btcPrice * 0.045) / 100
+        const tradingFee = (Number(tradingSize) * tokenPrice * 0.045) / 100
         setTradingFee(tradingFee)
       } else {
-        const tradingFee = (Number(tradingSize) * btcPrice * 0.05) / 100
+        const tradingFee = (Number(tradingSize) * tokenPrice * 0.05) / 100
         setTradingFee(tradingFee)
       }
     }
-  }, [tradingSize, btcPrice, referralState])
+  }, [tradingSize, tokenPrice, referralState])
 
   return (
     <div>
@@ -219,7 +225,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
         <br></br>
         <ListItem
           keyText="Entry Price"
-          value={giveMeFormattedToShow(btcPrice)}
+          value={giveMeFormattedToShow(tokenPrice)}
         />
         <div className="flex justify-between">
           <CustomTooltip
@@ -296,7 +302,7 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
         />
         <ListItem
           keyText="Est. Margin"
-          value={`${Number(usdAfterMargin) - tradingFee}`}
+          value={`${Number(usdMargin) - tradingFee}`}
         />
         <ListItem
           keyText="Fees"
@@ -306,10 +312,10 @@ export const TradeMarketWidget = ({ side }: TradeMarketType) => {
           keyText="Trading Fee"
           value={`$${giveMeFormattedToShow(tradingFee)}`}
         />
-        <ListItem
+        {/* <ListItem
           keyText="HasReferral?"
           value={referralState ? "YES" : "NO"}
-        ></ListItem>
+        ></ListItem> */}
       </div>
       <Button
         disabled={incPositionLoading}
