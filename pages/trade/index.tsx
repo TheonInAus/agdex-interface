@@ -179,7 +179,7 @@ export default function TradePage() {
               </div>
             </div>
             <div className="my-5 border-t border-0xline"></div>
-            {/* <TradingViewWidget /> */}
+            <TradingViewWidget />
           </div>
           {/* Wide Block 2 */}
           <div
