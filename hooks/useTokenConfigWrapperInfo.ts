@@ -26,7 +26,7 @@ export const useTokenConfigWrapperInfo = (): TokenConfigType[] => {
         },
     ]
     return tokenConfig.map(config => {
-        const tokenData = tokens.find(token => token.name.toLowerCase() === config.name);
+        const tokenData = tokens.find(token => token.name === config.name);
         return {
             ...config,
             volume: tokenData?.volume || '',

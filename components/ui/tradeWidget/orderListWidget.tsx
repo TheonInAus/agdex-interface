@@ -36,7 +36,7 @@ type PositionInfo = {
   acceptableTradePriceX96: any
 }
 
-export const OrderListWidget = () => {
+export default function OrderListWidget() {
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
   const handleCancelOrder = (position: any) => {}
