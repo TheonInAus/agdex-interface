@@ -38,11 +38,10 @@ import {
   StyledTabsList,
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
-
-import { AddMarginWidget } from "./marginEdit/addMarginWidget"
-import { ReduceMarginWidget } from "./marginEdit/reduceMarginWidget"
-import { TpslDescWidget } from "./tpslContent/tpslDescWidget"
-import { TpslStyledTabContent } from "./tpslContent/tpslStyledTabContent"
+import AddMarginWidget from "@/components/ui/tradeWidget/addMarginWidget"
+import ReduceMarginWidget from "@/components/ui/tradeWidget/reduceMarginWidget"
+import TpslDescWidget from "@/components/ui/tradeWidget/tpslDescWidget"
+import TpslStyledTabContent from "@/components/ui/tradeWidget/tpslStyledTabContent"
 
 type PositionInfo = {
   poolAddress: any
@@ -52,7 +51,7 @@ type PositionInfo = {
   acceptableTradePriceX96: any
 }
 
-export const PositionListWidget = () => {
+export default function PositionListWidget() {
   const currentTokenEntity = useTokenConfigStore(
     (state) => state.currentTokenEntity
   )

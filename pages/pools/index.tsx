@@ -16,7 +16,7 @@ import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
 import { Stats } from "@/components/ui/stats"
 
-import { PoolDataType, PoolRow } from "./PoolRow"
+import PoolRow, { PoolDataType } from "./PoolRow"
 
 export default function PoolsPage() {
   const [leverageNumber, setLeverageNumber] = useState(1)

@@ -1,3 +1,5 @@
+"use client"
+
 import {
   StyledTabs,
   StyledTabsContent,
@@ -5,14 +7,16 @@ import {
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
 
-import { TpslTabsEntirePositionWidget } from "./tpslTabsEntirePositionWidget"
-import { TpslTabsPartialPositionWidget } from "./tpslTabsPartialPositionWidget"
+import TpslTabsEntirePositionWidget from "./tpslTabsEntirePositionWidget"
+import TpslTabsPartialPositionWidget from "./tpslTabsPartialPositionWidget"
 
 type TpslStyledTabProps = {
   positionInfo: any
 }
 
-export const TpslStyledTabContent = ({ positionInfo }: TpslStyledTabProps) => {
+export default function TpslStyledTabContent({
+  positionInfo,
+}: TpslStyledTabProps) {
   return (
     <>
       <StyledTabs defaultValue="Entire Position">

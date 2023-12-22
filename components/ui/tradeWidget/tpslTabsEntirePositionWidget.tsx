@@ -1,51 +1,42 @@
+"use client"
+
 import { useEffect, useState } from "react"
-import { AlertCircle } from "lucide-react"
-import { parseEther } from "viem"
+import { Loader } from "lucide-react"
 
 import {
-  minExecutionFee,
+  useCreateDecreaseOrder,
+  useCreateTakeProfitAndStopLossOrders,
+} from "@/hooks/actionTradePosition"
+import { ethPoolAddress } from "@/hooks/zAddressHelper"
+import {
   minOrderBookExecutionFee,
+  to0xxPriceX96,
   wrapperFormatEther18e,
 } from "@/hooks/zContractHelper"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
-import { PercentageSlider } from "@/components/ui/percentageSlider"
 import { TpsLInput } from "@/components/ui/tpslIput"
 
-type TpslTabsPartialPositionProps = {
-  positionInfo: any
+type TpslTabsEntirePositionProps = {
+  positionInfo?: any
 }
-export const TpslTabsPartialPositionWidget = ({
+
+export default function TpslTabsEntirePositionWidget({
   positionInfo,
-}: TpslTabsPartialPositionProps) => {
+}: TpslTabsEntirePositionProps) {
   const [takeProfitAmount, setTakeProfitAmount] = useState("")
+  const [afterTPAmount, setAfterTPAmount] = useState(0)
   const [takeProfitPnL, setTakeProfitPnL] = useState("")
   const [stopLossAmount, setStopLossAmount] = useState("")
+  const [afterSLAmount, setAfterSLAmount] = useState(0)
   const [stopLossPnL, setStopLossPnL] = useState("")
   const [takeProfitChecked, setTakeProfitChecked] = useState(true)
   const [stopLossChecked, setStopLossChecked] = useState(true)
-  const [sizeDelta, setSizeDelta] = useState(0)
-  const [sizeRate, setSizeRate] = useState(0)
   const [orderBookExecutionFee, setOrderBookExecutionFee] = useState(
     minOrderBookExecutionFee
   )
   const doubleExecutionFee = minOrderBookExecutionFee * 2n
-  useEffect(() => {
-    if (takeProfitChecked && stopLossChecked) {
-      setOrderBookExecutionFee(doubleExecutionFee)
-    } else {
-      setOrderBookExecutionFee(minOrderBookExecutionFee)
-    }
-  }, [takeProfitChecked, stopLossChecked, doubleExecutionFee])
-  const handleSliderValueChange = (value: any) => {
-    const rate = value / 100
-    setSizeRate(value)
-    setSizeDelta(wrapperFormatEther18e(positionInfo.size.toString()) * rate)
-  }
-
-  //   useEffect(() => {}, [sizeRate, sizeDelta])
 
   const checkDisabled = () => {
     const takeProfitValid = takeProfitAmount !== "" && takeProfitPnL !== ""
@@ -58,6 +49,79 @@ export const TpslTabsPartialPositionWidget = ({
       return false
     } else {
       return takeProfitValid && stopLossValid
+    }
+  }
+
+  useEffect(() => {
+    if (takeProfitChecked && stopLossChecked) {
+      setOrderBookExecutionFee(doubleExecutionFee)
+    } else {
+      setOrderBookExecutionFee(minOrderBookExecutionFee)
+    }
+  }, [takeProfitChecked, stopLossChecked, doubleExecutionFee])
+
+  const checkTriggerAbove = () => {
+    if (takeProfitChecked && !stopLossChecked) {
+      return true
+    }
+    if (!takeProfitChecked && stopLossChecked) {
+      return false
+    }
+    return true
+  }
+
+  const handleTPAfterAmount = () => {
+    if (!takeProfitAmount) return "0"
+    return (Number(takeProfitAmount) * 1.1).toString()
+  }
+
+  const handleSLAfterAmount = () => {
+    if (!stopLossAmount) return "0"
+    return (Number(stopLossAmount) * 1.1).toString()
+  }
+  const {
+    createDecOrderData,
+    isCreateDecOrderLoading,
+    isCreateDecOrderError,
+    createDecOrderWrite,
+  } = useCreateDecreaseOrder(
+    ethPoolAddress,
+    positionInfo?.tokenSide === "Long" ? 1 : 2,
+    "0",
+    "0",
+    checkTriggerAbove()
+      ? to0xxPriceX96(takeProfitAmount)
+      : to0xxPriceX96(stopLossAmount),
+    checkTriggerAbove(),
+    checkTriggerAbove()
+      ? to0xxPriceX96(handleTPAfterAmount())
+      : to0xxPriceX96(handleSLAfterAmount()),
+    ""
+  )
+
+  const {
+    createTPSLData,
+    isCreateTPSLLoading,
+    isCreateTPSLError,
+    createTPSLWrite,
+  } = useCreateTakeProfitAndStopLossOrders(
+    ethPoolAddress,
+    positionInfo?.tokenSide === "Long" ? 1 : 2,
+    [0, 0],
+    [0, 0],
+    [to0xxPriceX96(takeProfitAmount), to0xxPriceX96(stopLossAmount)],
+    [
+      to0xxPriceX96(handleTPAfterAmount()),
+      to0xxPriceX96(handleSLAfterAmount()),
+    ],
+    ""
+  )
+
+  const handleConfirmClick = () => {
+    if (takeProfitChecked && stopLossChecked) {
+      createTPSLWrite()
+    } else {
+      createDecOrderWrite()
     }
   }
   return (
@@ -153,30 +217,12 @@ export const TpslTabsPartialPositionWidget = ({
           </div>
         )}
       </div>
-      <div className="w-full mt-4">
-        <TpsLInput
-          id="name"
-          value={sizeDelta}
-          className="col-span-3"
-          suffix={positionInfo.tokenName}
-          onChange={(e) => {
-            setSizeDelta(Number(e.target.value))
-          }}
-        />
-        <PercentageSlider
-          max={100}
-          min={0}
-          step={1}
-          style={{ marginBottom: 40, marginTop: 20 }}
-          value={[sizeRate]}
-          onValueChange={handleSliderValueChange}
-        />
-      </div>
       <div className="w-full mt-2 text-sm">
         <div className="flex flex-row justify-between">
           <div className="text-0xgrey">Size</div>
           <div>
-            {wrapperFormatEther18e(positionInfo.size)} {positionInfo.tokenName}
+            {wrapperFormatEther18e(positionInfo?.size)}{" "}
+            {positionInfo?.tokenName}
           </div>
         </div>
         <div className="flex flex-row justify-between">
@@ -188,23 +234,21 @@ export const TpslTabsPartialPositionWidget = ({
           the position at the <span className="text-white">market price</span>.
         </div>
       </div>
-
-      <Alert className="bg-0xdialog-foreground border-gray-100 mt-4 h-[70px]">
-        <AlertCircle
-          className="mt-2 text-0xredLighter hover:text-opacity-100"
-          size={22}
-        />
-        <AlertDescription className="ml-1 text-0xyellow-lighter">
-          Margin settlement has a 10% slippage to prevent order failure due to
-          insufficient margin.
-        </AlertDescription>
-      </Alert>
-
       <Button
         className="w-full mt-4 text-sm text-black bg-0xyellow-lighter hover:bg-0xgrey"
         disabled={!checkDisabled()}
+        onClick={() => {
+          handleConfirmClick()
+        }}
       >
-        Confirm
+        {isCreateDecOrderLoading || isCreateTPSLLoading ? (
+          <>
+            <Loader className="w-4 h-4 mr-2 animate-spin" />
+            Please wait
+          </>
+        ) : (
+          "Confirm"
+        )}
       </Button>
     </>
   )

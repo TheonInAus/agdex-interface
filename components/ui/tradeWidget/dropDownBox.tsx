@@ -20,9 +20,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export function DropDownBox() {
+export default function DropDownBox() {
   const tokens = useTokenConfigWrapperInfo()
-  console.log("check token s => ", tokens)
+  console.log("check tokens => ", tokens)
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("BTC")
 

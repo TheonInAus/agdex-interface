@@ -36,7 +36,7 @@ type TradeMarketType = {
   side: Side
 }
 
-export const TradeMarketWidget = ({ side }: TradeMarketType) => {
+export default function TradeMarketWidget({ side }: TradeMarketType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
   const [tradingSize, setTradingSize] = useState("")

@@ -32,9 +32,6 @@ import {
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
 
-import { AddMarginWidget } from "../trade/marginEdit/addMarginWidget"
-import { ReduceMarginWidget } from "../trade/marginEdit/reduceMarginWidget"
-
 export default function EarnPage() {
   const [activeTab, setActiveTab] = React.useState("Staking")
   const [selectedDuration, setSelectedDuration] = React.useState("90")
@@ -450,7 +447,7 @@ export default function EarnPage() {
                 </div>
               </div>
             </div>
-            <div className="mt-3 mb-3 border-t border-0xline w-[100%] text-center"></div>
+            <div className="my-3 border-t border-0xline w-[100%] text-center"></div>
             <div className="flex justify-between">
               <CustomTooltip
                 triggerContent={
@@ -657,7 +654,7 @@ export default function EarnPage() {
                             />
                             <div className="w-full mt-3 bg-0xsmallBoxBackground">
                               <div className="flex items-start p-2">
-                                <div className="flex-shrink-0 mr-1 mt-[2.5px]">
+                                <div className="shrink-0 mr-1 mt-[2.5px]">
                                   <AlertCircle
                                     className="text-white text-opacity-70 hover:text-opacity-100"
                                     size={15} // Adjust the size to match your design
@@ -712,7 +709,7 @@ export default function EarnPage() {
                             />
                             <div className="w-full mt-3 bg-0xsmallBoxBackground">
                               <div className="flex items-start p-2">
-                                <div className="flex-shrink-0 mr-1 mt-[2.5px]">
+                                <div className="shrink-0 mr-1 mt-[2.5px]">
                                   <AlertCircle
                                     className="text-white text-opacity-70 hover:text-opacity-100"
                                     size={15} // Adjust the size to match your design

@@ -19,7 +19,7 @@ type TradeMarketType = {
   side: Side
 }
 
-export const TradeLimitWidget = ({ side }: TradeMarketType) => {
+export default function TradeLimitWidget({ side }: TradeMarketType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
   const [tradingSize, setTradingSize] = useState("")

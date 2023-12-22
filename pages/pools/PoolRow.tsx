@@ -1,3 +1,5 @@
+"use client"
+
 import { Edit3 } from "lucide-react"
 import { formatEther } from "viem"
 
@@ -19,7 +21,7 @@ import {
 } from "@/components/ui/styledTab"
 
 type PoolPowProps = {
-  pool: PoolDataType
+  pool?: PoolDataType
   expandIndex: number
   onToggle: () => void
 }
@@ -36,9 +38,9 @@ export type PoolDataType = {
   index: number
 }
 
-export const PoolRow = ({ pool, expandIndex, onToggle }: PoolPowProps) => {
+export default function PoolRow({ pool, expandIndex, onToggle }: PoolPowProps) {
   // const [isExpanded, setIsExpanded] = useState(false)
-  const { liqPoolsData: poolDatas } = useLiqPoolsForAccount(pool.poolAddress)
+  const { liqPoolsData: poolDatas } = useLiqPoolsForAccount(pool?.poolAddress)
 
   return (
     <>
@@ -48,15 +50,15 @@ export const PoolRow = ({ pool, expandIndex, onToggle }: PoolPowProps) => {
             className="grid grid-cols-6"
             style={{ gridTemplateColumns: "15% 16% 20% 15% 21% auto" }}
           >
-            <div className="col-span-1 text-base">{pool.name}</div>
-            <div className="col-span-1 text-0xgreen">{pool.maxAPR}</div>
-            <div className="col-span-1">{pool.volume}</div>
-            <div className="col-span-1">{pool.fees}</div>
-            <div className="col-span-1">{pool.liquidity}</div>
-            <div className="col-span-1">{pool.myLiquidity}</div>
+            <div className="col-span-1 text-base">{pool?.name}</div>
+            <div className="col-span-1 text-0xgreen">{pool?.maxAPR}</div>
+            <div className="col-span-1">{pool?.volume}</div>
+            <div className="col-span-1">{pool?.fees}</div>
+            <div className="col-span-1">{pool?.liquidity}</div>
+            <div className="col-span-1">{pool?.myLiquidity}</div>
           </div>
         </div>
-        {expandIndex === pool.index && (
+        {expandIndex === pool?.index && (
           <div
             className="p-3 rounded-b-lg"
             style={{ backgroundColor: "#080808" }}

@@ -39,13 +39,12 @@ import {
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import DropDownBox from "@/components/ui/tradeWidget/dropDownBox"
+import OrderListWidget from "@/components/ui/tradeWidget/orderListWidget"
+import PositionListWidget from "@/components/ui/tradeWidget/positionListWidget"
+import TradeLimitWidget from "@/components/ui/tradeWidget/tradeLimitWidget"
+import TradeMarketWidget from "@/components/ui/tradeWidget/tradeMarketWidget"
 import TradingViewWidget from "@/components/tradingView"
-
-import { DropDownBox } from "./dropDownBox"
-import { OrderListWidget } from "./orderListWidget"
-import { PositionListWidget } from "./positionListWidget"
-import { TradeLimitWidget } from "./tradeLimitWidget"
-import { TradeMarketWidget } from "./tradeMarketWidget"
 
 export default function TradePage() {
   const {

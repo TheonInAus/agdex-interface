@@ -160,7 +160,7 @@ export const useUserOrderList = () => {
     const combineData = data?.increaseOrderCreateds.concat(data?.decreaseOrderCreateds)
     combineData?.sort((a, b) => Number(b.blockTimestamp) - Number(a.blockTimestamp));
 
-    console.log('result graph result order combineData=> ', combineData)
+    // console.log('result graph result order combineData=> ', combineData)
 
     return {
         isLoading: loading,
