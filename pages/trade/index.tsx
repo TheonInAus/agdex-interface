@@ -11,6 +11,7 @@ import {
   useExeDecreasePosition,
   useExeIncreasePosition,
 } from "@/hooks/actionMixExecutorHelper"
+import { usePositionAndLiqPositionInfo } from "@/hooks/cPositionState"
 import { useGetReferralState } from "@/hooks/cUserState"
 import { useGetPoolPriceState, useTokenMarketPrice } from "@/hooks/usePrice"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
@@ -91,7 +92,6 @@ export default function TradePage() {
   const currentTokenEntity = useTokenConfigStore(
     (state: any) => state.currentTokenEntity
   )
-  console.log("check current token entity => ", currentTokenEntity)
   const { price: indexPrice, change24h } =
     useTokenMarketPrice(currentTokenEntity)
 
@@ -100,6 +100,49 @@ export default function TradePage() {
   )
 
   const contractPrice = indexPrice * (1 + premiumRateX96)
+
+  const {
+    lpNetSize,
+    lpSide,
+    lpEntryPrice,
+    liquidity,
+    liqPnL,
+    longSize,
+    shortSize,
+    longFundingRateGrowthX96,
+    shortFundingRateGrowthX96,
+  } = usePositionAndLiqPositionInfo(currentTokenEntity.poolContract)
+  console.log("check liquidity => ", liquidity)
+  const [openInterst, setOpenInterst] = useState(0)
+  const [openInterstValue, setOpenInterstValue] = useState(0)
+  const [balanceRate, setBalanceRate] = useState(0)
+
+  useEffect(() => {
+    if (lpNetSize && longSize && shortSize) {
+      const totalSize = lpNetSize + longSize + shortSize
+      setOpenInterst(totalSize)
+      if (indexPrice) {
+        setOpenInterstValue(totalSize * indexPrice)
+      }
+    }
+  }, [lpNetSize, longSize, shortSize, indexPrice])
+
+  useEffect(() => {
+    if (lpNetSize && lpSide && liquidity && indexPrice) {
+      let tempNetSize = lpNetSize
+      if (lpSide === 1) {
+        tempNetSize = -lpNetSize
+      } else {
+        tempNetSize = lpNetSize
+      }
+      if (liquidity === 0) {
+        setBalanceRate(0)
+      } else {
+        const value = (tempNetSize * indexPrice) / liquidity
+        setBalanceRate(value)
+      }
+    }
+  }, [lpNetSize, lpSide, liquidity, indexPrice])
 
   /**
    * just for testing ********************************
@@ -167,13 +210,17 @@ export default function TradePage() {
                     <div className="text-xs text-0xgrey">Open Interest</div>
                   }
                 >
-                  <p>llll</p>
+                  <p> todo desc</p>
                 </CustomTooltip>
                 <div className="flex mt-1">
                   <div className="mr-1 text-sm text-0xyellow-lighter">
-                    20.10k SOL
+                    {`${giveMeFormattedToShow(openInterst)} ${
+                      currentTokenEntity.name
+                    }`}{" "}
                   </div>
-                  <div className="text-sm text-0xgrey">($1,144,535.35)</div>
+                  <div className="text-sm text-0xgrey">{`($${giveMeFormattedToShow(
+                    openInterstValue
+                  )})`}</div>
                 </div>
               </div>
             </div>
@@ -259,8 +306,14 @@ export default function TradePage() {
               <div className="my-3 border-t border-0xline"></div>
               <ListItem keyText="Max Leverage" value={"200x"} />
               <ListItem keyText="Average Leverage" value={"7.71x"} />
-              <ListItem keyText="Liquidity" value={"26,601,123.63"} />
-              <ListItem keyText="Balance Rate" value={"-0.08%"} />
+              <ListItem
+                keyText="Liquidity"
+                value={giveMeFormattedToShow(liquidity)}
+              />
+              <ListItem
+                keyText="Balance Rate"
+                value={`${giveMeFormattedToShow(balanceRate * 100)}%`}
+              />
             </div>
           </div>
           <div className="flex flex-row w-full gap-3">

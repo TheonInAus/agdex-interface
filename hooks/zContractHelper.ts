@@ -86,7 +86,6 @@ export function x64Price2Readable(value: string) {
 export function wrapperParseEther6e(value: string) {
     return parseUnits(value, 6)
 }
-
 export function wrapperFormatEther6e(value: bigint) {
     return Number(formatUnits(value, 6))
 }
