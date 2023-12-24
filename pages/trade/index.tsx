@@ -13,7 +13,11 @@ import {
 } from "@/hooks/actionMixExecutorHelper"
 import { usePositionAndLiqPositionInfo } from "@/hooks/cPositionState"
 import { useGetReferralState } from "@/hooks/cUserState"
-import { useGetPoolPriceState, useTokenMarketPrice } from "@/hooks/usePrice"
+import {
+  useGetPoolPriceState,
+  useTokenMarketAndIndexPrice,
+  useTokenMarketPrice,
+} from "@/hooks/usePrice"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import {
   btcPoolAddress,
@@ -92,14 +96,39 @@ export default function TradePage() {
   const currentTokenEntity = useTokenConfigStore(
     (state: any) => state.currentTokenEntity
   )
-  const { price: indexPrice, change24h } =
-    useTokenMarketPrice(currentTokenEntity)
+
+  const {
+    data: marketAndIndexPriceData,
+    error,
+    loading,
+  } = useTokenMarketAndIndexPrice()
+
+  const [shownIndexPrice, setShownIndexPrice] = useState<number>(0)
+  const [change24h, setChange24h] = useState<number>(0)
+  useEffect(() => {
+    if (
+      marketAndIndexPriceData &&
+      marketAndIndexPriceData.indexPrices &&
+      marketAndIndexPriceData.markPrices &&
+      marketAndIndexPriceData.change24h
+    ) {
+      setShownIndexPrice(
+        marketAndIndexPriceData?.indexPrices
+          ? +marketAndIndexPriceData?.indexPrices?.[currentTokenEntity.name]
+          : 0
+      )
+      setChange24h(24)
+    }
+  }, [marketAndIndexPriceData, currentTokenEntity])
+
+  const shownMarketPrice =
+    marketAndIndexPriceData.markPrices?.[currentTokenEntity.name] ?? 0
 
   const { premiumRateX96 } = useGetPoolPriceState(
     currentTokenEntity.poolContract
   )
 
-  const contractPrice = indexPrice * (1 + premiumRateX96)
+  const contractPrice = shownIndexPrice * (1 + premiumRateX96)
 
   const {
     lpNetSize,
@@ -112,37 +141,34 @@ export default function TradePage() {
     longFundingRateGrowthX96,
     shortFundingRateGrowthX96,
   } = usePositionAndLiqPositionInfo(currentTokenEntity.poolContract)
-  console.log("check liquidity => ", liquidity)
+
   const [openInterst, setOpenInterst] = useState(0)
   const [openInterstValue, setOpenInterstValue] = useState(0)
   const [balanceRate, setBalanceRate] = useState(0)
+  console.log("check all", lpNetSize, longSize, shortSize)
 
   useEffect(() => {
-    if (lpNetSize && longSize && shortSize) {
-      const totalSize = lpNetSize + longSize + shortSize
-      setOpenInterst(totalSize)
-      if (indexPrice) {
-        setOpenInterstValue(totalSize * indexPrice)
-      }
+    const totalSize = lpNetSize + longSize + shortSize
+    setOpenInterst(totalSize)
+    if (shownIndexPrice) {
+      setOpenInterstValue(totalSize * shownIndexPrice)
     }
-  }, [lpNetSize, longSize, shortSize, indexPrice])
+  }, [lpNetSize, longSize, shortSize, shownIndexPrice, currentTokenEntity])
 
   useEffect(() => {
-    if (lpNetSize && lpSide && liquidity && indexPrice) {
-      let tempNetSize = lpNetSize
-      if (lpSide === 1) {
-        tempNetSize = -lpNetSize
-      } else {
-        tempNetSize = lpNetSize
-      }
-      if (liquidity === 0) {
-        setBalanceRate(0)
-      } else {
-        const value = (tempNetSize * indexPrice) / liquidity
-        setBalanceRate(value)
-      }
+    let tempNetSize = lpNetSize
+    if (lpSide === 1) {
+      tempNetSize = -lpNetSize
+    } else {
+      tempNetSize = lpNetSize
     }
-  }, [lpNetSize, lpSide, liquidity, indexPrice])
+    if (liquidity === 0) {
+      setBalanceRate(0)
+    } else {
+      const value = (tempNetSize * shownIndexPrice) / liquidity
+      setBalanceRate(value)
+    }
+  }, [lpNetSize, lpSide, liquidity, shownIndexPrice, currentTokenEntity])
 
   /**
    * just for testing ********************************
@@ -176,7 +202,7 @@ export default function TradePage() {
               </div>
               <Stats
                 title={"Index Price"}
-                value={giveMeFormattedToShow(indexPrice)}
+                value={giveMeFormattedToShow(shownIndexPrice)}
               />
               <Stats
                 title={"24h Change"}

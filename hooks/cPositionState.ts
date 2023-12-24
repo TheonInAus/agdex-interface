@@ -5,7 +5,6 @@ import { useContractRead } from "wagmi"
 
 
 export const usePositionAndLiqPositionInfo = (poolAddress: any) => {
-
     const { data: liqPositionData, isLoading: liqPositionLoading, isError: liqPositionError } = useContractRead({
         address: poolAddress,
         abi: poolABI,
@@ -17,8 +16,6 @@ export const usePositionAndLiqPositionInfo = (poolAddress: any) => {
         abi: poolABI,
         functionName: 'globalPosition',
     })
-    console.log('check liqPositionData => ', liqPositionData)
-    console.log('check positionData => ', positionData)
 
     const [lpNetSize, setLpNetSize] = useState(0)
     const [lpSide, setLpSide] = useState(1)

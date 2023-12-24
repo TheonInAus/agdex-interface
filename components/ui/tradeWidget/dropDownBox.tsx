@@ -6,6 +6,7 @@ import { CheckIcon, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { useTokenConfigWrapperInfo } from "@/hooks/useTokenConfigWrapperInfo"
+import { giveMeFormattedToShow } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -22,7 +23,6 @@ import {
 
 export default function DropDownBox() {
   const tokens = useTokenConfigWrapperInfo()
-  console.log("check tokens => ", tokens)
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("BTC")
 
@@ -65,14 +65,11 @@ export default function DropDownBox() {
                 }}
               >
                 <div className="flex justify-between w-full">
-                  <div className="flex flex-col">
-                    <div className="text-sm text-white">{token.name}</div>
-                    <div className="text-xs text-0xgrey">{token.volume}</div>
-                  </div>
-                  <div className="flex gap-3 mt-[6px]">
-                    <div>{token.price}</div>
+                  <div className="text-sm text-white">{token.name}</div>
+                  <div className="flex">
+                    <div>{giveMeFormattedToShow(Number(token.price))}</div>
                     <div
-                      className={`text-sm ${
+                      className={`text-sm ml-3 ${
                         token.percentageChange?.startsWith("-")
                           ? "text-red-500"
                           : "text-green-500"

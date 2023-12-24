@@ -16,14 +16,14 @@ module.exports = {
         "2xl": "1400px",
       },
       borderWidth: {
-        DEFAULT: '1px',
-        '0': '0',
-        '1': '0.2px',
-        '3': '3px',
-        '4': '4px',
-        '6': '6px',
-        '8': '8px',
-      }
+        DEFAULT: "1px",
+        0: "0",
+        1: "0.2px",
+        3: "3px",
+        4: "4px",
+        6: "6px",
+        8: "8px",
+      },
     },
     extend: {
       colors: {
@@ -41,7 +41,7 @@ module.exports = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        "bronze": {
+        bronze: {
           DEFAULT: "#83DED5",
           foreground: "#83DED5",
         },

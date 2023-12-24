@@ -125,10 +125,17 @@ export function backFromX96(value: string): number {
 }
 
 
-export const giveMeFormattedToShow = (number: number) => tempCurrenyFormat(number);
+export const giveMeFormattedToShow = (number: number) => {
+    return tempCurrencyFormat(number)
+}
 export const giveMeNotNaNFormattedToShow = (param: any) => (param === 'NaN' || param === 'Infinity' || Number(param) < 0) ? ' -' : param;
 
-export const tempCurrenyFormat = (number: number) => number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+export const tempCurrencyFormat = (number: number) => {
+    if (typeof number !== 'number' || isNaN(number)) {
+        return '-000';
+    }
+    return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+};
 
 export const formatTimestampX1000 = (timestamp: number | string) => {
     let date = new Date(Number(timestamp) * 1000);

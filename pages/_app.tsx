@@ -10,6 +10,7 @@ import "@rainbow-me/rainbowkit/styles.css"
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit"
 import { alchemyProvider } from "wagmi/providers/alchemy"
+import { infuraProvider } from "wagmi/providers/infura"
 
 import RootLayout from "./layout"
 
@@ -18,14 +19,18 @@ const { chains, publicClient } = configureChains(
   [arbitrumSepolia],
   [
     alchemyProvider({
-      apiKey: "RCtmHaPSrWs8prthWD31jNbk_0wEwp0j",
+      apiKey: "fE8KoOll9N-1khheGreDyFHkzMrInSnh",
     }),
+    // infuraProvider({
+    //   apiKey: "72580f581a484c32a2009a8f798b01e8",
+    // }),
+
     publicProvider(),
   ]
 )
 
 const { connectors } = getDefaultWallets({
-  appName: "Oxx interface",
+  appName: "Bronzes Interface",
   projectId:
     process.env.NEXT_PUBLIC_PROJECT_ID || "368ee5791bcf5b7032b8b1da8630c6d9",
   chains,
