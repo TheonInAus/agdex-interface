@@ -83,7 +83,7 @@ export default function ReduceMarginWidget({
         <div>{wrapperFormatEther18e(minExecutionFee)} ($-)</div>
       </div>
       <Button
-        className={`w-full font-bold text-center rounded-md item-center mt-4 h-9 text-white bg-0xyellow-lighter`}
+        className={`w-full font-bold text-center rounded-md item-center mt-4 h-9 text-black bg-bronze`}
         disabled={afterMargin === ""}
         onClick={() => {
           handleIncPostionTemp()
