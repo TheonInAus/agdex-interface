@@ -21,7 +21,8 @@ export const useUserUsdxBalance = () => {
     })
     const { data, isError, isLoading } = useBalance({
         address: walletClient?.account.address,
-        token: usdxAddress
+        token: usdxAddress,
+        watch: true
     })
 
     return { data, isError, isLoading }

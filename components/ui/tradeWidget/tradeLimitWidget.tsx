@@ -7,6 +7,7 @@ import {
   useCreateIncreasePostion,
 } from "@/hooks/actionTradePosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
+import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { ethPoolAddress } from "@/hooks/zAddressHelper"
 import { SIDE_LONG, Side, to0xxPriceX96 } from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -17,9 +18,13 @@ import { Slider } from "@/components/ui/slider"
 
 type TradeMarketType = {
   side: Side
+  marketAndIndexPriceData: any
 }
 
-export default function TradeLimitWidget({ side }: TradeMarketType) {
+export default function TradeLimitWidget({
+  side,
+  marketAndIndexPriceData,
+}: TradeMarketType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
   const [tradingSize, setTradingSize] = useState("")
@@ -34,13 +39,27 @@ export default function TradeLimitWidget({ side }: TradeMarketType) {
       setAcceptableLimit(accLimit.toString())
     }
   }, [limitPrice])
-  const ethPrice = "2000"
   const limitAcceptableRate = 0.03
   const {
     data: balanceData,
     isError: isBalanceError,
     isLoading: isBalanceLoading,
   } = useUserUsdxBalance()
+
+  const currentTokenEntity = useTokenConfigStore(
+    (state: any) => state.currentTokenEntity
+  )
+
+  const [ethPrice, setEthPrice] = useState(0)
+  const [tokenPrice, setTokenPrice] = useState(0)
+  useEffect(() => {
+    if (marketAndIndexPriceData) {
+      setEthPrice(marketAndIndexPriceData.indexPrices["ETH"].indexPrice)
+      setTokenPrice(
+        marketAndIndexPriceData.indexPrices[currentTokenEntity.name].indexPrice
+      )
+    }
+  }, [marketAndIndexPriceData, currentTokenEntity.name])
 
   const {
     createIncOrderData,

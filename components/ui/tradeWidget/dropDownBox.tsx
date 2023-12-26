@@ -75,7 +75,7 @@ export default function DropDownBox() {
                           : "text-green-500"
                       }`}
                     >
-                      {token.percentageChange}
+                      {`${Number(token.percentageChange).toFixed(2)}%`}
                     </div>
                   </div>
                 </div>

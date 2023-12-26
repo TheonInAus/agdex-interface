@@ -10,8 +10,8 @@ export const useTokenConfigWrapperInfo = (): TokenConfigType[] => {
     useEffect(() => {
         if (data && data.indexPrices && data.markPrices) {
             setConfig(prevConfig => prevConfig.map(token => {
-                const indexPrice = data.indexPrices?.[token.name];
-                const percentageChange = '20%';
+                const indexPrice = (data.indexPrices?.[token.name] as any).indexPrice;
+                const percentageChange = (data.indexPrices?.[token.name] as any).price24hPcnt;
                 return {
                     ...token,
                     price: indexPrice ? `${indexPrice}` : token.price,

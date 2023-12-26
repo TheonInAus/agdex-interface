@@ -4,7 +4,10 @@ import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
 import { useGetReferralState, useUserUsdxBalance } from "@/hooks/cUserState"
-import { useGetPoolPriceState, useTokenMarketPrice } from "@/hooks/usePrice"
+import {
+  useGetPoolPriceState,
+  useTokenMarketAndIndexPrice,
+} from "@/hooks/usePrice"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { btcPoolAddress, ethPoolAddress } from "@/hooks/zAddressHelper"
 import {
@@ -34,9 +37,13 @@ import { TpsLInput } from "@/components/ui/tpslIput"
 
 type TradeMarketType = {
   side: Side
+  marketAndIndexPriceData: any
 }
 
-export default function TradeMarketWidget({ side }: TradeMarketType) {
+export default function TradeMarketWidget({
+  side,
+  marketAndIndexPriceData,
+}: TradeMarketType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
   const [tradingSize, setTradingSize] = useState("")
@@ -47,12 +54,24 @@ export default function TradeMarketWidget({ side }: TradeMarketType) {
   const currentTokenEntity = useTokenConfigStore(
     (state: any) => state.currentTokenEntity
   )
-  const { price: tokenPrice } = useTokenMarketPrice(currentTokenEntity)
-  const { price: ethPrice } = useTokenMarketPrice(tokenConfig[1])
+
+  const [ethPrice, setEthPrice] = useState(0)
+  const [tokenPrice, setTokenPrice] = useState(0)
+
+  useEffect(() => {
+    if (marketAndIndexPriceData) {
+      setEthPrice(marketAndIndexPriceData.indexPrices?.["ETH"]?.indexPrice)
+      setTokenPrice(
+        marketAndIndexPriceData.indexPrices?.[currentTokenEntity.name]
+          ?.indexPrice
+      )
+    }
+  }, [marketAndIndexPriceData, currentTokenEntity.name])
+
   const [btcAfterSlippagePrice, setBtcAfterSlippagePrice] = useState(0)
   const [liqPrice, setLiqPrice] = useState(0)
 
-  const executionFee = minExecutionFeeNumber * ethPrice
+  const executionFee = minExecutionFeeNumber * Number(ethPrice)
 
   const {
     data: balanceData,
@@ -66,7 +85,11 @@ export default function TradeMarketWidget({ side }: TradeMarketType) {
       side,
       usdMargin,
       tradingSize,
-      to0xxPriceX96(side === SIDE_LONG ? "2005" : "1995")
+      to0xxPriceX96(
+        side === SIDE_LONG
+          ? Number(tokenPrice + 5).toString()
+          : Number(tokenPrice - 5).toString()
+      )
     )
 
   const handleCheckboxChange = (checked: any) => {
@@ -185,7 +208,7 @@ export default function TradeMarketWidget({ side }: TradeMarketType) {
           prefix={`Leverage:`}
           prefixValue={leverageNumber}
           onValueChange={(e) => {
-            // setUsdMargin(e.target.value)
+            setTradingSize(e.target.value)
           }}
           onPrefixChange={(e) => {
             const intValue = parseInt(e.target.value, 10)
@@ -225,7 +248,7 @@ export default function TradeMarketWidget({ side }: TradeMarketType) {
         <br></br>
         <ListItem
           keyText="Entry Price"
-          value={giveMeFormattedToShow(tokenPrice)}
+          value={giveMeFormattedToShow(Number(tokenPrice))}
         />
         <div className="flex justify-between">
           <CustomTooltip
@@ -302,7 +325,7 @@ export default function TradeMarketWidget({ side }: TradeMarketType) {
         />
         <ListItem
           keyText="Est. Margin"
-          value={`${Number(usdMargin) - tradingFee}`}
+          value={`${(Number(usdMargin) - tradingFee).toFixed(2)}`}
         />
         <ListItem
           keyText="Fees"

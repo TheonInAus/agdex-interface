@@ -66,7 +66,7 @@ export function toX96(value: string): bigint {
 }
 
 export function to0xxPriceX96(price: string) {
-    if (!price) price = "0"
+    if (!price || isNaN(Number(price))) price = "0"
     return toPriceX96(price, DECIMALS_18, DECIMALS_6)
 }
 

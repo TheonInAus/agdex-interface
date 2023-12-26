@@ -4,45 +4,6 @@ import { useContractRead } from 'wagmi';
 import { backFromX96, x96Price2Readable } from './zContractHelper';
 import { TokenConfigType } from './zTokenConfig';
 
-export const useTokenMarketPrice = (token: TokenConfigType) => {
-    const [price, setPrice] = useState(0);
-    const [change24h, setChange24h] = useState(0)
-    let tokenIds = 'BTC'
-    switch (token.name) {
-        case 'BTC':
-            tokenIds = 'bitcoin'
-            break
-        case 'ETH':
-            tokenIds = 'ethereum'
-            break
-        case 'ORDI':
-            tokenIds = 'chainlink'
-            break
-        default:
-            tokenIds = 'bitcoin'
-            break
-    }
-    const { data } = useTokenMarketAndIndexPrice()
-    // useEffect(() => {
-    //     const fetchPrice = async () => {
-    //         try {
-    //             const res = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${tokenIds}&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`);
-    //             const result = await res.json();
-    //             setPrice(result?.[0]?.current_price || 2000);
-    //             setChange24h(result?.[0]?.price_change_percentage_24h || 20);
-    //         } catch (error) {
-    //             console.error("Failed to fetch the market price:", error);
-    //         }
-    //     };
-    //     fetchPrice();
-
-    //     const interval = setInterval(fetchPrice, 30000);
-
-    //     return () => clearInterval(interval);
-    // }, [tokenIds]);
-    return { price: data?.indexPrices?.[token.name], change24h: 24 }
-}
-
 export const useTokenMarketAndIndexPrice = (interval = 10000) => {
     const [data, setData] = useState({ indexPrices: null, markPrices: null, change24h: 24 });
     const [error, setError] = useState(null);

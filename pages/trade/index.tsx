@@ -16,17 +16,9 @@ import { useGetReferralState } from "@/hooks/cUserState"
 import {
   useGetPoolPriceState,
   useTokenMarketAndIndexPrice,
-  useTokenMarketPrice,
 } from "@/hooks/usePrice"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import {
-  btcPoolAddress,
-  btcTokenAddress,
-  ethPoolAddress,
-  ethTokenAddress,
-  orderBookAddress,
-  positionRouterAddress,
-} from "@/hooks/zAddressHelper"
+import { orderBookAddress, positionRouterAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   SIDE_SHORT,
@@ -51,6 +43,15 @@ import TradeLimitWidget from "@/components/ui/tradeWidget/tradeLimitWidget"
 import TradeMarketWidget from "@/components/ui/tradeWidget/tradeMarketWidget"
 import TradingViewWidget from "@/components/tradingView"
 
+interface IndexPriceData {
+  [key: string]: {
+    indexPrice: number
+  }
+}
+
+interface MarketData {
+  indexPrices?: IndexPriceData
+}
 export default function TradePage() {
   const {
     data: positionRouterPluginData,
@@ -102,6 +103,7 @@ export default function TradePage() {
     error,
     loading,
   } = useTokenMarketAndIndexPrice()
+  console.log("check useTokenMarketAndIndexPrice => ", marketAndIndexPriceData)
 
   const [shownIndexPrice, setShownIndexPrice] = useState<number>(0)
   const [change24h, setChange24h] = useState<number>(0)
@@ -114,10 +116,22 @@ export default function TradePage() {
     ) {
       setShownIndexPrice(
         marketAndIndexPriceData?.indexPrices
-          ? +marketAndIndexPriceData?.indexPrices?.[currentTokenEntity.name]
+          ? +(
+              marketAndIndexPriceData?.indexPrices?.[
+                currentTokenEntity.name
+              ] as any
+            ).indexPrice
           : 0
       )
-      setChange24h(24)
+      setChange24h(
+        marketAndIndexPriceData?.indexPrices
+          ? +(
+              marketAndIndexPriceData?.indexPrices?.[
+                currentTokenEntity.name
+              ] as any
+            ).price24hPcnt
+          : 0
+      )
     }
   }, [marketAndIndexPriceData, currentTokenEntity])
 
@@ -145,7 +159,6 @@ export default function TradePage() {
   const [openInterst, setOpenInterst] = useState(0)
   const [openInterstValue, setOpenInterstValue] = useState(0)
   const [balanceRate, setBalanceRate] = useState(0)
-  console.log("check all", lpNetSize, longSize, shortSize)
 
   useEffect(() => {
     const totalSize = lpNetSize + longSize + shortSize
@@ -302,10 +315,16 @@ export default function TradePage() {
                     <StyledTabsTrigger value="Limit">Limit</StyledTabsTrigger>
                   </StyledTabsList>
                   <StyledTabsContent value="Market" className="ml-3">
-                    <TradeMarketWidget side={SIDE_LONG} />
+                    <TradeMarketWidget
+                      side={SIDE_LONG}
+                      marketAndIndexPriceData={marketAndIndexPriceData}
+                    />
                   </StyledTabsContent>
                   <StyledTabsContent value="Limit" className="ml-3">
-                    <TradeLimitWidget side={SIDE_LONG} />
+                    <TradeLimitWidget
+                      side={SIDE_LONG}
+                      marketAndIndexPriceData={marketAndIndexPriceData}
+                    />
                   </StyledTabsContent>
                 </StyledTabs>
               </TabsContent>
@@ -316,10 +335,16 @@ export default function TradePage() {
                     <StyledTabsTrigger value="Limit">Limit</StyledTabsTrigger>
                   </StyledTabsList>
                   <StyledTabsContent value="Market" className="ml-3">
-                    <TradeMarketWidget side={SIDE_SHORT} />
+                    <TradeMarketWidget
+                      side={SIDE_SHORT}
+                      marketAndIndexPriceData={marketAndIndexPriceData}
+                    />
                   </StyledTabsContent>
                   <StyledTabsContent value="Limit" className="ml-3">
-                    <TradeLimitWidget side={SIDE_SHORT} />
+                    <TradeLimitWidget
+                      side={SIDE_SHORT}
+                      marketAndIndexPriceData={marketAndIndexPriceData}
+                    />
                   </StyledTabsContent>
                 </StyledTabs>
               </TabsContent>

@@ -19,7 +19,7 @@ const { chains, publicClient } = configureChains(
   [arbitrumSepolia],
   [
     alchemyProvider({
-      apiKey: "fE8KoOll9N-1khheGreDyFHkzMrInSnh",
+      apiKey: "RCtmHaPSrWs8prthWD31jNbk_0wEwp0j",
     }),
     // infuraProvider({
     //   apiKey: "72580f581a484c32a2009a8f798b01e8",
@@ -46,7 +46,6 @@ interface ProvidersProps {
   children: React.ReactNode
 }
 
-// 初始化Apollo Client
 const client = new ApolloClient({
   uri: "https://api.studio.thegraph.com/query/54949/0xx/version/latest",
   cache: new InMemoryCache(),

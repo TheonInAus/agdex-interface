@@ -9,15 +9,18 @@ import { arbitrumGoerli } from 'viem/chains';
 import { orderBookABI } from '@/abis/orderBookABI';
 
 export const useCreateIncreasePostion = (tokenPoolAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any) => {
+    console.log('chekc paras tokenPoolAddress => ', tokenPoolAddress)
     console.log('chekc paras margin => ', marginDelta)
     console.log('chekc paras size => ', sizeDelta)
-    const { data: incPositionData, isLoading: incPositionLoading, write: incPositionWrite } = useContractWrite({
+    console.log('chekc paras acceptableTradePriceX96 => ', acceptableTradePriceX96)
+    const { data: incPositionData, isLoading: incPositionLoading, write: incPositionWrite, error } = useContractWrite({
         address: positionRouterAddress,
         abi: positionRouterABI,
         functionName: 'createIncreasePosition',
         args: [tokenPoolAddress, side, wrapperParseEther6e(marginDelta), parseEther(sizeDelta), acceptableTradePriceX96],
         value: minExecutionFee
     })
+
 
     const previousHashRef = useRef<string | undefined>();
 
