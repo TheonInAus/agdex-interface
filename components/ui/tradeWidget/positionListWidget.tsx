@@ -87,6 +87,7 @@ export default function PositionListWidget() {
     decPositionWrite()
   }
 
+  const feesValue = 0
   //   useEffect(() => {
   //     if (positionDataList.length > 0) {
   //       const position = positionDataList[0]
@@ -312,7 +313,43 @@ export default function PositionListWidget() {
                           <ListItem keyText={"Price Impact"} value={""} />
                           <ListItem keyText={"Est. Close Price"} value={""} />
                           <ListItem keyText={"PnL"} value={""} />
-                          <ListItem keyText={"Fees"} value={""} />
+                          <div className="flex justify-between">
+                            <div className="text-0xgrey text-xs">Fees</div>
+                            {feesValue > 0 ? (
+                              <CustomTooltip
+                                triggerContent={
+                                  <div className="text-xs text-white">
+                                    {feesValue}
+                                  </div>
+                                }
+                              >
+                                <div className="flex justify-between">
+                                  <div className="text-white text-xs">
+                                    Trading Fee
+                                  </div>
+                                  <div className="text-white text-xs">
+                                    -0.82 USDT
+                                  </div>
+                                </div>
+                                <div className="text-0xgrey text-xs">
+                                  (0.050% of the position value)
+                                </div>
+                                <div className="flex justify-between">
+                                  <div className="text-white text-xs">
+                                    Execution Fee Fee
+                                  </div>
+                                  <div className="text-white text-xs">
+                                    -0.82 USDT{" "}
+                                    <span className="text-sm text-0xgrey">
+                                      (-$0.46)
+                                    </span>
+                                  </div>
+                                </div>
+                              </CustomTooltip>
+                            ) : (
+                              <div className="text-white text-xs">-</div>
+                            )}
+                          </div>
                           <div className="mt-3 border-t border-0xline"></div>
                         </DialogDescription>
                       </DialogHeader>

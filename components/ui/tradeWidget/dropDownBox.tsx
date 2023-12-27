@@ -43,7 +43,7 @@ export default function DropDownBox() {
           variant="ghost"
           role="combobox"
           aria-expanded={open}
-          className="w-[113px] justify-between text-base font-semibold hover:bg-0xtrans"
+          className="w-[250px] justify-start text-base font-semibold hover:bg-0xtrans"
         >
           {value
             ? tokens.find((token) => token.name === value)?.symbol
@@ -51,7 +51,7 @@ export default function DropDownBox() {
           <ChevronDown className="w-4 h-4 ml-1 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[330px] p-0">
+      <PopoverContent className="w-[250px] p-2">
         <Command>
           <CommandInput placeholder="Search Token..." className="h-9" />
           <CommandEmpty>No Token found.</CommandEmpty>

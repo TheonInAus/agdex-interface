@@ -327,10 +327,33 @@ export default function TradeMarketWidget({
           keyText="Est. Margin"
           value={`${(Number(usdMargin) - tradingFee).toFixed(2)}`}
         />
-        <ListItem
-          keyText="Fees"
-          value={`$${giveMeFormattedToShow(tradingFee + executionFee)} `}
-        />
+        <div className="flex justify-between">
+          <div className="text-0xgrey text-xs">Fees</div>
+          {(tradingFee + executionFee) > 0 ? (
+            <CustomTooltip
+              triggerContent={
+                <div className="text-xs text-white">{`$${giveMeFormattedToShow(tradingFee + executionFee)} `}</div>
+              }
+            >
+              <div className="flex justify-between">
+                <div className="text-white text-xs">Trading Fee</div>
+                <div className="text-white text-xs">-0.82 USDT</div>
+              </div>
+              <div className="text-0xgrey text-xs">
+                (0.050% of the position value)
+              </div>
+              <div className="flex justify-between">
+                <div className="text-white text-xs">Execution Fee Fee</div>
+                <div className="text-white text-xs">
+                  -0.82 USDT{" "}
+                  <span className="text-sm text-0xgrey">(-$0.46)</span>
+                </div>
+              </div>
+            </CustomTooltip>
+          ) : (
+            <div className="text-white text-xs">-</div>
+          )}
+        </div>
         <ListItem
           keyText="Trading Fee"
           value={`$${giveMeFormattedToShow(tradingFee)}`}

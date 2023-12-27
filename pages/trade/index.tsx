@@ -207,10 +207,10 @@ export default function TradePage() {
             style={{ width: 1100, height: 600 }}
           >
             <div className="flex">
-              <div className="mr-8 text-lg">
+              <div className="text-lg w-[16%]">
                 <DropDownBox />
               </div>
-              <div className="mt-1 mr-10 text-lg text-0xredLighter">
+              <div className="mt-1 mr-14 text-lg text-0xredLighter">
                 {giveMeFormattedToShow(contractPrice)}
               </div>
               <Stats

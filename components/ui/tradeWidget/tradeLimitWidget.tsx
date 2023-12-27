@@ -15,6 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
+import { CustomTooltip } from "../customToolTip"
 
 type TradeMarketType = {
   side: Side
@@ -112,6 +113,8 @@ export default function TradeLimitWidget({
     }
   }, [usdAfterMargin])
 
+  const feesValue = 0;
+
   return (
     <div>
       <div className="w-full">
@@ -194,7 +197,33 @@ export default function TradeLimitWidget({
         <ListItem keyText="Acceptable Price" value={""} percentage="0.30%" />
         {/* <ListItem keyText="Liq. Price" value={""} /> */}
         <ListItem keyText="Est. Margin" value={""} />
-        <ListItem keyText="Fees" value={""} />
+        <div className="flex justify-between">
+          <div className="text-0xgrey text-xs">Fees</div>
+          {feesValue > 0 ? (
+            <CustomTooltip
+              triggerContent={
+                <div className="text-xs text-white">{feesValue}</div>
+              }
+            >
+              <div className="flex justify-between">
+                <div className="text-white text-xs">Trading Fee</div>
+                <div className="text-white text-xs">-0.82 USDT</div>
+              </div>
+              <div className="text-0xgrey text-xs">
+                (0.050% of the position value)
+              </div>
+              <div className="flex justify-between">
+                <div className="text-white text-xs">Execution Fee Fee</div>
+                <div className="text-white text-xs">
+                  -0.82 USDT{" "}
+                  <span className="text-sm text-0xgrey">(-$0.46)</span>
+                </div>
+              </div>
+            </CustomTooltip>
+          ) : (
+            <div className="text-white text-xs">-</div>
+          )}
+        </div>
       </div>
       <Button
         disabled={isCreateIncOrderLoading}
