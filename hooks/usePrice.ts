@@ -8,13 +8,15 @@ export const useTokenMarketAndIndexPrice = (interval = 10000) => {
     const [data, setData] = useState({ indexPrices: null, markPrices: null, change24h: 24 });
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const baseUrl = 'http://ec2-47-128-252-143.ap-southeast-1.compute.amazonaws.com:3002/price/prices'
+    // const baseUrl = 'http://localhost:3002/price/prices'
 
-    const url = 'http://localhost:3002/price/prices'
+    const url = ''
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(url);
+                const response = await fetch(baseUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }

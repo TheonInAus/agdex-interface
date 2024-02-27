@@ -19,7 +19,7 @@ const { chains, publicClient } = configureChains(
   [arbitrumSepolia],
   [
     alchemyProvider({
-      apiKey: "RCtmHaPSrWs8prthWD31jNbk_0wEwp0j",
+      apiKey: "fE8KoOll9N-1khheGreDyFHkzMrInSnh",
     }),
     // infuraProvider({
     //   apiKey: "72580f581a484c32a2009a8f798b01e8",

@@ -38,11 +38,13 @@ import { TpsLInput } from "@/components/ui/tpslIput"
 type TradeMarketType = {
   side: Side
   marketAndIndexPriceData: any
+  contractPriceAfter: any
 }
 
 export default function TradeMarketWidget({
   side,
   marketAndIndexPriceData,
+  contractPriceAfter,
 }: TradeMarketType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
@@ -57,7 +59,7 @@ export default function TradeMarketWidget({
 
   const [ethPrice, setEthPrice] = useState(0)
   const [tokenPrice, setTokenPrice] = useState(0)
-
+  const [contractPrice, setContractPrice] = useState(0)
   useEffect(() => {
     if (marketAndIndexPriceData) {
       setEthPrice(marketAndIndexPriceData.indexPrices?.["ETH"]?.indexPrice)
@@ -65,10 +67,11 @@ export default function TradeMarketWidget({
         marketAndIndexPriceData.indexPrices?.[currentTokenEntity.name]
           ?.indexPrice
       )
+      setContractPrice(Number(contractPriceAfter))
     }
-  }, [marketAndIndexPriceData, currentTokenEntity.name])
+  }, [marketAndIndexPriceData, currentTokenEntity.name, contractPriceAfter])
 
-  const [btcAfterSlippagePrice, setBtcAfterSlippagePrice] = useState(0)
+  const [tokenAfterSlippagePrice, setTokenAfterSlippagePrice] = useState(0)
   const [liqPrice, setLiqPrice] = useState(0)
 
   const executionFee = minExecutionFeeNumber * Number(ethPrice)
@@ -81,14 +84,14 @@ export default function TradeMarketWidget({
 
   const { incPositionData, incPositionLoading, incPositionWrite } =
     useCreateIncreasePostion(
-      btcPoolAddress,
+      currentTokenEntity.poolContract,
       side,
       usdMargin,
       tradingSize,
       to0xxPriceX96(
         side === SIDE_LONG
-          ? Number(tokenPrice + 5).toString()
-          : Number(tokenPrice - 5).toString()
+          ? Number(tokenAfterSlippagePrice).toString()
+          : Number(tokenAfterSlippagePrice).toString()
       )
     )
 
@@ -148,18 +151,18 @@ export default function TradeMarketWidget({
   }, [usdAfterMargin, tokenPrice])
 
   useEffect(() => {
-    if (tokenPrice && priceSlippage) {
+    if (contractPrice && priceSlippage) {
       if (side === SIDE_LONG) {
-        setBtcAfterSlippagePrice(
-          tokenPrice * (1 + Number(priceSlippage) / 10000)
+        setTokenAfterSlippagePrice(
+          contractPrice * (1 + Number(priceSlippage) / 1000)
         )
       } else {
-        setBtcAfterSlippagePrice(
-          tokenPrice * (1 - Number(priceSlippage) / 10000)
+        setTokenAfterSlippagePrice(
+          contractPrice * (1 - Number(priceSlippage) / 1000)
         )
       }
     }
-  }, [tokenPrice, priceSlippage, side])
+  }, [contractPrice, priceSlippage, side])
 
   const [tradingFee, setTradingFee] = useState(0)
 
@@ -204,7 +207,7 @@ export default function TradeMarketWidget({
         <InputBox
           title="Size"
           value={tradingSize}
-          suffix="BTC"
+          suffix={currentTokenEntity.name}
           prefix={`Leverage:`}
           prefixValue={leverageNumber}
           onValueChange={(e) => {
@@ -268,7 +271,7 @@ export default function TradeMarketWidget({
         <div className="flex">
           <ListItem
             keyText="Acceptable Price"
-            value={giveMeFormattedToShow(btcAfterSlippagePrice)}
+            value={giveMeFormattedToShow(tokenAfterSlippagePrice)}
             percentage={`${Number(priceSlippage) / 100}%`}
             className="w-full"
           />

@@ -194,6 +194,8 @@ export default function TradePage() {
     exeDecPositionWrite()
   }
 
+  const exeApproveTemp = () => {}
+
   //************************************************** */
 
   return (
@@ -318,6 +320,7 @@ export default function TradePage() {
                     <TradeMarketWidget
                       side={SIDE_LONG}
                       marketAndIndexPriceData={marketAndIndexPriceData}
+                      contractPriceAfter={contractPrice}
                     />
                   </StyledTabsContent>
                   <StyledTabsContent value="Limit" className="ml-3">
@@ -336,6 +339,7 @@ export default function TradePage() {
                   </StyledTabsList>
                   <StyledTabsContent value="Market" className="ml-3">
                     <TradeMarketWidget
+                      contractPriceAfter={contractPrice}
                       side={SIDE_SHORT}
                       marketAndIndexPriceData={marketAndIndexPriceData}
                     />
@@ -427,6 +431,22 @@ export default function TradePage() {
                 "Exe Decrease"
               )}
             </Button>
+
+            {/* <Button
+              disabled={isApprovePending}
+              onClick={exeApproveTemp}
+              className="w-full font-bold text-center bg-blue-500 rounded-md item-center h-9 "
+              style={{ marginTop: 20, color: "#000000" }}
+            >
+              {isApprovePending ? (
+                <>
+                  <Loader className="w-4 h-4 mr-2 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                "Approve Token"
+              )}
+            </Button> */}
           </div>
         </div>
       </div>
