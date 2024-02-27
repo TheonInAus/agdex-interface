@@ -7,7 +7,7 @@ import {
   useCreateDecreaseOrder,
   useCreateTakeProfitAndStopLossOrders,
 } from "@/hooks/actionTradePosition"
-import { ethPoolAddress } from "@/hooks/zAddressHelper"
+import { ethMarketAddress } from "@/hooks/zAddressHelper"
 import {
   minOrderBookExecutionFee,
   to0xxPriceX96,
@@ -85,7 +85,7 @@ export default function TpslTabsEntirePositionWidget({
     isCreateDecOrderError,
     createDecOrderWrite,
   } = useCreateDecreaseOrder(
-    ethPoolAddress,
+    ethMarketAddress,
     positionInfo?.tokenSide === "Long" ? 1 : 2,
     "0",
     "0",
@@ -105,7 +105,7 @@ export default function TpslTabsEntirePositionWidget({
     isCreateTPSLError,
     createTPSLWrite,
   } = useCreateTakeProfitAndStopLossOrders(
-    ethPoolAddress,
+    ethMarketAddress,
     positionInfo?.tokenSide === "Long" ? 1 : 2,
     [0, 0],
     [0, 0],

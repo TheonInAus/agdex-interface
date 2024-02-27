@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Loader } from "lucide-react"
 
 import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
-import { ethPoolAddress } from "@/hooks/zAddressHelper"
+import { ethMarketAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   e6DivideE18,
@@ -33,7 +33,7 @@ export default function ReduceMarginWidget({
 
   const { decPositionData, decPositionLoading, decPositionWrite } =
     useCreateDecreasePosition(
-      ethPoolAddress,
+      ethMarketAddress,
       positionInfo?.tokenSide === "Long" ? 1 : 2,
       afterMargin,
       "0",

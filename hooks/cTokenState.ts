@@ -1,5 +1,5 @@
 import { useContractRead, useContractReads } from "wagmi"
-import { ethPoolAddress, priceFeedAddress } from "./zAddressHelper"
+import { ethMarketAddress, priceFeedAddress } from "./zAddressHelper"
 import { priceFeedABI } from "@/abis/priceFeedABI"
 import { SIDE_LONG, SIDE_SHORT, x96Price2Readable } from "./zContractHelper"
 import { poolABI } from "@/abis/poolABI"
@@ -38,7 +38,7 @@ type TokenMarketPriceType = {
 
 export const useTokenMarketPrice = (tokenPoolAddress: any) => {
     const baseParams = {
-        address: ethPoolAddress,
+        address: ethMarketAddress,
         abi: poolABI,
         functionName: 'marketPriceX96'
     }

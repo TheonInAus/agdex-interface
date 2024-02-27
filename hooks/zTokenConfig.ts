@@ -1,33 +1,34 @@
-import { btcPoolAddress, btcTokenAddress, ethPoolAddress, ethTokenAddress, ordiPoolAddress, ordiTokenAddress } from "./zAddressHelper";
+import { ethMarketAddress, btcMarketAddress, arbMarketAddress, linkMarketAddress } from "./zAddressHelper";
 
 type Address = string;
 export interface TokenConfigType {
     name: string;
     symbol: string;
-    tokenContract: Address;
-    poolContract: Address;
+    market: string;
     volume?: string;
     price?: string;
     percentageChange?: string;
 }
+
 export const tokenConfig: TokenConfigType[] = [
-    {
-        name: 'BTC',
-        symbol: 'BTC/USTX',
-        tokenContract: btcTokenAddress,
-        poolContract: btcPoolAddress
-    },
     {
         name: 'ETH',
         symbol: 'ETH/USTX',
-        tokenContract: ethTokenAddress,
-        poolContract: ethPoolAddress
+        market: ethMarketAddress,
     },
-
     {
-        name: 'ORDI',
-        symbol: 'ORDI/USTX',
-        tokenContract: ordiTokenAddress,
-        poolContract: ordiPoolAddress
+        name: 'BTC',
+        symbol: 'BTC/USTX',
+        market: btcMarketAddress,
+    },
+    {
+        name: 'ARB',
+        symbol: 'ARB/USTX',
+        market: arbMarketAddress
+    },
+    {
+        name: 'LINK',
+        symbol: 'LINK/USTX',
+        market: linkMarketAddress
     },
 ]

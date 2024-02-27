@@ -24,22 +24,22 @@ export default function IndexPage() {
         style={{
           backgroundImage:
             "linear-gradient(to bottom, #ADEFE7 5%, #32B4A7 95%)",
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center center',
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
         }}
       >
         <div className="mt-64">
-          <div className="text-center items-center justify-center text-7xl text-black font-extrabold">
+          <div className="items-center justify-center font-extrabold text-center text-black text-7xl">
             Next-Gen Decentralized Trading
           </div>
-          <div className="text-center items-center justify-center text-base text-black mt-2 font-semibold">
+          <div className="items-center justify-center mt-2 text-base font-semibold text-center text-black">
             Up to 200x leverage and 0 trading fees No sign up or deposit
             required
           </div>
           <div className="flex justify-center">
             <Button
-              className="mt-5 justify-center text-base text-bronze font-semibold bg-black hover:bg-slate-900 rounded-lg"
+              className="justify-center mt-5 text-base font-semibold bg-black rounded-lg text-bronze hover:bg-slate-900"
               onClick={handleTradeNowClick}
             >
               Trade Now
@@ -50,15 +50,15 @@ export default function IndexPage() {
       </div>
       <div className="flex flex-row justify-center gap-10 mt-28">
         <div className="w-[400px] mt-40">
-          <div className="text-white text-base">Small title</div>
-          <div className="text-white text-4xl mt-1">Main title</div>
-          <div className="text-0xgrey text-base mt-2">
+          <div className="text-base text-white">Small title</div>
+          <div className="mt-1 text-4xl text-white">Main title</div>
+          <div className="mt-2 text-base text-0xgrey">
             Permissionless, non-custodial, and non-KYC DEX delivering
             cross-margined perpetual contracts with multi-chain support, up to
             30x leverage and instant settlement.
           </div>
           <Button
-            className="bg-bronze text-black text-base rounded-xl mt-3"
+            className="mt-3 text-base text-black bg-bronze rounded-xl"
             onClick={handleTradeNowClick}
           >
             Launch App
@@ -68,34 +68,34 @@ export default function IndexPage() {
           <div className="bg-0xbox rounded-lg w-[700px] h-[100px] flex gap-5 ">
             <div className="mt-10 ml-10">Icon</div>
             <div>
-              <div className="text-white text-base mt-5 ml-5">Title</div>
-              <div className="text-0xgrey text-sm mt-2 ml-5">Text</div>
+              <div className="mt-5 ml-5 text-base text-white">Title</div>
+              <div className="mt-2 ml-5 text-sm text-0xgrey">Text</div>
             </div>
           </div>
           <div className="bg-0xbox rounded-lg w-[700px] h-[100px] flex gap-5 ">
             <div className="mt-10 ml-10">Icon</div>
             <div>
-              <div className="text-white text-base mt-5 ml-5">Title</div>
-              <div className="text-0xgrey text-sm mt-2 ml-5">Text</div>
+              <div className="mt-5 ml-5 text-base text-white">Title</div>
+              <div className="mt-2 ml-5 text-sm text-0xgrey">Text</div>
             </div>
           </div>
           <div className="bg-0xbox rounded-lg w-[700px] h-[100px] flex gap-5 ">
             <div className="mt-10 ml-10">Icon</div>
             <div>
-              <div className="text-white text-base mt-5 ml-5">Title</div>
-              <div className="text-0xgrey text-sm mt-2 ml-5">Text</div>
+              <div className="mt-5 ml-5 text-base text-white">Title</div>
+              <div className="mt-2 ml-5 text-sm text-0xgrey">Text</div>
             </div>
           </div>
           <div className="bg-0xbox rounded-lg w-[700px] h-[100px] flex gap-5 ">
             <div className="mt-10 ml-10">Icon</div>
             <div>
-              <div className="text-white text-base mt-5 ml-5">Title</div>
-              <div className="text-0xgrey text-sm mt-2 ml-5">Text</div>
+              <div className="mt-5 ml-5 text-base text-white">Title</div>
+              <div className="mt-2 ml-5 text-sm text-0xgrey">Text</div>
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-40 flex justify-center items-center">
+      <div className="flex items-center justify-center mt-40">
         <div className="h-[170px] w-[1137px] bg-0xbox flex gap-5 rounded-lg">
           <div className="mt-12 ml-14">
             <Image src="/only_logo.svg" alt="Logo" width={70} height={36} />
@@ -110,8 +110,8 @@ export default function IndexPage() {
           </div>
         </div>
       </div>
-      <div className="mt-40 flex justify-center">
-        <div className="text-5xl text-bronze font-semibold">The Roadmap</div>
+      <div className="flex justify-center mt-40">
+        <div className="text-5xl font-semibold text-bronze">The Roadmap</div>
         <div className="h-[500px]"></div>
       </div>
     </section>

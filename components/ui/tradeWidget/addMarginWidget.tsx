@@ -5,7 +5,7 @@ import { Loader } from "lucide-react"
 
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
-import { ethPoolAddress } from "@/hooks/zAddressHelper"
+import { ethMarketAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   e6DivideE18,
@@ -31,7 +31,7 @@ export default function AddMarginWidget({ positionInfo }: AddMarginProps) {
 
   const { incPositionData, incPositionLoading, incPositionWrite } =
     useCreateIncreasePostion(
-      ethPoolAddress,
+      ethMarketAddress,
       positionInfo?.tokenSide === "Long" ? 1 : 2,
       afterMargin,
       "0",

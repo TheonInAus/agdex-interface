@@ -1,2280 +1,1815 @@
 export const positionRouterABI = [
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "contract IERC20",
-                "name": "_usd",
-                "type": "address"
+                internalType: "contract IERC20",
+                name: "_usd",
+                type: "address",
             },
             {
-                "internalType": "contract Router",
-                "name": "_router",
-                "type": "address"
+                internalType: "contract Router",
+                name: "_router",
+                type: "address",
             },
             {
-                "internalType": "uint256",
-                "name": "_minExecutionFee",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "expiredAt",
-                "type": "uint256"
-            }
-        ],
-        "name": "Expired",
-        "type": "error"
-    },
-    {
-        "inputs": [],
-        "name": "Forbidden",
-        "type": "error"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "available",
-                "type": "uint256"
+                internalType: "contract IMarketManager",
+                name: "_marketManager",
+                type: "address",
             },
             {
-                "internalType": "uint256",
-                "name": "required",
-                "type": "uint256"
-            }
+                internalType: "uint256",
+                name: "_minExecutionFee",
+                type: "uint256",
+            },
         ],
-        "name": "InsufficientExecutionFee",
-        "type": "error"
+        stateMutability: "nonpayable",
+        type: "constructor",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "Side",
-                "name": "side",
-                "type": "uint8"
-            }
+                internalType: "address",
+                name: "target",
+                type: "address",
+            },
         ],
-        "name": "InvalidSide",
-        "type": "error"
+        name: "AddressEmptyCode",
+        type: "error",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint160",
-                "name": "tradePriceX96",
-                "type": "uint160"
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
-            {
-                "internalType": "uint160",
-                "name": "acceptableTradePriceX96",
-                "type": "uint160"
-            }
         ],
-        "name": "InvalidTradePrice",
-        "type": "error"
-    },
-    {
-        "inputs": [],
-        "name": "ReentrancyGuardReentrantCall",
-        "type": "error"
+        name: "AddressInsufficientBalance",
+        type: "error",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint8",
-                "name": "bits",
-                "type": "uint8"
+                internalType: "uint256",
+                name: "expiredAt",
+                type: "uint256",
             },
-            {
-                "internalType": "uint256",
-                "name": "value",
-                "type": "uint256"
-            }
         ],
-        "name": "SafeCastOverflowedUintDowncast",
-        "type": "error"
+        name: "Expired",
+        type: "error",
     },
     {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "token",
-                "type": "address"
-            }
-        ],
-        "name": "SafeERC20FailedOperation",
-        "type": "error"
+        inputs: [],
+        name: "FailedInnerCall",
+        type: "error",
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "earliest",
-                "type": "uint256"
-            }
-        ],
-        "name": "TooEarly",
-        "type": "error"
+        inputs: [],
+        name: "Forbidden",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                internalType: "uint256",
+                name: "available",
+                type: "uint256",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "uint256",
+                name: "required",
+                type: "uint256",
+            },
         ],
-        "name": "AdjustLiquidityPositionMarginCancelled",
-        "type": "event"
+        name: "InsufficientExecutionFee",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
-            },
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                internalType: "uint256",
+                name: "available",
+                type: "uint256",
             },
             {
-                "indexed": false,
-                "internalType": "uint96",
-                "name": "positionID",
-                "type": "uint96"
+                internalType: "uint256",
+                name: "required",
+                type: "uint256",
             },
-            {
-                "indexed": false,
-                "internalType": "int128",
-                "name": "marginDelta",
-                "type": "int128"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
         ],
-        "name": "AdjustLiquidityPositionMarginCreated",
-        "type": "event"
+        name: "InvalidExecutionFee",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "margin",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "uint128",
+                name: "acceptableMinMargin",
+                type: "uint128",
+            },
         ],
-        "name": "AdjustLiquidityPositionMarginExecuted",
-        "type": "event"
+        name: "InvalidMargin",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "previousGov",
-                "type": "address"
+                internalType: "Side",
+                name: "side",
+                type: "uint8",
             },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newGov",
-                "type": "address"
-            }
         ],
-        "name": "ChangeGovStarted",
-        "type": "event"
+        name: "InvalidSide",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                internalType: "uint160",
+                name: "tradePriceX96",
+                type: "uint160",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "uint160",
+                name: "acceptableTradePriceX96",
+                type: "uint160",
+            },
         ],
-        "name": "CloseLiquidityPositionCancelled",
-        "type": "event"
+        name: "InvalidTradePrice",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "indexed": true,
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
+        ],
+        name: "LiquidityNotFound",
+        type: "error",
+    },
+    {
+        inputs: [
             {
-                "indexed": false,
-                "internalType": "uint96",
-                "name": "positionID",
-                "type": "uint96"
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "indexed": false,
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
+                internalType: "Side",
+                name: "side",
+                type: "uint8",
             },
-            {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
         ],
-        "name": "CloseLiquidityPositionCreated",
-        "type": "event"
+        name: "PositionNotFound",
+        type: "error",
+    },
+    {
+        inputs: [],
+        name: "ReentrancyGuardReentrantCall",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                internalType: "uint8",
+                name: "bits",
+                type: "uint8",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "uint256",
+                name: "value",
+                type: "uint256",
+            },
         ],
-        "name": "CloseLiquidityPositionExecuted",
-        "type": "event"
+        name: "SafeCastOverflowedUintDowncast",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                internalType: "address",
+                name: "token",
+                type: "address",
             },
-            {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
         ],
-        "name": "DecreasePositionCancelled",
-        "type": "event"
+        name: "SafeERC20FailedOperation",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "Side",
-                "name": "side",
-                "type": "uint8"
-            },
+        inputs: [
             {
-                "indexed": false,
-                "internalType": "uint128",
-                "name": "marginDelta",
-                "type": "uint128"
+                internalType: "uint256",
+                name: "earliest",
+                type: "uint256",
             },
-            {
-                "indexed": false,
-                "internalType": "uint128",
-                "name": "sizeDelta",
-                "type": "uint128"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint160",
-                "name": "acceptableTradePriceX96",
-                "type": "uint160"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
         ],
-        "name": "DecreasePositionCreated",
-        "type": "event"
+        name: "TooEarly",
+        type: "error",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: true,
+                internalType: "address",
+                name: "previousGov",
+                type: "address",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                indexed: true,
+                internalType: "address",
+                name: "newGov",
+                type: "address",
+            },
         ],
-        "name": "DecreasePositionExecuted",
-        "type": "event"
+        name: "ChangeGovStarted",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                indexed: false,
+                internalType: "address payable",
+                name: "executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "DecreaseRiskBufferFundPositionCancelled",
-        "type": "event"
+        name: "DecreaseLiquidityPositionCancelled",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                indexed: true,
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
             {
-                "indexed": true,
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                indexed: true,
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "indexed": false,
-                "internalType": "uint128",
-                "name": "liquidityDelta",
-                "type": "uint128"
+                indexed: false,
+                internalType: "uint128",
+                name: "marginDelta",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
+                indexed: false,
+                internalType: "uint256",
+                name: "liquidityDelta",
+                type: "uint256",
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
+                indexed: false,
+                internalType: "uint256",
+                name: "acceptableMinMargin",
+                type: "uint256",
             },
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
-        ],
-        "name": "DecreaseRiskBufferFundPositionCreated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
+                indexed: false,
+                internalType: "address",
+                name: "receiver",
+                type: "address",
+            },
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: false,
+                internalType: "uint256",
+                name: "executionFee",
+                type: "uint256",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
         ],
-        "name": "DecreaseRiskBufferFundPositionExecuted",
-        "type": "event"
+        name: "DecreaseLiquidityPositionCreated",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": false,
-                "internalType": "uint32",
-                "name": "minBlockDelayExecutor",
-                "type": "uint32"
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "uint32",
-                "name": "minTimeDelayPublic",
-                "type": "uint32"
+                indexed: false,
+                internalType: "address payable",
+                name: "executionFeeReceiver",
+                type: "address",
             },
-            {
-                "indexed": false,
-                "internalType": "uint32",
-                "name": "maxTimeDelay",
-                "type": "uint32"
-            }
         ],
-        "name": "DelayValuesUpdated",
-        "type": "event"
+        name: "DecreaseLiquidityPositionExecuted",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "previousGov",
-                "type": "address"
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
             },
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newGov",
-                "type": "address"
-            }
+                indexed: false,
+                internalType: "address payable",
+                name: "executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "GovChanged",
-        "type": "event"
+        name: "DecreasePositionCancelled",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: true,
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
-            {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "IncreasePositionCancelled",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                indexed: true,
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "indexed": true,
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                indexed: false,
+                internalType: "Side",
+                name: "side",
+                type: "uint8",
             },
             {
-                "indexed": false,
-                "internalType": "Side",
-                "name": "side",
-                "type": "uint8"
+                indexed: false,
+                internalType: "uint128",
+                name: "marginDelta",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "uint128",
-                "name": "marginDelta",
-                "type": "uint128"
+                indexed: false,
+                internalType: "uint128",
+                name: "sizeDelta",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "uint128",
-                "name": "sizeDelta",
-                "type": "uint128"
+                indexed: false,
+                internalType: "uint160",
+                name: "acceptableTradePriceX96",
+                type: "uint160",
             },
             {
-                "indexed": false,
-                "internalType": "uint160",
-                "name": "acceptableTradePriceX96",
-                "type": "uint160"
+                indexed: false,
+                internalType: "address",
+                name: "receiver",
+                type: "address",
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
+                indexed: false,
+                internalType: "uint256",
+                name: "executionFee",
+                type: "uint256",
             },
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
         ],
-        "name": "IncreasePositionCreated",
-        "type": "event"
+        name: "DecreasePositionCreated",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                indexed: false,
+                internalType: "address payable",
+                name: "executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "IncreasePositionExecuted",
-        "type": "event"
+        name: "DecreasePositionExecuted",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: false,
+                internalType: "uint32",
+                name: "minBlockDelayExecutor",
+                type: "uint32",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                indexed: false,
+                internalType: "uint32",
+                name: "minTimeDelayPublic",
+                type: "uint32",
+            },
+            {
+                indexed: false,
+                internalType: "uint32",
+                name: "maxTimeDelay",
+                type: "uint32",
+            },
         ],
-        "name": "IncreaseRiskBufferFundPositionCancelled",
-        "type": "event"
+        name: "DelayValuesUpdated",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
-            },
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                indexed: true,
+                internalType: "enum IPositionRouter.RequestType",
+                name: "reqType",
+                type: "uint8",
             },
             {
-                "indexed": false,
-                "internalType": "uint128",
-                "name": "liquidityDelta",
-                "type": "uint128"
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
+                indexed: false,
+                internalType: "bytes4",
+                name: "shortenedReason",
+                type: "bytes4",
             },
-            {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
         ],
-        "name": "IncreaseRiskBufferFundPositionCreated",
-        "type": "event"
+        name: "ExecuteFailed",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: true,
+                internalType: "address",
+                name: "previousGov",
+                type: "address",
             },
-            {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "IncreaseRiskBufferFundPositionExecuted",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "minExecutionFee",
-                "type": "uint256"
-            }
+                indexed: true,
+                internalType: "address",
+                name: "newGov",
+                type: "address",
+            },
         ],
-        "name": "MinExecutionFeeUpdated",
-        "type": "event"
+        name: "GovChanged",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                indexed: false,
+                internalType: "address payable",
+                name: "executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "OpenLiquidityPositionCancelled",
-        "type": "event"
+        name: "IncreaseLiquidityPositionCancelled",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                indexed: true,
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
             {
-                "indexed": true,
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                indexed: true,
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "indexed": false,
-                "internalType": "uint128",
-                "name": "margin",
-                "type": "uint128"
+                indexed: false,
+                internalType: "uint128",
+                name: "marginDelta",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "liquidity",
-                "type": "uint256"
+                indexed: false,
+                internalType: "uint256",
+                name: "liquidityDelta",
+                type: "uint256",
             },
             {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
+                indexed: false,
+                internalType: "uint256",
+                name: "acceptableMinMargin",
+                type: "uint256",
             },
-            {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
-        ],
-        "name": "OpenLiquidityPositionCreated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
             {
-                "indexed": true,
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
+                indexed: false,
+                internalType: "uint256",
+                name: "executionFee",
+                type: "uint256",
             },
             {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "executionFeeReceiver",
-                "type": "address"
-            }
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
         ],
-        "name": "OpenLiquidityPositionExecuted",
-        "type": "event"
+        name: "IncreaseLiquidityPositionCreated",
+        type: "event",
     },
     {
-        "anonymous": false,
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
             },
             {
-                "indexed": false,
-                "internalType": "bool",
-                "name": "active",
-                "type": "bool"
-            }
+                indexed: false,
+                internalType: "address payable",
+                name: "executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "PositionExecutorUpdated",
-        "type": "event"
-    },
-    {
-        "inputs": [],
-        "name": "acceptGov",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "IncreaseLiquidityPositionExecuted",
+        type: "event",
     },
     {
-        "inputs": [],
-        "name": "adjustLiquidityPositionMarginIndex",
-        "outputs": [
+        anonymous: false,
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "adjustLiquidityPositionMarginIndexNext",
-        "outputs": [
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                indexed: false,
+                internalType: "address payable",
+                name: "executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        name: "IncreasePositionCancelled",
+        type: "event",
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
-        ],
-        "name": "adjustLiquidityPositionMarginRequests",
-        "outputs": [
+        anonymous: false,
+        inputs: [
             {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                indexed: true,
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
             {
-                "internalType": "uint96",
-                "name": "positionID",
-                "type": "uint96"
+                indexed: true,
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                indexed: false,
+                internalType: "Side",
+                name: "side",
+                type: "uint8",
             },
             {
-                "internalType": "uint96",
-                "name": "blockNumber",
-                "type": "uint96"
+                indexed: false,
+                internalType: "uint128",
+                name: "marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "int128",
-                "name": "marginDelta",
-                "type": "int128"
+                indexed: false,
+                internalType: "uint128",
+                name: "sizeDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint64",
-                "name": "blockTime",
-                "type": "uint64"
+                indexed: false,
+                internalType: "uint160",
+                name: "acceptableTradePriceX96",
+                type: "uint160",
             },
             {
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
+                indexed: false,
+                internalType: "uint256",
+                name: "executionFee",
+                type: "uint256",
             },
             {
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
-            }
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        name: "IncreasePositionCreated",
+        type: "event",
     },
     {
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                indexed: true,
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "cancelAdjustLiquidityPositionMargin",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                indexed: false,
+                internalType: "address payable",
+                name: "executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "IncreasePositionExecuted",
+        type: "event",
     },
     {
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                indexed: false,
+                internalType: "uint256",
+                name: "minExecutionFee",
+                type: "uint256",
             },
-            {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
         ],
-        "name": "cancelCloseLiquidityPosition",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "MinExecutionFeeUpdated",
+        type: "event",
     },
     {
-        "inputs": [
+        anonymous: false,
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                indexed: true,
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
-            {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "cancelDecreasePosition",
-        "outputs": [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                indexed: false,
+                internalType: "bool",
+                name: "active",
+                type: "bool",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "PositionExecutorUpdated",
+        type: "event",
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
-            },
-            {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "cancelDecreaseRiskBufferFundPosition",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        inputs: [],
+        name: "acceptGov",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_index",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "cancelIncreasePosition",
-        "outputs": [
+        name: "cancelDecreaseLiquidityPosition",
+        outputs: [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_index",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "cancelIncreaseRiskBufferFundPosition",
-        "outputs": [
+        name: "cancelDecreasePosition",
+        outputs: [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_index",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "cancelOpenLiquidityPosition",
-        "outputs": [
+        name: "cancelIncreaseLiquidityPosition",
+        outputs: [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
+            {
+                internalType: "uint128",
+                name: "_index",
+                type: "uint128",
+            },
             {
-                "internalType": "address",
-                "name": "_newGov",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "changeGov",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "closeLiquidityPositionIndex",
-        "outputs": [
+        name: "cancelIncreasePosition",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "closeLiquidityPositionIndexNext",
-        "outputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "address",
+                name: "_newGov",
+                type: "address",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        name: "changeGov",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
-        ],
-        "name": "closeLiquidityPositionRequests",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                internalType: "contract IMarketDescriptor[]",
+                name: "markets",
+                type: "address[]",
             },
             {
-                "internalType": "uint96",
-                "name": "positionID",
-                "type": "uint96"
+                internalType: "address",
+                name: "receiver",
+                type: "address",
             },
+        ],
+        name: "createCloseLiquidityPositionsBatch",
+        outputs: [
             {
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                internalType: "uint128[]",
+                name: "indices",
+                type: "uint128[]",
             },
+        ],
+        stateMutability: "payable",
+        type: "function",
+    },
+    {
+        inputs: [
             {
-                "internalType": "uint96",
-                "name": "blockNumber",
-                "type": "uint96"
+                components: [
+                    {
+                        internalType: "contract IMarketDescriptor",
+                        name: "market",
+                        type: "address",
+                    },
+                    {
+                        internalType: "Side",
+                        name: "side",
+                        type: "uint8",
+                    },
+                ],
+                internalType: "struct IPositionRouter.ClosePositionParameter[]",
+                name: "parameters",
+                type: "tuple[]",
             },
             {
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
+                internalType: "address",
+                name: "receiver",
+                type: "address",
             },
+        ],
+        name: "createClosePositionsBatch",
+        outputs: [
             {
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
+                internalType: "uint128[]",
+                name: "indices",
+                type: "uint128[]",
             },
-            {
-                "internalType": "uint64",
-                "name": "blockTime",
-                "type": "uint64"
-            }
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "payable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "contract IPool",
-                "name": "_pool",
-                "type": "address"
+                internalType: "contract IMarketDescriptor",
+                name: "_market",
+                type: "address",
             },
             {
-                "internalType": "uint96",
-                "name": "_positionID",
-                "type": "uint96"
+                internalType: "uint128",
+                name: "_marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "int128",
-                "name": "_marginDelta",
-                "type": "int128"
+                internalType: "uint128",
+                name: "_liquidityDelta",
+                type: "uint128",
             },
-            {
-                "internalType": "address",
-                "name": "_receiver",
-                "type": "address"
-            }
-        ],
-        "name": "createAdjustLiquidityPositionMargin",
-        "outputs": [
-            {
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
-        ],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [
             {
-                "internalType": "contract IPool",
-                "name": "_pool",
-                "type": "address"
+                internalType: "uint128",
+                name: "_acceptableMinMargin",
+                type: "uint128",
             },
             {
-                "internalType": "uint96",
-                "name": "_positionID",
-                "type": "uint96"
+                internalType: "address",
+                name: "_receiver",
+                type: "address",
             },
-            {
-                "internalType": "address",
-                "name": "_receiver",
-                "type": "address"
-            }
         ],
-        "name": "createCloseLiquidityPosition",
-        "outputs": [
+        name: "createDecreaseLiquidityPosition",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "payable",
-        "type": "function"
+        stateMutability: "payable",
+        type: "function",
     },
     {
-        "inputs": [
-            {
-                "internalType": "contract IPool",
-                "name": "_pool",
-                "type": "address"
-            },
+        inputs: [
             {
-                "internalType": "Side",
-                "name": "_side",
-                "type": "uint8"
+                internalType: "contract IMarketDescriptor",
+                name: "_market",
+                type: "address",
             },
             {
-                "internalType": "uint128",
-                "name": "_marginDelta",
-                "type": "uint128"
+                internalType: "Side",
+                name: "_side",
+                type: "uint8",
             },
             {
-                "internalType": "uint128",
-                "name": "_sizeDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint160",
-                "name": "_acceptableTradePriceX96",
-                "type": "uint160"
+                internalType: "uint128",
+                name: "_sizeDelta",
+                type: "uint128",
             },
-            {
-                "internalType": "address",
-                "name": "_receiver",
-                "type": "address"
-            }
-        ],
-        "name": "createDecreasePosition",
-        "outputs": [
-            {
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
-        ],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [
             {
-                "internalType": "contract IPool",
-                "name": "_pool",
-                "type": "address"
+                internalType: "uint160",
+                name: "_acceptableTradePriceX96",
+                type: "uint160",
             },
             {
-                "internalType": "uint128",
-                "name": "_liquidityDelta",
-                "type": "uint128"
+                internalType: "address",
+                name: "_receiver",
+                type: "address",
             },
-            {
-                "internalType": "address",
-                "name": "_receiver",
-                "type": "address"
-            }
         ],
-        "name": "createDecreaseRiskBufferFundPosition",
-        "outputs": [
+        name: "createDecreasePosition",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "payable",
-        "type": "function"
+        stateMutability: "payable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "contract IPool",
-                "name": "_pool",
-                "type": "address"
+                internalType: "contract IMarketDescriptor",
+                name: "_market",
+                type: "address",
             },
             {
-                "internalType": "Side",
-                "name": "_side",
-                "type": "uint8"
+                internalType: "uint128",
+                name: "_marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "_marginDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_liquidityDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "_sizeDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_acceptableMinMargin",
+                type: "uint128",
             },
-            {
-                "internalType": "uint160",
-                "name": "_acceptableTradePriceX96",
-                "type": "uint160"
-            }
         ],
-        "name": "createIncreasePosition",
-        "outputs": [
+        name: "createIncreaseLiquidityPosition",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "payable",
-        "type": "function"
+        stateMutability: "payable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "contract IPool",
-                "name": "_pool",
-                "type": "address"
+                internalType: "contract IMarketDescriptor",
+                name: "_market",
+                type: "address",
             },
-            {
-                "internalType": "uint128",
-                "name": "_liquidityDelta",
-                "type": "uint128"
-            }
-        ],
-        "name": "createIncreaseRiskBufferFundPosition",
-        "outputs": [
             {
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
-        ],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [
+                internalType: "Side",
+                name: "_side",
+                type: "uint8",
+            },
             {
-                "internalType": "contract IPool",
-                "name": "_pool",
-                "type": "address"
+                internalType: "uint128",
+                name: "_marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "_margin",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_sizeDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "_liquidity",
-                "type": "uint128"
-            }
+                internalType: "uint160",
+                name: "_acceptableTradePriceX96",
+                type: "uint160",
+            },
         ],
-        "name": "createOpenLiquidityPosition",
-        "outputs": [
+        name: "createIncreasePosition",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "index",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "index",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "payable",
-        "type": "function"
+        stateMutability: "payable",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "decreasePositionIndex",
-        "outputs": [
+        inputs: [],
+        name: "decreaseLiquidityPositionIndex",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "decreasePositionIndexNext",
-        "outputs": [
+        inputs: [],
+        name: "decreaseLiquidityPositionIndexNext",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "name": "decreasePositionRequests",
-        "outputs": [
+        name: "decreaseLiquidityPositionRequests",
+        outputs: [
             {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
             {
-                "internalType": "uint96",
-                "name": "blockNumber",
-                "type": "uint96"
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                internalType: "uint128",
+                name: "marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "marginDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "liquidityDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "sizeDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "acceptableMinMargin",
+                type: "uint128",
             },
             {
-                "internalType": "uint160",
-                "name": "acceptableTradePriceX96",
-                "type": "uint160"
+                internalType: "uint256",
+                name: "executionFee",
+                type: "uint256",
             },
             {
-                "internalType": "uint64",
-                "name": "blockTime",
-                "type": "uint64"
+                internalType: "uint96",
+                name: "blockNumber",
+                type: "uint96",
             },
             {
-                "internalType": "Side",
-                "name": "side",
-                "type": "uint8"
+                internalType: "uint64",
+                name: "blockTime",
+                type: "uint64",
             },
             {
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
+                internalType: "address",
+                name: "receiver",
+                type: "address",
             },
-            {
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
-            }
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "decreaseRiskBufferFundPositionIndex",
-        "outputs": [
+        inputs: [],
+        name: "decreasePositionIndex",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "decreaseRiskBufferFundPositionIndexNext",
-        "outputs": [
+        inputs: [],
+        name: "decreasePositionIndexNext",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "name": "decreaseRiskBufferFundPositionRequests",
-        "outputs": [
+        name: "decreasePositionRequests",
+        outputs: [
             {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
             {
-                "internalType": "uint96",
-                "name": "blockNumber",
-                "type": "uint96"
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                internalType: "Side",
+                name: "side",
+                type: "uint8",
             },
             {
-                "internalType": "uint64",
-                "name": "blockTime",
-                "type": "uint64"
+                internalType: "uint128",
+                name: "marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "liquidityDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "sizeDelta",
+                type: "uint128",
             },
             {
-                "internalType": "address",
-                "name": "receiver",
-                "type": "address"
+                internalType: "uint160",
+                name: "acceptableTradePriceX96",
+                type: "uint160",
             },
-            {
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint256",
+                name: "executionFee",
+                type: "uint256",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "executeAdjustLiquidityPositionMargin",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
+                internalType: "uint96",
+                name: "blockNumber",
+                type: "uint96",
+            },
             {
-                "internalType": "uint128",
-                "name": "_endIndex",
-                "type": "uint128"
+                internalType: "uint64",
+                name: "blockTime",
+                type: "uint64",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address",
+                name: "receiver",
+                type: "address",
+            },
         ],
-        "name": "executeAdjustLiquidityPositionMargins",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "contract IMarketDescriptor",
+                name: "_market",
+                type: "address",
             },
-            {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "executeCloseLiquidityPosition",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
             {
-                "internalType": "uint128",
-                "name": "_endIndex",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_liquidityDelta",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address",
+                name: "_receiver",
+                type: "address",
+            },
         ],
-        "name": "executeCloseLiquidityPositions",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "executeDecreaseLiquidationFundPosition",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_index",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "executeDecreasePosition",
-        "outputs": [
+        name: "executeDecreaseLiquidityPosition",
+        outputs: [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_endIndex",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_endIndex",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "executeDecreasePositions",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "executeDecreaseLiquidityPositions",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_index",
+                type: "uint128",
             },
-            {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "executeDecreaseRiskBufferFundPosition",
-        "outputs": [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
+        name: "executeDecreasePosition",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "_endIndex",
-                "type": "uint128"
+                internalType: "bool",
+                name: "",
+                type: "bool",
             },
-            {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
         ],
-        "name": "executeDecreaseRiskBufferFundPositions",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_endIndex",
+                type: "uint128",
             },
-            {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
-        ],
-        "name": "executeIncreasePosition",
-        "outputs": [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "executeDecreasePositions",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_endIndex",
-                "type": "uint128"
+                internalType: "contract IMarketDescriptor",
+                name: "_market",
+                type: "address",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "uint128",
+                name: "_liquidityDelta",
+                type: "uint128",
+            },
         ],
-        "name": "executeIncreasePositions",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "executeIncreaseLiquidationFundPosition",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_index",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "executeIncreaseRiskBufferFundPosition",
-        "outputs": [
+        name: "executeIncreaseLiquidityPosition",
+        outputs: [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_endIndex",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_endIndex",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "executeIncreaseRiskBufferFundPositions",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "executeIncreaseLiquidityPositions",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_index",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_index",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "executeOpenLiquidityPosition",
-        "outputs": [
+        name: "executeIncreasePosition",
+        outputs: [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "_endIndex",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "_endIndex",
+                type: "uint128",
             },
             {
-                "internalType": "address payable",
-                "name": "_executionFeeReceiver",
-                "type": "address"
-            }
+                internalType: "address payable",
+                name: "_executionFeeReceiver",
+                type: "address",
+            },
         ],
-        "name": "executeOpenLiquidityPositions",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "executeIncreasePositions",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "executionGasLimit",
-        "outputs": [
+        inputs: [],
+        name: "executionGasLimit",
+        outputs: [
             {
-                "internalType": "uint160",
-                "name": "",
-                "type": "uint160"
-            }
+                internalType: "uint160",
+                name: "",
+                type: "uint160",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "gov",
-        "outputs": [
+        inputs: [],
+        name: "gov",
+        outputs: [
             {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "increasePositionIndex",
-        "outputs": [
+        inputs: [],
+        name: "increaseLiquidityPositionIndex",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "increasePositionIndexNext",
-        "outputs": [
+        inputs: [],
+        name: "increaseLiquidityPositionIndexNext",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "name": "increasePositionRequests",
-        "outputs": [
+        name: "increaseLiquidityPositionRequests",
+        outputs: [
             {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
             {
-                "internalType": "uint96",
-                "name": "blockNumber",
-                "type": "uint96"
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                internalType: "uint128",
+                name: "marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "marginDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "liquidityDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "sizeDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "acceptableMinMargin",
+                type: "uint128",
             },
             {
-                "internalType": "uint160",
-                "name": "acceptableTradePriceX96",
-                "type": "uint160"
+                internalType: "uint256",
+                name: "executionFee",
+                type: "uint256",
             },
             {
-                "internalType": "uint64",
-                "name": "blockTime",
-                "type": "uint64"
+                internalType: "uint96",
+                name: "blockNumber",
+                type: "uint96",
             },
             {
-                "internalType": "Side",
-                "name": "side",
-                "type": "uint8"
+                internalType: "uint64",
+                name: "blockTime",
+                type: "uint64",
             },
-            {
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
-            }
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "increaseRiskBufferFundPositionIndex",
-        "outputs": [
+        inputs: [],
+        name: "increasePositionIndex",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "increaseRiskBufferFundPositionIndexNext",
-        "outputs": [
+        inputs: [],
+        name: "increasePositionIndexNext",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint128",
+                name: "",
+                type: "uint128",
+            },
         ],
-        "name": "increaseRiskBufferFundPositionRequests",
-        "outputs": [
+        name: "increasePositionRequests",
+        outputs: [
             {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
+                internalType: "address",
+                name: "account",
+                type: "address",
             },
             {
-                "internalType": "uint96",
-                "name": "blockNumber",
-                "type": "uint96"
+                internalType: "contract IMarketDescriptor",
+                name: "market",
+                type: "address",
             },
             {
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
+                internalType: "Side",
+                name: "side",
+                type: "uint8",
             },
             {
-                "internalType": "uint64",
-                "name": "blockTime",
-                "type": "uint64"
+                internalType: "uint128",
+                name: "marginDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint128",
-                "name": "liquidityDelta",
-                "type": "uint128"
+                internalType: "uint128",
+                name: "sizeDelta",
+                type: "uint128",
             },
             {
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "maxTimeDelay",
-        "outputs": [
+                internalType: "uint160",
+                name: "acceptableTradePriceX96",
+                type: "uint160",
+            },
             {
-                "internalType": "uint32",
-                "name": "",
-                "type": "uint32"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "minBlockDelayExecutor",
-        "outputs": [
+                internalType: "uint256",
+                name: "executionFee",
+                type: "uint256",
+            },
+            {
+                internalType: "uint96",
+                name: "blockNumber",
+                type: "uint96",
+            },
             {
-                "internalType": "uint32",
-                "name": "",
-                "type": "uint32"
-            }
+                internalType: "uint64",
+                name: "blockTime",
+                type: "uint64",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "minExecutionFee",
-        "outputs": [
+        inputs: [],
+        name: "marketManager",
+        outputs: [
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
+                internalType: "contract IMarketManager",
+                name: "",
+                type: "address",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "minTimeDelayPublic",
-        "outputs": [
+        inputs: [],
+        name: "maxTimeDelay",
+        outputs: [
             {
-                "internalType": "uint32",
-                "name": "",
-                "type": "uint32"
-            }
+                internalType: "uint32",
+                name: "",
+                type: "uint32",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "openLiquidityPositionIndex",
-        "outputs": [
+        inputs: [],
+        name: "minBlockDelayExecutor",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint32",
+                name: "",
+                type: "uint32",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "openLiquidityPositionIndexNext",
-        "outputs": [
+        inputs: [],
+        name: "minExecutionFee",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
+                internalType: "uint256",
+                name: "",
+                type: "uint256",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint128",
-                "name": "",
-                "type": "uint128"
-            }
-        ],
-        "name": "openLiquidityPositionRequests",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
-            },
-            {
-                "internalType": "uint96",
-                "name": "blockNumber",
-                "type": "uint96"
-            },
-            {
-                "internalType": "contract IPool",
-                "name": "pool",
-                "type": "address"
-            },
-            {
-                "internalType": "uint64",
-                "name": "blockTime",
-                "type": "uint64"
-            },
-            {
-                "internalType": "uint128",
-                "name": "margin",
-                "type": "uint128"
-            },
+        inputs: [],
+        name: "minTimeDelayPublic",
+        outputs: [
             {
-                "internalType": "uint128",
-                "name": "liquidity",
-                "type": "uint128"
+                internalType: "uint32",
+                name: "",
+                type: "uint32",
             },
-            {
-                "internalType": "uint256",
-                "name": "executionFee",
-                "type": "uint256"
-            }
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "pendingGov",
-        "outputs": [
+        inputs: [],
+        name: "pendingGov",
+        outputs: [
             {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
+                internalType: "address",
+                name: "",
+                type: "address",
+            },
         ],
-        "name": "positionExecutors",
-        "outputs": [
+        name: "positionExecutors",
+        outputs: [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "",
+                type: "bool",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "router",
-        "outputs": [
+        inputs: [],
+        name: "router",
+        outputs: [
             {
-                "internalType": "contract Router",
-                "name": "",
-                "type": "address"
-            }
+                internalType: "contract Router",
+                name: "",
+                type: "address",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
+        stateMutability: "view",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint32",
-                "name": "_minBlockDelayExecutor",
-                "type": "uint32"
+                internalType: "uint32",
+                name: "_minBlockDelayExecutor",
+                type: "uint32",
             },
             {
-                "internalType": "uint32",
-                "name": "_minTimeDelayPublic",
-                "type": "uint32"
+                internalType: "uint32",
+                name: "_minTimeDelayPublic",
+                type: "uint32",
             },
             {
-                "internalType": "uint32",
-                "name": "_maxTimeDelay",
-                "type": "uint32"
-            }
+                internalType: "uint32",
+                name: "_maxTimeDelay",
+                type: "uint32",
+            },
         ],
-        "name": "updateDelayValues",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "updateDelayValues",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint160",
-                "name": "_executionGasLimit",
-                "type": "uint160"
-            }
+                internalType: "uint160",
+                name: "_executionGasLimit",
+                type: "uint160",
+            },
         ],
-        "name": "updateExecutionGasLimit",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "updateExecutionGasLimit",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "uint256",
-                "name": "_minExecutionFee",
-                "type": "uint256"
-            }
+                internalType: "uint256",
+                name: "_minExecutionFee",
+                type: "uint256",
+            },
         ],
-        "name": "updateMinExecutionFee",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "updateMinExecutionFee",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [
+        inputs: [
             {
-                "internalType": "address",
-                "name": "_account",
-                "type": "address"
+                internalType: "address",
+                name: "_account",
+                type: "address",
             },
             {
-                "internalType": "bool",
-                "name": "_active",
-                "type": "bool"
-            }
+                internalType: "bool",
+                name: "_active",
+                type: "bool",
+            },
         ],
-        "name": "updatePositionExecutor",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+        name: "updatePositionExecutor",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
     },
     {
-        "inputs": [],
-        "name": "usd",
-        "outputs": [
+        inputs: [],
+        name: "usd",
+        outputs: [
             {
-                "internalType": "contract IERC20",
-                "name": "",
-                "type": "address"
-            }
+                internalType: "contract IERC20",
+                name: "",
+                type: "address",
+            },
         ],
-        "stateMutability": "view",
-        "type": "function"
-    }
+        stateMutability: "view",
+        type: "function",
+    },
 ]

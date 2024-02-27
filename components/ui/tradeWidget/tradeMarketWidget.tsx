@@ -9,7 +9,7 @@ import {
   useTokenMarketAndIndexPrice,
 } from "@/hooks/usePrice"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import { btcPoolAddress, ethPoolAddress } from "@/hooks/zAddressHelper"
+import { btcMarketAddress, ethMarketAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   Side,
@@ -84,7 +84,7 @@ export default function TradeMarketWidget({
 
   const { incPositionData, incPositionLoading, incPositionWrite } =
     useCreateIncreasePostion(
-      currentTokenEntity.poolContract,
+      currentTokenEntity.market,
       side,
       usdMargin,
       tradingSize,
@@ -331,30 +331,32 @@ export default function TradeMarketWidget({
           value={`${(Number(usdMargin) - tradingFee).toFixed(2)}`}
         />
         <div className="flex justify-between">
-          <div className="text-0xgrey text-xs">Fees</div>
-          {(tradingFee + executionFee) > 0 ? (
+          <div className="text-xs text-0xgrey">Fees</div>
+          {tradingFee + executionFee > 0 ? (
             <CustomTooltip
               triggerContent={
-                <div className="text-xs text-white">{`$${giveMeFormattedToShow(tradingFee + executionFee)} `}</div>
+                <div className="text-xs text-white">{`$${giveMeFormattedToShow(
+                  tradingFee + executionFee
+                )} `}</div>
               }
             >
               <div className="flex justify-between">
-                <div className="text-white text-xs">Trading Fee</div>
-                <div className="text-white text-xs">-0.82 USDT</div>
+                <div className="text-xs text-white">Trading Fee</div>
+                <div className="text-xs text-white">-0.82 USDT</div>
               </div>
-              <div className="text-0xgrey text-xs">
+              <div className="text-xs text-0xgrey">
                 (0.050% of the position value)
               </div>
               <div className="flex justify-between">
-                <div className="text-white text-xs">Execution Fee Fee</div>
-                <div className="text-white text-xs">
+                <div className="text-xs text-white">Execution Fee Fee</div>
+                <div className="text-xs text-white">
                   -0.82 USDT{" "}
                   <span className="text-sm text-0xgrey">(-$0.46)</span>
                 </div>
               </div>
             </CustomTooltip>
           ) : (
-            <div className="text-white text-xs">-</div>
+            <div className="text-xs text-white">-</div>
           )}
         </div>
         <ListItem

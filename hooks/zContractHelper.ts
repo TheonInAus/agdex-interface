@@ -1,10 +1,10 @@
 import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
 import Decimal from "decimal.js";
 import { BigNumberish } from "ethers";
-import { btcPoolAddress, ethPoolAddress, ordiPoolAddress } from "./zAddressHelper";
+import { btcMarketAddress, ethMarketAddress } from "./zAddressHelper";
 
 
-export const minExecutionFee = parseEther('0.00021')
+export const minExecutionFee = parseEther('0.0003')
 export const minExecutionFeeNumber = 0.00021
 export const minOrderBookExecutionFee = parseEther('0.0003')
 export const minOrderBookExecutionFeeNumber = 0.0003
@@ -150,24 +150,20 @@ export const formatTimestampX1000 = (timestamp: number | string) => {
 }
 
 export const convertPoolAddressToShownData = (poolAddress: string) => {
-    if (poolAddress === btcPoolAddress.toLocaleLowerCase()) {
+    if (poolAddress === btcMarketAddress.toLocaleLowerCase()) {
         return 'BTC/USDX'
-    } else if (poolAddress === ethPoolAddress.toLocaleLowerCase()) {
+    } else if (poolAddress === ethMarketAddress.toLocaleLowerCase()) {
         return 'ETH/USDX'
-    } else if (poolAddress === ordiPoolAddress.toLocaleLowerCase()) {
-        return 'ORDI/USDX'
     } else {
         return '-error'
     }
 }
 
 export const convertPoolAddressToTokenName = (poolAddress: string) => {
-    if (poolAddress === btcPoolAddress.toLocaleLowerCase()) {
+    if (poolAddress === btcMarketAddress.toLocaleLowerCase()) {
         return 'BTC'
-    } else if (poolAddress === ethPoolAddress.toLocaleLowerCase()) {
+    } else if (poolAddress === ethMarketAddress.toLocaleLowerCase()) {
         return 'ETH'
-    } else if (poolAddress === ordiPoolAddress.toLocaleLowerCase()) {
-        return 'ORDI'
     } else {
         return '-error'
     }

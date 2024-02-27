@@ -1,50 +1,47 @@
 {
-  "block": 2859458,
+  "block": 17956247,
   "usd": "0x2c480682b3fb071bb4715227072079232083A648",
-  "poolBytecodeHash": "0x7c30f21409046c945ffc96f7289235f64623c73acaa47f6b7410073c45d55001",
+  "efc": "0xb2a1d1e881C0300C8A21529Beb005c2b6B44778B",
+  "marketDescriptorInitCodeHash": "0xb1b7f4d05ce93782ca80d1d5935cfc82a6c73f42ea170f618f6cefbc0f684e64",
   "deployments": {
-    "PoolUtil": "0x3F4899481EF3b79317785c4Cdf2543c9daCe272F",
-    "FundingRateUtil": "0x58DAB6B0fc069fE90DEC6e0404c36bc29333D708",
-    "PriceUtil": "0x77aBBf92B95EBC508a7c00b96846dACd069DcE72",
-    "PositionUtil": "0x52Fd58928fB82Bf750f7452a696D9b2Fe96C678A",
-    "LiquidityPositionUtil": "0xb98118702eB37aF27Db5a2aD8906f5ef64789a47",
-    "EQU": "0x9376aD7b005d139494BF09f323156588A40Aa94a",
-    "veEQU": "0x98E3C30907621a9Ce1108F2DbBaEF5A34d4253F2",
-    "EFC": "0xb2a1d1e881C0300C8A21529Beb005c2b6B44778B",
-    "Router": "0x097188595e8D28A8FCB508682F44D50ffd0faD35",
-    "RewardCollector": "0x6E65De75F2431479109DCE0d1f1885aC1Ec046CB",
-    "OrderBook": "0x45365ba0E1604b6f3b3C9bc0a891b72Dd203eca1",
-    "PositionRouter": "0xe156B95d358C26318E5463Fe424918148F5CbAcB",
-    "PriceFeed": "0x13C82b777EF6b5E1945bADcF66511f42626b9AdB",
-    "RewardFarm": "0x31fD2daD1832a5Ec901278809A7ca0c83D262444",
-    "FeeDistributor": "0xB9323A4C08dF1E6866347a5C5d7a03105365fFDB",
-    "PoolFactory": "0x63aaac1F5AebDA96127e839AFD2a3fCdCc05feBA",
-    "MixedExecutor": "0xCbc955aC72534190813F02BC5fBa355f966fbADC",
-    "ExecutorAssistant": "0x93f3758e4DD91a9f0Ffc6474D6621d704a91C6d9",
-    "Liquidator": "0xaF3D035C580040A7dF5d0eF29266E462b5A93716",
-    "registerPools": [
-      {
-        "name": "BTC",
-        "token": "0x9d08Fb37Be74e0542E3C2bb881158850f2f5d270",
-        "pool": "0x3099c1313B7de49193773c278bb4a487FA6e42b1"
-      },
+    "ConfigurableUtil": "0x89FDFE53f03D467Ae0Bc36184A840249ed817E88",
+    "FundingRateUtil": "0xC3cf02616b935c9EF5529364b2A492353d52Cb7B",
+    "LiquidityPositionUtil": "0xbbF5bF4544f833952013fF7d8101A3C71e98CAC8",
+    "MarketUtil": "0xB4c6ec93A21ea8889d8E8a0E16a9f8A397449884",
+    "PositionUtil": "0x8dA34448fcefa05524Ac4E7239C3bDe614093398",
+    "Router": "0x331572caBeaF188A27A6A18f4De96422F3CfbA2B",
+    "OrderBook": "0x566A796E15Bf24cbA86B92deb7Dd1b0Af21bbEdA",
+    "PositionRouter": "0x4D7B10B021d7a61B12F1C9759021244215507F98",
+    "Liquidator": "0x424b2AC6013870BA160c7494c2603932270ea351",
+    "PriceFeed": "0x2AE1b38D588384E35Bcd41d921Afa036Af5C5C91",
+    "MarketDescriptorDeployer": "0x364D60baE6D349d0489E19AaF416008c807170cF",
+    "MarketIndexer": "0xaFE8eC53c5a84a9aD230295566A49999CeaD2ae0",
+    "MarketManager": "0xcac91b4D6f1625A8516a91E3E89Ef1560ccb2261",
+    "MixedExecutor": "0x6bBdFc629D0337593e5d32cC56104D35f13ac72E",
+    "ExecutorAssistant": "0x80B50708F8818Ea0e5968305b165676A8c252904",
+    "FarmRewardDistributor": "0xb1065B1747A8D24E69Df06f60811D7409A3d8ECf",
+    "RewardCollector": "0xC142e794D38805c3E5b1805c0f045D1aA0d0f3B6",
+    "registerMarkets": [
       {
         "name": "ETH",
-        "token": "0xc7f646814e08697F94e7194B41824405E131f0A0",
-        "pool": "0xfb7DD22Dbb9FEC2832E7c05de9AfF53D426b603B"
+        "index": 1,
+        "market": "0x07ad9146a879361330C46611b642F0e3BFeB7492"
       },
       {
-        "name": "ORDI",
-        "token": "0x8fBE025c1EdF5c4a9EcF1a2ED5DaDCc49686daa6",
-        "pool": "0x774DE4eBb56Ef661133cfDc30F1ed735e6baceB5"
+        "name": "BTC",
+        "index": 2,
+        "market": "0x45f966fecf6A91155f97c22116D5d4B57Bb7c0a9"
+      },
+      {
+        "name": "ARB",
+        "index": 3,
+        "market": "0x401A3cE493cfB0C4D9B6dA2ba8bCbe92FCCF7079"
+      },
+      {
+        "name": "LINK",
+        "index": 4,
+        "market": "0x5Dd24e226AD3d78F70071466015b3e1f3E85C37F"
       }
-    ],
-    "PositionFarmRewardDistributor": "0x185D74aBAE9d8347447F9A436c539BfCD6fFeC9d",
-    "RewardCollectorV2": "0x79026661D12D065D7f515ee0116606dC7FD98EA1",
-    "PoolIndexer": "0xeF7a1CCB7f6370Bd7275e9968aaF53fcF91Ae449",
-    "FarmRewardDistributorV2": "0xe8eE9bCcd6172c184B387c2fB4f80A9E102591B3",
-    "RewardCollectorV3": "0x677d5d059e25d39381B69990e504319b66Aca076",
-    "OrderBookAssistant": "0xD70d3727CD029bF2f798CDAC3D68922BdCa1171e",
-    "MixedExecutorV2": "0x18e4010f21edbEfB2F13885926E4339abaB5691F"
+    ]
   }
 }

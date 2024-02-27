@@ -8,13 +8,14 @@ import {
 } from "@/hooks/actionTradePosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import { ethPoolAddress } from "@/hooks/zAddressHelper"
+import { ethMarketAddress } from "@/hooks/zAddressHelper"
 import { SIDE_LONG, Side, to0xxPriceX96 } from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
+
 import { CustomTooltip } from "../customToolTip"
 
 type TradeMarketType = {
@@ -68,7 +69,7 @@ export default function TradeLimitWidget({
     isCreateIncOrderError,
     createIncOrderWrite,
   } = useCreateIncreaseOrder(
-    ethPoolAddress,
+    ethMarketAddress,
     side,
     usdMargin,
     tradingSize,
@@ -113,7 +114,7 @@ export default function TradeLimitWidget({
     }
   }, [usdAfterMargin])
 
-  const feesValue = 0;
+  const feesValue = 0
 
   return (
     <div>

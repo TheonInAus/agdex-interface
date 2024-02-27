@@ -8,16 +8,17 @@ import { Side, minExecutionFee, wrapperParseEther6e, minOrderBookExecutionFee } 
 import { arbitrumGoerli } from 'viem/chains';
 import { orderBookABI } from '@/abis/orderBookABI';
 
-export const useCreateIncreasePostion = (tokenPoolAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any) => {
-    console.log('chekc paras tokenPoolAddress => ', tokenPoolAddress)
-    console.log('chekc paras margin => ', marginDelta)
-    console.log('chekc paras size => ', sizeDelta)
-    console.log('chekc paras acceptableTradePriceX96 => ', acceptableTradePriceX96)
+export const useCreateIncreasePostion = (marketAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any) => {
+    console.log("🚀 ~ useCreateIncreasePostion ~ acceptableTradePriceX96:", acceptableTradePriceX96)
+    console.log("🚀 ~ useCreateIncreasePostion ~ sizeDelta:", sizeDelta)
+    console.log("🚀 ~ useCreateIncreasePostion ~ marginDelta:", marginDelta)
+    console.log("🚀 ~ useCreateIncreasePostion ~ side:", side)
+    console.log("🚀 ~ useCreateIncreasePostion ~ marketAddress:", marketAddress)
     const { data: incPositionData, isLoading: incPositionLoading, write: incPositionWrite, error } = useContractWrite({
         address: positionRouterAddress,
         abi: positionRouterABI,
         functionName: 'createIncreasePosition',
-        args: [tokenPoolAddress, side, wrapperParseEther6e(marginDelta), parseEther(sizeDelta), acceptableTradePriceX96],
+        args: [marketAddress, side, wrapperParseEther6e(marginDelta), parseEther(sizeDelta), acceptableTradePriceX96],
         value: minExecutionFee
     })
 
