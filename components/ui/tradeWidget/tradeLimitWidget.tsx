@@ -54,14 +54,14 @@ export default function TradeLimitWidget({
 
   const [ethPrice, setEthPrice] = useState(0)
   const [tokenPrice, setTokenPrice] = useState(0)
-  useEffect(() => {
-    if (marketAndIndexPriceData) {
-      setEthPrice(marketAndIndexPriceData.indexPrices["ETH"].indexPrice)
-      setTokenPrice(
-        marketAndIndexPriceData.indexPrices[currentTokenEntity.name].indexPrice
-      )
-    }
-  }, [marketAndIndexPriceData, currentTokenEntity.name])
+  // useEffect(() => {
+  //   if (marketAndIndexPriceData) {
+  //     setEthPrice(marketAndIndexPriceData.indexPrices["ETH"].indexPrice)
+  //     setTokenPrice(
+  //       marketAndIndexPriceData.indexPrices[currentTokenEntity.name].indexPrice
+  //     )
+  //   }
+  // }, [marketAndIndexPriceData, currentTokenEntity.name])
 
   const {
     createIncOrderData,
