@@ -242,7 +242,7 @@ export default function TradePage() {
               <div className="text-lg w-[16%]">
                 <DropDownBox />
               </div>
-              <div className="mt-1 mr-14 text-lg text-0xredLighter">
+              <div className="mt-1 text-lg mr-14 text-0xredLighter">
                 {giveMeFormattedToShow(contractPrice)}
               </div>
               <Stats
@@ -362,7 +362,7 @@ export default function TradePage() {
                           </DialogTitle>
                         </DialogHeader>
                         <StyledTabs defaultValue="PnL">
-                          <StyledTabsList className="border-none space-x-8 ml-4">
+                          <StyledTabsList className="ml-4 space-x-8 border-none">
                             <StyledTabsTrigger
                               value="PnL"
                               className="p-0 text-sm"
@@ -527,9 +527,9 @@ export default function TradePage() {
                                 </Button>
                               </Tabs>
                               <div className="bg-black w-[50%] rounded-lg">
-                                <div className="ml-2 mt-2">Result</div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="mx-2 mb-4 flex flex-col gap-2">
+                                <div className="mt-2 ml-2">Result</div>
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="flex flex-col gap-2 mx-2 mb-4">
                                   <ListItem keyText={"Margin"} value={"-"} />
                                   <ListItem
                                     keyText={"Risk / Reward"}
@@ -540,15 +540,15 @@ export default function TradePage() {
                                   <ListItem keyText={"SL PnL"} value={"-"} />
                                   <ListItem keyText={"SL PnL%"} value={"-"} />
                                 </div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="text-0xgrey text-sm my-2 mx-3">
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="mx-3 my-2 text-sm text-0xgrey">
                                   <span className="font-semibold">
                                     Long trade
                                   </span>{" "}
                                   the risk/reward ratio is: (Entry Price − Stop
                                   Loss) / (Profit Target − Entry Price) × 100%.
                                 </div>
-                                <div className="text-0xgrey text-xs my-2 mx-3">
+                                <div className="mx-3 my-2 text-xs text-0xgrey">
                                   <span className="font-semibold">
                                     Short trade
                                   </span>{" "}
@@ -557,7 +557,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="text-0xgrey text-sm mt-2">
+                            <div className="mt-2 text-sm text-0xgrey">
                               *The calculation is for reference only and does
                               not include trading fee, execution fee and other
                               actual costs.
@@ -673,9 +673,9 @@ export default function TradePage() {
                                 </Button>
                               </Tabs>
                               <div className="bg-black w-[50%] rounded-lg">
-                                <div className="ml-2 mt-2">Result</div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="mx-2 mb-4 flex flex-col gap-2">
+                                <div className="mt-2 ml-2">Result</div>
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="flex flex-col gap-2 mx-2 mb-4">
                                   <ListItem
                                     keyText={"Target Price"}
                                     value={"-"}
@@ -683,7 +683,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="text-0xgrey text-sm mt-2">
+                            <div className="mt-2 text-sm text-0xgrey">
                               *The calculation is for reference only and does
                               not include trading fee, execution fee and other
                               actual costs.
@@ -773,9 +773,9 @@ export default function TradePage() {
                                 </Button>
                               </Tabs>
                               <div className="bg-black w-[50%] rounded-lg">
-                                <div className="ml-2 mt-2">Result</div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="mx-2 mb-4 flex flex-col gap-2">
+                                <div className="mt-2 ml-2">Result</div>
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="flex flex-col gap-2 mx-2 mb-4">
                                   <ListItem
                                     keyText={"Liquidation Price"}
                                     value={"-"}
@@ -783,7 +783,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="text-0xgrey text-sm mt-2">
+                            <div className="mt-2 text-sm text-0xgrey">
                               *The calculation is for reference only and does
                               not include trading fee, execution fee and other
                               actual costs.
@@ -810,9 +810,9 @@ export default function TradePage() {
                                 <TabsContent value="short"></TabsContent>
                               </Tabs>
                               <div className="bg-black w-[50%] rounded-lg">
-                                <div className="ml-2 mt-2">Result</div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="mx-2 mb-4 flex flex-col gap-2">
+                                <div className="mt-2 ml-2">Result</div>
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="flex flex-col gap-2 mx-2 mb-4">
                                   <ListItem
                                     keyText={"Entry Price"}
                                     value={"-"}
@@ -820,16 +820,16 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="border-t my-4 border-0xline"></div>
+                            <div className="my-4 border-t border-0xline"></div>
                             <div className="flex flex-row gap-4">
                               <div className="w-[7%] flex flex-col mr-1">
-                                <div className="text-0xgrey text-sm">Open</div>
-                                <div className="text-0xgrey self-center mt-3">
+                                <div className="text-sm text-0xgrey">Open</div>
+                                <div className="self-center mt-3 text-0xgrey">
                                   1
                                 </div>
                               </div>
                               <div className="w-[40%]">
-                                <div className="text-0xgrey text-sm">
+                                <div className="text-sm text-0xgrey">
                                   Entry price
                                 </div>
                                 <div>
@@ -843,7 +843,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                               <div className="w-[40%]">
-                                <div className="text-0xgrey text-sm">Size</div>
+                                <div className="text-sm text-0xgrey">Size</div>
                                 <div>
                                   <LabeledInput
                                     label={"Size"}
@@ -855,10 +855,10 @@ export default function TradePage() {
                                 </div>
                               </div>
                               <div className="w-[10%] flex flex-col">
-                                <div className="text-0xgrey text-sm">
+                                <div className="text-sm text-0xgrey">
                                   Operation
                                 </div>
-                                <div className="text-0xgrey self-center mt-1">
+                                <div className="self-center mt-1 text-0xgrey">
                                   <Iconify icon={"mdi:minus-box-outline"} />
                                 </div>
                               </div>
@@ -867,7 +867,7 @@ export default function TradePage() {
                             <Button className="w-full mt-[107px] bg-bronze">
                               Calculate
                             </Button>
-                            <div className="text-0xgrey text-sm mt-2">
+                            <div className="mt-2 text-sm text-0xgrey">
                               *The calculation is for reference only and does
                               not include trading fee, execution fee and other
                               actual costs.
@@ -914,7 +914,7 @@ export default function TradePage() {
                           </DialogTitle>
                         </DialogHeader>
                         <StyledTabs defaultValue="PnL">
-                          <StyledTabsList className="border-none space-x-8 ml-4">
+                          <StyledTabsList className="ml-4 space-x-8 border-none">
                             <StyledTabsTrigger
                               value="PnL"
                               className="p-0 text-sm"
@@ -1079,9 +1079,9 @@ export default function TradePage() {
                                 </Button>
                               </Tabs>
                               <div className="bg-black w-[50%] rounded-lg">
-                                <div className="ml-2 mt-2">Result</div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="mx-2 mb-4 flex flex-col gap-2">
+                                <div className="mt-2 ml-2">Result</div>
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="flex flex-col gap-2 mx-2 mb-4">
                                   <ListItem keyText={"Margin"} value={"-"} />
                                   <ListItem
                                     keyText={"Risk / Reward"}
@@ -1092,8 +1092,8 @@ export default function TradePage() {
                                   <ListItem keyText={"SL PnL"} value={"-"} />
                                   <ListItem keyText={"SL PnL%"} value={"-"} />
                                 </div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="text-0xgrey text-xs my-2 mx-3">
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="mx-3 my-2 text-xs text-0xgrey">
                                   The risk/reward ratio is calculated by
                                   dividing the potential risk in trading by the
                                   expected rewards. The calculation formula is:
@@ -1103,7 +1103,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="text-0xgrey text-sm mt-2">
+                            <div className="mt-2 text-sm text-0xgrey">
                               *The calculation is for reference only and does
                               not include trading fee, execution fee and other
                               actual costs.
@@ -1219,9 +1219,9 @@ export default function TradePage() {
                                 </Button>
                               </Tabs>
                               <div className="bg-black w-[50%] rounded-lg">
-                                <div className="ml-2 mt-2">Result</div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="mx-2 mb-4 flex flex-col gap-2">
+                                <div className="mt-2 ml-2">Result</div>
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="flex flex-col gap-2 mx-2 mb-4">
                                   <ListItem
                                     keyText={"Target Price"}
                                     value={"-"}
@@ -1229,7 +1229,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="text-0xgrey text-sm mt-2">
+                            <div className="mt-2 text-sm text-0xgrey">
                               *The calculation is for reference only and does
                               not include trading fee, execution fee and other
                               actual costs.
@@ -1319,9 +1319,9 @@ export default function TradePage() {
                                 </Button>
                               </Tabs>
                               <div className="bg-black w-[50%] rounded-lg">
-                                <div className="ml-2 mt-2">Result</div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="mx-2 mb-4 flex flex-col gap-2">
+                                <div className="mt-2 ml-2">Result</div>
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="flex flex-col gap-2 mx-2 mb-4">
                                   <ListItem
                                     keyText={"Liquidation Price"}
                                     value={"-"}
@@ -1329,7 +1329,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="text-0xgrey text-sm mt-2">
+                            <div className="mt-2 text-sm text-0xgrey">
                               *The calculation is for reference only and does
                               not include trading fee, execution fee and other
                               actual costs.
@@ -1356,9 +1356,9 @@ export default function TradePage() {
                                 <TabsContent value="short"></TabsContent>
                               </Tabs>
                               <div className="bg-black w-[50%] rounded-lg">
-                                <div className="ml-2 mt-2">Result</div>
-                                <div className="border-t my-3 mx-2 border-0xline"></div>
-                                <div className="mx-2 mb-4 flex flex-col gap-2">
+                                <div className="mt-2 ml-2">Result</div>
+                                <div className="mx-2 my-3 border-t border-0xline"></div>
+                                <div className="flex flex-col gap-2 mx-2 mb-4">
                                   <ListItem
                                     keyText={"Entry Price"}
                                     value={"-"}
@@ -1366,16 +1366,16 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <div className="border-t my-4 border-0xline"></div>
+                            <div className="my-4 border-t border-0xline"></div>
                             <div className="flex flex-row gap-4">
                               <div className="w-[7%] flex flex-col mr-1">
-                                <div className="text-0xgrey text-sm">Open</div>
-                                <div className="text-0xgrey self-center mt-3">
+                                <div className="text-sm text-0xgrey">Open</div>
+                                <div className="self-center mt-3 text-0xgrey">
                                   1
                                 </div>
                               </div>
                               <div className="w-[40%]">
-                                <div className="text-0xgrey text-sm">
+                                <div className="text-sm text-0xgrey">
                                   Entry price
                                 </div>
                                 <div>
@@ -1389,7 +1389,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                               <div className="w-[40%]">
-                                <div className="text-0xgrey text-sm">Size</div>
+                                <div className="text-sm text-0xgrey">Size</div>
                                 <div>
                                   <LabeledInput
                                     label={"Size"}
@@ -1401,10 +1401,10 @@ export default function TradePage() {
                                 </div>
                               </div>
                               <div className="w-[10%] flex flex-col">
-                                <div className="text-0xgrey text-sm">
+                                <div className="text-sm text-0xgrey">
                                   Operation
                                 </div>
-                                <div className="text-0xgrey self-center mt-1">
+                                <div className="self-center mt-1 text-0xgrey">
                                   <Iconify icon={"mdi:minus-box-outline"} />
                                 </div>
                               </div>
@@ -1413,7 +1413,7 @@ export default function TradePage() {
                             <Button className="w-full mt-[107px] bg-bronze">
                               Calculate
                             </Button>
-                            <div className="text-0xgrey text-sm mt-2">
+                            <div className="mt-2 text-sm text-0xgrey">
                               *The calculation is for reference only and does
                               not include trading fee, execution fee and other
                               actual costs.

@@ -37,7 +37,7 @@ export const useUserPositionList = (token: TokenConfigType) => {
     const { data: walletClient } = useWalletClient({
         chainId: arbitrumGoerli.id,
     })
-    const tokensList: TokenParamsType[] = registerPoolsInfos.map((pool) => ({ tokenName: pool.name, poolAddress: pool.pool }))
+    const tokensList: TokenParamsType[] = registerPoolsInfos.map((pool) => ({ tokenName: pool.name, poolAddress: pool.market }))
     const contractBaseInfo = {
         abi: poolABI,
         functionName: 'positions',
@@ -46,18 +46,18 @@ export const useUserPositionList = (token: TokenConfigType) => {
     const tokenBaseInfo: any[] = []
     contractParams.push({
         ...contractBaseInfo,
-        address: token.poolContract,
+        address: token.market,
         args: [walletClient?.account.address, SIDE_LONG]
     });
-    tokenBaseInfo.push({ tokenName: token.name, tokenSide: 'Long', tokenPool: token.poolContract })
+    tokenBaseInfo.push({ tokenName: token.name, tokenSide: 'Long', tokenPool: token.market })
 
     contractParams.push({
         ...contractBaseInfo,
-        address: token.poolContract,
+        address: token.market,
         args: [walletClient?.account.address, SIDE_SHORT]
     });
 
-    tokenBaseInfo.push({ tokenName: token.name, tokenSide: 'Short', tokenPool: token.poolContract })
+    tokenBaseInfo.push({ tokenName: token.name, tokenSide: 'Short', tokenPool: token.market })
 
     const { data, isLoading, isError } = useContractReads({
         contracts: contractParams,

@@ -24,7 +24,7 @@ import {
 export default function DropDownBox() {
   const tokens = useTokenConfigWrapperInfo()
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("BTC")
+  const [value, setValue] = React.useState("ETH")
 
   const setCurrentTokenEntity = useTokenConfigStore(
     (state: any) => state.setCurrentTokenEntity
@@ -75,7 +75,7 @@ export default function DropDownBox() {
                           : "text-green-500"
                       }`}
                     >
-                      {`${Number(token.percentageChange).toFixed(2)}%`}
+                      {`${(Number(token.percentageChange) * 100).toFixed(2)}%`}
                     </div>
                   </div>
                 </div>
