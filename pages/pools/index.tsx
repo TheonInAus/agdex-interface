@@ -2,6 +2,14 @@
 
 import React, { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs"
 import { Loader } from "lucide-react"
 
 import { siteConfig } from "@/config/site"
@@ -9,12 +17,24 @@ import { useOpenLiquidityPosition } from "@/hooks/actionLiquidityPosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
 import { useAllLiquidityPools } from "@/hooks/liquidityPoolInfo"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { ButtonInput } from "@/components/ui/buttonInput"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
 import { InputBox } from "@/components/ui/inputBox"
+import { LabeledInput } from "@/components/ui/labeledInput"
+import { LeverageInput } from "@/components/ui/leverageInput"
 import { ListItem } from "@/components/ui/listItem"
+import { PnLSlider } from "@/components/ui/pnlSlider"
 import { Slider } from "@/components/ui/slider"
 import { Stats } from "@/components/ui/stats"
+import {
+  StyledTabs,
+  StyledTabsContent,
+  StyledTabsList,
+  StyledTabsTrigger,
+} from "@/components/ui/styledTab"
+import DropDownBox from "@/components/ui/tradeWidget/dropDownBox"
+import Iconify from "@/components/Iconify"
 
 import PoolRow, { PoolDataType } from "./PoolRow"
 
@@ -91,6 +111,21 @@ export default function PoolsPage() {
     openLiqPositionWrite()
   }
 
+  const [calLeverageNumber, setCalLeverageNumber] = useState(1)
+
+  const handleCalSliderValueChange = (value: any) => {
+    setCalLeverageNumber(value[0])
+  }
+
+  const handleInputChange = (event: any) => {
+    const value = parseFloat(event.target.value)
+    if (!isNaN(value) && value >= 1 && value <= 100) {
+      setLeverageNumber(value)
+    } else if (event.target.value === "") {
+      setLeverageNumber(0)
+    }
+  }
+
   return (
     <section className="container flex items-center justify-center gap-6 pt-6 pb-8">
       <div className="flex flex-row gap-4">
@@ -140,7 +175,78 @@ export default function PoolsPage() {
             className="p-6 mb-6 rounded-lg bg-0xboxBackground"
             style={{ width: 350, height: 550 }}
           >
-            <div>{`Add ${currentPool.name}/USDT Liquidity`}</div>
+            <div className="flex flex-row justify-between">
+              <div>{`Add ${currentPool.name}/USDT Liquidity`}</div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button className="ml-1">
+                    <Iconify icon={"ri:calculator-line"} />
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="bg-0xdialog w-[730px]">
+                  <DialogHeader>
+                    <DialogTitle>
+                      <DropDownBox />
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="flex flex-row gap-4">
+                    <div className="flex flex-col w-[60%]">
+                      <div className="mt-4">
+                        <LeverageInput
+                          label="Leverage"
+                          suffix="X"
+                          value={leverageNumber.toString()}
+                          onChange={handleInputChange}
+                          type="number"
+                          min="1"
+                          max="100"
+                          className="mb-2"
+                        />
+                        <div className="mt-4">
+                          <PnLSlider
+                            defaultValue={[1]}
+                            max={100}
+                            min={1}
+                            step={1}
+                            onValueChange={handleSliderValueChange}
+                            value={[leverageNumber]}
+                            style={{
+                              marginBottom: 10,
+                              marginTop: 10,
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-[45px]">
+                        <LabeledInput
+                          label={"Margin"}
+                          suffix={"USDT"}
+                          value={0}
+                          type="number"
+                          className="mb-2"
+                        />
+                      </div>
+                      <Button className="w-full mt-4 bg-bronze">
+                        Calculate
+                      </Button>
+                    </div>
+                    <div className="bg-black w-[50%] rounded-lg">
+                      <div className="ml-4 mt-4">Result</div>
+                      <div className="border-t my-3 mx-2 border-0xline"></div>
+                      <div className="mx-4 mb-4 flex flex-col gap-2">
+                        <ListItem keyText={"Liquidity"} value={"-"} />
+                        <ListItem keyText={"Max APR"} value={"-"} />
+                        <ListItem keyText={"Max Income"} value={"-"} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-0xgrey text-sm mt-2">
+                  *The calculation is for reference only and does not include trading fee, execution fee and other actual costs.
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
             <br></br>
             <div className="w-full">
               <InputBox
