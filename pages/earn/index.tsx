@@ -194,13 +194,13 @@ export default function EarnPage() {
               >
                 Liquidity Mining
               </StyledTabsTrigger>
-              <StyledTabsTrigger
+              {/* <StyledTabsTrigger
                 className="mr-2"
                 value="RBF Mining"
                 onClick={() => setActiveTab("RBF Mining")}
               >
                 RBF Mining
-              </StyledTabsTrigger>
+              </StyledTabsTrigger> */}
             </StyledTabsList>
             {activeTab === "Liquidity Mining" && (
               <div className="flex items-center py-1 ml-2">
@@ -586,7 +586,7 @@ export default function EarnPage() {
               </div>
             </div>
           </StyledTabsContent>
-          <StyledTabsContent value="RBF Mining" className="ml-3">
+          {/* <StyledTabsContent value="RBF Mining" className="ml-3">
             <div className="flex flex-row mb-1 ml-1 text-sm rounded-lg text-0xgrey">
               <div className="w-[12%]">Pool</div>
               <CustomTooltip
@@ -749,7 +749,7 @@ export default function EarnPage() {
                 </Dialog>
               </div>
             </div>
-          </StyledTabsContent>
+          </StyledTabsContent> */}
         </StyledTabs>
       </div>
     </section>

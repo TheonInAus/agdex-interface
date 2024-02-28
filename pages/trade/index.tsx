@@ -722,6 +722,7 @@ export default function TradePage() {
                                       value={0}
                                       type="number"
                                       className="mb-2"
+                                      tooltipContent={<span>Simulated position net value. Balance = Margin + Unrealized PnL</span>}
                                     />
                                   </div>
                                 </TabsContent>
@@ -747,6 +748,7 @@ export default function TradePage() {
                                       value={0}
                                       type="number"
                                       className="mb-2"
+                                      tooltipContent={<span>Simulated position net value. Balance = Margin + Unrealized PnL</span>}
                                     />
                                   </div>
                                 </TabsContent>
@@ -1256,6 +1258,7 @@ export default function TradePage() {
                                       value={0}
                                       type="number"
                                       className="mb-2"
+                                      tooltipContent={<span>Simulated position net value. Balance = Margin + Unrealized PnL</span>}
                                     />
                                   </div>
                                 </TabsContent>
@@ -1281,6 +1284,7 @@ export default function TradePage() {
                                       value={0}
                                       type="number"
                                       className="mb-2"
+                                      tooltipContent={<span>Simulated position net value. Balance = Margin + Unrealized PnL</span>}
                                     />
                                   </div>
                                 </TabsContent>
