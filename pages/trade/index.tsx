@@ -27,6 +27,7 @@ import {
 } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { ButtonInput } from "@/components/ui/buttonInput"
+import CalculatorDropDownBox from "@/components/ui/calculatorDropDown"
 import { CustomTooltip } from "@/components/ui/customToolTip"
 import {
   Dialog,
@@ -357,7 +358,7 @@ export default function TradePage() {
                       <DialogContent className="bg-0xdialog w-[730px]">
                         <DialogHeader>
                           <DialogTitle>
-                            <DropDownBox />
+                            <CalculatorDropDownBox />
                           </DialogTitle>
                         </DialogHeader>
                         <StyledTabs defaultValue="PnL">
@@ -541,12 +542,17 @@ export default function TradePage() {
                                 </div>
                                 <div className="border-t my-3 mx-2 border-0xline"></div>
                                 <div className="text-0xgrey text-sm my-2 mx-3">
-                                <span className="font-semibold">Long trade</span> the risk/reward ratio is:
-                                  (Entry Price − Stop Loss) / (Profit Target −
-                                  Entry Price) × 100%.
+                                  <span className="font-semibold">
+                                    Long trade
+                                  </span>{" "}
+                                  the risk/reward ratio is: (Entry Price − Stop
+                                  Loss) / (Profit Target − Entry Price) × 100%.
                                 </div>
                                 <div className="text-0xgrey text-xs my-2 mx-3">
-                                  <span className="font-semibold">Short trade</span> the risk/reward ratio is: (Stop Loss − Entry
+                                  <span className="font-semibold">
+                                    Short trade
+                                  </span>{" "}
+                                  the risk/reward ratio is: (Stop Loss − Entry
                                   Price) / (Entry Price − Profit Target) × 100%.
                                 </div>
                               </div>
@@ -722,7 +728,12 @@ export default function TradePage() {
                                       value={0}
                                       type="number"
                                       className="mb-2"
-                                      tooltipContent={<span>Simulated position net value. Balance = Margin + Unrealized PnL</span>}
+                                      tooltipContent={
+                                        <span>
+                                          Simulated position net value. Balance
+                                          = Margin + Unrealized PnL
+                                        </span>
+                                      }
                                     />
                                   </div>
                                 </TabsContent>
@@ -748,7 +759,12 @@ export default function TradePage() {
                                       value={0}
                                       type="number"
                                       className="mb-2"
-                                      tooltipContent={<span>Simulated position net value. Balance = Margin + Unrealized PnL</span>}
+                                      tooltipContent={
+                                        <span>
+                                          Simulated position net value. Balance
+                                          = Margin + Unrealized PnL
+                                        </span>
+                                      }
                                     />
                                   </div>
                                 </TabsContent>
@@ -894,7 +910,7 @@ export default function TradePage() {
                       <DialogContent className="bg-0xdialog w-[630px]">
                         <DialogHeader>
                           <DialogTitle>
-                            <DropDownBox />
+                            <CalculatorDropDownBox />
                           </DialogTitle>
                         </DialogHeader>
                         <StyledTabs defaultValue="PnL">
@@ -1258,7 +1274,12 @@ export default function TradePage() {
                                       value={0}
                                       type="number"
                                       className="mb-2"
-                                      tooltipContent={<span>Simulated position net value. Balance = Margin + Unrealized PnL</span>}
+                                      tooltipContent={
+                                        <span>
+                                          Simulated position net value. Balance
+                                          = Margin + Unrealized PnL
+                                        </span>
+                                      }
                                     />
                                   </div>
                                 </TabsContent>
@@ -1284,7 +1305,12 @@ export default function TradePage() {
                                       value={0}
                                       type="number"
                                       className="mb-2"
-                                      tooltipContent={<span>Simulated position net value. Balance = Margin + Unrealized PnL</span>}
+                                      tooltipContent={
+                                        <span>
+                                          Simulated position net value. Balance
+                                          = Margin + Unrealized PnL
+                                        </span>
+                                      }
                                     />
                                   </div>
                                 </TabsContent>

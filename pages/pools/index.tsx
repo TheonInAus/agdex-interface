@@ -33,10 +33,10 @@ import {
   StyledTabsList,
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
-import DropDownBox from "@/components/ui/tradeWidget/dropDownBox"
 import Iconify from "@/components/Iconify"
 
 import PoolRow, { PoolDataType } from "./PoolRow"
+import CalculatorDropDownBox from "@/components/ui/calculatorDropDown"
 
 export default function PoolsPage() {
   const [leverageNumber, setLeverageNumber] = useState(1)
@@ -186,7 +186,7 @@ export default function PoolsPage() {
                 <DialogContent className="bg-0xdialog w-[730px]">
                   <DialogHeader>
                     <DialogTitle>
-                      <DropDownBox />
+                      <CalculatorDropDownBox />
                     </DialogTitle>
                   </DialogHeader>
                   <div className="flex flex-row gap-4">
