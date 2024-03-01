@@ -57,6 +57,7 @@ import TradeLimitWidget from "@/components/ui/tradeWidget/tradeLimitWidget"
 import TradeMarketWidget from "@/components/ui/tradeWidget/tradeMarketWidget"
 import Iconify from "@/components/Iconify"
 import TradingViewWidget from "@/components/tradingView"
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface IndexPriceData {
   [key: string]: {
@@ -304,11 +305,19 @@ export default function TradePage() {
             style={{ width: 1100 }}
           >
             <StyledTabs defaultValue="Position">
-              <StyledTabsList>
-                <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
-                <StyledTabsTrigger value="Orders">Orders</StyledTabsTrigger>
-                <StyledTabsTrigger value="History">History</StyledTabsTrigger>
-              </StyledTabsList>
+              <div className="flex flex-row justify-between">
+                <StyledTabsList>
+                  <StyledTabsTrigger value="Position">
+                    Position
+                  </StyledTabsTrigger>
+                  <StyledTabsTrigger value="Orders">Orders</StyledTabsTrigger>
+                  <StyledTabsTrigger value="History">History</StyledTabsTrigger>
+                </StyledTabsList>
+                <div className="flex gap-2 items-center justify-center">
+                  <Checkbox />
+                  <div>Hide other markets</div>
+                </div>
+              </div>
               <StyledTabsContent value="Position" className="ml-3">
                 <PositionListWidget />
               </StyledTabsContent>
@@ -823,7 +832,9 @@ export default function TradePage() {
                             <div className="my-4 border-t border-0xline"></div>
                             <div className="flex flex-row gap-4">
                               <div className="w-[7%] flex flex-col mr-1">
-                                <div className="text-sm text-0xgrey self-center">Open</div>
+                                <div className="text-sm text-0xgrey self-center">
+                                  Open
+                                </div>
                                 <div className="self-center mt-3 text-0xgrey">
                                   1
                                 </div>
@@ -863,7 +874,9 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <Button className="mt-3 bg-bronze hover:bg-bronze-foreground">+ Add</Button>
+                            <Button className="mt-3 bg-bronze hover:bg-bronze-foreground">
+                              + Add
+                            </Button>
                             <Button className="w-full mt-[107px] bg-bronze hover:bg-bronze-foreground">
                               Calculate
                             </Button>
