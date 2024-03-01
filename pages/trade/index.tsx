@@ -28,6 +28,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { ButtonInput } from "@/components/ui/buttonInput"
 import CalculatorDropDownBox from "@/components/ui/calculatorDropDown"
+import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
 import {
   Dialog,
@@ -57,7 +58,6 @@ import TradeLimitWidget from "@/components/ui/tradeWidget/tradeLimitWidget"
 import TradeMarketWidget from "@/components/ui/tradeWidget/tradeMarketWidget"
 import Iconify from "@/components/Iconify"
 import TradingViewWidget from "@/components/tradingView"
-import { Checkbox } from "@/components/ui/checkbox"
 
 interface IndexPriceData {
   [key: string]: {
@@ -557,7 +557,7 @@ export default function TradePage() {
                                   the risk/reward ratio is: (Entry Price − Stop
                                   Loss) / (Profit Target − Entry Price) × 100%.
                                 </div>
-                                <div className="mx-3 my-2 text-xs text-0xgrey">
+                                <div className="mx-3 my-2 text-sm text-0xgrey">
                                   <span className="font-semibold">
                                     Short trade
                                   </span>{" "}
@@ -1106,13 +1106,19 @@ export default function TradePage() {
                                   <ListItem keyText={"SL PnL%"} value={"-"} />
                                 </div>
                                 <div className="mx-2 my-3 border-t border-0xline"></div>
-                                <div className="mx-3 my-2 text-xs text-0xgrey">
-                                  The risk/reward ratio is calculated by
-                                  dividing the potential risk in trading by the
-                                  expected rewards. The calculation formula is:
-                                  Risk/Reward Ratio = (Entry Price - Stop Loss
-                                  Trigger Price) / (Take Profit Trigger Price -
-                                  Entry Price) * 100%
+                                <div className="mx-3 my-2 text-sm text-0xgrey">
+                                  <span className="font-semibold">
+                                    Long trade
+                                  </span>{" "}
+                                  the risk/reward ratio is: (Entry Price − Stop
+                                  Loss) / (Profit Target − Entry Price) × 100%.
+                                </div>
+                                <div className="mx-3 my-2 text-sm text-0xgrey">
+                                  <span className="font-semibold">
+                                    Short trade
+                                  </span>{" "}
+                                  the risk/reward ratio is: (Stop Loss − Entry
+                                  Price) / (Entry Price − Profit Target) × 100%.
                                 </div>
                               </div>
                             </div>
