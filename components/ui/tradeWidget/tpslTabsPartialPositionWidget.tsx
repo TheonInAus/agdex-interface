@@ -204,7 +204,7 @@ export default function TpslTabsPartialPositionWidget({
       </Alert>
 
       <Button
-        className="w-full mt-4 text-sm text-black bg-bronze hover:bg-0xgrey"
+        className="w-full mt-4 text-sm text-black bg-bronze hover:bg-bronze-foreground"
         disabled={!checkDisabled()}
       >
         Confirm

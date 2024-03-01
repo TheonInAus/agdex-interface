@@ -71,6 +71,9 @@ export default function PoolRow({
             <StyledTabs defaultValue="Position">
               <StyledTabsList>
                 <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
+                <StyledTabsTrigger value="Passive Position Changes(Live)">
+                  Passive Position Changes(Live)
+                </StyledTabsTrigger>
                 <StyledTabsTrigger value="History">History</StyledTabsTrigger>
               </StyledTabsList>
               <StyledTabsContent value="Position" className="ml-3">
@@ -215,9 +218,18 @@ export default function PoolRow({
                 </div>
               </StyledTabsContent>
               <StyledTabsContent
-                value="History"
+                value="Passive Position Changes(Live)"
                 className="ml-3"
-              ></StyledTabsContent>
+              >
+                <div className="positions-container">
+                  <div className="my-2 border-t border-0xline"></div>
+                </div>
+              </StyledTabsContent>
+              <StyledTabsContent value="History" className="ml-3">
+                <div className="positions-container">
+                  <div className="my-2 border-t border-0xline"></div>
+                </div>
+              </StyledTabsContent>
             </StyledTabs>
           </div>
         )}

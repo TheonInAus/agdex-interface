@@ -176,7 +176,6 @@ export default function PositionListWidget() {
                           <DialogTitle className="mb-2 text-center">
                             Edit Margin
                           </DialogTitle>
-                          <DialogDescription></DialogDescription>
                         </DialogHeader>
                         <StyledTabs defaultValue="Add Margin">
                           <StyledTabsList className="border-none">

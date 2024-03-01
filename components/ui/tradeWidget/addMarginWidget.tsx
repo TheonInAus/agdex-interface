@@ -96,7 +96,7 @@ export default function AddMarginWidget({ positionInfo }: AddMarginProps) {
         <div>{wrapperFormatEther18e(minExecutionFee)} ($-)</div>
       </div>
       <Button
-        className={`w-full font-bold text-center rounded-md item-center mt-4 h-9 text-black bg-bronze`}
+        className={`w-full font-bold text-center rounded-md item-center mt-4 h-9 text-black bg-bronze hover:bg-bronze-foreground`}
         disabled={afterMargin === ""}
         onClick={() => {
           handleIncPostionTemp()
