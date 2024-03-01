@@ -1,8 +1,9 @@
 import { useBalance, useContractRead, useContractReads } from "wagmi"
-import { btcMarketAddress, ethMarketAddress, registerPoolsInfos, usdxAddress, rewardFarmAddress } from "./zAddressHelper"
+import { registerMarketInfos, usdxAddress, rewardFarmAddress, marketManagerAddress } from "./zAddressHelper"
 import { useWalletClient } from 'wagmi'
 import { arbitrumGoerli } from 'wagmi/chains'
 import { poolABI } from "@/abis/poolABI"
+import { marketManagerABI } from "@/abis/marketManagerABI"
 import { SIDE_LONG, SIDE_SHORT } from "./zContractHelper"
 import { useQuery, gql } from '@apollo/client';
 import { rewardFarmABI } from "@/abis/rewardFarmABI"
@@ -30,31 +31,39 @@ export const useUserUsdxBalance = () => {
 
 type TokenParamsType = {
     tokenName: string
-    poolAddress: string
+    market: string
 }
 
-export const useUserPositionList = (token: TokenConfigType) => {
+type PositionResultType = {
+    margin: bigint
+    size: bigint
+    entryPriceX96: bigint
+    entryFundingRateGrowthX96: bigint
+}
+
+export const useUserPositionListSingle = (token: TokenConfigType) => {
     const { data: walletClient } = useWalletClient({
         chainId: arbitrumGoerli.id,
     })
-    const tokensList: TokenParamsType[] = registerPoolsInfos.map((pool) => ({ tokenName: pool.name, poolAddress: pool.market }))
+    // const tokensList: TokenParamsType[] = registerMarketInfos.map((market) => ({ tokenName: market.name, poolAddress: market.market }))
+
     const contractBaseInfo = {
-        abi: poolABI,
+        address: marketManagerAddress,
+        abi: marketManagerABI,
         functionName: 'positions',
     }
     const contractParams: any[] = []
     const tokenBaseInfo: any[] = []
+
     contractParams.push({
         ...contractBaseInfo,
-        address: token.market,
-        args: [walletClient?.account.address, SIDE_LONG]
+        args: [token.market, walletClient?.account.address, SIDE_LONG]
     });
     tokenBaseInfo.push({ tokenName: token.name, tokenSide: 'Long', tokenPool: token.market })
 
     contractParams.push({
         ...contractBaseInfo,
-        address: token.market,
-        args: [walletClient?.account.address, SIDE_SHORT]
+        args: [token.market, walletClient?.account.address, SIDE_SHORT]
     });
 
     tokenBaseInfo.push({ tokenName: token.name, tokenSide: 'Short', tokenPool: token.market })
@@ -68,12 +77,9 @@ export const useUserPositionList = (token: TokenConfigType) => {
     if (data && data.length > 0) {
         data.forEach((item, index) => {
             if (item.status === 'success') {
-                const result = item.result as Array<bigint> || [0, 0, 0, 0]
+                const result = item.result as PositionResultType
                 let positionEntity = {
-                    margin: result[0],
-                    size: result[1],
-                    entryPrice: result[2],
-                    unrealizedPnL: result[3],
+                    ...result,
                     tokenName: tokenBaseInfo[index].tokenName,
                     tokenSide: tokenBaseInfo[index].tokenSide,
                     tokenPool: tokenBaseInfo[index].tokenPool
@@ -82,6 +88,8 @@ export const useUserPositionList = (token: TokenConfigType) => {
             }
         })
     }
+    console.log("🚀 ~ useUserPositionListSingle ~ positionDatas:", positionDatas)
+
     const positionDataList = positionDatas.filter(position => position.margin !== 0n && position.size !== 0n)
     return { data: positionDataList, isLoading, isError }
 }

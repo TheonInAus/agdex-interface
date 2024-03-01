@@ -5,7 +5,6 @@ import {
   giveMeFormattedToShow,
   x96Price2Readable,
 } from "@/hooks/zContractHelper"
-import { PositionItem } from "@/components/ui/positionItem"
 
 type TpslDescProps = {
   positionItem?: any
@@ -33,7 +32,7 @@ export default function TpslDescWidget({ positionItem }: TpslDescProps) {
             <span>Entry Price: </span>
             <span className="ml-2">
               {giveMeFormattedToShow(
-                Number(x96Price2Readable(positionItem?.entryPrice))
+                Number(x96Price2Readable(positionItem?.entryPriceX96))
               )}
             </span>
           </div>
@@ -42,7 +41,7 @@ export default function TpslDescWidget({ positionItem }: TpslDescProps) {
             <span>Market Price: </span>
             <span className="ml-2">
               {giveMeFormattedToShow(
-                Number(x96Price2Readable(positionItem?.entryPrice))
+                Number(x96Price2Readable(positionItem?.entryPriceX96))
               )}
             </span>
           </div>
@@ -52,7 +51,7 @@ export default function TpslDescWidget({ positionItem }: TpslDescProps) {
           <span>Liq.Price: </span>
           <span className="ml-2">
             {giveMeFormattedToShow(
-              Number(x96Price2Readable(positionItem?.entryPrice))
+              Number(x96Price2Readable(positionItem?.entryPriceX96))
             )}
           </span>
         </div>

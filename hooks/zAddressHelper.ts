@@ -8,14 +8,14 @@ export const btcMarketAddress = contractAddress.deployments.registerMarkets[1].m
 export const arbMarketAddress = contractAddress.deployments.registerMarkets[2].market as `0x${string}`
 export const linkMarketAddress = contractAddress.deployments.registerMarkets[2].market as `0x${string}`
 
-export const registerPoolsInfos = contractAddress.deployments.registerMarkets
+export const registerMarketInfos = contractAddress.deployments.registerMarkets
 
 
 export const mixExecutorAddress = contractAddress.deployments.MixedExecutor as `0x${string}`//V1 
 
 export const priceFeedAddress = contractAddress.deployments.PriceFeed as `0x${string}`
 export const usdxAddress = contractAddress.usd as `0x${string}`
-
+export const marketManagerAddress = contractAddress.deployments.MarketManager as `0x${string}`
 export const orderBookAddress = contractAddress.deployments.OrderBook as `0x${string}`
 
 export const rewardFarmAddress = contractAddress.deployments.FarmRewardDistributor as `0x${string}`

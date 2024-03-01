@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { AlertCircle, Edit3, ExternalLink, Loader2 } from "lucide-react"
 
 import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
-import { useUserOrderList, useUserPositionList } from "@/hooks/cUserState"
+import { useUserOrderList, useUserPositionListSingle } from "@/hooks/cUserState"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { ethMarketAddress } from "@/hooks/zAddressHelper"
 import {
@@ -60,7 +60,13 @@ export default function PositionListWidget() {
     data: positionDataList,
     isLoading,
     isError,
-  } = useUserPositionList(currentTokenEntity)
+  } = useUserPositionListSingle(currentTokenEntity)
+
+  console.log(
+    "🚀 ~ PositionListWidget ~ useUserPositionListSingle:",
+    positionDataList
+  )
+
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
   const { decPositionData, decPositionLoading, decPositionWrite } =
@@ -199,10 +205,10 @@ export default function PositionListWidget() {
                   </div>
                 </div>
                 <div className="flex flex-col w-full">
-                  <PositionItem
+                  {/* <PositionItem
                     keyText="Entry Price"
                     value={x96Price2Readable(position.entryPrice)}
-                  />
+                  /> */}
                   <div className="flex mt-2 gap-7">
                     <CustomTooltip
                       triggerContent={
@@ -225,7 +231,7 @@ export default function PositionListWidget() {
                     >
                       <p>llll</p>
                     </CustomTooltip>
-                    <div
+                    {/* <div
                       className={`text-sm ${
                         Number(x96Price2Readable(position.unrealizedPnL)) >= 0
                           ? "text-0xgreen"
@@ -233,7 +239,7 @@ export default function PositionListWidget() {
                       }`}
                     >
                       {x96Price2Readable(position.unrealizedPnL)}
-                    </div>
+                    </div> */}
                     {/* <PositionItem
                       plusCss={`${
                         Number(x96Price2Readable(position.unrealizedPnL)) >= 0
@@ -314,7 +320,7 @@ export default function PositionListWidget() {
                           <ListItem keyText={"Est. Close Price"} value={""} />
                           <ListItem keyText={"PnL"} value={""} />
                           <div className="flex justify-between">
-                            <div className="text-0xgrey text-xs">Fees</div>
+                            <div className="text-xs text-0xgrey">Fees</div>
                             {feesValue > 0 ? (
                               <CustomTooltip
                                 triggerContent={
@@ -324,21 +330,21 @@ export default function PositionListWidget() {
                                 }
                               >
                                 <div className="flex justify-between">
-                                  <div className="text-white text-xs">
+                                  <div className="text-xs text-white">
                                     Trading Fee
                                   </div>
-                                  <div className="text-white text-xs">
+                                  <div className="text-xs text-white">
                                     -0.82 USDT
                                   </div>
                                 </div>
-                                <div className="text-0xgrey text-xs">
+                                <div className="text-xs text-0xgrey">
                                   (0.050% of the position value)
                                 </div>
                                 <div className="flex justify-between">
-                                  <div className="text-white text-xs">
+                                  <div className="text-xs text-white">
                                     Execution Fee Fee
                                   </div>
-                                  <div className="text-white text-xs">
+                                  <div className="text-xs text-white">
                                     -0.82 USDT{" "}
                                     <span className="text-sm text-0xgrey">
                                       (-$0.46)
@@ -347,7 +353,7 @@ export default function PositionListWidget() {
                                 </div>
                               </CustomTooltip>
                             ) : (
-                              <div className="text-white text-xs">-</div>
+                              <div className="text-xs text-white">-</div>
                             )}
                           </div>
                           <div className="mt-3 border-t border-0xline"></div>
