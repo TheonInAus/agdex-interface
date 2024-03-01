@@ -35,7 +35,7 @@ export default function ReferralsPage() {
                         placeholder="Enjoy the following benefits by binding"
                         className="h-12 border-none rounded-r-none bg-0xdialog-foreground"
                       />
-                      <Button className="h-12 rounded-l-none bg-bronze">
+                      <Button className="h-12 rounded-l-none bg-bronze hover:bg-bronze-foreground">
                         Confirm
                       </Button>
                     </div>

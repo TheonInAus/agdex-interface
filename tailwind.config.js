@@ -43,7 +43,7 @@ module.exports = {
         },
         bronze: {
           DEFAULT: "#83DED5",
-          foreground: "#83DED5",
+          foreground: "#77CDC4",
         },
         "0xblack": {
           DEFAULT: "#080808",

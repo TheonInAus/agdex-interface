@@ -2,13 +2,6 @@
 
 import React, { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs"
 import { Loader } from "lucide-react"
 
@@ -18,8 +11,16 @@ import { useUserUsdxBalance } from "@/hooks/cUserState"
 import { useAllLiquidityPools } from "@/hooks/liquidityPoolInfo"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ButtonInput } from "@/components/ui/buttonInput"
+import CalculatorDropDownBox from "@/components/ui/calculatorDropDown"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { InputBox } from "@/components/ui/inputBox"
 import { LabeledInput } from "@/components/ui/labeledInput"
 import { LeverageInput } from "@/components/ui/leverageInput"
@@ -36,7 +37,6 @@ import {
 import Iconify from "@/components/Iconify"
 
 import PoolRow, { PoolDataType } from "./PoolRow"
-import CalculatorDropDownBox from "@/components/ui/calculatorDropDown"
 
 export default function PoolsPage() {
   const [leverageNumber, setLeverageNumber] = useState(1)
@@ -131,7 +131,7 @@ export default function PoolsPage() {
       <div className="flex flex-row gap-4">
         <div
           className="p-6 mb-6 rounded-lg bg-0xboxBackground"
-          style={{ width: 950, height: 750 }}
+          style={{ width: 950, height: 870 }}
         >
           <div className="flex flex-row p-5 text-sm rounded-lg text-0xgrey">
             <div className="w-[15%]">Pool</div>
@@ -173,7 +173,7 @@ export default function PoolsPage() {
         <div className="flex flex-col">
           <div
             className="p-6 mb-6 rounded-lg bg-0xboxBackground"
-            style={{ width: 350, height: 550 }}
+            style={{ width: 350, height: 670 }}
           >
             <div className="flex flex-row justify-between">
               <div>{`Add ${currentPool.name}/USDT Liquidity`}</div>
@@ -226,7 +226,7 @@ export default function PoolsPage() {
                           className="mb-2"
                         />
                       </div>
-                      <Button className="w-full mt-4 bg-bronze">
+                      <Button className="w-full mt-4 bg-bronze hover:bg-bronze-foreground">
                         Calculate
                       </Button>
                     </div>
@@ -242,7 +242,8 @@ export default function PoolsPage() {
                   </div>
 
                   <div className="text-0xgrey text-sm mt-2">
-                  *The calculation is for reference only and does not include trading fee, execution fee and other actual costs.
+                    *The calculation is for reference only and does not include
+                    trading fee, execution fee and other actual costs.
                   </div>
                 </DialogContent>
               </Dialog>
@@ -318,10 +319,51 @@ export default function PoolsPage() {
                 )}
               </div>
               <br></br>
-              <ListItem keyText="Liquidity" value={""} />
-              <ListItem keyText="Margin" value={""} />
-              <ListItem keyText="Margin Ratio" value={""} />
-              <ListItem keyText="Execution Fee" value={""} />
+              <div className="flex justify-between">
+                <CustomTooltip
+                  triggerContent={
+                    <div className="text-sm text-0xgrey">Addition-Only</div>
+                  }
+                >
+                  <p className="mb-2">
+                    When adding more liquidity, you can choose the
+                    "Addition-Only" mode. The Addition-Only mode means only
+                    adding liquidity while keeping the margin unchanged. The
+                    leverage of the liquidity position will change accordingly
+                    after the addition.
+                  </p>
+                </CustomTooltip>
+                <Checkbox />
+              </div>
+              <div className="border-t mt-2 border-0xline w-full"></div>
+              <div className="my-3">
+                <ListItem keyText="Liquidity" value={""} />
+                <ListItem keyText="Margin" value={""} />
+              </div>
+              <div className="w-full bg-boxBackground h-[70px] py-[5px]">
+                <div className="mx-2">
+                  <div className="text-sm">Passive Position</div>
+                  <div className="flex justify-between my-1">
+                    <CustomTooltip
+                      triggerContent={
+                        <div className="text-xs text-0xgrey">Est. Size</div>
+                      }
+                    >
+                      <p className="mb-2">
+                        The estimated passive position size after adding
+                        liquidity. The passive position will be opened at the
+                        Index Price, and the actual position size may vary based
+                        on market conditions.
+                      </p>
+                    </CustomTooltip>
+                    <div className="text-xs text-white">7.71x</div>
+                  </div>
+                  <ListItem keyText="Entry Price" value={""} />
+                </div>
+              </div>
+              <div className="mt-2">
+                <ListItem keyText="Execution Fee" value={""} />
+              </div>
             </div>
             <Button
               disabled={openLiqPositionLoading}
@@ -345,47 +387,37 @@ export default function PoolsPage() {
             <div className="w-full">
               <div className="text-base">About Token/Asset Pool</div>
               <div className="my-3 border-t border-0xline"></div>
-              <ListItem keyText="Max Leverage" value={"200x"} />
+              <ListItem keyText="Balance Rate" value={"0.28%"} />
+              <ListItem keyText="Average Leverage" value={"282.01x"} />
               <div className="flex justify-between">
                 <CustomTooltip
                   triggerContent={
-                    <div className="text-xs text-0xgrey">Average Leverage</div>
+                    <div className="text-xs text-0xgrey">
+                      Max Effective Liquidity
+                    </div>
                   }
                 >
                   <p className="mb-2">
-                    Due to the maximum leverage being adjusted from 200x to 50x
-                    on November 14, 2023, the Max APR figure may be lower than
-                    the Avg. APR.
+                    To reduce the risk of price manipulation, any liquidity
+                    exceeding the Max Effective Liquidity threshold will not
+                    further increase the pool's depth once the pool's liquidity
+                    surpasses this limit.
                   </p>
                 </CustomTooltip>
-                <div className="text-xs text-white">7.71x</div>
+                <div className="text-xs text-white">25.00M</div>
               </div>
-              <ListItem keyText="Balance Rate" value={"26,601,123.63"} />
               <div className="flex justify-between">
                 <CustomTooltip
                   triggerContent={
-                    <div className="text-xs text-0xgrey">Risk Buffer Fund</div>
+                    <div className="text-xs text-0xgrey">Max Open Interest</div>
                   }
                 >
                   <p className="mb-2">
-                    The Risk Buffer Fund will bear all of the temporary losses
-                    first before impacting Liquidity Providers (LPs). If its
-                    balance becomes negative, this indicates that the LPs are
-                    facing temporary losses.
+                    To reduce the risk of price manipulation, there is a limit
+                    on the open interest of the pool.
                   </p>
                 </CustomTooltip>
-                <CustomTooltip
-                  triggerContent={
-                    <div className="text-xs text-white">-0.08%</div>
-                  }
-                >
-                  <ListItem keyText="Realized PnL" value={"-93,922.98 USDT"} />
-                  <ListItem keyText="Unrealized PnL" value={"-468.07 USDT"} />
-                  <ListItem
-                    keyText="Total Contribution"
-                    value={"1,252,191.80 USDT"}
-                  />
-                </CustomTooltip>
+                <div className="text-xs text-white">216.62K ETH</div>
               </div>
             </div>
           </div>

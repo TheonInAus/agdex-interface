@@ -522,7 +522,7 @@ export default function TradePage() {
                                     />
                                   </div>
                                 </TabsContent>
-                                <Button className="w-full mt-4 bg-bronze">
+                                <Button className="w-full mt-4 bg-bronze hover:bg-bronze-foreground">
                                   Calculate
                                 </Button>
                               </Tabs>
@@ -668,7 +668,7 @@ export default function TradePage() {
                                     />
                                   </div>
                                 </TabsContent>
-                                <Button className="w-full mt-28 bg-bronze">
+                                <Button className="w-full mt-28 bg-bronze hover:bg-bronze-foreground">
                                   Calculate
                                 </Button>
                               </Tabs>
@@ -768,7 +768,7 @@ export default function TradePage() {
                                     />
                                   </div>
                                 </TabsContent>
-                                <Button className="w-full mt-[169px] bg-bronze">
+                                <Button className="w-full mt-[169px] bg-bronze hover:bg-bronze-foreground">
                                   Calculate
                                 </Button>
                               </Tabs>
@@ -823,7 +823,7 @@ export default function TradePage() {
                             <div className="my-4 border-t border-0xline"></div>
                             <div className="flex flex-row gap-4">
                               <div className="w-[7%] flex flex-col mr-1">
-                                <div className="text-sm text-0xgrey">Open</div>
+                                <div className="text-sm text-0xgrey self-center">Open</div>
                                 <div className="self-center mt-3 text-0xgrey">
                                   1
                                 </div>
@@ -855,7 +855,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                               <div className="w-[10%] flex flex-col">
-                                <div className="text-sm text-0xgrey">
+                                <div className="text-sm text-0xgrey self-center">
                                   Operation
                                 </div>
                                 <div className="self-center mt-1 text-0xgrey">
@@ -863,8 +863,8 @@ export default function TradePage() {
                                 </div>
                               </div>
                             </div>
-                            <Button className="mt-3 bg-bronze">+ Add</Button>
-                            <Button className="w-full mt-[107px] bg-bronze">
+                            <Button className="mt-3 bg-bronze hover:bg-bronze-foreground">+ Add</Button>
+                            <Button className="w-full mt-[107px] bg-bronze hover:bg-bronze-foreground">
                               Calculate
                             </Button>
                             <div className="mt-2 text-sm text-0xgrey">
@@ -1074,7 +1074,7 @@ export default function TradePage() {
                                     />
                                   </div>
                                 </TabsContent>
-                                <Button className="w-full mt-4 bg-bronze">
+                                <Button className="w-full mt-4 bg-bronze hover:bg-bronze-foreground">
                                   Calculate
                                 </Button>
                               </Tabs>
@@ -1214,7 +1214,7 @@ export default function TradePage() {
                                     />
                                   </div>
                                 </TabsContent>
-                                <Button className="w-full mt-28 bg-bronze">
+                                <Button className="w-full mt-28 bg-bronze hover:bg-bronze-foreground">
                                   Calculate
                                 </Button>
                               </Tabs>
@@ -1314,7 +1314,7 @@ export default function TradePage() {
                                     />
                                   </div>
                                 </TabsContent>
-                                <Button className="w-full mt-[169px] bg-bronze">
+                                <Button className="w-full mt-[169px] bg-bronze hover:bg-bronze-foreground">
                                   Calculate
                                 </Button>
                               </Tabs>
@@ -1410,7 +1410,7 @@ export default function TradePage() {
                               </div>
                             </div>
                             <Button className="mt-3 bg-bronze">+ Add</Button>
-                            <Button className="w-full mt-[107px] bg-bronze">
+                            <Button className="w-full mt-[107px] bg-bronze hover:bg-bronze-foreground">
                               Calculate
                             </Button>
                             <div className="mt-2 text-sm text-0xgrey">
