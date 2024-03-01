@@ -56,9 +56,8 @@ export default function PoolsPage() {
   } = useUserUsdxBalance()
 
   const { poolsConfig } = useAllLiquidityPools()
-  const currentPool = useCallback(() => {
-    return poolsConfig.filter((item) => item.index === expandedPool)
-  }, [expandedPool, poolsConfig])
+
+  console.log("🚀 ~ currentPool ~ expandedPool:", expandedPool)
 
   const handleSliderValueChange = (value: any) => {
     setLeverageNumber(value)
@@ -102,7 +101,7 @@ export default function PoolsPage() {
 
   const { openLiqPositionData, openLiqPositionLoading, openLiqPositionWrite } =
     useOpenLiquidityPosition(
-      poolsConfig[0].poolAddress,
+      poolsConfig[0].marketAddress,
       usdMargin,
       usdAfterMargin
     )
@@ -163,7 +162,7 @@ export default function PoolsPage() {
             {poolsConfig?.map((pool, index) => (
               <PoolRow
                 key={index}
-                pool={pool}
+                market={pool}
                 expandIndex={expandedPool}
                 onToggle={() => toggleExpansion(index)}
               />
@@ -176,7 +175,7 @@ export default function PoolsPage() {
             style={{ width: 350, height: 670 }}
           >
             <div className="flex flex-row justify-between">
-              <div>{`Add ${currentPool.name}/USDT Liquidity`}</div>
+              <div>{`Add ${poolsConfig[expandedPool].name}/USDT Liquidity`}</div>
               <Dialog>
                 <DialogTrigger asChild>
                   <button className="ml-1">
@@ -231,9 +230,9 @@ export default function PoolsPage() {
                       </Button>
                     </div>
                     <div className="bg-black w-[50%] rounded-lg">
-                      <div className="ml-4 mt-4">Result</div>
-                      <div className="border-t my-3 mx-2 border-0xline"></div>
-                      <div className="mx-4 mb-4 flex flex-col gap-2">
+                      <div className="mt-4 ml-4">Result</div>
+                      <div className="mx-2 my-3 border-t border-0xline"></div>
+                      <div className="flex flex-col gap-2 mx-4 mb-4">
                         <ListItem keyText={"Liquidity"} value={"-"} />
                         <ListItem keyText={"Max APR"} value={"-"} />
                         <ListItem keyText={"Max Income"} value={"-"} />
@@ -241,7 +240,7 @@ export default function PoolsPage() {
                     </div>
                   </div>
 
-                  <div className="text-0xgrey text-sm mt-2">
+                  <div className="mt-2 text-sm text-0xgrey">
                     *The calculation is for reference only and does not include
                     trading fee, execution fee and other actual costs.
                   </div>
@@ -326,16 +325,17 @@ export default function PoolsPage() {
                   }
                 >
                   <p className="mb-2">
-                    When adding more liquidity, you can choose the
+                    {`When adding more liquidity, you can choose the
                     "Addition-Only" mode. The Addition-Only mode means only
                     adding liquidity while keeping the margin unchanged. The
                     leverage of the liquidity position will change accordingly
-                    after the addition.
+                    after the addition`}
+                    .
                   </p>
                 </CustomTooltip>
                 <Checkbox />
               </div>
-              <div className="border-t mt-2 border-0xline w-full"></div>
+              <div className="w-full mt-2 border-t border-0xline"></div>
               <div className="my-3">
                 <ListItem keyText="Liquidity" value={""} />
                 <ListItem keyText="Margin" value={""} />
@@ -398,10 +398,10 @@ export default function PoolsPage() {
                   }
                 >
                   <p className="mb-2">
-                    To reduce the risk of price manipulation, any liquidity
+                    {` To reduce the risk of price manipulation, any liquidity
                     exceeding the Max Effective Liquidity threshold will not
                     further increase the pool's depth once the pool's liquidity
-                    surpasses this limit.
+                    surpasses this limit.`}
                   </p>
                 </CustomTooltip>
                 <div className="text-xs text-white">25.00M</div>

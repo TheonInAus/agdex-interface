@@ -1,5 +1,5 @@
 import { PoolDataType } from './../pages/pools/PoolRow';
-import { registerPoolsInfos } from "./zAddressHelper"
+import { registerMarketInfos } from "./zAddressHelper"
 
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
@@ -9,21 +9,19 @@ import { formatEther } from 'viem';
 
 
 export const useAllLiquidityPools = () => {
-  const poolsData: PoolDataType[] = registerPoolsInfos.map((pool, index) => ({
-    name: pool.name,
+  const poolsData: PoolDataType[] = registerMarketInfos.map((market, index) => ({
+    name: market.name,
     maxAPR: "80.58%",
     volume: "8,924,967.61",
     fees: "4,057.64",
     liquidity: "204,070,998.48",
     myLiquidity: "0.00",
-    tokenAddress: pool.token,
-    poolAddress: pool.pool,
+    marketAddress: market.market,
     index: index
   }))
 
   return { poolsConfig: poolsData }
 }
-
 
 
 type LiquidityPositionOpened = {
@@ -73,7 +71,6 @@ export const useLiqPoolsForAccount = (poolAddress: any) => {
   });
 
   console.log('check pool graph data => ', data)
-
 
   return {
     liqPoolsLoading: loading,

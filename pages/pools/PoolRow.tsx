@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/styledTab"
 
 type PoolPowProps = {
-  pool?: PoolDataType
+  market?: PoolDataType
   expandIndex: number
   onToggle: () => void
 }
@@ -33,14 +33,19 @@ export type PoolDataType = {
   fees: string
   liquidity: string
   myLiquidity: string
-  tokenAddress: string
-  poolAddress: string
   index: number
+  marketAddress?: string
 }
 
-export default function PoolRow({ pool, expandIndex, onToggle }: PoolPowProps) {
+export default function PoolRow({
+  market,
+  expandIndex,
+  onToggle,
+}: PoolPowProps) {
   // const [isExpanded, setIsExpanded] = useState(false)
-  const { liqPoolsData: poolDatas } = useLiqPoolsForAccount(pool?.poolAddress)
+  const { liqPoolsData: poolDatas } = useLiqPoolsForAccount(
+    market?.marketAddress
+  )
 
   return (
     <>
@@ -50,15 +55,15 @@ export default function PoolRow({ pool, expandIndex, onToggle }: PoolPowProps) {
             className="grid grid-cols-6"
             style={{ gridTemplateColumns: "15% 16% 20% 15% 21% auto" }}
           >
-            <div className="col-span-1 text-base">{pool?.name}</div>
-            <div className="col-span-1 text-0xgreen">{pool?.maxAPR}</div>
-            <div className="col-span-1">{pool?.volume}</div>
-            <div className="col-span-1">{pool?.fees}</div>
-            <div className="col-span-1">{pool?.liquidity}</div>
-            <div className="col-span-1">{pool?.myLiquidity}</div>
+            <div className="col-span-1 text-base">{market?.name}</div>
+            <div className="col-span-1 text-0xgreen">{market?.maxAPR}</div>
+            <div className="col-span-1">{market?.volume}</div>
+            <div className="col-span-1">{market?.fees}</div>
+            <div className="col-span-1">{market?.liquidity}</div>
+            <div className="col-span-1">{market?.myLiquidity}</div>
           </div>
         </div>
-        {expandIndex === pool?.index && (
+        {expandIndex === market?.index && (
           <div
             className="p-3 rounded-b-lg"
             style={{ backgroundColor: "#080808" }}
