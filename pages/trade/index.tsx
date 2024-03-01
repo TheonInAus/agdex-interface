@@ -920,7 +920,7 @@ export default function TradePage() {
                           <Iconify icon={"ri:calculator-line"} />
                         </button>
                       </DialogTrigger>
-                      <DialogContent className="bg-0xdialog w-[630px]">
+                      <DialogContent className="bg-0xdialog w-[730px]">
                         <DialogHeader>
                           <DialogTitle>
                             <CalculatorDropDownBox />
