@@ -9,6 +9,7 @@ import { siteConfig } from "@/config/site"
 import { useOpenLiquidityPosition } from "@/hooks/actionLiquidityPosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
 import { useAllLiquidityPools } from "@/hooks/liquidityPoolInfo"
+import { giveMeFormattedToShow } from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ButtonInput } from "@/components/ui/buttonInput"
 import CalculatorDropDownBox from "@/components/ui/calculatorDropDown"
@@ -260,7 +261,11 @@ export default function PoolsPage() {
                     <div>Error fetching balance</div>
                   ) : (
                     <div>
-                      Balance: {balanceData?.formatted} {balanceData?.symbol}
+                      Balance:{" "}
+                      {giveMeFormattedToShow(
+                        Number(balanceData?.formatted) || 0
+                      )}{" "}
+                      {balanceData?.symbol}
                     </div>
                   )
                 }

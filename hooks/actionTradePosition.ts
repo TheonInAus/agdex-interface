@@ -47,7 +47,9 @@ export const useCreateIncreasePostion = (marketAddress: any, side: Side, marginD
 
 }
 
-export const useCreateDecreasePosition = (tokenPoolAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any, receiverAddress: any) => {
+export const useCreateDecreasePosition = (marketAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any, receiverAddress: any) => {
+    console.log("🚀 ~ useCreateDecreasePosition ~ acceptableTradePriceX96:", acceptableTradePriceX96)
+    console.log("🚀 ~ useCreateDecreasePosition ~ sizeDelta:", sizeDelta?.toString())
     const { data: walletClient } = useWalletClient({
         chainId: arbitrumGoerli.id,
     })
@@ -58,7 +60,7 @@ export const useCreateDecreasePosition = (tokenPoolAddress: any, side: Side, mar
         address: positionRouterAddress,
         abi: positionRouterABI,
         functionName: 'createDecreasePosition',
-        args: [tokenPoolAddress, side, wrapperParseEther6e(marginDelta), parseEther(sizeDelta), acceptableTradePriceX96, receiverAddress],
+        args: [marketAddress, side, wrapperParseEther6e(marginDelta), BigInt(sizeDelta), acceptableTradePriceX96, receiverAddress],
         value: minExecutionFee
     })
 

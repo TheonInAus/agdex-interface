@@ -6,8 +6,7 @@ import { btcMarketAddress, ethMarketAddress } from "./zAddressHelper";
 
 export const minExecutionFee = parseEther('0.0003')
 export const minExecutionFeeNumber = 0.00021
-export const minOrderBookExecutionFee = parseEther('0.0003')
-export const minOrderBookExecutionFeeNumber = 0.0003
+export const minOrderBookExecutionFee = parseEther('0.0004')
 
 
 export const Q64 = 1n << 64n;

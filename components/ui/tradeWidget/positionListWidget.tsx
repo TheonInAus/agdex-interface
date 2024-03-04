@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { AlertCircle, Edit3, ExternalLink, Loader2 } from "lucide-react"
+import { formatEther, parseEther } from "viem"
 
 import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
 import { useUserOrderList, useUserPositionListSingle } from "@/hooks/cUserState"
@@ -51,7 +52,13 @@ type PositionInfo = {
   acceptableTradePriceX96: any
 }
 
-export default function PositionListWidget() {
+type PositionListWidgetType = {
+  contractPriceAfter: any
+}
+
+export default function PositionListWidget({
+  contractPriceAfter, //contract price
+}: PositionListWidgetType) {
   const currentTokenEntity = useTokenConfigStore(
     (state) => state.currentTokenEntity
   )
@@ -74,12 +81,25 @@ export default function PositionListWidget() {
       currentPosition?.poolAddress,
       currentPosition?.side || 1,
       currentPosition?.marginDelta,
-      currentPosition?.sizeDelta,
+      currentPosition?.sizeDelta.toString(),
       currentPosition?.acceptableTradePriceX96,
       ""
     )
 
   const handleClosePosition = (position: any) => {
+    console.log("🚀 ~ handleClosePosition ~ position:", position)
+
+    decPositionWrite()
+  }
+
+  const calUnPnL = (
+    contractPrice: number,
+    entryPrice: number,
+    size: number
+  ) => {
+    return (contractPrice - entryPrice) * size
+  }
+  const handleSetCurrentPosition = (position: any) => {
     setCurrentPosition({
       poolAddress: position.tokenPool,
       side: position.tokenSide === "Long" ? SIDE_LONG : SIDE_SHORT,
@@ -87,28 +107,11 @@ export default function PositionListWidget() {
       sizeDelta: position.size,
       acceptableTradePriceX96:
         position.tokenSide === "Long"
-          ? to0xxPriceX96("1999")
-          : to0xxPriceX96("2002"),
+          ? to0xxPriceX96((contractPriceAfter - 1).toString())
+          : to0xxPriceX96((contractPriceAfter + 1).toString()),
     })
-    decPositionWrite()
   }
-
   const feesValue = 0
-  //   useEffect(() => {
-  //     if (positionDataList.length > 0) {
-  //       const position = positionDataList[0]
-  //       setCurrentPosition({
-  //         poolAddress: position.tokenPool,
-  //         side: position.tokenSide === "Long" ? SIDE_LONG : SIDE_SHORT,
-  //         marginDelta: 0,
-  //         sizeDelta: position.size,
-  //         acceptableTradePriceX96:
-  //           position.tokenSide === "Long"
-  //             ? to0xxPriceX96("1999")
-  //             : to0xxPriceX96("2002"),
-  //       })
-  //     }
-  //   }, [positionDataList])
 
   return (
     <div>
@@ -127,7 +130,12 @@ export default function PositionListWidget() {
                   }`}
                 >
                   {position.tokenSide}{" "}
-                  {e6DivideE18(position.margin, position.size, 2000n)}x
+                  {e6DivideE18(
+                    position.margin,
+                    position.size,
+                    BigInt(Math.round(contractPriceAfter))
+                  )}
+                  x
                 </div>
                 <div className="text-gray-600">
                   [ todo measure position risk]
@@ -168,6 +176,7 @@ export default function PositionListWidget() {
                           <Edit3
                             className="text-white text-opacity-70 hover:text-opacity-100"
                             size={13}
+                            onClick={() => handleSetCurrentPosition(position)}
                           />
                         </button>
                       </DialogTrigger>
@@ -204,10 +213,10 @@ export default function PositionListWidget() {
                   </div>
                 </div>
                 <div className="flex flex-col w-full">
-                  {/* <PositionItem
+                  <PositionItem
                     keyText="Entry Price"
-                    value={x96Price2Readable(position.entryPrice)}
-                  /> */}
+                    value={x96Price2Readable(position.entryPriceX96)}
+                  />
                   <div className="flex mt-2 gap-7">
                     <CustomTooltip
                       triggerContent={
@@ -230,25 +239,27 @@ export default function PositionListWidget() {
                     >
                       <p>llll</p>
                     </CustomTooltip>
-                    {/* <div
+                    <div
                       className={`text-sm ${
-                        Number(x96Price2Readable(position.unrealizedPnL)) >= 0
+                        calUnPnL(
+                          contractPriceAfter,
+                          Number(x96Price2Readable(position.entryPriceX96)) ||
+                            0,
+                          Number(formatEther(position.size))
+                        ) >= 0
                           ? "text-0xgreen"
                           : "text-0xredLighter"
                       }`}
                     >
-                      {x96Price2Readable(position.unrealizedPnL)}
-                    </div> */}
-                    {/* <PositionItem
-                      plusCss={`${
-                        Number(x96Price2Readable(position.unrealizedPnL)) >= 0
-                          ? "text-0xgreen"
-                          : "text-0xredLighter"
-                      }`}
-                      keyText="Unrealized Pnl."
-                      value={x96Price2Readable(position.unrealizedPnL)}
-                      info=""
-                    /> */}
+                      {giveMeFormattedToShow(
+                        calUnPnL(
+                          contractPriceAfter,
+                          Number(x96Price2Readable(position.entryPriceX96)) ||
+                            0,
+                          Number(formatEther(position.size))
+                        )
+                      )}
+                    </div>
 
                     <ExternalLink
                       className="mt-1 ml-1 text-white text-opacity-70 hover:text-opacity-100"
@@ -262,7 +273,10 @@ export default function PositionListWidget() {
                 <div className="flex flex-row justify-end w-full gap-3">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="h-5 text-sm text-white bg-transparent border border-white hover:bg-0xbox">
+                      <Button
+                        onClick={() => handleSetCurrentPosition(position)}
+                        className="h-5 text-sm text-white bg-transparent border border-white hover:bg-0xbox"
+                      >
                         TP/SL
                       </Button>
                     </DialogTrigger>
@@ -283,6 +297,7 @@ export default function PositionListWidget() {
                       <Button
                         disabled={decPositionLoading}
                         className="h-5 text-sm text-white bg-transparent border border-white hover:bg-0xbox"
+                        onClick={() => handleSetCurrentPosition(position)}
                       >
                         Close
                       </Button>
@@ -311,8 +326,14 @@ export default function PositionListWidget() {
                             </div>
                           </div>
                           <ListItem keyText={"Leverage"} value={""} />
-                          <ListItem keyText={"Margin"} value={""} />
-                          <ListItem keyText={"Entry Price"} value={""} />
+                          <ListItem
+                            keyText={"Margin"}
+                            value={wrapperFormatEther6e(position?.margin)}
+                          />
+                          <ListItem
+                            keyText={"Entry Price"}
+                            value={x96Price2Readable(position?.entryPriceX96)}
+                          />
                           <ListItem keyText={"Liq. Price"} value={""} />
                           <div className="my-3 border-t border-0xline"></div>
                           <ListItem keyText={"Price Impact"} value={""} />
@@ -380,22 +401,6 @@ export default function PositionListWidget() {
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
-                  {/* <Button
-                    disabled={decPositionLoading}
-                    className="h-5 text-sm text-white bg-transparent border border-white hover:bg-0xbox"
-                    onClick={() => {
-                      handleClosePosition(position)
-                    }}
-                  >
-                    {decPositionLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Please wait
-                      </>
-                    ) : (
-                      "Close"
-                    )}
-                  </Button> */}
                 </div>
               </div>
               <br></br>

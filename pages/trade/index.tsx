@@ -319,7 +319,7 @@ export default function TradePage() {
                 </div>
               </div>
               <StyledTabsContent value="Position" className="ml-3">
-                <PositionListWidget />
+                <PositionListWidget contractPriceAfter={contractPrice} />
               </StyledTabsContent>
               <StyledTabsContent value="Orders" className="ml-3">
                 {/* Content for Orders tab */}
