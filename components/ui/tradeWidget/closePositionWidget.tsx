@@ -3,7 +3,10 @@
 import { useState } from "react"
 import { Loader, Loader2 } from "lucide-react"
 
-import { useCreateDecreasePosition, useCreateIncreasePostion } from "@/hooks/actionTradePosition"
+import {
+  useCreateDecreasePosition,
+  useCreateIncreasePostion,
+} from "@/hooks/actionTradePosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
 import { ethMarketAddress } from "@/hooks/zAddressHelper"
 import {
@@ -38,10 +41,9 @@ type PositionInfo = {
 export default function ClosePositionWidget({
   positionInfo,
 }: ClosePositionProps) {
+  const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
-    const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
-
-    const { decPositionData, decPositionLoading, decPositionWrite } =
+  const { decPositionData, decPositionLoading, decPositionWrite } =
     useCreateDecreasePosition(
       currentPosition?.poolAddress,
       currentPosition?.side || 1,
@@ -59,14 +61,14 @@ export default function ClosePositionWidget({
 
   const feesValue = 0
 
-//   const longLiqPrice = giveMeFormattedToShow(
-//     Number(x96Price2Readable(positionInfo?.entryPriceX96)) -
-//       newMargin / Number(wrapperFormatEther18e(positionInfo?.size))
-//   )
-//   const shortLiqPrice = giveMeFormattedToShow(
-//     Number(x96Price2Readable(positionInfo?.entryPriceX96)) +
-//       newMargin / Number(wrapperFormatEther18e(positionInfo?.size))
-//   )
+  //   const longLiqPrice = giveMeFormattedToShow(
+  //     Number(x96Price2Readable(positionInfo?.entryPriceX96)) -
+  //       newMargin / Number(wrapperFormatEther18e(positionInfo?.size))
+  //   )
+  //   const shortLiqPrice = giveMeFormattedToShow(
+  //     Number(x96Price2Readable(positionInfo?.entryPriceX96)) +
+  //       newMargin / Number(wrapperFormatEther18e(positionInfo?.size))
+  //   )
 
   return (
     <>
@@ -127,9 +129,9 @@ export default function ClosePositionWidget({
       <ListItem keyText={"Receive"} value={""} />
       <Button
         disabled={decPositionLoading}
-        className="w-full text-sm text-black bg-bronze hover:bg-bronze-foreground mt-3"
+        className="w-full mt-3 text-sm text-black bg-bronze hover:bg-bronze-foreground"
         onClick={() => {
-          handleClosePosition(position)
+          handleClosePosition(positionInfo)
         }}
       >
         {" "}

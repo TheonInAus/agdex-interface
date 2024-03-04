@@ -12,7 +12,6 @@ import {
   useExeIncreasePosition,
 } from "@/hooks/actionMixExecutorHelper"
 import { usePositionAndLiqPositionInfo } from "@/hooks/cPositionState"
-import { useGetReferralState } from "@/hooks/cUserState"
 import {
   useGetPoolPriceState,
   useTokenMarketAndIndexPrice,
@@ -49,7 +48,9 @@ import {
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import AddMarginWidget from "@/components/ui/tradeWidget/addMarginWidget"
+import CustomTradingView, {
+  demoData,
+} from "@/components/ui/tradeWidget/CustomTradingView"
 import DropDownBox from "@/components/ui/tradeWidget/dropDownBox"
 import OrderListWidget from "@/components/ui/tradeWidget/orderListWidget"
 import PositionListWidget from "@/components/ui/tradeWidget/positionListWidget"
@@ -297,7 +298,7 @@ export default function TradePage() {
               </div>
             </div>
             <div className="my-5 border-t border-0xline"></div>
-            <TradingViewWidget />
+            <CustomTradingView data={demoData} />
           </div>
           {/* Wide Block 2 */}
           <div
@@ -313,7 +314,7 @@ export default function TradePage() {
                   <StyledTabsTrigger value="Orders">Orders</StyledTabsTrigger>
                   <StyledTabsTrigger value="History">History</StyledTabsTrigger>
                 </StyledTabsList>
-                <div className="flex gap-2 items-center justify-center">
+                <div className="flex items-center justify-center gap-2">
                   <Checkbox />
                   <div>Hide other markets</div>
                 </div>
@@ -832,7 +833,7 @@ export default function TradePage() {
                             <div className="my-4 border-t border-0xline"></div>
                             <div className="flex flex-row gap-4">
                               <div className="w-[7%] flex flex-col mr-1">
-                                <div className="text-sm text-0xgrey self-center">
+                                <div className="self-center text-sm text-0xgrey">
                                   Open
                                 </div>
                                 <div className="self-center mt-3 text-0xgrey">
@@ -866,7 +867,7 @@ export default function TradePage() {
                                 </div>
                               </div>
                               <div className="w-[10%] flex flex-col">
-                                <div className="text-sm text-0xgrey self-center">
+                                <div className="self-center text-sm text-0xgrey">
                                   Operation
                                 </div>
                                 <div className="self-center mt-1 text-0xgrey">
@@ -901,6 +902,7 @@ export default function TradePage() {
                     <TradeLimitWidget
                       side={SIDE_LONG}
                       marketAndIndexPriceData={marketAndIndexPriceData}
+                      contractPriceAfter={contractPrice}
                     />
                   </StyledTabsContent>
                 </StyledTabs>
@@ -1453,6 +1455,7 @@ export default function TradePage() {
                     <TradeLimitWidget
                       side={SIDE_SHORT}
                       marketAndIndexPriceData={marketAndIndexPriceData}
+                      contractPriceAfter={contractPrice}
                     />
                   </StyledTabsContent>
                 </StyledTabs>

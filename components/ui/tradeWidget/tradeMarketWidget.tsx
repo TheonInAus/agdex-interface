@@ -3,7 +3,7 @@ import Decimal from "decimal.js"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
-import { useGetReferralState, useUserUsdxBalance } from "@/hooks/cUserState"
+import { useUserUsdxBalance } from "@/hooks/cUserState"
 import {
   useGetPoolPriceState,
   useTokenMarketAndIndexPrice,
@@ -108,8 +108,6 @@ export default function TradeMarketWidget({
     incPositionWrite()
   }
 
-  const { data: referralState } = useGetReferralState()
-
   const { premiumRateX96, isLoading, isError } = useGetPoolPriceState(
     currentTokenEntity.poolContract
   )
@@ -125,18 +123,6 @@ export default function TradeMarketWidget({
       setTradingSize("")
     }
   }, [leverageNumber, usdMargin])
-
-  useEffect(() => {
-    if (tokenPrice) {
-      if (side === SIDE_LONG) {
-        const liqPrice = tokenPrice * (1 - 1 / leverageNumber)
-        setLiqPrice(liqPrice)
-      } else {
-        const liqPrice = tokenPrice * (1 + 1 / leverageNumber)
-        setLiqPrice(liqPrice)
-      }
-    }
-  }, [leverageNumber, usdMargin, tokenPrice, side])
 
   useEffect(() => {
     if (usdAfterMargin !== "" && tokenPrice) {
@@ -164,20 +150,19 @@ export default function TradeMarketWidget({
     }
   }, [contractPrice, priceSlippage, side])
 
-  const [tradingFee, setTradingFee] = useState(0)
-
   useEffect(() => {
-    if (tradingSize && tokenPrice) {
-      if (referralState) {
-        //0.045%
-        const tradingFee = (Number(tradingSize) * tokenPrice * 0.045) / 100
-        setTradingFee(tradingFee)
+    if (tokenPrice) {
+      if (side === SIDE_LONG) {
+        const liqPrice = tokenPrice * (1 - 1 / leverageNumber)
+        setLiqPrice(liqPrice)
       } else {
-        const tradingFee = (Number(tradingSize) * tokenPrice * 0.05) / 100
-        setTradingFee(tradingFee)
+        const liqPrice = tokenPrice * (1 + 1 / leverageNumber)
+        setLiqPrice(liqPrice)
       }
     }
-  }, [tradingSize, tokenPrice, referralState])
+  }, [leverageNumber, usdMargin, tokenPrice, side])
+
+  const [tradingFee, setTradingFee] = useState(0)
 
   return (
     <div>

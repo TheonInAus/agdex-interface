@@ -9,7 +9,12 @@ import {
 import { useUserUsdxBalance } from "@/hooks/cUserState"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { ethMarketAddress } from "@/hooks/zAddressHelper"
-import { SIDE_LONG, Side, to0xxPriceX96 } from "@/hooks/zContractHelper"
+import {
+  SIDE_LONG,
+  Side,
+  giveMeFormattedToShow,
+  to0xxPriceX96,
+} from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
@@ -21,11 +26,13 @@ import { CustomTooltip } from "../customToolTip"
 type TradeMarketType = {
   side: Side
   marketAndIndexPriceData: any
+  contractPriceAfter: any
 }
 
 export default function TradeLimitWidget({
   side,
   marketAndIndexPriceData,
+  contractPriceAfter,
 }: TradeMarketType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
@@ -54,14 +61,18 @@ export default function TradeLimitWidget({
 
   const [ethPrice, setEthPrice] = useState(0)
   const [tokenPrice, setTokenPrice] = useState(0)
-  // useEffect(() => {
-  //   if (marketAndIndexPriceData) {
-  //     setEthPrice(marketAndIndexPriceData.indexPrices["ETH"].indexPrice)
-  //     setTokenPrice(
-  //       marketAndIndexPriceData.indexPrices[currentTokenEntity.name].indexPrice
-  //     )
-  //   }
-  // }, [marketAndIndexPriceData, currentTokenEntity.name])
+  console.log("🚀 ~ tokenPrice:", tokenPrice)
+  const [contractPrice, setContractPrice] = useState(0)
+
+  useEffect(() => {
+    if (marketAndIndexPriceData) {
+      setEthPrice(marketAndIndexPriceData.indexPrices["ETH"].indexPrice)
+      setTokenPrice(
+        marketAndIndexPriceData.indexPrices[currentTokenEntity.name].indexPrice
+      )
+      setContractPrice(Number(contractPriceAfter))
+    }
+  }, [marketAndIndexPriceData, currentTokenEntity.name, contractPriceAfter])
 
   const {
     createIncOrderData,
@@ -112,7 +123,7 @@ export default function TradeLimitWidget({
     } else {
       setTradingSize("")
     }
-  }, [usdAfterMargin])
+  }, [ethPrice, usdAfterMargin])
 
   const feesValue = 0
 
@@ -139,7 +150,9 @@ export default function TradeLimitWidget({
               <div>Error fetching balance</div>
             ) : (
               <div>
-                Balance: {balanceData?.formatted} {balanceData?.symbol}
+                Balance:{" "}
+                {giveMeFormattedToShow(Number(balanceData?.formatted) || 0)}{" "}
+                {balanceData?.symbol}
               </div>
             )
           }
@@ -155,7 +168,7 @@ export default function TradeLimitWidget({
           prefix={`Leverage:`}
           prefixValue={leverageNumber}
           onValueChange={(e) => {
-            // setUsdMargin(e.target.value)
+            setUsdMargin(e.target.value)
           }}
           onPrefixChange={(e) => {
             const intValue = parseInt(e.target.value, 10)
@@ -199,7 +212,7 @@ export default function TradeLimitWidget({
         {/* <ListItem keyText="Liq. Price" value={""} /> */}
         <ListItem keyText="Est. Margin" value={""} />
         <div className="flex justify-between">
-          <div className="text-0xgrey text-xs">Fees</div>
+          <div className="text-xs text-0xgrey">Fees</div>
           {feesValue > 0 ? (
             <CustomTooltip
               triggerContent={
@@ -207,22 +220,22 @@ export default function TradeLimitWidget({
               }
             >
               <div className="flex justify-between">
-                <div className="text-white text-xs">Trading Fee</div>
-                <div className="text-white text-xs">-0.82 USDT</div>
+                <div className="text-xs text-white">Trading Fee</div>
+                <div className="text-xs text-white">-0.82 USDT</div>
               </div>
-              <div className="text-0xgrey text-xs">
+              <div className="text-xs text-0xgrey">
                 (0.050% of the position value)
               </div>
               <div className="flex justify-between">
-                <div className="text-white text-xs">Execution Fee Fee</div>
-                <div className="text-white text-xs">
+                <div className="text-xs text-white">Execution Fee Fee</div>
+                <div className="text-xs text-white">
                   -0.82 USDT{" "}
                   <span className="text-sm text-0xgrey">(-$0.46)</span>
                 </div>
               </div>
             </CustomTooltip>
           ) : (
-            <div className="text-white text-xs">-</div>
+            <div className="text-xs text-white">-</div>
           )}
         </div>
       </div>

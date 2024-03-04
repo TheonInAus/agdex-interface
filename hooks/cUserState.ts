@@ -177,19 +177,3 @@ export const useUserOrderList = () => {
         orderBookList: combineData
     }
 }
-
-
-export const useGetReferralState = () => {
-    const { data: walletClient } = useWalletClient({
-        chainId: arbitrumGoerli.id,
-    })
-
-    const { data, isLoading, isError } = useContractRead({
-        address: rewardFarmAddress,
-        abi: rewardFarmABI,
-        functionName: "alreadyBoundReferralTokens",
-        args: [walletClient?.account.address]
-    })
-
-    return { data, isLoading, isError }
-}
