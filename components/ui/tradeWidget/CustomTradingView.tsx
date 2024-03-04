@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react"
 import {
   CrosshairMode,
   DeepPartial,
-  ICandlestickSeries,
   IChartApi,
   LineData,
   createChart,
@@ -28,7 +27,7 @@ interface VolumeData {
 const CustomTradingView: React.FC<TradingViewChartProps> = ({ data }) => {
   const chartContainerRef = useRef<HTMLDivElement | null>(null)
   const chartRef = useRef<IChartApi | null>(null)
-  const candleSeriesRef = useRef<ICandlestickSeries | null>(null)
+  const candleSeriesRef = useRef<any>(null)
 
   useEffect(() => {
     if (chartContainerRef.current && !chartRef.current) {

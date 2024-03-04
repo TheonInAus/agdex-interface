@@ -128,7 +128,7 @@ export default function EarnPage() {
           <div className="w-[40%]">
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="text-sm h-9 bg-bronze hover: bg-bronze-foreground">Claim All</Button>
+                <Button className="text-sm h-9 bg-bronze ">Claim All</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] bg-0xdialog">
                 <DialogHeader>
