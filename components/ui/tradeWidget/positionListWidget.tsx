@@ -43,6 +43,7 @@ import AddMarginWidget from "@/components/ui/tradeWidget/addMarginWidget"
 import ReduceMarginWidget from "@/components/ui/tradeWidget/reduceMarginWidget"
 import TpslDescWidget from "@/components/ui/tradeWidget/tpslDescWidget"
 import TpslStyledTabContent from "@/components/ui/tradeWidget/tpslStyledTabContent"
+import ClosePositionWidget from "./closePositionWidget"
 
 type PositionInfo = {
   poolAddress: any
@@ -320,97 +321,9 @@ export default function PositionListWidget({
                           Close
                         </DialogTitle>
                         <DialogDescription>
-                          <InputBox title="Amount" value={""} suffix={""} />
-                          <div className="mt-3">
-                            <div className="flex flex-row justify-between">
-                              <div className="text-sm">Pure Reduction</div>
-                              <Checkbox className="w-4 h-4" />
-                            </div>
-                            <ListItem keyText={"Max Slippage"} value={""} />
-                          </div>
-                          <div className="my-3 border-t border-0xline"></div>
-                          <div className="flex flex-row gap-2 mb-3">
-                            <div className="text-base text-white">
-                              Token/Asset
-                            </div>
-                            <div className="text-0xgreen text-sm mt-[2px]">
-                              Long 35.98x
-                            </div>
-                          </div>
-                          <ListItem keyText={"Leverage"} value={""} />
-                          <ListItem
-                            keyText={"Margin"}
-                            value={wrapperFormatEther6e(position?.margin)}
-                          />
-                          <ListItem
-                            keyText={"Entry Price"}
-                            value={x96Price2Readable(position?.entryPriceX96)}
-                          />
-                          <ListItem keyText={"Liq. Price"} value={""} />
-                          <div className="my-3 border-t border-0xline"></div>
-                          <ListItem keyText={"Price Impact"} value={""} />
-                          <ListItem keyText={"Est. Close Price"} value={""} />
-                          <ListItem keyText={"PnL"} value={""} />
-                          <div className="flex justify-between">
-                            <div className="text-xs text-0xgrey">Fees</div>
-                            {feesValue > 0 ? (
-                              <CustomTooltip
-                                triggerContent={
-                                  <div className="text-xs text-white">
-                                    {feesValue}
-                                  </div>
-                                }
-                              >
-                                <div className="flex justify-between">
-                                  <div className="text-xs text-white">
-                                    Trading Fee
-                                  </div>
-                                  <div className="text-xs text-white">
-                                    -0.82 USDT
-                                  </div>
-                                </div>
-                                <div className="text-xs text-0xgrey">
-                                  (0.050% of the position value)
-                                </div>
-                                <div className="flex justify-between">
-                                  <div className="text-xs text-white">
-                                    Execution Fee Fee
-                                  </div>
-                                  <div className="text-xs text-white">
-                                    -0.82 USDT{" "}
-                                    <span className="text-sm text-0xgrey">
-                                      (-$0.46)
-                                    </span>
-                                  </div>
-                                </div>
-                              </CustomTooltip>
-                            ) : (
-                              <div className="text-xs text-white">-</div>
-                            )}
-                          </div>
-                          <div className="mt-3 border-t border-0xline"></div>
+                          <ClosePositionWidget positionInfo={position} />
                         </DialogDescription>
                       </DialogHeader>
-                      <ListItem keyText={"Receive"} value={""} />
-                      <DialogFooter>
-                        <Button
-                          disabled={decPositionLoading}
-                          className="w-full text-sm text-black bg-white hover:bg-0xgrey"
-                          onClick={() => {
-                            handleClosePosition(position)
-                          }}
-                        >
-                          {" "}
-                          {decPositionLoading ? (
-                            <>
-                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                              Please wait
-                            </>
-                          ) : (
-                            "Close"
-                          )}
-                        </Button>
-                      </DialogFooter>
                     </DialogContent>
                   </Dialog>
                 </div>
