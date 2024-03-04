@@ -225,7 +225,19 @@ export default function PositionListWidget({
                     >
                       <p>llll</p>
                     </CustomTooltip>
-                    <div className="text-white">-</div>
+                    <div className="text-white text-sm">
+                      {position?.tokenSide === "Long"
+                        ? giveMeFormattedToShow(
+                            Number(x96Price2Readable(position.entryPriceX96)) -
+                              Number(wrapperFormatEther6e(position.margin)) /
+                                Number(wrapperFormatEther18e(position.size))
+                          )
+                        : giveMeFormattedToShow(
+                            Number(x96Price2Readable(position.entryPriceX96)) +
+                              Number(wrapperFormatEther6e(position.margin)) /
+                                Number(wrapperFormatEther18e(position.size))
+                          )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col w-full">

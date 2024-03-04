@@ -12,6 +12,7 @@ import {
   minExecutionFee,
   wrapperFormatEther6e,
   wrapperFormatEther18e,
+  x96Price2Readable,
 } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { InputBox } from "@/components/ui/inputBox"
@@ -44,6 +45,12 @@ export default function ReduceMarginWidget({
   const handleIncPostionTemp = () => {
     decPositionWrite()
   }
+
+  const newMargin = Number(wrapperFormatEther6e(positionInfo?.margin)) - Number(afterMargin)
+
+  const longLiqPrice = giveMeFormattedToShow(Number(x96Price2Readable(positionInfo?.entryPriceX96)) - (newMargin)/Number(wrapperFormatEther18e(positionInfo?.size)))
+  const shortLiqPrice = giveMeFormattedToShow(Number(x96Price2Readable(positionInfo?.entryPriceX96)) + (newMargin)/Number(wrapperFormatEther18e(positionInfo?.size)))
+  
   return (
     <>
       <InputBox
@@ -72,11 +79,15 @@ export default function ReduceMarginWidget({
           {e6DivideE18(positionInfo?.margin, positionInfo?.size, 2000n)}x
         </div>
       </div>
-      <ListItem keyText={"Margin"} value={""} />
-      <ListItem keyText={"Leverage"} value={""} />
-      <ListItem keyText={"Size"} value={""} />
-      <ListItem keyText={"Index Price"} value={""} />
-      <ListItem keyText={"Liq. Price"} value={""} />
+      <ListItem keyText={"Margin"} value={giveMeFormattedToShow(newMargin) + " USDX"} />
+      <ListItem keyText={"Leverage"} value={giveMeFormattedToShow((Number(x96Price2Readable(positionInfo?.entryPriceX96)) * Number(wrapperFormatEther18e(positionInfo?.size)))/newMargin)} />
+      <ListItem keyText={"Size"} value={giveMeFormattedToShow(wrapperFormatEther18e(positionInfo?.size)) + " ETH"} />
+      <ListItem keyText={"Index Price"} value={giveMeFormattedToShow(positionInfo?.tokenPrice)} />
+      <ListItem keyText={"Liq. Price"} value={`${
+            positionInfo?.tokenSide === "Long"
+              ? longLiqPrice
+              : shortLiqPrice
+          }`} />
       <div className="mt-3 border-t border-0xline"></div>
       <div className="flex flex-row justify-between w-full mt-2 text-sm">
         <div>Execution Fee</div>
