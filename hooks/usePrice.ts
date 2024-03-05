@@ -1,8 +1,11 @@
+import { formatEther } from 'viem';
 import { poolABI } from '@/abis/poolABI';
 import { useEffect, useState } from 'react';
 import { useContractRead } from 'wagmi';
 import { backFromX96, x96Price2Readable } from './zContractHelper';
 import { TokenConfigType } from './zTokenConfig';
+import { marketManagerAddress } from './zAddressHelper';
+import { marketManagerABI } from '@/abis/marketManagerABI';
 
 export const useTokenMarketAndIndexPrice = (interval = 10000) => {
     const [data, setData] = useState({ indexPrices: null, markPrices: null, change24h: 24 });
@@ -45,27 +48,42 @@ export const useTokenMarketAndIndexPrice = (interval = 10000) => {
 }
 
 
-export const useGetPoolPriceState = (poolAddress: any) => {
-
-    const { data, isLoading, isError } = useContractRead({
-        address: poolAddress,
-        abi: poolABI,
-        functionName: 'priceState'
+export const useMarketPriceState = (marketAddress: any) => {
+    console.log("🚀 ~ useMarketPriceState ~ marketAddress:", marketAddress)
+    const { data }: any = useContractRead({
+        address: marketManagerAddress,
+        abi: marketManagerABI,
+        functionName: 'priceStates',
+        args: [marketAddress]
     })
+    console.log("🚀 ~ useMarketPriceState ~ data:", data)
 
     const [premiumRateX96, setPremiumRateX96] = useState(0)
     useEffect(() => {
-        if (data) {
-            const dataArray = data as any[]
-            if (dataArray.length > 0) {
-                const tempPremiumRate = dataArray[1]
-                const convert = backFromX96(tempPremiumRate.toString())
-                setPremiumRateX96(Number(convert))
-            }
+        if (data.premiumRateX96) {
+            const convert = backFromX96(data.premiumRateX96.toString())
+            setPremiumRateX96(Number(convert))
         }
-
     }, [data])
 
 
-    return { premiumRateX96, isLoading, isError }
+    return { premiumRateX96 }
+}
+
+export const useGlobalFundingRate = (marketAddress: any) => {
+    const { data }: any = useContractRead({
+        address: marketManagerAddress,
+        abi: marketManagerABI,
+        functionName: 'globalFundingRateSamples',
+        args: [marketAddress]
+    })
+    const [cumulativePremiumRateX96, setCumulativePremiumRateX96] = useState(0)
+    console.log("🚀 ~ useGlobalFundingRate ~ data:", data)
+
+    useEffect(() => {
+        if (data) {
+            setCumulativePremiumRateX96(data.lastAdjustFundingRateTime)
+        }
+    }, [data])
+    return { cumulativePremiumRateX96 }
 }

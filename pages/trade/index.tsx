@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import * as RadioGroup from "@radix-ui/react-radio-group"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import {
@@ -13,7 +14,8 @@ import {
 } from "@/hooks/actionMixExecutorHelper"
 import { usePositionAndLiqPositionInfo } from "@/hooks/cPositionState"
 import {
-  useGetPoolPriceState,
+  useGlobalFundingRate,
+  useMarketPriceState,
   useTokenMarketAndIndexPrice,
 } from "@/hooks/usePrice"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
@@ -36,6 +38,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
 import { LabeledInput } from "@/components/ui/labeledInput"
 import { LeverageInput } from "@/components/ui/leverageInput"
 import { ListItem } from "@/components/ui/listItem"
@@ -48,9 +51,7 @@ import {
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import CustomTradingView, {
-  demoData,
-} from "@/components/ui/tradeWidget/CustomTradingView"
+import CustomTradingView from "@/components/ui/tradeWidget/CustomTradingView"
 import DropDownBox from "@/components/ui/tradeWidget/dropDownBox"
 import OrderListWidget from "@/components/ui/tradeWidget/orderListWidget"
 import PositionListWidget from "@/components/ui/tradeWidget/positionListWidget"
@@ -58,7 +59,6 @@ import ReduceMarginWidget from "@/components/ui/tradeWidget/reduceMarginWidget"
 import TradeLimitWidget from "@/components/ui/tradeWidget/tradeLimitWidget"
 import TradeMarketWidget from "@/components/ui/tradeWidget/tradeMarketWidget"
 import Iconify from "@/components/Iconify"
-import TradingViewWidget from "@/components/tradingView"
 
 interface IndexPriceData {
   [key: string]: {
@@ -69,6 +69,22 @@ interface IndexPriceData {
 interface MarketData {
   indexPrices?: IndexPriceData
 }
+
+type KlineTypeValue = {
+  [key: string]: number
+}
+
+const klineValues: KlineTypeValue = {
+  "1m": 1,
+  "5m": 5,
+  "15m": 15,
+  "30m": 30,
+  "1h": 60,
+  "4h": 240,
+  "1D": 1440,
+  "1W": 10080,
+}
+
 export default function TradePage() {
   const {
     data: positionRouterPluginData,
@@ -155,10 +171,10 @@ export default function TradePage() {
   const shownMarketPrice =
     marketAndIndexPriceData.markPrices?.[currentTokenEntity.name] ?? 0
 
-  const { premiumRateX96 } = useGetPoolPriceState(
-    currentTokenEntity.poolContract
+  const { premiumRateX96 } = useMarketPriceState(currentTokenEntity.market)
+  const { cumulativePremiumRateX96 } = useGlobalFundingRate(
+    currentTokenEntity.market
   )
-
   const contractPrice = shownIndexPrice * (1 + premiumRateX96)
 
   const {
@@ -225,6 +241,15 @@ export default function TradePage() {
       setLeverageNumber(value)
     } else if (event.target.value === "") {
       setLeverageNumber(0)
+    }
+  }
+
+  const [klineType, setKlineType] = useState<number>(klineValues["1m"])
+
+  const handleValueChange = (value: string) => {
+    const newValue = klineValues[value]
+    if (newValue !== undefined) {
+      setKlineType(newValue)
     }
   }
 
@@ -298,7 +323,34 @@ export default function TradePage() {
               </div>
             </div>
             <div className="my-5 border-t border-0xline"></div>
-            <CustomTradingView data={demoData} />
+            <div style={{ marginBottom: 10 }}>
+              <RadioGroup.Root
+                defaultValue="1m"
+                onValueChange={handleValueChange}
+                className="flex items-center space-x-4"
+              >
+                {["1m", "5m", "15m", "30m", "1h", "4h", "1D", "1W"].map(
+                  (option) => (
+                    <RadioGroup.Item
+                      key={option}
+                      value={option}
+                      id={option}
+                      className={`relative flex items-center justify-center p-2 text-sm font-medium rounded-md cursor-pointer ${
+                        klineType.toString() === option
+                          ? "bg-yellow-500 text-white"
+                          : "bg-gray-200 text-gray-800"
+                      } hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                    >
+                      {option}
+                    </RadioGroup.Item>
+                  )
+                )}
+              </RadioGroup.Root>
+            </div>
+            <CustomTradingView
+              symbol={currentTokenEntity.name}
+              type={klineType}
+            />
           </div>
           {/* Wide Block 2 */}
           <div

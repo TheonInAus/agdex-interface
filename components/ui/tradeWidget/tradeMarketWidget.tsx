@@ -4,10 +4,9 @@ import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
 import { useUserUsdxBalance } from "@/hooks/cUserState"
-import {
-  useGetPoolPriceState,
-  useTokenMarketAndIndexPrice,
-} from "@/hooks/usePrice"
+
+import "@/hooks/usePrice"
+import { useMarketPriceState } from "@/hooks/usePrice"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { btcMarketAddress, ethMarketAddress } from "@/hooks/zAddressHelper"
 import {
@@ -108,9 +107,7 @@ export default function TradeMarketWidget({
     incPositionWrite()
   }
 
-  const { premiumRateX96, isLoading, isError } = useGetPoolPriceState(
-    currentTokenEntity.poolContract
-  )
+  const { premiumRateX96 } = useMarketPriceState(currentTokenEntity.market)
 
   useEffect(() => {
     if (usdMargin !== "") {
