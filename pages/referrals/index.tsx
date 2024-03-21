@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import {
   StyledTabs,
@@ -11,9 +12,9 @@ import {
 
 export default function ReferralsPage() {
   return (
-    <section className="container flex flex-col items-center justify-center pt-12">
-      <div className="text-left w-[85%]">
-        <div className="text-2xl text-white">Referrals</div>
+    <section className="container flex flex-col items-center justify-center pt-6">
+      <Card className="w-[85%] p-6">
+        <div className="text-2xl">Referrals</div>
         <div>
           <StyledTabs defaultValue="Traders" className="mt-3">
             <StyledTabsList>
@@ -25,7 +26,7 @@ export default function ReferralsPage() {
               </StyledTabsTrigger>
             </StyledTabsList>
             <StyledTabsContent value="Traders">
-              <div className="p-6 mt-4 mb-3 rounded-lg bg-0xboxBackground">
+              <div className="p-6 mt-4 mb-3 rounded-lg bg-muted">
                 <div className="flex flex-row">
                   <div className="w-[92%]">
                     <div className="font-medium">Bind Referral Code</div>
@@ -39,7 +40,7 @@ export default function ReferralsPage() {
                         Confirm
                       </Button>
                     </div>
-                    <ul className="pl-5 mt-4 space-y-2 text-sm list-disc text-0xgrey">
+                    <ul className="pl-5 mt-4 space-y-2 text-sm list-disc ">
                       <li>
                         Enjoy a{" "}
                         <span className="font-semibold text-bronze">
@@ -59,22 +60,18 @@ export default function ReferralsPage() {
                   <div className="my-2 mx-5 h-[200px] border-r border-0xline"></div>
                   <div className="w-[92%] mt-7">
                     <div className="flex gap-3">
-                      <div className="font-medium text-0xgrey">
-                        Trading fee rate
-                      </div>
+                      <div className="font-medium">Trading fee rate</div>
                       <div className="font-medium">0.05%</div>
                     </div>
-                    <div className="mt-3 text-sm text-0xgrey">
+                    <div className="mt-3 text-sm ">
                       Your current fee rate for opening and closing positions.
                     </div>
                     <div className="my-5 border-t border-0xline"></div>
                     <div className="flex gap-3">
-                      <div className="font-medium text-0xgrey">
-                        Mining multiplier
-                      </div>
+                      <div className="font-medium ">Mining multiplier</div>
                       <div className="font-medium">1.0x</div>
                     </div>
-                    <div className="mt-3 text-sm text-0xgrey">
+                    <div className="mt-3 text-sm ">
                       Your current liquidity mining multiplier.
                     </div>
                   </div>
@@ -82,7 +79,7 @@ export default function ReferralsPage() {
               </div>
             </StyledTabsContent>
             <StyledTabsContent value="EFC Members">
-              <div className="p-6 mt-4 rounded-lg bg-0xboxBackground">
+              <div className="p-6 mt-4 rounded-lg bg-muted">
                 <div className="text-sm text-center">
                   You don&apos;t have a Member NFT yet. You can obtain one
                   through the following methods:
@@ -109,7 +106,7 @@ export default function ReferralsPage() {
             </StyledTabsContent>
           </StyledTabs>
         </div>
-      </div>
+      </Card>
     </section>
   )
 }

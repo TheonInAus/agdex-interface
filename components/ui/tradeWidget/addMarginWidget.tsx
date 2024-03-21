@@ -11,8 +11,8 @@ import {
   e6DivideE18,
   giveMeFormattedToShow,
   minExecutionFee,
-  wrapperFormatEther18e,
   wrapperFormatEther6e,
+  wrapperFormatEther18e,
   x96Price2Readable,
 } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
@@ -48,10 +48,17 @@ export default function AddMarginWidget({ positionInfo }: AddMarginProps) {
     setAfterMargin(balanceData?.formatted as string)
   }
 
-  const newMargin = Number(wrapperFormatEther6e(positionInfo?.margin)) + Number(afterMargin)
+  const newMargin =
+    Number(wrapperFormatEther6e(positionInfo?.margin)) + Number(afterMargin)
 
-  const longLiqPrice = giveMeFormattedToShow(Number(x96Price2Readable(positionInfo?.entryPriceX96)) - (newMargin)/Number(wrapperFormatEther18e(positionInfo?.size)))
-  const shortLiqPrice = giveMeFormattedToShow(Number(x96Price2Readable(positionInfo?.entryPriceX96)) + (newMargin)/Number(wrapperFormatEther18e(positionInfo?.size)))
+  const longLiqPrice = giveMeFormattedToShow(
+    Number(x96Price2Readable(positionInfo?.entryPriceX96)) -
+      newMargin / Number(wrapperFormatEther18e(positionInfo?.size))
+  )
+  const shortLiqPrice = giveMeFormattedToShow(
+    Number(x96Price2Readable(positionInfo?.entryPriceX96)) +
+      newMargin / Number(wrapperFormatEther18e(positionInfo?.size))
+  )
 
   return (
     <>
@@ -84,24 +91,42 @@ export default function AddMarginWidget({ positionInfo }: AddMarginProps) {
         </div>
         <div
           className={`text-sm ${
-            positionInfo?.tokenSide === "Long"
-              ? "text-0xgreen"
-              : "text-0xredLighter"
+            positionInfo?.tokenSide === "Long" ? "text-0xgreen" : "text-0xred"
           }`}
         >
           {positionInfo?.tokenSide}{" "}
           {e6DivideE18(positionInfo?.margin, positionInfo?.size, 2000n)}x
         </div>
       </div>
-      <ListItem keyText={"Margin"} value={giveMeFormattedToShow(newMargin) + " USDX"} />
-      <ListItem keyText={"Leverage"} value={giveMeFormattedToShow((Number(x96Price2Readable(positionInfo?.entryPriceX96)) * Number(wrapperFormatEther18e(positionInfo?.size)))/newMargin)} />
-      <ListItem keyText={"Size"} value={giveMeFormattedToShow(wrapperFormatEther18e(positionInfo?.size)) + " ETH"} />
-      <ListItem keyText={"Index Price"} value={giveMeFormattedToShow(positionInfo?.tokenPrice)} />
-      <ListItem keyText={"Liq. Price"} value={`${
-            positionInfo?.tokenSide === "Long"
-              ? longLiqPrice
-              : shortLiqPrice
-          }`} />
+      <ListItem
+        keyText={"Margin"}
+        value={giveMeFormattedToShow(newMargin) + " USDX"}
+      />
+      <ListItem
+        keyText={"Leverage"}
+        value={giveMeFormattedToShow(
+          (Number(x96Price2Readable(positionInfo?.entryPriceX96)) *
+            Number(wrapperFormatEther18e(positionInfo?.size))) /
+            newMargin
+        )}
+      />
+      <ListItem
+        keyText={"Size"}
+        value={
+          giveMeFormattedToShow(wrapperFormatEther18e(positionInfo?.size)) +
+          " ETH"
+        }
+      />
+      <ListItem
+        keyText={"Index Price"}
+        value={giveMeFormattedToShow(positionInfo?.tokenPrice)}
+      />
+      <ListItem
+        keyText={"Liq. Price"}
+        value={`${
+          positionInfo?.tokenSide === "Long" ? longLiqPrice : shortLiqPrice
+        }`}
+      />
       <div className="mt-3 border-t border-0xline"></div>
       <div className="flex flex-row justify-between w-full mt-2 text-sm">
         <div>Execution Fee</div>

@@ -4,7 +4,8 @@ import React, { useEffect, useRef } from "react"
 
 let tvScriptLoadingPromise
 
-export default function TradingViewWidget() {
+export default function TradingViewWidget({ tokenName }) {
+  console.log("🚀 ~ TradingViewWidget ~ tokenName:", tokenName)
   const onLoadScriptRef = useRef()
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function TradingViewWidget() {
       ) {
         new window.TradingView.widget({
           autosize: true,
-          symbol: "BITSTAMP:BTCUSD",
+          symbol: `BITSTAMP:${tokenName ?? "ETH"}USD`,
           interval: "D",
           timezone: "Etc/UTC",
           theme: "dark",
@@ -47,17 +48,14 @@ export default function TradingViewWidget() {
         })
       }
     }
-  }, [])
+  }, [tokenName])
 
   return (
     <div
       className="tradingview-widget-container"
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100%", width: "1100px" }}
     >
-      <div
-        id="tradingview_65e52"
-        style={{ height: "calc(100% - 80px)", width: "100%" }}
-      />
+      <div id="tradingview_65e52" style={{ height: "600px", width: "100%" }} />
       <div className="tradingview-widget-copyright">
         {/* <a
           href="https://www.tradingview.com/"

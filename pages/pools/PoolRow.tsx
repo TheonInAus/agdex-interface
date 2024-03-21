@@ -3,7 +3,7 @@
 import { Edit3 } from "lucide-react"
 import { formatEther } from "viem"
 
-import { useLiqPoolsForAccount } from "@/hooks/liquidityPoolInfo"
+import { useLiqPoolsForAccountMock } from "@/hooks/liquidityPoolInfo"
 import {
   giveMeFormattedToShow,
   wrapperFormatEther6e,
@@ -12,6 +12,7 @@ import {
   x96Price2Readable,
 } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { PositionItem } from "@/components/ui/positionItem"
 import {
   StyledTabs,
@@ -43,14 +44,15 @@ export default function PoolRow({
   onToggle,
 }: PoolPowProps) {
   // const [isExpanded, setIsExpanded] = useState(false)
-  const { liqPoolsData: poolDatas } = useLiqPoolsForAccount(
+  const { liqPoolsData: marketLiqList } = useLiqPoolsForAccountMock(
     market?.marketAddress
   )
+  console.log("🚀 ~ marketLiqList:", marketLiqList)
 
   return (
     <>
-      <div className="m-2 text-sm text-white border rounded-lg cursor-pointer border-0xline bg-0xbox">
-        <div className="p-5 cursor-pointer" onClick={onToggle}>
+      <div className="my-2">
+        <div className="p-5 cursor-pointer bg-muted" onClick={onToggle}>
           <div
             className="grid grid-cols-6"
             style={{ gridTemplateColumns: "15% 16% 20% 15% 21% auto" }}
@@ -64,29 +66,23 @@ export default function PoolRow({
           </div>
         </div>
         {expandIndex === market?.index && (
-          <div
-            className="p-3 rounded-b-lg"
-            style={{ backgroundColor: "#080808" }}
-          >
+          <div className="p-3 bg-muted">
             <StyledTabs defaultValue="Position">
               <StyledTabsList>
                 <StyledTabsTrigger value="Position">Position</StyledTabsTrigger>
-                <StyledTabsTrigger value="Passive Position Changes(Live)">
+                {/* <StyledTabsTrigger value="Passive Position Changes(Live)">
                   Passive Position Changes(Live)
-                </StyledTabsTrigger>
+                </StyledTabsTrigger> */}
                 <StyledTabsTrigger value="History">History</StyledTabsTrigger>
               </StyledTabsList>
               <StyledTabsContent value="Position" className="ml-3">
                 <div className="positions-container">
                   <div className="my-2 border-t border-0xline"></div>
-                  {poolDatas &&
-                  poolDatas.liquidityPositionOpeneds.length > 0 ? (
-                    poolDatas.liquidityPositionOpeneds.map(
+                  {marketLiqList &&
+                  marketLiqList.liquidityPositionIncreaseds.length > 0 ? (
+                    marketLiqList.liquidityPositionIncreaseds.map(
                       (position, index) => (
-                        <div
-                          className="flex w-full p-2 mb-1 bg-0xblack"
-                          key={index}
-                        >
+                        <div className="flex w-full p-2 mb-1" key={index}>
                           <div className="flex flex-row w-full mt-3">
                             <div className="flex flex-col w-[22%]">
                               <PositionItem
@@ -94,7 +90,7 @@ export default function PoolRow({
                                 value={`${giveMeFormattedToShow(
                                   Number(
                                     wrapperFormatEther6e(
-                                      position.liquidity as bigint
+                                      position.liquidityAfter as unknown as bigint
                                     )
                                   )
                                 )}`}
@@ -116,9 +112,7 @@ export default function PoolRow({
                                 keyText="Realized Profit"
                                 value={`${giveMeFormattedToShow(
                                   Number(
-                                    x64Price2Readable(
-                                      position.realizedProfitGrowthX64 as unknown as string
-                                    )
+                                    position.realizedPnLDelta as unknown as string
                                   )
                                 )}`}
                               />
@@ -131,7 +125,7 @@ export default function PoolRow({
                                   value={`${giveMeFormattedToShow(
                                     Number(
                                       wrapperFormatEther6e(
-                                        position.margin as bigint
+                                        position.marginAfter as unknown as bigint
                                       )
                                     )
                                   )}`}
@@ -217,14 +211,14 @@ export default function PoolRow({
                   )}
                 </div>
               </StyledTabsContent>
-              <StyledTabsContent
+              {/* <StyledTabsContent
                 value="Passive Position Changes(Live)"
                 className="ml-3"
               >
                 <div className="positions-container">
                   <div className="my-2 border-t border-0xline"></div>
                 </div>
-              </StyledTabsContent>
+              </StyledTabsContent> */}
               <StyledTabsContent value="History" className="ml-3">
                 <div className="positions-container">
                   <div className="my-2 border-t border-0xline"></div>

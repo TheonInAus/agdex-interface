@@ -1,14 +1,9 @@
 import React from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import { ArrowRight } from "lucide-react"
 
-import { siteConfig } from "@/config/site"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { InputBox } from "@/components/ui/inputBox"
-import { ListItem } from "@/components/ui/listItem"
-import { Stats } from "@/components/ui/stats"
+import { Button } from "@/components/ui/button"
 
 export default function IndexPage() {
   const router = useRouter()

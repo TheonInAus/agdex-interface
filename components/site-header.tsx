@@ -7,14 +7,17 @@ import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/main-nav"
 import { ThemeToggle } from "@/components/theme-toggle"
 
+import ApotosConnectButtonWidget from "./ui/AptosConnectButton"
+import { Card } from "./ui/card"
+
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="mx-5 flex items-center h-16 space-x-2 sm:justify-between sm:space-x-0">
+    <header className="top-0 z-40">
+      <div className="flex flex-row items-center justify-center gap-10 px-20 mt-5">
         <MainNav items={siteConfig.mainNav} />
-        <div className="flex items-center justify-end flex-1 space-x-4">
-          <nav className="flex items-center space-x-1">
-            {/* <Link
+        <div className="flex items-center ">
+          <div className="px-1 mr-3">
+            <Link
               href={siteConfig.links.github}
               target="_blank"
               rel="noreferrer"
@@ -43,11 +46,12 @@ export function SiteHeader() {
                 <Icons.twitter className="w-5 h-5 fill-current" />
                 <span className="sr-only">Twitter</span>
               </div>
-            </Link> */}
+            </Link>
             <ThemeToggle />
-          </nav>
+          </div>
+          {/* <ConnectButton /> */}
+          <ApotosConnectButtonWidget />
         </div>
-        <ConnectButton />
       </div>
     </header>
   )

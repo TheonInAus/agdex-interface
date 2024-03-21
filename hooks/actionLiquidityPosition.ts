@@ -6,18 +6,18 @@ import { positionRouterAddress } from "./zAddressHelper";
 import { minExecutionFee } from "./zContractHelper";
 import { parseUnits } from "viem";
 
-export const useOpenLiquidityPosition = (tokenPoolAddress: any, margin: any, liquidity: any) => {
+export const useOpenLiquidityPosition = (market: any, margin: any, liquidity: any, acceptableMinMargin: any) => {
     if (margin === '') margin = '0'
     if (liquidity === '') liquidity = '0'
     margin = parseUnits(margin, 6)
     liquidity = parseUnits(liquidity, 6)
-    console.log('check margin => ', margin)
-    console.log('check liquidity => ', liquidity)
+    console.log("🚀 ~ useOpenLiquidityPosition ~ market:", market)
+
     const { data: openLiqPositionData, isLoading: openLiqPositionLoading, write: openLiqPositionWrite } = useContractWrite({
         address: positionRouterAddress,
         abi: positionRouterABI,
-        functionName: 'createOpenLiquidityPosition',
-        args: [tokenPoolAddress, margin, liquidity],
+        functionName: 'createIncreaseLiquidityPosition',
+        args: [market, margin, liquidity, acceptableMinMargin],//@TODO 
         value: minExecutionFee
     })
 

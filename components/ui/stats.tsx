@@ -43,29 +43,29 @@ const Stats: React.FC<StatsProps> = ({
   return (
     <div className="flex flex-col mr-9">
       <div className="flex items-center gap-0.5">
-        <span className="text-xs text-0xgrey">{title}</span>
+        <span className="text-xl text-0xgrey">{title}</span>
         {info ? (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className="p-1">
-                <AlertCircle
-                  className="text-white text-opacity-70 hover:text-opacity-100"
-                  size={12}
-                />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{info}</p>
-            </TooltipContent>
-          </Tooltip>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button className="p-1">
+                  <AlertCircle
+                    className="text-white text-opacity-70 hover:text-opacity-100"
+                    size={12}
+                  />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{info}</p>
+              </TooltipContent>
+            </Tooltip>
           </TooltipProvider>
         ) : (
           <span className="w-5 h-5"></span>
         )}
       </div>
       <div className="flex items-center gap-2">
-        <span className={cn(valueTextColor, "text-sm")}>{value}</span>
+        <span className={cn(valueTextColor, "text-lg")}>{value}</span>
         {additionalText && (
           <span className="text-sm text-0xgrey">{additionalText}</span>
         )}

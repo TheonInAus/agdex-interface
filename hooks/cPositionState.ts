@@ -2,20 +2,41 @@ import { formatEther, formatUnits } from 'viem';
 import { poolABI } from "@/abis/poolABI"
 import { useEffect, useState } from "react"
 import { useContractRead } from "wagmi"
+import { marketManagerAddress } from "./zAddressHelper"
+import { marketManagerABI } from "@/abis/marketManagerABI"
 
+type LiqPositionDataType = {
+    liquidationBufferNetSize: bigint
+    liquidity: bigint
+    netSize: bigint
+    previousSPPriceX96: bigint
+    side: number
+    unrealizedPnLGrowthX64: bigint
+}
 
-export const usePositionAndLiqPositionInfo = (poolAddress: any) => {
-    const { data: liqPositionData, isLoading: liqPositionLoading, isError: liqPositionError } = useContractRead({
-        address: poolAddress,
-        abi: poolABI,
-        functionName: 'globalLiquidityPosition',
-    })
+type PositionDataType = {
+    longFundingRateGrowthX96: bigint
+    longSize: bigint
+    maxSize: bigint
+    maxSizePerPosition: bigint
+    shortFundingRateGrowthX96: bigint
+    shortSize: bigint
+}
 
-    const { data: positionData, isLoading: positionLoading, isError: positionError } = useContractRead({
-        address: poolAddress,
-        abi: poolABI,
-        functionName: 'globalPosition',
-    })
+export const usePositionAndLiqPositionInfo = (market: any) => {
+    const { data: liqPositionData } = useContractRead({
+        address: marketManagerAddress,
+        abi: marketManagerABI,
+        functionName: 'globalLiquidityPositions',
+        args: [market]
+    }) as { data: LiqPositionDataType };
+
+    const { data: positionData } = useContractRead({
+        address: marketManagerAddress,
+        abi: marketManagerABI,
+        functionName: 'globalPositions',
+        args: [market]
+    }) as { data: PositionDataType }
 
     const [lpNetSize, setLpNetSize] = useState(0)
     const [lpSide, setLpSide] = useState(1)
@@ -25,32 +46,36 @@ export const usePositionAndLiqPositionInfo = (poolAddress: any) => {
 
     const [longSize, setLongSize] = useState(0)
     const [shortSize, setShortSize] = useState(0)
+    const [maxSize, setMaxSize] = useState(0)
+    const [maxSizePerPosition, setMaxSizePerPosition] = useState(0)
     const [longFundingRateGrowthX96, setLongFundingRateGrowthX96] = useState(0)
     const [shortFundingRateGrowthX96, setShortFundingRateGrowthX96] = useState(0)
 
-    const liqPositionDataArray = liqPositionData as any[];
 
     useEffect(() => {
-        if (liqPositionDataArray && liqPositionDataArray.length > 0) {
-            setLpNetSize(Number(formatEther(liqPositionDataArray[0] as bigint || 0n)));
-            setLpEntryPrice(Number(formatEther(liqPositionDataArray[2] as bigint || 0n)))
-            setLpSide(Number(liqPositionDataArray[3] as bigint || 0n))
-            setLiquidity(Number(formatUnits(liqPositionDataArray[4] as bigint || 0n, 6)))
-            setLiqPnL(Number(formatEther(liqPositionDataArray[5] as bigint || 0n)))
+        if (liqPositionData) {
+            setLpNetSize(Number(formatEther(liqPositionData?.liquidationBufferNetSize)));
+            setLpEntryPrice(Number(formatEther(liqPositionData?.previousSPPriceX96)))
+            setLpSide(liqPositionData?.side)
+            setLiquidity(Number(formatUnits(liqPositionData?.liquidity, 6)))
+            setLiqPnL(Number(formatEther(liqPositionData?.unrealizedPnLGrowthX64)))
         }
-    }, [liqPositionDataArray]);
+    }, [liqPositionData]);
+    console.log("🚀 ~ usePositionAndLiqPositionInfo ~ liqPositionData:", liqPositionData)
 
-    const positionDataArray = positionData as any[];
 
     useEffect(() => {
-        if (positionDataArray && (positionDataArray as any[]).length > 0) {
-            setLongSize(Number(formatEther(positionDataArray[0] as bigint || 0n)));
-            setShortSize(Number(formatEther(positionDataArray[1] as bigint || 0n)));
-            setLongFundingRateGrowthX96(Number(formatEther(positionDataArray[2] as bigint || 0n)));
-            setShortFundingRateGrowthX96(Number(formatEther(positionDataArray[3] as bigint || 0n)));
+        if (positionData) {
+            setLongSize(Number(formatEther(positionData?.longSize)));
+            setShortSize(Number(formatEther(positionData?.shortSize)));
+            setMaxSize(Number(formatEther(positionData?.maxSize)));
+            setMaxSizePerPosition(Number(formatEther(positionData?.maxSizePerPosition)));
+            setLongFundingRateGrowthX96(Number(formatEther(positionData?.longFundingRateGrowthX96)));
+            setShortFundingRateGrowthX96(Number(formatEther(positionData?.shortFundingRateGrowthX96)));
 
         }
-    }, [positionDataArray])
+    }, [positionData])
+    console.log("🚀 ~ usePositionAndLiqPositionInfopositionData:", positionData)
 
     return {
         lpNetSize,
@@ -60,6 +85,8 @@ export const usePositionAndLiqPositionInfo = (poolAddress: any) => {
         liqPnL,
         longSize,
         shortSize,
+        maxSize,
+        maxSizePerPosition,
         longFundingRateGrowthX96,
         shortFundingRateGrowthX96
     }

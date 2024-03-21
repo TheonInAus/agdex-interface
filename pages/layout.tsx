@@ -43,13 +43,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="shortcut icon" href="/favicon-16x16.png" />
       </Head>
-      {/* <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
-      </body> */}
+
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div className="relative flex flex-col min-h-screen">
           <SiteHeader />

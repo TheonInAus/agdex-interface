@@ -9,7 +9,7 @@ import {
   minOrderBookExecutionFee,
   wrapperFormatEther18e,
 } from "@/hooks/zContractHelper"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Alert, AlertDescription } from "@/components/ui/Alert"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -194,10 +194,10 @@ export default function TpslTabsPartialPositionWidget({
 
       <Alert className="bg-0xdialog-foreground border-gray-100 mt-4 h-[70px]">
         <AlertCircle
-          className="mt-2 text-0xredLighter hover:text-opacity-100"
+          className="mt-2 text-0xred hover:text-opacity-100"
           size={22}
         />
-        <AlertDescription className="ml-1 text-0xyellow-lighter">
+        <AlertDescription className="ml-1 text-0xyellow">
           Margin settlement has a 10% slippage to prevent order failure due to
           insufficient margin.
         </AlertDescription>

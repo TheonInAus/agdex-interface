@@ -12,7 +12,7 @@ const StyledTabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "flex h-10 gap-1 overflow-hidden bg-0xtrans text-muted-foreground",
+      "flex h-8 gap-2 overflow-hidden bg-red text-muted-foreground",
       className
     )}
     {...props}
@@ -27,7 +27,7 @@ const StyledTabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "relative inline-flex whitespace-nowrap data-[state=active]:underline data-[state=active]:underline-offset-4 rounded-sm px-3 py-1.5 text-base font-bold  transition-all focus-visible:outline-none disabled:pointer-events-none disabled:text-0xgrey data-[state=active]:text-bronze ",
+      "h-8 relative inline-flex text-center items-center italic px-3 text-base font-bold focus-visible:outline-none disabled:pointer-events-none disabled:text-gray-400 data-[state=active]:text-white data-[state=active]:rounded-xl data-[state=active]:bg-0xyellow",
       className
     )}
     {...props}
@@ -36,7 +36,6 @@ const StyledTabsTrigger = React.forwardRef<
   </TabsPrimitive.Trigger>
 ))
 StyledTabsTrigger.displayName = "StyledTabsTrigger"
-
 const StyledTabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>

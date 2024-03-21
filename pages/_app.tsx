@@ -8,6 +8,8 @@ import { publicProvider } from "wagmi/providers/public"
 import "@/styles/globals.css"
 import "@rainbow-me/rainbowkit/styles.css"
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
+import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react"
+import { OKXWallet } from "@okwallet/aptos-wallet-adapter"
 import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit"
 import { alchemyProvider } from "wagmi/providers/alchemy"
 import { infuraProvider } from "wagmi/providers/infura"
@@ -46,20 +48,30 @@ interface ProvidersProps {
   children: React.ReactNode
 }
 
-const client = new ApolloClient({
-  uri: "https://api.studio.thegraph.com/query/54949/0xx/version/latest",
-  cache: new InMemoryCache(),
-})
+// const client = new ApolloClient({
+//   uri: "https://api.studio.thegraph.com/query/54949/0xxv2-new/version/latest",
+//   cache: new InMemoryCache(),
+// })
+
+const wallets = [new OKXWallet()]
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <ApolloProvider client={client}>
+        <AptosWalletAdapterProvider
+          plugins={wallets}
+          autoConnect={true}
+          onError={(error) => {
+            console.log("error", error)
+          }}
+        >
+          {/* <ApolloProvider client={client}> */}
           <RootLayout>
             <Component {...pageProps} />
           </RootLayout>
-        </ApolloProvider>
+          {/* </ApolloProvider> */}
+        </AptosWalletAdapterProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   )

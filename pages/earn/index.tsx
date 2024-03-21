@@ -4,6 +4,7 @@ import React from "react"
 import { AlertCircle, ChevronRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { CustomTooltip } from "@/components/ui/customToolTip"
 import {
   Dialog,
@@ -38,13 +39,13 @@ export default function EarnPage() {
 
   return (
     <section className="container flex flex-col items-center justify-center pt-12">
-      <div className="text-left w-[85%]">
-        <div className="text-2xl text-white">Earn</div>
-        <div className="text-sm text-0xgrey">
+      <Card className="w-[85%]">
+        <div className="text-2xl">Earn</div>
+        <div className="text-sm ">
           Earn rewards from trading fees and 0xx mining.
         </div>
-      </div>
-      <div className="p-6 mb-3 rounded-lg bg-0xboxBackground w-[85%] mt-4">
+      </Card>
+      <Card className="p-6 rounded-lg w-[85%] mt-2">
         <div className="flex justify-between">
           <div>0XX Statistics</div>
           <div className="flex gap-3">
@@ -64,23 +65,19 @@ export default function EarnPage() {
         </div>
         <div className="flex justify-between w-full mt-8">
           <div className="flex flex-col gap-1">
-            <div className="text-sm text-0xgrey">Total Emissions</div>
-            <div className="text-lg text-white">412,232.06</div>
+            <div>Total Emissions</div>
+            <div>412,232.06</div>
           </div>
           <div className="flex flex-col gap-1">
-            <div className="text-sm text-0xgrey">Total Claimed</div>
-            <div className="text-lg text-white">365,989.41</div>
+            <div>Total Claimed</div>
+            <div>365,989.41</div>
           </div>
           <div className="flex flex-col gap-1">
-            <div className="text-sm text-0xgrey">Total Burned</div>
-            <div className="text-lg text-white">33,422.10</div>
+            <div>Total Burned</div>
+            <div>33,422.10</div>
           </div>
           <div className="flex flex-col gap-1">
-            <CustomTooltip
-              triggerContent={
-                <div className="text-sm text-0xgrey">Total Staked</div>
-              }
-            >
+            <CustomTooltip triggerContent={<div>Total Staked</div>}>
               <p>
                 The calculated figure may slightly differ from the actual amount
                 because the 0XX in the 0XX/ETH LP NFT is based on the 0XX
@@ -89,11 +86,7 @@ export default function EarnPage() {
               <ListItem keyText={"Staking"} value={"-"} />
               <ListItem keyText={"Staking LP NFT"} value={"-"} />
             </CustomTooltip>
-            <CustomTooltip
-              triggerContent={
-                <div className="text-lg text-white">309,426.90</div>
-              }
-            >
+            <CustomTooltip triggerContent={<div>309,426.90</div>}>
               <p className="mb-2">
                 Total Staked = Staked 0XX in 0XX/ETH LP NFT + Staked 0XX
               </p>
@@ -102,12 +95,12 @@ export default function EarnPage() {
             </CustomTooltip>
           </div>
           <div className="flex flex-col gap-1">
-            <div className="text-0xgrey">Current Emissions</div>
-            <div className="text-lg text-white">10,000 / day</div>
+            <div>Current Emissions</div>
+            <div>10,000 / day</div>
           </div>
         </div>
-      </div>
-      <div className="p-6 mb-3 rounded-lg bg-0xboxBackground w-[85%] mt-4">
+      </Card>
+      <Card className="p-6 w-[85%] mt-2">
         <div>Claimable Rewards</div>
         <div className="flex mt-8 justify-between w-[75%]">
           <CustomTooltip
@@ -128,7 +121,7 @@ export default function EarnPage() {
           <div className="w-[40%]">
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="text-sm h-9 bg-bronze ">Claim All</Button>
+                <Button className="text-sm h-9 bg-0xgreen ">Claim All</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px] bg-0xdialog">
                 <DialogHeader>
@@ -143,7 +136,7 @@ export default function EarnPage() {
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="ml-1 text-sm text-white bg-transparent hover:bg-transparent hover:text-bronze">
+                <Button className="ml-1 bg-transparent hover:bg-transparent hover:text-bronze">
                   Claim history
                   <ChevronRight className="w-4 h-4 mt-[2px]" />
                 </Button>
@@ -161,8 +154,8 @@ export default function EarnPage() {
             </Dialog>
           </div>
         </div>
-      </div>
-      <div className="p-6 mb-3 rounded-lg bg-0xboxBackground w-[85%] mt-4">
+      </Card>
+      <Card className="p-6  w-[85%] mt-2">
         <StyledTabs defaultValue="Staking" className="w-full">
           <div className="flex">
             <StyledTabsList className="w-full">
@@ -205,7 +198,7 @@ export default function EarnPage() {
             {activeTab === "Liquidity Mining" && (
               <div className="flex items-center py-1 ml-2">
                 <span className="w-32 text-sm text-white">
-                  <span className="text-0xgrey">My Multiplier: </span>1.0x
+                  <span className="text-black">My Multiplier: </span>1.0x
                 </span>
               </div>
             )}
@@ -234,26 +227,22 @@ export default function EarnPage() {
           <StyledTabsContent value="Staking">
             <div className="flex justify-center w-full mt-8 text-center">
               <div className="flex gap-1 flex-col w-[30%]">
-                <div className="text-sm text-0xgrey">Staked 0XX</div>
-                <div className="text-white">412,232.06 0XX</div>
+                <div>Staked 0XX</div>
+                <div>412,232.06 0XX</div>
               </div>
               <div className="flex gap-1 flex-col w-[30%]">
-                <CustomTooltip
-                  triggerContent={
-                    <div className="text-0xgrey">Staked 0XX in LP NFT</div>
-                  }
-                >
+                <CustomTooltip triggerContent={<div>Staked 0XX in LP NFT</div>}>
                   <p className="mb-2">
                     The calculated figure may slightly differ from the actual
                     amount because the 0XX in the 0XX/ETH LP NFT is based on the
                     0XX quantity in the LP Token at the time of staking.
                   </p>
                 </CustomTooltip>
-                <div className="text-white">365,989.41 0XX</div>
+                <div>365,989.41 0XX</div>
               </div>
               <div className="flex gap-1 flex-col w-[30%]">
-                <div className="text-sm text-0xgrey">Total Staking Rewards</div>
-                <div className="text-white">33,422.10 USDT</div>
+                <div>Total Staking Rewards</div>
+                <div>33,422.10 USDT</div>
               </div>
             </div>
             <div className="mt-7 mb-3 border-t border-0xline w-[100%] text-center"></div>
@@ -261,7 +250,7 @@ export default function EarnPage() {
               <div className="flex mt-3">
                 <div className="font-semibold">Stake 0XX</div>
                 <div className="mx-2 border-l border-0xline h-[80%] text-center"></div>
-                <div className="text-0xgrey text-sm mt-[1px]">Max APR</div>
+                <div className="mt-[1px]">Max APR</div>
                 <CustomTooltip
                   triggerContent={
                     <div className="text-0xgreen ml-2 text-sm mt-[1px]">
@@ -279,7 +268,7 @@ export default function EarnPage() {
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                    className="h-8 hover:border-bronze hover:bg-0xtrans"
                   >
                     Stake 0XX
                   </Button>
@@ -291,18 +280,16 @@ export default function EarnPage() {
                     </DialogTitle>
                     <DialogDescription>
                       <div className="flex justify-between mb-1">
-                        <div className="text-xs text-0xgrey">Amount</div>
-                        <div className="text-xs text-0xgrey">
-                          Balance: <span className="text-white">0 0XX</span>
+                        <div>Amount</div>
+                        <div>
+                          Balance: <span>0 0XX</span>
                         </div>
                       </div>
                       <Input
                         placeholder="0.00"
                         className="h-12 border-none rounded-r-none bg-0xdialog-foreground"
                       />
-                      <div className="mb-2 text-xs text-0xgrey mt-7">
-                        Lock Duration
-                      </div>
+                      <div className="mb-2 text-xsmt-7">Lock Duration</div>
                       <div className="flex justify-around">
                         {["90", "60", "30"].map((duration) => (
                           <label
@@ -325,8 +312,8 @@ export default function EarnPage() {
                             <span
                               className={`text-center text-sm ${
                                 selectedDuration === duration
-                                  ? "text-white"
-                                  : "text-0xgrey"
+                                  ? "text-black"
+                                  : "text-black"
                               }`}
                             >
                               {duration} days
@@ -334,8 +321,8 @@ export default function EarnPage() {
                             <span
                               className={`text-center text-sm ${
                                 selectedDuration === duration
-                                  ? "text-white"
-                                  : "text-0xgrey"
+                                  ? "text-black"
+                                  : "text-black"
                               }`}
                             >
                               Multiplier{" "}
@@ -353,12 +340,12 @@ export default function EarnPage() {
                 </DialogContent>
               </Dialog>
             </div>
-            <div className="justify-center mt-10 mb-5 text-sm text-center text-0xgrey">
+            <div className="justify-center mt-10 mb-5 text-center">
               You have not staked yet.
             </div>
           </StyledTabsContent>
           <StyledTabsContent value="Position Mining">
-            <div className="flex flex-row mt-5 mb-1 ml-3 text-sm rounded-lg text-0xgrey">
+            <div className="flex flex-row mt-5 mb-1 ml-3 ">
               <div className="w-[12%] mt-[6px]">Market</div>
               <div className="w-[15%] mt-[6px]">Avg. APR</div>
               <div className="w-[17%] mt-[6px]">Daily Emission</div>
@@ -381,7 +368,7 @@ export default function EarnPage() {
               <div className="space-y-3 py-2 w-[95%] underLg:px-3">
                 <div className="font-medium">Overview</div>
                 <div className="flex justify-between text-sm">
-                  <div className="text-0xgrey">APR (Multiplier = 3x)</div>
+                  <div>APR (Multiplier = 3x)</div>
                   <CustomTooltip
                     triggerContent={
                       <div className="text-0xgreen">1663.32%</div>
@@ -397,14 +384,12 @@ export default function EarnPage() {
                   </CustomTooltip>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <div className="text-0xgrey">Daily Emission</div>
+                  <div>Daily Emission</div>
                   <div>2,000 0XX</div>
                 </div>
                 <div className="flex justify-between text-sm">
                   <CustomTooltip
-                    triggerContent={
-                      <div className="text-0xgrey">Staked 0XX in LP NFT</div>
-                    }
+                    triggerContent={<div>Staked 0XX in LP NFT</div>}
                   >
                     <p className="mb-2">
                       Staked amount is calculated as the amount of 0XX in LP
@@ -414,7 +399,7 @@ export default function EarnPage() {
                   <div>34,677.9356 0XX</div>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <div className="text-0xgrey">Total Value Locked (TVL)</div>
+                  <div>Total Value Locked (TVL)</div>
                   <div>$1,618,653.83</div>
                 </div>
               </div>
@@ -422,9 +407,7 @@ export default function EarnPage() {
                 <div className="font-medium">My Data</div>
                 <div className="flex justify-between text-sm">
                   <CustomTooltip
-                    triggerContent={
-                      <div className="text-0xgrey">Staked 0XX in LP NFT</div>
-                    }
+                    triggerContent={<div>Staked 0XX in LP NFT</div>}
                   >
                     <p className="mb-2">
                       Staked amount is calculated as the amount of 0XX in LP
@@ -434,15 +417,15 @@ export default function EarnPage() {
                   <div>0 0XX</div>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <div className="text-0xgrey">Avg. Multiplier</div>
+                  <div>Avg. Multiplier</div>
                   <div>0x</div>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <div className="text-0xgrey">Total Rewards</div>
+                  <div>Total Rewards</div>
                   <div>0 USDT 0 0XX</div>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <div className="text-0xgrey">Claimable Rewards</div>
+                  <div>Claimable Rewards</div>
                   <div>0 USDT 0 0XX</div>
                 </div>
               </div>
@@ -479,7 +462,7 @@ export default function EarnPage() {
                           className="text-white text-opacity-70 hover:text-opacity-100 mt-[2px] mr-1"
                           size={12}
                         />
-                        <div className="text-xs text-0xgrey">
+                        <div>
                           Only <span className="text-white">full range</span>{" "}
                           0XX/ETH LP NFTs are acceptable.
                         </div>
@@ -503,9 +486,7 @@ export default function EarnPage() {
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      <div className="mb-2 text-xs text-0xgrey mt-7">
-                        Lock Duration
-                      </div>
+                      <div className="mb-2 mt-7">Lock Duration</div>
                       <div className="flex justify-around">
                         {["90", "60", "30"].map((duration) => (
                           <label
@@ -529,7 +510,7 @@ export default function EarnPage() {
                               className={`text-center text-sm ${
                                 selectedDuration === duration
                                   ? "text-white"
-                                  : "text-0xgrey"
+                                  : "text-black"
                               }`}
                             >
                               {duration} days
@@ -538,7 +519,7 @@ export default function EarnPage() {
                               className={`text-center text-sm ${
                                 selectedDuration === duration
                                   ? "text-white"
-                                  : "text-0xgrey"
+                                  : "text-black"
                               }`}
                             >
                               Multiplier{" "}
@@ -557,19 +538,19 @@ export default function EarnPage() {
               </Dialog>
             </div>
             <div className="flex mt-2">
-              <div className="text-sm text-0xgrey mt-[10px]">
+              <div className="text-sm text-black mt-[10px]">
                 Add liquidity to Uniswap 0XX/ETH pool (
                 <span className="text-white">full range</span>) to receive your
                 LP NFT.
               </div>
-              <Button className="w-[110px] ml-1 px-0 justify-start bg-transparent text-white hover:bg-transparent hover:text-0xgrey">
+              <Button className="w-[110px] ml-1 px-0 justify-start bg-transparent text-white hover:bg-transparent hover:text-black">
                 Add now
                 <ChevronRight className="w-4 h-4 mt-[2px]" />
               </Button>
             </div>
           </StyledTabsContent>
           <StyledTabsContent value="Liquidity Mining" className="ml-3">
-            <div className="flex flex-row mb-1 ml-1 text-sm rounded-lg text-0xgrey">
+            <div className="flex flex-row mb-1 ml-1 text-sm text-black rounded-lg">
               <div className="w-[12%]">Pool</div>
               <div className="w-[15%]">Avg / Max APR</div>
               <div className="w-[17%]">Daily Emission</div>
@@ -587,7 +568,7 @@ export default function EarnPage() {
             </div>
           </StyledTabsContent>
           {/* <StyledTabsContent value="RBF Mining" className="ml-3">
-            <div className="flex flex-row mb-1 ml-1 text-sm rounded-lg text-0xgrey">
+            <div className="flex flex-row mb-1 ml-1 text-sm text-black rounded-lg">
               <div className="w-[12%]">Pool</div>
               <CustomTooltip
                 triggerContent={<div className="w-[15%]">APR</div>}
@@ -751,7 +732,7 @@ export default function EarnPage() {
             </div>
           </StyledTabsContent> */}
         </StyledTabs>
-      </div>
+      </Card>
     </section>
   )
 }

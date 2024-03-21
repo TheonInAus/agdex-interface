@@ -8,7 +8,7 @@ import Iconify from "./Iconify"
 
 const SiteFooter = () => {
   return (
-    <footer className="flex flex-col items-center space-y-4 py-4 text-white mt-10">
+    <footer className="flex flex-col items-center py-4 mt-10 space-y-4 text-white">
       <div>
         <Image
           src="/bronzes_logo.svg"
@@ -22,35 +22,35 @@ const SiteFooter = () => {
         <Link href={siteConfig.links.twitter}>
           <Iconify
             icon="pajamas:twitter"
-            className="rounded-xl bg-boxBackground p-2"
+            className="p-2 rounded-xl bg-boxBackground"
             size={18}
           />
         </Link>
         <Link href={siteConfig.links.discord}>
           <Iconify
             icon="bxl:discord-alt"
-            className="rounded-xl bg-boxBackground p-2"
+            className="p-2 rounded-xl bg-boxBackground"
             size={22}
           />
         </Link>
         {/* <Link href={siteConfig.links.telegram}>
           <Iconify
             icon="uit:telegram-alt"
-            className="rounded-xl bg-boxBackground p-2"
+            className="p-2 rounded-xl bg-boxBackground"
             size={22}
           />
         </Link> */}
         <Link href={siteConfig.links.medium}>
           <Iconify
             icon="arcticons:medium-alt"
-            className="rounded-xl bg-boxBackground p-2"
+            className="p-2 rounded-xl bg-boxBackground"
             size={22}
           />
         </Link>
         <Link href={siteConfig.links.github}>
           <Iconify
             icon="simple-icons:gitbook"
-            className="rounded-xl bg-boxBackground p-2"
+            className="p-2 rounded-xl bg-boxBackground"
             size={22}
           />
         </Link>

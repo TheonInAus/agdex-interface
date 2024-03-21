@@ -43,16 +43,20 @@ const ListItem: React.FC<ListItemProps> = ({
   ...props
 }) => {
   return (
-    <div className={`${listItemVariants(props)} ${className || ''}`} {...props} {...props}>
+    <div
+      className={`${listItemVariants(props)} ${className || ""} my-1`}
+      {...props}
+      {...props}
+    >
       <div className="flex items-center">
-        <span className="text-xs text-0xgrey">{keyText}</span>
+        <span className="italic">{keyText}</span>
         {info ? (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button className="p-1">
                   <AlertCircle
-                    className="text-white text-opacity-70 hover:text-opacity-100"
+                    className="text-0xblack-foreground text-opacity-70 hover:text-opacity-100"
                     size={12}
                   />
                 </button>
@@ -62,15 +66,16 @@ const ListItem: React.FC<ListItemProps> = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          ) : (
-            <span className="w-5 h-5"></span>
+        ) : (
+          <span className="w-5 h-5"></span>
         )}
       </div>
       <div className="flex items-center">
-        <span className="text-xs text-white">{value || "-"}</span>
+        <span className="font-bold">{value || "-"}</span>
         {percentage && (
           <>
-            <span className="ml-1 text-xs text-white"> ({percentage})</span>
+            {}
+            <span className="ml-1 font-bold"> ({percentage})</span>
           </>
         )}
       </div>

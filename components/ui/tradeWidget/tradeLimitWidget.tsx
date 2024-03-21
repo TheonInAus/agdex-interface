@@ -133,7 +133,7 @@ export default function TradeLimitWidget({
         <InputBox
           title="Price"
           value={limitPrice}
-          suffix="USDT"
+          suffix="USDX"
           onValueChange={(e) => {
             setLimitPrice(e.target.value)
           }}
@@ -142,7 +142,7 @@ export default function TradeLimitWidget({
         <InputBox
           title="Pay"
           value={usdMargin}
-          suffix="USDT"
+          suffix="USDX"
           balanceNode={
             isBalanceLoading ? (
               <div>Fetching balance…</div>
@@ -212,16 +212,14 @@ export default function TradeLimitWidget({
         {/* <ListItem keyText="Liq. Price" value={""} /> */}
         <ListItem keyText="Est. Margin" value={""} />
         <div className="flex justify-between">
-          <div className="text-xs text-0xgrey">Fees</div>
+          <div className="italic">Fees</div>
           {feesValue > 0 ? (
             <CustomTooltip
-              triggerContent={
-                <div className="text-xs text-white">{feesValue}</div>
-              }
+              triggerContent={<div className="font-bold">{feesValue}</div>}
             >
               <div className="flex justify-between">
-                <div className="text-xs text-white">Trading Fee</div>
-                <div className="text-xs text-white">-0.82 USDT</div>
+                <div className="font-bold">Trading Fee</div>
+                <div className="font-bold">-0.82 USDX</div>
               </div>
               <div className="text-xs text-0xgrey">
                 (0.050% of the position value)
@@ -229,13 +227,13 @@ export default function TradeLimitWidget({
               <div className="flex justify-between">
                 <div className="text-xs text-white">Execution Fee Fee</div>
                 <div className="text-xs text-white">
-                  -0.82 USDT{" "}
+                  -0.82 USDX{" "}
                   <span className="text-sm text-0xgrey">(-$0.46)</span>
                 </div>
               </div>
             </CustomTooltip>
           ) : (
-            <div className="text-xs text-white">-</div>
+            <div className="font-bold">-</div>
           )}
         </div>
       </div>
@@ -245,7 +243,7 @@ export default function TradeLimitWidget({
           handleIncOrderTemp()
         }}
         className={`w-full font-bold text-center rounded-md item-center mt-4 ${
-          side === SIDE_LONG ? "bg-0xgreen" : "bg-0xredLighter"
+          side === SIDE_LONG ? "bg-0xgreen" : "bg-0xred"
         } h-9 text-white`}
       >
         {isCreateIncOrderLoading ? (

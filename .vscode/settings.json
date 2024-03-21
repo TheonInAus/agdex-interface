@@ -6,5 +6,10 @@
   },
   "editor.quickSuggestions": {
     "strings": "on"
-  }
+  },
+  "colorInfo.fields": [
+    "hex",
+    "rgb",
+    "hsl"
+  ],
 }

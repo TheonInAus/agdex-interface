@@ -23,58 +23,74 @@ export const useAllLiquidityPools = () => {
   return { poolsConfig: poolsData }
 }
 
-
-type LiquidityPositionOpened = {
+type LiquidityPositionIncreased = {
   __typename: string;
   account: string;
-  entryUnrealizedLoss: string;
+  blockNumber: string;
+  blockTimestamp: string;
   id: string;
-  liquidity: string | unknown;
-  margin: string | unknown;
-  positionID: string;
-  realizedProfitGrowthX64: string | unknown;
+  liquidityAfter: string;
+  marginAfter: string;
+  marginDelta: string;
+  market: string;
+  realizedPnLDelta: string;
 };
 
 type QueryResult = {
-  liquidityPositionOpeneds: LiquidityPositionOpened[];
+  liquidityPositionIncreaseds: LiquidityPositionIncreased[];
 };
 
-
-export const useLiqPoolsForAccount = (poolAddress: any) => {
+export const useLiqPoolsForAccount = (market: any) => {
   const { data: walletClient } = useWalletClient({
     chainId: arbitrumGoerli.id,
   })
   const GET_DATA = gql`
-    query GetLiquidityPositions($address: String!) {
-      liquidityPositionOpeneds(
-        where: {account: $address}
-        orderBy: positionID
+    query marketLiqQuery($account: String!, $market: String!) {
+      liquidityPositionIncreaseds(
+        where: {account: $account, market: $market}
+        orderBy: id
         orderDirection: desc
-        first: 5
       ) {
         account
-        entryUnrealizedLoss
+        blockNumber
+        blockTimestamp
         id
-        liquidity
-        margin
-        positionID
-        realizedProfitGrowthX64
+        liquidityAfter
+        marginAfter
+        marginDelta
+        market
+        realizedPnLDelta
       }
     }
   `;
 
   const { loading, error, data } = useQuery<QueryResult>(GET_DATA, {
     skip: !walletClient?.account.address,
-    variables: { address: walletClient?.account.address },
+    variables: { account: walletClient?.account.address, market: market },
     pollInterval: 5000
-
   });
-
-  console.log('check pool graph data => ', data)
 
   return {
     liqPoolsLoading: loading,
     liqPoolsError: error,
+    liqPoolsData: data
+  }
+}
+
+
+
+export const useLiqPoolsForAccountMock = (market: any) => {
+
+  const data = {
+    liquidityPositionIncreaseds: [
+      { liquidityAfter: 8293090000, realizedPnLDelta: 5994, marginAfter: 7382000000 }
+    ],
+
+  }
+
+  return {
+    liqPoolsLoading: false,
+    liqPoolsError: false,
     liqPoolsData: data
   }
 }

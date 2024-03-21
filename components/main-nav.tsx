@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import * as React from "react"
 import Link from "next/link"
@@ -9,6 +9,8 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 
+import { Card } from "./ui/card"
+
 interface MainNavProps {
   items?: NavItem[]
 }
@@ -17,31 +19,34 @@ export function MainNav({ items }: MainNavProps) {
   const pathname = usePathname()
 
   return (
-    <div className="flex gap-6 md:gap-10">
-      <Link href="/" className="flex items-center space-x-2">
+    <div className="flex items-center gap-6 md:gap-6">
+      {/* <Link href="/" className="flex items-center space-x-2">
         <Icons.logo />
-      </Link>
-      {items?.length ? (
-        <nav className="flex gap-6">
-          {items?.map(
-            (item, index) =>
-              item.href && (
-                <Link
-                  key={index}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center text-sm font-medium",
-                    pathname === item.href
-                      ? "underline underline-offset-4 text-bronze"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  {item.title}
-                </Link>
-              )
-          )}
-        </nav>
-      ) : null}
+      </Link> */}
+      <div className="text-4xl italic font-extrabold">PrePx</div>
+      <Card>
+        {items?.length ? (
+          <nav className="flex gap-6 ">
+            {items?.map(
+              (item, index) =>
+                item.href && (
+                  <Link
+                    key={index}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center text-xl font-bold",
+                      pathname === item.href
+                        ? "underline underline-offset-4"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    {item.title}
+                  </Link>
+                )
+            )}
+          </nav>
+        ) : null}
+      </Card>
     </div>
   )
 }

@@ -48,6 +48,60 @@ export const useTokenMarketAndIndexPrice = (interval = 10000) => {
 }
 
 
+export const useTokenMarketAndIndexPriceMock = (interval = 10000) => {
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const data = {
+        indexPrices: {
+            ARB: {
+                markPrice: '1.92000000',
+                indexPrice: '1.91810000',
+                price24hPcnt: '-0.071148',
+            },
+            BTC: {
+                markPrice: '68070.20000000',
+                indexPrice: '68032.68000000',
+                price24hPcnt: '-0.07046',
+            },
+            ETH: {
+                markPrice: '3706.17000000',
+                indexPrice: '3703.21000000',
+                price24hPcnt: '-0.070048',
+            },
+            LINK: {
+                markPrice: '19.42700000',
+                indexPrice: '19.40700000',
+                price24hPcnt: '-0.055049',
+            },
+        },
+        markPrices: {
+            ARB: {
+                markPrice: '1.92000000',
+                indexPrice: '1.91810000',
+                price24hPcnt: '-0.071148',
+            },
+            BTC: {
+                markPrice: '68070.20000000',
+                indexPrice: '68032.68000000',
+                price24hPcnt: '-0.07046',
+            },
+            ETH: {
+                markPrice: '3706.17000000',
+                indexPrice: '3703.21000000',
+                price24hPcnt: '-0.070048',
+            },
+            LINK: {
+                markPrice: '19.42700000',
+                indexPrice: '19.40700000',
+                price24hPcnt: '-0.055049',
+            },
+        },
+        change24h: 24
+    }
+    return { data, error, loading };
+}
+
+
 export const useMarketPriceState = (marketAddress: any) => {
     console.log("🚀 ~ useMarketPriceState ~ marketAddress:", marketAddress)
     const { data }: any = useContractRead({

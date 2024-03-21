@@ -1,0 +1,18 @@
+.tokenPair {
+  position: relative;
+  width: 50px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.tokenImageFront {
+  position: absolute;
+  z-index: 2;
+}
+
+.tokenImageBack {
+  position: relative;
+  left: 26px;
+  z-index: 1;
+}

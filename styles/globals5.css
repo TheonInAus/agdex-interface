@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #121212; /* 极深灰作为背景色 */
+    --foreground: #e0e0e0; /* 浅灰色文字，确保足够对比 */
+    --card: #222831; /* 暗灰蓝色卡片，增加深度感 */
+    --card-foreground: #eeeeee; /* 几乎白色的卡片文字 */
+    --popover: #393e46; /* 暗灰色弹窗，稍亮于卡片颜色 */
+    --popover-foreground: #ffffff; /* 白色弹窗文字 */
+    --primary: #ff4081; /* 鲜明的荧光粉红 */
+    --primary-foreground: #000000; /* 黑色文字，用于高对比度的荧光色背景上 */
+    --secondary: #7c4dff; /* 鲜亮的荧光紫 */
+    --secondary-foreground: #ffffff; /* 白色文字，确保清晰可读 */
+    --muted: #00bcd4; /* 荧光蓝，用于不那么突出但仍鲜艳的元素 */
+    --muted-foreground: #ffffff; /* 白色文字 */
+    --accent: #cddc39; /* 荧光绿，用作强调色 */
+    --accent-foreground: #000000; /* 黑色文字，以便在明亮的荧光绿背景上站出 */
+    --destructive: #f44336; /* 鲜红色，用于警告或错误提示 */
+    --destructive-foreground: #ffffff; /* 白色文字 */
+    --border: #444444; /* 深灰色边框，保持细节在深色背景中的可见性 */
+    --input: #333333; /* 输入框背景色，略亮于主背景色 */
+    --ring: #00e5ff; /* 荧光青色，用于焦点显示 */
+    --text-color: #e0e0e0; /* 默认浅色文本，保持通用性 */
+    --shadow-color: 255, 255, 255; /* 白色阴影，用于创造深度感 */
+    --shadow-intensity1: 0.05; /* 阴影强度，较轻 */
+    --shadow-intensity2: 0.1; /* 阴影强度，标准 */
+  }
+
+  /* 暗黑模式 */
+  .dark {
+    --background: #263238; /* 深灰蓝背景 */
+    --foreground: #cfd8dc; /* 浅灰蓝色文字 */
+    --card: #37474f; /* 暗灰蓝色卡片 */
+    --card-foreground: #cfd8dc; /* 浅灰蓝色卡片文字 */
+    --popover: #455a64; /* 暗灰色弹窗 */
+    --popover-foreground: #cfd8dc; /* 浅灰蓝色弹窗文字 */
+    --primary: #ffb300; /* 暗模式下的明亮橙色 */
+    --primary-foreground: #263238; /* 暗模式下的深灰蓝背景色 */
+    --secondary: #546e7a; /* 暗模式下的灰蓝色 */
+    --secondary-foreground: #cfd8dc; /* 暗模式下的浅灰色 */
+    --muted: #607d8b; /* 暗模式下的蓝灰色 */
+    --muted-foreground: #cfd8dc; /* 暗模式下的浅灰蓝色 */
+    --accent: #ff7043; /* 暗模式下的浅红橙色 */
+    --accent-foreground: #ffffff; /* 暗模式下的白色 */
+    --destructive: #e53935; /* 暗模式下的红色 */
+    --destructive-foreground: #37474f; /* 暗模式下的背景色 */
+    --border: #546e7a; /* 暗模式下的淡灰蓝色边框 */
+    --input: #455a64; /* 暗模式下的输入框背景色 */
+    --ring: #ffb300; /* 暗模式下的焦点色 */
+    --text-color: #cfd8dc; /* 暗模式下的默认文本色 */
+    --shadow-color: 255, 255, 255; /* 暗模式下的阴影色 */
+    --shadow-intensity1: 0.05;
+    --shadow-intensity2: 0.07;
+  }
+  body {
+    min-height: 100vh; /* Full viewport height */
+    background: var(
+      --background-color
+    ); /* Use CSS variables or direct values */
+    font-family: "sans-serif", sans-serif;
+    -webkit-font-smoothing: antialiased; /* for smoother fonts on Webkit browsers */
+    /* Add any other global styles */
+    color: var(--text-color);
+  }
+  .underline-effect {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 0.5px; /* Adjust space between text and underline */
+  }
+
+  .underline-effect::after {
+    content: "";
+    display: block;
+    width: 115%;
+    height: 1.5px;
+    background: #ffffff;
+    position: absolute;
+    bottom: 0;
+  }
+  .border {
+    border: 1px solid var(--border);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  .number-input {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+}

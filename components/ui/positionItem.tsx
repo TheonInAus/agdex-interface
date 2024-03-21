@@ -46,14 +46,14 @@ const PositionItem: React.FC<positionItemProps> = ({
   return (
     <div className={positionItemVariants(props)} {...props}>
       <div className="flex flex-row">
-        <span className="text-sm text-0xgrey">{keyText}</span>
+        <span className="italic">{keyText}</span>
         {info ? (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button className="p-1">
                   <AlertCircle
-                    className="text-white text-opacity-70 hover:text-opacity-100"
+                    className="text-0xbox-foreground text-opacity-70 hover:text-opacity-100"
                     size={14}
                   />
                 </button>
@@ -66,7 +66,7 @@ const PositionItem: React.FC<positionItemProps> = ({
         ) : (
           <span className="w-5 h-5"></span>
         )}
-        <span className={`text-sm text-left ml-3 ${plusCss}`}>
+        <span className={`font-bold text-left ml-3 ${plusCss}`}>
           {value || "-"}
         </span>
       </div>

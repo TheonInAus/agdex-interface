@@ -12,7 +12,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center rounded-md bg-muted  text-muted-foreground",
+      "inline-flex bg-muted rounded-xl text-muted-foreground h-10",
       className
     )}
     {...props}
@@ -26,11 +26,20 @@ const TabsTrigger = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const isLong = props.value === "long"
 
-  const activeStyle = isLong
-    ? "data-[state=active]:bg-0xgreen"
-    : "data-[state=active]:bg-0xredLighter"
+  let activeStyle = "data-[state=active]:bg-0xgreen"
+  switch (props.value) {
+    case "long":
+      activeStyle = "data-[state=active]:bg-0xgreen"
+      break
+    case "short":
+      activeStyle = "data-[state=active]:bg-0xred"
+      break
+    case "swap":
+      activeStyle = "data-[state=active]:bg-0xyellow"
+      break
+  }
 
-  let baseStyles = `inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-bold  ${activeStyle} data-[state=active]:text-white`
+  let baseStyles = `inline-flex font-bold items-center justify-center whitespace-nowrap rounded-xl h-full text-lg  ${activeStyle} data-[state=active]:text-white`
 
   return (
     <TabsPrimitive.Trigger

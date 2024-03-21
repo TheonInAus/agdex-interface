@@ -1,4 +1,5 @@
 import * as React from "react"
+import Image from "next/image"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { Card } from "@/components/ui/card"
@@ -50,38 +51,38 @@ export const InputBox: React.FC<InputBoxProps> = ({
   ...props
 }) => {
   return (
-    <Card
+    <div
       className={`${inputBoxVariants(
         props
-      )} w-full rounded-xl border-none bg-0xbox outline-none`}
+      )} border-noneoutline-none bg-muted rounded-xl`}
     >
-      <div className="flex flex-col justify-between w-full h-full">
+      <div className="flex flex-col justify-between w-full h-full ">
         <div className="flex flex-row items-center mb-2">
-          <span className="block text-sm text-0xgrey">{title}</span>
+          <span className="block text-lg italic font-bold">{title}</span>
           {prefix && (
             <>
-              <span className="block w-full text-sm text-right text-0xgrey">
+              <span className="block w-full mx-1 italic font-semibold text-right ">
                 {prefix}
               </span>
               <Input
-                className="w-6 h-4 p-0 text-sm text-right text-white bg-transparent border-none shadow-none outline-none placeholder:text-gray-300 number-input"
+                className="w-6 h-4 p-0 font-semibold text-right border-none shadow-none outline-none placeholder:text-gray-400 number-input"
                 value={prefixValue}
                 type="number"
                 placeholder="0"
                 onChange={onPrefixChange}
               />
-              <span className="block text-sm text-right text-white">x</span>
+              <span className="block text-right">x</span>
             </>
           )}
           {balanceNode && (
-            <div className="flex flex-row justify-end w-full text-sm">
+            <div className="flex flex-row justify-end w-full text-sm italic font-semibold">
               {balanceNode}
             </div>
           )}
         </div>
         <div className="flex flex-row items-center">
           <Input
-            className="w-full text-left text-white bg-transparent border-none shadow-none outline-none text-md placeholder:text-gray-300"
+            className="w-full text-lg text-left bg-transparent border-none shadow-none outline-none placeholder:text-gray-400"
             value={value}
             placeholder="0.00"
             onChange={onValueChange} // Assuming you have a handler function for this
@@ -94,9 +95,16 @@ export const InputBox: React.FC<InputBoxProps> = ({
               <span>Max</span>
             </div>
           )}
-          <span className="text-right text-white text-md">{suffix}</span>
+          <Image
+            src={`/token/${suffix.toLowerCase()}.svg`}
+            alt={suffix}
+            width={26}
+            height={26}
+            className="mr-1 rounded shadow-md"
+          />
+          <span className="text-lg font-black text-right">{suffix}</span>
         </div>
       </div>
-    </Card>
+    </div>
   )
 }

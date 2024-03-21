@@ -75,10 +75,10 @@
                       </div>
                       <Alert className="bg-0xdialog-foreground border-gray-100">
                         <AlertCircle
-                          className="text-0xredLighter hover:text-opacity-100 mt-2"
+                          className="text-0xred hover:text-opacity-100 mt-2"
                           size={22}
                         />
-                        <AlertDescription className="text-0xyellow-lighter ml-1">
+                        <AlertDescription className="text-0xyellow ml-1">
                           Margin settlement has a 10% slippage to prevent order
                           failure due to insufficient margin.
                         </AlertDescription>

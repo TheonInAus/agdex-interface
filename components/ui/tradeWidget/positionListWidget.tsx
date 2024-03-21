@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react"
-import { AlertCircle, Edit3, ExternalLink, Loader2 } from "lucide-react"
-import { formatEther, parseEther } from "viem"
+import { useState } from "react"
+import { Edit3, ExternalLink, Loader2 } from "lucide-react"
+import { formatEther } from "viem"
 
 import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
-import { useUserOrderList, useUserPositionListSingle } from "@/hooks/cUserState"
+import { useUserPositionListSingleMock } from "@/hooks/cUserState"
 import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import { ethMarketAddress } from "@/hooks/zAddressHelper"
 import {
   SIDE_LONG,
   SIDE_SHORT,
@@ -17,9 +16,7 @@ import {
   wrapperFormatEther18e,
   x96Price2Readable,
 } from "@/hooks/zContractHelper"
-import { TokenConfigType } from "@/hooks/zTokenConfig"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
 import {
   Dialog,
@@ -30,8 +27,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { InputBox } from "@/components/ui/inputBox"
-import { ListItem } from "@/components/ui/listItem"
 import { PositionItem } from "@/components/ui/positionItem"
 import {
   StyledTabs,
@@ -41,8 +36,7 @@ import {
 } from "@/components/ui/styledTab"
 import AddMarginWidget from "@/components/ui/tradeWidget/addMarginWidget"
 import ReduceMarginWidget from "@/components/ui/tradeWidget/reduceMarginWidget"
-import TpslDescWidget from "@/components/ui/tradeWidget/tpslDescWidget"
-import TpslStyledTabContent from "@/components/ui/tradeWidget/tpslStyledTabContent"
+
 import ClosePositionWidget from "./closePositionWidget"
 
 type PositionInfo = {
@@ -58,7 +52,7 @@ type PositionListWidgetType = {
 }
 
 export default function PositionListWidget({
-  contractPriceAfter, //contract price
+  contractPriceAfter,
 }: PositionListWidgetType) {
   const currentTokenEntity = useTokenConfigStore(
     (state) => state.currentTokenEntity
@@ -68,38 +62,20 @@ export default function PositionListWidget({
     data: positionDataList,
     isLoading,
     isError,
-  } = useUserPositionListSingle(currentTokenEntity)
-
-  console.log(
-    "🚀 ~ PositionListWidget ~ useUserPositionListSingle:",
-    positionDataList
-  )
+  } = useUserPositionListSingleMock(currentTokenEntity)
 
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
-  const { decPositionData, decPositionLoading, decPositionWrite } =
-    useCreateDecreasePosition(
-      currentPosition?.poolAddress,
-      currentPosition?.side || 1,
-      currentPosition?.marginDelta,
-      currentPosition?.sizeDelta.toString(),
-      currentPosition?.acceptableTradePriceX96,
-      ""
-    )
-
-  const handleClosePosition = (position: any) => {
-    console.log("🚀 ~ handleClosePosition ~ position:", position)
-
-    decPositionWrite()
+  const calUnPnL = (entryPrice: number, size: number, side: string) => {
+    console.log("🚀 ~ calUnPnL ~ side:", side)
+    const diff = contractPriceAfter - entryPrice
+    if (side === "Long") {
+      return diff * size
+    } else {
+      return -diff * size
+    }
   }
 
-  const calUnPnL = (
-    contractPrice: number,
-    entryPrice: number,
-    size: number
-  ) => {
-    return (contractPrice - entryPrice) * size
-  }
   const handleSetCurrentPosition = (position: any) => {
     setCurrentPosition({
       poolAddress: position.tokenPool,
@@ -116,18 +92,18 @@ export default function PositionListWidget({
 
   return (
     <div>
-      <div className="mt-2 mb-4 border-t border-0xline"></div>
+      <div className="mb-4 border-t border-0xline"></div>
       {positionDataList.length > 0 ? (
         <>
           {positionDataList.map((position, index) => (
             <div key={index}>
-              <div className="flex flex-row gap-2">
-                <div className="text-white">{`${currentTokenEntity.symbol}`}</div>
+              <div className="flex flex-row gap-2 font-extrabold">
+                <div>{`${currentTokenEntity.symbol}`}</div>
                 <div
                   className={`${
                     position.tokenSide === "Long"
                       ? "text-0xgreen"
-                      : "text-0xredLighter"
+                      : "text-0xred"
                   }`}
                 >
                   {position.tokenSide}{" "}
@@ -138,12 +114,10 @@ export default function PositionListWidget({
                   )}
                   x
                 </div>
-                <div className="text-gray-600">
-                  [ todo measure position risk]
-                </div>
+                <div className="">[ todo measure position risk]</div>
               </div>
-              <div className="flex flex-row w-full mt-3 justify-evenly">
-                <div className="flex flex-col w-full">
+              <div className="flex flex-row justify-between w-full mt-3">
+                <div className="flex flex-col">
                   <PositionItem
                     keyText="Size"
                     value={
@@ -154,15 +128,13 @@ export default function PositionListWidget({
                   />
                   <div className="flex flex-row mt-2">
                     <CustomTooltip
-                      triggerContent={
-                        <div className="text-sm text-0xgrey mr-7">Margin</div>
-                      }
+                      triggerContent={<div className="mr-7">Margin</div>}
                     >
                       <p>llll</p>
                     </CustomTooltip>
                     <CustomTooltip
                       triggerContent={
-                        <div className="text-sm text-white">
+                        <div className="font-bold">
                           {giveMeFormattedToShow(
                             wrapperFormatEther6e(position.margin)
                           ) + " USDX"}
@@ -175,7 +147,7 @@ export default function PositionListWidget({
                       <DialogTrigger asChild>
                         <button className="ml-1">
                           <Edit3
-                            className="text-white text-opacity-70 hover:text-opacity-100"
+                            className="text-opacity-70 hover:text-opacity-100"
                             size={13}
                             onClick={() => handleSetCurrentPosition(position)}
                           />
@@ -213,20 +185,16 @@ export default function PositionListWidget({
                     </Dialog>
                   </div>
                 </div>
-                <div className="flex flex-col w-full">
+                <div className="flex flex-col">
                   <PositionItem
                     keyText="Entry Price"
                     value={x96Price2Readable(position.entryPriceX96)}
                   />
                   <div className="flex mt-2 gap-7">
-                    <CustomTooltip
-                      triggerContent={
-                        <div className="text-sm text-0xgrey">Liq. Price</div>
-                      }
-                    >
+                    <CustomTooltip triggerContent={<div>Liq. Price</div>}>
                       <p>llll</p>
                     </CustomTooltip>
-                    <div className="text-white text-sm">
+                    <div className="font-bold">
                       {position?.tokenSide === "Long"
                         ? giveMeFormattedToShow(
                             Number(x96Price2Readable(position.entryPriceX96)) -
@@ -241,41 +209,37 @@ export default function PositionListWidget({
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col w-full">
+                <div className="flex flex-col">
                   <div className="flex flex-row">
                     <CustomTooltip
                       triggerContent={
-                        <div className="text-sm text-0xgrey mr-7">
-                          Unrealized Pnl.
-                        </div>
+                        <div className="mr-7">Unrealized Pnl.</div>
                       }
                     >
                       <p>llll</p>
                     </CustomTooltip>
                     <div
-                      className={`text-sm ${
+                      className={`font-bold ${
                         calUnPnL(
-                          contractPriceAfter,
-                          Number(x96Price2Readable(position.entryPriceX96)) ||
-                            0,
-                          Number(formatEther(position.size))
+                          Number(x96Price2Readable(position.entryPriceX96)),
+                          Number(formatEther(position.size)),
+                          position.tokenSide
                         ) >= 0
                           ? "text-0xgreen"
-                          : "text-0xredLighter"
+                          : "text-0xred"
                       }`}
                     >
                       {giveMeFormattedToShow(
                         calUnPnL(
-                          contractPriceAfter,
-                          Number(x96Price2Readable(position.entryPriceX96)) ||
-                            0,
-                          Number(formatEther(position.size))
+                          Number(x96Price2Readable(position.entryPriceX96)),
+                          Number(formatEther(position.size)),
+                          position.tokenSide
                         )
                       )}
                     </div>
 
                     <ExternalLink
-                      className="mt-1 ml-1 text-white text-opacity-70 hover:text-opacity-100"
+                      className="mt-1 ml-1 text-opacity-70 hover:text-opacity-100"
                       size={13}
                     />
                   </div>
@@ -283,8 +247,8 @@ export default function PositionListWidget({
                     <PositionItem keyText="Net Funding" value={"-"} info={""} />
                   </div>
                 </div>
-                <div className="flex flex-row justify-end w-full gap-3">
-                  <Dialog>
+                <div className="flex flex-row">
+                  {/* <Dialog>
                     <DialogTrigger asChild>
                       <Button
                         onClick={() => handleSetCurrentPosition(position)}
@@ -304,12 +268,12 @@ export default function PositionListWidget({
                       </DialogHeader>
                       <TpslStyledTabContent positionInfo={position} />
                     </DialogContent>
-                  </Dialog>
+                  </Dialog> */}
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button
-                        disabled={decPositionLoading}
-                        className="h-5 text-sm text-white bg-transparent border border-white hover:bg-0xbox"
+                        disabled={false}
+                        className="h-8 text-base bg-transparent border text-0xyellow border-0xyellow hover:bg-0xbox"
                         onClick={() => handleSetCurrentPosition(position)}
                       >
                         Close

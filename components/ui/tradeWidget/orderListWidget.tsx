@@ -95,7 +95,7 @@ export default function OrderListWidget() {
               </div>
               <div
                 className={`w-[9%] text-sm text-start ${
-                  orderItem.side === 1 ? "text-0xgreen" : "text-0xredLighter"
+                  orderItem.side === 1 ? "text-0xgreen" : "text-0xred"
                 }`}
               >
                 {" "}

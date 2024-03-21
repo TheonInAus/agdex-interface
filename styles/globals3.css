@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #ffffff; /* 纯白背景 */
+    --foreground: #344955; /* 深青色文字 */
+    --card: #fafafa; /* 几乎白色的卡片 */
+    --card-foreground: #344955; /* 深青色卡片文字 */
+    --popover: #f5f5f5; /* 极淡灰色弹窗 */
+    --popover-foreground: #344955; /* 深青色弹窗文字 */
+    --primary: #f9aa33; /* 明亮的橙色 */
+    --primary-foreground: #ffffff; /* 白色 */
+    --secondary: #232f34; /* 深灰蓝 */
+    --secondary-foreground: #f0f0f0; /* 亮灰色 */
+    --muted: #e1e2e1; /* 非常淡的灰色 */
+    --muted-foreground: #505f69; /* 暗灰色 */
+    --accent: #ff5722; /* 明亮的红橙色 */
+    --accent-foreground: #ffffff; /* 白色 */
+    --destructive: #d32f2f; /* 强烈的红色 */
+    --destructive-foreground: #ffffff; /* 白色 */
+    --border: #b0bec5; /* 淡蓝灰色边框 */
+    --input: #eceff1; /* 输入框背景色 */
+    --ring: #f9aa33; /* 焦点色 */
+    --text-color: #344955; /* 默认文本色 */
+    --shadow-color: 50, 50, 50; /* 淡阴影色 */
+    --shadow-intensity1: 0.08;
+    --shadow-intensity2: 0.12;
+  }
+
+  /* 暗黑模式 */
+  .dark {
+    --background: #263238; /* 深灰蓝背景 */
+    --foreground: #cfd8dc; /* 浅灰蓝色文字 */
+    --card: #37474f; /* 暗灰蓝色卡片 */
+    --card-foreground: #cfd8dc; /* 浅灰蓝色卡片文字 */
+    --popover: #455a64; /* 暗灰色弹窗 */
+    --popover-foreground: #cfd8dc; /* 浅灰蓝色弹窗文字 */
+    --primary: #ffb300; /* 暗模式下的明亮橙色 */
+    --primary-foreground: #263238; /* 暗模式下的深灰蓝背景色 */
+    --secondary: #546e7a; /* 暗模式下的灰蓝色 */
+    --secondary-foreground: #cfd8dc; /* 暗模式下的浅灰色 */
+    --muted: #607d8b; /* 暗模式下的蓝灰色 */
+    --muted-foreground: #cfd8dc; /* 暗模式下的浅灰蓝色 */
+    --accent: #ff7043; /* 暗模式下的浅红橙色 */
+    --accent-foreground: #ffffff; /* 暗模式下的白色 */
+    --destructive: #e53935; /* 暗模式下的红色 */
+    --destructive-foreground: #37474f; /* 暗模式下的背景色 */
+    --border: #546e7a; /* 暗模式下的淡灰蓝色边框 */
+    --input: #455a64; /* 暗模式下的输入框背景色 */
+    --ring: #ffb300; /* 暗模式下的焦点色 */
+    --text-color: #cfd8dc; /* 暗模式下的默认文本色 */
+    --shadow-color: 255, 255, 255; /* 暗模式下的阴影色 */
+    --shadow-intensity1: 0.05;
+    --shadow-intensity2: 0.07;
+  }
+  body {
+    min-height: 100vh; /* Full viewport height */
+    background: var(
+      --background-color
+    ); /* Use CSS variables or direct values */
+    font-family: "sans-serif", sans-serif;
+    -webkit-font-smoothing: antialiased; /* for smoother fonts on Webkit browsers */
+    /* Add any other global styles */
+    color: var(--text-color);
+  }
+  .underline-effect {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 0.5px; /* Adjust space between text and underline */
+  }
+
+  .underline-effect::after {
+    content: "";
+    display: block;
+    width: 115%;
+    height: 1.5px;
+    background: #ffffff;
+    position: absolute;
+    bottom: 0;
+  }
+  .border {
+    border: 1px solid var(--border);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  .number-input {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+}

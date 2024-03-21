@@ -1103,7 +1103,7 @@ body {
   background-color: hsl(0 72.2% 50.6% / var(--tw-bg-opacity));
 }
 
-.bg-0xredLighter {
+.bg-0xred {
   --tw-bg-opacity: 1;
   background-color: rgb(255 74 74 / var(--tw-bg-opacity));
 }
@@ -1337,7 +1337,7 @@ body {
   color: hsl(0 85.7% 97.3% / var(--tw-text-opacity));
 }
 
-.text-0xredLighter {
+.text-0xred {
   --tw-text-opacity: 1;
   color: rgb(255 74 74 / var(--tw-text-opacity));
 }
@@ -1352,7 +1352,7 @@ body {
   color: hsl(60 9.1% 97.8% / var(--tw-text-opacity));
 }
 
-.text-0xyellow-lighter {
+.text-0xyellow {
   --tw-text-opacity: 1;
   color: rgb(224 162 2 / var(--tw-text-opacity));
 }

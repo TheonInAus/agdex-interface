@@ -17,9 +17,7 @@ export default function TpslDescWidget({ positionItem }: TpslDescProps) {
         <div className="text-base text-white">{`${positionItem?.tokenName}/USDX`}</div>
         <div
           className={`${
-            positionItem?.tokenSide === "Long"
-              ? "text-0xgreen"
-              : "text-0xredLighter"
+            positionItem?.tokenSide === "Long" ? "text-0xgreen" : "text-0xred"
           } text-sm mt-[2px]`}
         >
           {positionItem?.tokenSide}{" "}

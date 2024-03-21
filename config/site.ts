@@ -1,9 +1,9 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name:'Bronzes',
+  name: 'ABEx',
   description:
-    "Bronzes",
+    "ABEx",
   mainNav: [
     {
       name: 'Home',
@@ -18,18 +18,30 @@ export const siteConfig = {
     {
       name: 'Pools',
       title: "Pools",
-      href: "/pools",
-    },
-    {
-      name: 'Earn',
-      title: "Earn",
-      href: "/earn",
+      href: "/abPools",
     },
     {
       name: 'Referrals',
       title: "Referrals",
-      href: "/referrals",
+      href: "/abReferral",
     },
+    // {
+    //   name: 'Earn',
+    //   title: "Earn",
+    //   href: "/earn",
+    // },
+    {
+      name: 'Bridge',
+      title: "Bridge",
+      href: "/abBridge",
+    },
+    {
+      name: 'Stats',
+      title: "Stats",
+      href: "/Stats",
+    },
+
+
   ],
   links: {
     twitter: "https://twitter.com/shadcn",
