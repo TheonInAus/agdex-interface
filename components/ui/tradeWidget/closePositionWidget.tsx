@@ -54,8 +54,6 @@ export default function ClosePositionWidget({
     )
 
   const handleClosePosition = (position: any) => {
-    console.log("🚀 ~ handleClosePosition ~ position:", position)
-
     decPositionWrite()
   }
 

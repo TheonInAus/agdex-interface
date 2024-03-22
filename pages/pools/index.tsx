@@ -19,7 +19,8 @@ import { Slider } from "@/components/ui/slider"
 
 import PoolRow, { PoolDataType } from "./PoolRow"
 import PoolCalculatorWidget from "./poolCalculator"
-import PoolTradeWidget from "./poolTradeWidget"
+
+// import PoolTradeWidget from "./poolTradeWidget"
 
 export default function PoolsPage() {
   const { poolsConfig } = useAllLiquidityPools()
@@ -73,12 +74,12 @@ export default function PoolsPage() {
           </div>
         </Card>
         <Card style={{ width: 350 }}>
-          <PoolTradeWidget
+          {/* <PoolTradeWidget
             poolsConfig={poolsConfig}
             expandedPool={expandedPool}
             dataChangeMode={dataChangeMode}
             setDataChangeMode={setDataChangeMode}
-          />
+          /> */}
         </Card>
       </div>
     </section>

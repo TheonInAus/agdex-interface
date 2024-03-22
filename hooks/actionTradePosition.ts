@@ -43,8 +43,6 @@ export const useCreateIncreasePostion = (marketAddress: any, side: Side, marginD
 }
 
 export const useCreateDecreasePosition = (marketAddress: any, side: Side, marginDelta: any, sizeDelta: any, acceptableTradePriceX96: any, receiverAddress: any) => {
-    console.log("🚀 ~ useCreateDecreasePosition ~ acceptableTradePriceX96:", acceptableTradePriceX96)
-    console.log("🚀 ~ useCreateDecreasePosition ~ sizeDelta:", sizeDelta?.toString())
     const { data: walletClient } = useWalletClient({
         chainId: arbitrumGoerli.id,
     })

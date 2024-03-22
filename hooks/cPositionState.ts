@@ -61,7 +61,6 @@ export const usePositionAndLiqPositionInfo = (market: any) => {
             setLiqPnL(Number(formatEther(liqPositionData?.unrealizedPnLGrowthX64)))
         }
     }, [liqPositionData]);
-    console.log("🚀 ~ usePositionAndLiqPositionInfo ~ liqPositionData:", liqPositionData)
 
 
     useEffect(() => {
@@ -75,7 +74,6 @@ export const usePositionAndLiqPositionInfo = (market: any) => {
 
         }
     }, [positionData])
-    console.log("🚀 ~ usePositionAndLiqPositionInfopositionData:", positionData)
 
     return {
         lpNetSize,

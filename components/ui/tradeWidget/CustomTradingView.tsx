@@ -40,7 +40,6 @@ const CustomTradingView: React.FC<CustomTradingViewProps> = ({
   const candleSeriesRef = useRef<any>(null)
 
   const { klineData, loading } = useGetKlineDataMock(symbol, type)
-  console.log("🚀 ~ check kline kline :", klineData)
 
   useEffect(() => {
     if (chartContainerRef.current && !chartRef.current) {

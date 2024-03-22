@@ -47,7 +47,6 @@ export default function PoolRow({
   const { liqPoolsData: marketLiqList } = useLiqPoolsForAccountMock(
     market?.marketAddress
   )
-  console.log("🚀 ~ marketLiqList:", marketLiqList)
 
   return (
     <>

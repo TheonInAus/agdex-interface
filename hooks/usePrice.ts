@@ -103,14 +103,12 @@ export const useTokenMarketAndIndexPriceMock = (interval = 10000) => {
 
 
 export const useMarketPriceState = (marketAddress: any) => {
-    console.log("🚀 ~ useMarketPriceState ~ marketAddress:", marketAddress)
     const { data }: any = useContractRead({
         address: marketManagerAddress,
         abi: marketManagerABI,
         functionName: 'priceStates',
         args: [marketAddress]
     })
-    console.log("🚀 ~ useMarketPriceState ~ data:", data)
 
     const [premiumRateX96, setPremiumRateX96] = useState(0)
     useEffect(() => {
@@ -132,7 +130,6 @@ export const useGlobalFundingRate = (marketAddress: any) => {
         args: [marketAddress]
     })
     const [cumulativePremiumRateX96, setCumulativePremiumRateX96] = useState(0)
-    console.log("🚀 ~ useGlobalFundingRate ~ data:", data)
 
     useEffect(() => {
         if (data) {

@@ -11,7 +11,6 @@ export const useOpenLiquidityPosition = (market: any, margin: any, liquidity: an
     if (liquidity === '') liquidity = '0'
     margin = parseUnits(margin, 6)
     liquidity = parseUnits(liquidity, 6)
-    console.log("🚀 ~ useOpenLiquidityPosition ~ market:", market)
 
     const { data: openLiqPositionData, isLoading: openLiqPositionLoading, write: openLiqPositionWrite } = useContractWrite({
         address: positionRouterAddress,

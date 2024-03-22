@@ -67,7 +67,6 @@ export default function PositionListWidget({
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
   const calUnPnL = (entryPrice: number, size: number, side: string) => {
-    console.log("🚀 ~ calUnPnL ~ side:", side)
     const diff = contractPriceAfter - entryPrice
     if (side === "Long") {
       return diff * size
@@ -107,11 +106,11 @@ export default function PositionListWidget({
                   }`}
                 >
                   {position.tokenSide}{" "}
-                  {e6DivideE18(
+                  {/* {e6DivideE18(
                     position.margin,
                     position.size,
                     BigInt(Math.round(contractPriceAfter))
-                  )}
+                  )} */}
                   x
                 </div>
                 <div className="">[ todo measure position risk]</div>

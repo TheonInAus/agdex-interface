@@ -34,7 +34,6 @@ export const useUserUsdxBalanceMock = () => {
 
     return { data: { formatted: 288839488, symbol: 'USDX' }, isError: false, isLoading: false }
 }
-
 type TokenParamsType = {
     tokenName: string
     market: string
@@ -94,7 +93,6 @@ export const useUserPositionListSingle = (token: TokenConfigType) => {
             }
         })
     }
-    console.log("🚀 ~ useUserPositionListSingle ~ positionDatas:", positionDatas)
 
     const positionDataList = positionDatas.filter(position => position.margin !== 0n && position.size !== 0n)
     return { data: positionDataList, isLoading, isError }

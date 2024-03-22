@@ -61,7 +61,6 @@ export default function TradeLimitWidget({
 
   const [ethPrice, setEthPrice] = useState(0)
   const [tokenPrice, setTokenPrice] = useState(0)
-  console.log("🚀 ~ tokenPrice:", tokenPrice)
   const [contractPrice, setContractPrice] = useState(0)
 
   useEffect(() => {

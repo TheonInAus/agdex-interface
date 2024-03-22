@@ -7,15 +7,12 @@ import {
 
 export default function ApotosConnectButtonWidget() {
   const { connect, wallets, account, disconnect } = useWallet()
-  console.log("🚀 ~ onWalletConnectRequest ~ wallets:", wallets)
   //   const { setErrorAlertMessage } = useAlert()
   const wallet = wallets[0]
   const onWalletConnectRequest = async (walletName: WalletName) => {
-    console.log("🚀 ~ onWalletConnectRequest ~ walletName:", walletName)
     try {
       await connect(walletName)
     } catch (error: any) {
-      console.log("🚀 ~ onWalletConnectRequest ~ error:", error)
       //   setErrorAlertMessage(error)
     }
   }

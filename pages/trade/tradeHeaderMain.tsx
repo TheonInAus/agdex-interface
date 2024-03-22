@@ -46,7 +46,7 @@ export default function TradeHeaderWidget({
           />
           <Stats
             title={"24h Change"}
-            value={`${change24h.toFixed(2)}%`}
+            value={`${change24h}%`}
             textColor={change24h >= 0 ? "text-0xgreen" : "text-0xred"}
           />
           <div>

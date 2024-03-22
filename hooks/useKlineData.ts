@@ -43,7 +43,6 @@ export const useGetKlineData = (symbol: string, type = 1, interval = 10000) => {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const result = await response.json();
-                console.log("🚀 ~ check kline ~ result:", result)
                 if (result.status === 'success') {
                     setResultData(result.data);
                     setError(null);
@@ -64,10 +63,8 @@ export const useGetKlineData = (symbol: string, type = 1, interval = 10000) => {
     }, [symbol, type, interval, url]);
 
     useEffect(() => {
-        console.log("🚀 ~ check kline useEffect ~ resultData: ", resultData)
         if (resultData && resultData.length > 0) {
             const formattedData = convertData(resultData, type)
-            console.log("🚀 ~ check kline ~ formattedData:", formattedData)
             setKlinedata(formattedData);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,7 +91,7 @@ export const useGetKlineDataMock = (symbol: string, type = 1, interval = 10000) 
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const result = await response.json();
-                console.log("🚀 ~ check kline ~ result:", result)
+                console.log("~ check kline ~ result:", result)
                 if (result.status === 'success') {
                     setResultData(result.data);
                     setError(null);
@@ -115,10 +112,8 @@ export const useGetKlineDataMock = (symbol: string, type = 1, interval = 10000) 
     }, [symbol, type, interval, url]);
 
     useEffect(() => {
-        console.log("🚀 ~ check kline useEffect ~ resultData: ", resultData)
         if (resultData && resultData.length > 0) {
             const formattedData = convertData(resultData, type)
-            console.log("🚀 ~ check kline ~ formattedData:", formattedData)
             setKlinedata(formattedData);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

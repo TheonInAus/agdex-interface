@@ -1,23 +1,23 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react"
 
 type Alert = {
-  text: ReactNode;
-  setText: Dispatch<SetStateAction<ReactNode | null>>;
-};
+  text: ReactNode
+  setText: Dispatch<SetStateAction<ReactNode | null>>
+}
 
 export function SuccessAlert({ text, setText }: Alert) {
   return (
     <div
-      className="bg-teal-100 border border-teal-400 text-teal-900 px-4 py-3 rounded relative"
+      className="relative px-4 py-3 text-teal-900 bg-teal-100 border border-teal-400 rounded"
       role="alert"
     >
-      <span className="block sm:inline break-all right-3">{text}</span>
+      <span className="block break-all sm:inline right-3">{text}</span>
       <span
-        className="absolute top-0 bottom-0 right-0 px-4 py-3"
+        className="absolute inset-y-0 right-0 px-4 py-3"
         onClick={() => setText(null)}
       >
         <svg
-          className="fill-current h-6 w-6 text-teal-500"
+          className="w-6 h-6 text-teal-500 fill-current"
           role="button"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -27,22 +27,22 @@ export function SuccessAlert({ text, setText }: Alert) {
         </svg>
       </span>
     </div>
-  );
+  )
 }
 
 export function ErrorAlert({ text, setText }: Alert) {
   return (
     <div
-      className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+      className="relative px-4 py-3 text-red-700 bg-red-100 border border-red-400 rounded"
       role="alert"
     >
-      <span className="block sm:inline break-all">{text}</span>
+      <span className="block break-all sm:inline">{text}</span>
       <span
-        className="absolute top-0 bottom-0 right-0 px-4 py-3"
+        className="absolute inset-y-0 right-0 px-4 py-3"
         onClick={() => setText(null)}
       >
         <svg
-          className="fill-current h-6 w-6 text-red-500"
+          className="w-6 h-6 text-red-500 fill-current"
           role="button"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -52,5 +52,5 @@ export function ErrorAlert({ text, setText }: Alert) {
         </svg>
       </span>
     </div>
-  );
+  )
 }
