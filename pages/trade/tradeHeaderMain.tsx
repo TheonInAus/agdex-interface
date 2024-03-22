@@ -28,7 +28,7 @@ export default function TradeHeaderWidget({
   )
   return (
     <div className="flex justify-center">
-      <Card className="w-[1250px] bg-transparent">
+      <Card className="w-[1250px]">
         <div className="flex items-center justify-start gap-10 py-6 pl-10">
           <TokenPairWidget token1={currentTokenEntity.name} token2={"USDX"} />
           <DropDownBox />

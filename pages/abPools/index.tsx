@@ -15,6 +15,7 @@ import {
 import TokenPairWidget from "@/components/ui/tokenPair/TokenPairWidget"
 import { UnStats } from "@/components/ui/unStats"
 import TradingViewWidgetSmall from "@/components/tradingViewSmall"
+import Iconify from "@/components/Iconify"
 
 export default function PrepPoolsWidget() {
   const currentTokenEntity = useTokenConfigStore(
@@ -53,7 +54,7 @@ export default function PrepPoolsWidget() {
   return (
     <section className="container flex items-center justify-center gap-6 pt-6 pb-8">
       <div className="flex flex-col gap-4 w-[1250px]">
-        <Card className="bg-transparent">
+        <Card>
           <div className="flex flex-row items-center justify-between px-10 py-4">
             <TokenPairWidget token1={currentTokenEntity.name} token2={"USDX"} />
             <Stats title={"Price"} value={`$ 100`} />
@@ -63,14 +64,15 @@ export default function PrepPoolsWidget() {
             <Stats title={"Stake Reward"} value={`0%`} />
           </div>
         </Card>
-        <div className="w-full text-base   font-bold text-center bg-popover">
-          Mint ALP Tokens to earn fees from swaps and leverage tradings.
+        <div className="w-full text-base flex font-bold justify-center items-center bg-0xbox">
+          <Iconify icon="iconoir:light-bulb-on" />
+          <div>Mint ALP Tokens to earn fees from swaps and leverage tradings.</div>
           <a href="google.com" className="text-agdexMain underline ml-2">
             Learn more
           </a>
         </div>
 
-        <Card className="p-6 bg-secondary">
+        <Card className="p-6">
           <div className="flex flex-row justify-between w-full">
             <div className="flex flex-col">
               <div className="flex flex-col">
@@ -141,7 +143,7 @@ export default function PrepPoolsWidget() {
           </div>
         </Card>
 
-        <Card className="bg-transparent">
+        <Card>
           <div className="flex flex-row gap-5 p-2">
             <div className="flex-1">
               <TradingViewWidgetSmall tokenName={currentTokenEntity.name} />
@@ -190,7 +192,7 @@ export default function PrepPoolsWidget() {
             </div>
           </div>
         </Card>
-        <Card className="p-6 bg-transparent">
+        <Card>
           <div className="text-2xl   font-bold text-agdexMain">
             Pool Overview
           </div>

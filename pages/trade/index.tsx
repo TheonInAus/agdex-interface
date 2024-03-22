@@ -214,7 +214,7 @@ export default function TradePage() {
           </div>
           <div className="mt-2">
             {/* Narrow Block 1 */}
-            <Card style={{ width: 372 }} className="bg-transparent">
+            <Card style={{ width: 372 }}>
               <Tabs defaultValue={"long"}>
                 <TabsList style={{ width: "100%" }}>
                   <TabsTrigger style={{ width: "33%" }} value={"long"}>
@@ -317,7 +317,7 @@ export default function TradePage() {
               </Tabs>
             </Card>
             {/* Narrow Block 2 */}
-            <Card className="mt-2 bg-transparent" style={{ width: 372 }}>
+            <Card className="mt-2" style={{ width: 372 }}>
               <div className="w-full">
                 <div className="mt-1 text-lg font-bold">Token/Asset</div>
                 <div className="my-3 border-t border-0xline"></div>

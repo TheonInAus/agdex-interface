@@ -36,12 +36,12 @@ export default function TradeTradingViewWidget() {
 
   return (
     <div className="flex justify-center">
-      <Card className="w-[870px] bg-transparent">
+      <Card className="w-[870px]">
         <div style={{ marginBottom: 10 }}>
           <RadioGroup.Root
             defaultValue="1m"
             onValueChange={handleValueChange}
-            className="flex items-center px-3 py-1 space-x-4 rounded-lg bg-popover"
+            className="flex items-center px-3 py-1 space-x-4 rounded-lg bg-0xbox"
           >
             {["1m", "5m", "15m", "30m", "1h", "4h", "1D", "1W"].map(
               (option) => (

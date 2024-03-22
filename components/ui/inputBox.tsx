@@ -54,18 +54,18 @@ export const InputBox: React.FC<InputBoxProps> = ({
     <div
       className={`${inputBoxVariants(
         props
-      )} border outline-none bg-transparent rounded-xl`}
+      )} outline-none bg-[#262626] rounded-xl`}
     >
       <div className="flex flex-col justify-between w-full h-full ">
         <div className="flex flex-row items-center mb-2">
-          <span className="block text-lg   font-bold">{title}</span>
+          <span className="block text-lg font-bold">{title}</span>
           {prefix && (
             <>
-              <span className="block w-full mx-1   font-semibold text-right ">
+              <span className="block w-full mx-1 font-semibold text-right ">
                 {prefix}
               </span>
               <Input
-                className="w-6 h-4 p-0 font-semibold text-right border-none shadow-none outline-none placeholder:text-gray-400 number-input"
+                className="w-6 h-4 p-0 font-semibold text-right border-none shadow-none outline-none number-input"
                 value={prefixValue}
                 type="number"
                 placeholder="0"
@@ -75,14 +75,14 @@ export const InputBox: React.FC<InputBoxProps> = ({
             </>
           )}
           {balanceNode && (
-            <div className="flex flex-row justify-end w-full text-sm   font-semibold">
+            <div className="flex flex-row justify-end w-full text-sm font-semibold">
               {balanceNode}
             </div>
           )}
         </div>
         <div className="flex flex-row items-center">
           <Input
-            className="w-full text-lg text-left bg-transparent border-none shadow-none outline-none placeholder:text-gray-400"
+            className="w-full text-lg text-left bg-transparent border-none shadow-none outline-none"
             value={value}
             placeholder="0.00"
             onChange={onValueChange} // Assuming you have a handler function for this

@@ -19,7 +19,7 @@ export default function TradePositionWidget({
 }: TradePositionWidgetProps) {
   return (
     <>
-      <Card className="pt-4 mt-2 bg-transparent">
+      <Card className="pt-4 mt-2">
         <StyledTabs defaultValue="Position">
           <div className="flex flex-row justify-between">
             <StyledTabsList>

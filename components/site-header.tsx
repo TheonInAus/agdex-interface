@@ -12,7 +12,7 @@ import { Card } from "./ui/card"
 
 export function SiteHeader() {
   return (
-    <header className="top-0 z-40">
+    <header className="top-0 z-40 bg-0xboxBackground pb-2">
       <div className="flex flex-row items-center justify-between gap-10 px-20 mt-5">
         <MainNav items={siteConfig.mainNav} />
         <div className="flex items-center ">

@@ -31,7 +31,7 @@
 
   /* 暗黑模式 */
   .dark {
-    --background: #202d3f; /* 深蓝背景 */
+    --background: #000000; /* 深蓝背景 */
     --foreground: #cbd2d9; /* 浅灰色文字 */
     --card: #2b3a50; /* 暗蓝色卡片 */
     --card-foreground: #cbd2d9; /* 浅灰色卡片文字 */

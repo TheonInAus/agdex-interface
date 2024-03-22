@@ -11,7 +11,7 @@ export default function ABBridgeWidget() {
             <div className="  font-bold">FROM</div>
             <div className="text-agdexMain">Connect wallet</div>
           </div>
-          <div className="flex flex-row gap-3 p-3 mt-3 bg-0xgrey">
+          <div className="flex flex-row gap-3 p-3 mt-3 bg-0xbox">
             <Card className="h-[200px] w-[200px] items-center justify-center flex ">
               Select network
             </Card>
@@ -20,12 +20,12 @@ export default function ABBridgeWidget() {
                 <div>Asset</div>
                 <div>-</div>
               </Card>
-              <div className="flex flex-row w-full gap-3 mt-2 h-1/2">
-                <div className="flex flex-col items-start justify-center flex-1 h-full px-3 bg-card">
+              <div className="flex flex-row w-full gap-3 mt-2 h-1/2 bg-transparent">
+                <div className="flex flex-col items-start justify-center flex-1 h-full px-3 bg-0xbox">
                   <div>Amount</div>
                   <div>-</div>
                 </div>
-                <div className="flex flex-col items-start justify-center flex-1 h-full px-2 text-agdexMain bg-muted">
+                <div className="flex flex-col items-start justify-center flex-1 h-full px-2 text-agdexMain bg-0xbox">
                   <div>Balance</div>
                   <div>-</div>
                 </div>
@@ -39,7 +39,7 @@ export default function ABBridgeWidget() {
             <div className="  font-bold">TO</div>
             <div className="text-agdexMain">Connect wallet</div>
           </div>
-          <div className="flex flex-row gap-3 p-3 mt-3 bg-0xgrey">
+          <div className="flex flex-row gap-3 p-3 mt-3 bg-0xbox">
             <Card className="h-[200px] w-[200px] items-center justify-center flex ">
               Select network
             </Card>
@@ -49,11 +49,11 @@ export default function ABBridgeWidget() {
                 <div>-</div>
               </Card>
               <div className="flex flex-row w-full gap-3 mt-2 h-1/2">
-                <div className="flex flex-col items-start justify-center flex-1 h-full px-3 bg-card">
+                <div className="flex flex-col items-start justify-center flex-1 h-full px-3 bg-0xbox">
                   <div>Amount</div>
                   <div>-</div>
                 </div>
-                <div className="flex flex-col items-start justify-center flex-1 h-full px-2 text-agdexMain bg-muted">
+                <div className="flex flex-col items-start justify-center flex-1 h-full px-2 text-agdexMain bg-0xbox">
                   <div>Balance</div>
                   <div>-</div>
                 </div>
