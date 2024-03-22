@@ -31,7 +31,6 @@
 //   dataChangeMode,
 //   setDataChangeMode,
 // }: PoolTradeWidgetProps) {
-//   console.log("🚀 ~ poolsConfig:", poolsConfig)
 //   const {
 //     data: balanceData,
 //     isError: isBalanceError,

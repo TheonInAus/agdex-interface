@@ -169,7 +169,6 @@ export const convertPoolAddressToTokenName = (poolAddress: string) => {
 }
 
 export const convertOrderBookTypeData = (__typename: string, triggerAbove: boolean) => {
-    console.log('check pool __typeName => ', __typename, triggerAbove)
 
     if (__typename === 'IncreaseOrderCreated') {
         return 'Limit'

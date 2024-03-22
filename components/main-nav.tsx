@@ -23,7 +23,7 @@ export function MainNav({ items }: MainNavProps) {
       {/* <Link href="/" className="flex items-center space-x-2">
         <Icons.logo />
       </Link> */}
-      <div className="text-4xl italic font-extrabold">PrePx</div>
+      <div className="text-4xl italic font-extrabold">AGDEX</div>
       <Card>
         {items?.length ? (
           <nav className="flex gap-6 ">

@@ -33,7 +33,6 @@ export default function PositionHistoryWidget({
   const currentTokenEntity = useTokenConfigStore(
     (state) => state.currentTokenEntity
   )
-  console.log(currentTokenEntity)
 
   const { positionHistoryList, isLoading, isError } =
     useUserPositionHistoryListMock(currentTokenEntity.market)

@@ -33,7 +33,6 @@ export default function TradeTradingViewWidget() {
   const currentTokenEntity = useTokenConfigStore(
     (state: any) => state.currentTokenEntity
   )
-  console.log(currentTokenEntity.name)
 
   return (
     <>

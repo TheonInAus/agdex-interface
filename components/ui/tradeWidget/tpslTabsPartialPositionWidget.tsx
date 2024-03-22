@@ -9,7 +9,7 @@ import {
   minOrderBookExecutionFee,
   wrapperFormatEther18e,
 } from "@/hooks/zContractHelper"
-import { Alert, AlertDescription } from "@/components/ui/Alert"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"

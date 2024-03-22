@@ -91,7 +91,6 @@ export const useGetKlineDataMock = (symbol: string, type = 1, interval = 10000) 
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const result = await response.json();
-                console.log("~ check kline ~ result:", result)
                 if (result.status === 'success') {
                     setResultData(result.data);
                     setError(null);
