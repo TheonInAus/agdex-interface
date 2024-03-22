@@ -54,6 +54,7 @@ interface ProvidersProps {
 // })
 
 const wallets = [new OKXWallet()]
+console.log("🚀 ~ wallets:", wallets)
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
