@@ -51,7 +51,7 @@ export default function TradeTradingViewWidget() {
                   id={option}
                   className={`relative flex items-center justify-center p-1 text-lg font-bold   rounded-md cursor-pointer focus:outline-none ${
                     klineType === klineValues[option]
-                      ? "text-0xyellow"
+                      ? "text-agdexMain"
                       : "text-primary"
                   }`}
                 >

@@ -273,7 +273,7 @@ export default function PositionListWidget({
                     <DialogTrigger asChild>
                       <Button
                         disabled={false}
-                        className="h-8 text-base bg-transparent border text-0xyellow border-0xyellow hover:bg-0xbox"
+                        className="h-8 text-base bg-transparent border text-agdexMain border-agdexMain hover:bg-0xbox"
                         onClick={() => handleSetCurrentPosition(position)}
                       >
                         Close

@@ -86,7 +86,7 @@ module.exports = {
           DEFAULT: "#FF4A4A",
           foreground: "#DB4242",
         },
-        "0xyellow": {
+        "agdexMain": {
           DEFAULT: "#E96E27",
           foreground: "#BB5A22",
         },

@@ -27,7 +27,7 @@ const StyledTabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "h-8 relative inline-flex text-center items-center   px-3 text-base font-bold focus-visible:outline-none disabled:pointer-events-none disabled:text-gray-200 data-[state=active]:rounded-xl data-[state=active]:text-0xyellow data-[state=active]:underline data-[state=active]:underline-offset-4",
+      "h-8 relative inline-flex text-center items-center   px-3 text-base font-bold focus-visible:outline-none disabled:pointer-events-none disabled:text-gray-200 data-[state=active]:rounded-xl data-[state=active]:text-agdexMain data-[state=active]:underline data-[state=active]:underline-offset-4",
       className
     )}
     {...props}

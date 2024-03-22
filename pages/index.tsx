@@ -18,7 +18,7 @@ export default function IndexPage() {
         className=" h-[750px] rounded-b-[70px]"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, #ADEFE7 5%, #32B4A7 95%)",
+            "linear-gradient(to top, #AA390C 5%, #E96E27 95%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
@@ -34,7 +34,7 @@ export default function IndexPage() {
           </div>
           <div className="flex justify-center">
             <Button
-              className="justify-center mt-5 text-base font-semibold bg-black rounded-lg text-bronze hover:bg-slate-900"
+              className="justify-center mt-5 text-base font-semibold bg-black rounded-lg text-agdexMain hover:bg-slate-900"
               onClick={handleTradeNowClick}
             >
               Trade Now
@@ -53,7 +53,7 @@ export default function IndexPage() {
             30x leverage and instant settlement.
           </div>
           <Button
-            className="mt-3 text-base text-black bg-bronze rounded-xl"
+            className="mt-3 text-base text-black bg-agdexMain rounded-xl"
             onClick={handleTradeNowClick}
           >
             Launch App
@@ -91,11 +91,11 @@ export default function IndexPage() {
         </div>
       </div>
       <div className="flex items-center justify-center mt-40">
-        <div className="h-[170px] w-[1137px] bg-0xbox flex gap-5 rounded-lg">
-          <div className="mt-12 ml-14">
-            <Image src="/only_logo.svg" alt="Logo" width={70} height={36} />
+        <div className="h-[170px] w-[1137px] bg-0xbox flex justify-center items-center gap-2 rounded-lg">
+          <div className="ml-14">
+            <Image src="/agLogo.svg" alt="Logo" width={150} height={150} />
           </div>
-          <div className="mx-10 mt-12">
+          <div className="mx-10">
             <div className="text-lg text-white">Fair Launch</div>
             <div className="text-base text-0xgrey">
               EQU is the native token of Equation, with a maximum supply of 10
@@ -106,7 +106,7 @@ export default function IndexPage() {
         </div>
       </div>
       <div className="flex justify-center mt-40">
-        <div className="text-5xl font-semibold text-bronze">The Roadmap</div>
+        <div className="text-5xl font-semibold text-agdexMain">The Roadmap</div>
         <div className="h-[500px]"></div>
       </div>
     </section>

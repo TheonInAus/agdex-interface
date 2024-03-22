@@ -82,7 +82,7 @@ export default function PoolCalculatorWidget() {
                   className="mb-2"
                 />
               </div>
-              <Button className="w-full mt-4 bg-0xyellow hover:bg-0xyellow-foreground">
+              <Button className="w-full mt-4 bg-agdexMain hover:bg-agdexMain-foreground">
                 Calculate
               </Button>
             </div>

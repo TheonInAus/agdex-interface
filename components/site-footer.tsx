@@ -16,7 +16,7 @@ const SiteFooter = () => {
           width={50}
           height={50}
         />
-        <div className="text-0xyellow font-bold text-2xl">AGDEX</div>
+        <div className="text-agdexMain font-bold text-2xl">AGDEX</div>
       </div>
       <div className="flex items-center justify-center space-x-10">
         <Link href={siteConfig.links.twitter}>

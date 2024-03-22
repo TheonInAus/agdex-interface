@@ -22,7 +22,7 @@ export default function AbRefferalsWidget() {
         <Card className="bg-transparent">
           <div className="flex flex-row justify-between">
             <div className="flex flex-col items-start w-1/2 p-3">
-              <div className="text-xl   font-bold text-0xyellow">
+              <div className="text-xl   font-bold text-agdexMain">
                 Your Referral Link
               </div>
               <input
@@ -33,7 +33,7 @@ export default function AbRefferalsWidget() {
                 }
               />
 
-              <Button className="w-full mt-5 font-bold bg-0xyellow">
+              <Button className="w-full mt-5 font-bold bg-agdexMain">
                 {" "}
                 Copy Referral Link
               </Button>

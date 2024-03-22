@@ -199,7 +199,7 @@ export default function TradeCalculatorWidget() {
                       />
                     </div>
                   </TabsContent>
-                  <Button className="w-full mt-4 bg-0xyellow hover:bg-0xyellow-foreground">
+                  <Button className="w-full mt-4 bg-agdexMain hover:bg-agdexMain-foreground">
                     Calculate
                   </Button>
                 </Tabs>
@@ -331,7 +331,7 @@ export default function TradeCalculatorWidget() {
                       />
                     </div>
                   </TabsContent>
-                  <Button className="w-full mt-28 bg-0xyellow hover:bg-0xyellow-foreground">
+                  <Button className="w-full mt-28 bg-agdexMain hover:bg-agdexMain-foreground">
                     Calculate
                   </Button>
                 </Tabs>
@@ -421,7 +421,7 @@ export default function TradeCalculatorWidget() {
                       />
                     </div>
                   </TabsContent>
-                  <Button className="w-full mt-[169px] bg-0xyellow hover:bg-0xyellow-foreground">
+                  <Button className="w-full mt-[169px] bg-agdexMain hover:bg-agdexMain-foreground">
                     Calculate
                   </Button>
                 </Tabs>
@@ -497,10 +497,10 @@ export default function TradeCalculatorWidget() {
                   </div>
                 </div>
               </div>
-              <Button className="mt-3 bg-0xyellow hover:bg-0xyellow-foreground">
+              <Button className="mt-3 bg-agdexMain hover:bg-agdexMain-foreground">
                 + Add
               </Button>
-              <Button className="w-full mt-[107px] bg-0xyellow hover:bg-0xyellow-foreground">
+              <Button className="w-full mt-[107px] bg-agdexMain hover:bg-agdexMain-foreground">
                 Calculate
               </Button>
               <div className="mt-2 text-sm text-0xgrey">

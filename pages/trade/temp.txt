@@ -78,7 +78,7 @@
                           className="text-0xred hover:text-opacity-100 mt-2"
                           size={22}
                         />
-                        <AlertDescription className="text-0xyellow ml-1">
+                        <AlertDescription className="text-agdexMain ml-1">
                           Margin settlement has a 10% slippage to prevent order
                           failure due to insufficient margin.
                         </AlertDescription>

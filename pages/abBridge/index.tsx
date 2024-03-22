@@ -9,7 +9,7 @@ export default function ABBridgeWidget() {
         <Card>
           <div className="flex items-center justify-between">
             <div className="  font-bold">FROM</div>
-            <div className="text-0xyellow">Connect wallet</div>
+            <div className="text-agdexMain">Connect wallet</div>
           </div>
           <div className="flex flex-row gap-3 p-3 mt-3 bg-0xgrey">
             <Card className="h-[200px] w-[200px] items-center justify-center flex ">
@@ -25,7 +25,7 @@ export default function ABBridgeWidget() {
                   <div>Amount</div>
                   <div>-</div>
                 </div>
-                <div className="flex flex-col items-start justify-center flex-1 h-full px-2 text-0xyellow bg-muted">
+                <div className="flex flex-col items-start justify-center flex-1 h-full px-2 text-agdexMain bg-muted">
                   <div>Balance</div>
                   <div>-</div>
                 </div>
@@ -37,7 +37,7 @@ export default function ABBridgeWidget() {
         <Card>
           <div className="flex items-center justify-between">
             <div className="  font-bold">TO</div>
-            <div className="text-0xyellow">Connect wallet</div>
+            <div className="text-agdexMain">Connect wallet</div>
           </div>
           <div className="flex flex-row gap-3 p-3 mt-3 bg-0xgrey">
             <Card className="h-[200px] w-[200px] items-center justify-center flex ">
@@ -53,7 +53,7 @@ export default function ABBridgeWidget() {
                   <div>Amount</div>
                   <div>-</div>
                 </div>
-                <div className="flex flex-col items-start justify-center flex-1 h-full px-2 text-0xyellow bg-muted">
+                <div className="flex flex-col items-start justify-center flex-1 h-full px-2 text-agdexMain bg-muted">
                   <div>Balance</div>
                   <div>-</div>
                 </div>

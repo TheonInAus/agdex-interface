@@ -65,7 +65,7 @@ export default function PrepPoolsWidget() {
         </Card>
         <div className="w-full text-base   font-bold text-center bg-popover">
           Mint ALP Tokens to earn fees from swaps and leverage tradings.
-          <a href="google.com" className="text-0xyellow underline ml-2">
+          <a href="google.com" className="text-agdexMain underline ml-2">
             Learn more
           </a>
         </div>
@@ -74,7 +74,7 @@ export default function PrepPoolsWidget() {
           <div className="flex flex-row justify-between w-full">
             <div className="flex flex-col">
               <div className="flex flex-col">
-                <div className="text-2xl   font-extrabold text-0xyellow">
+                <div className="text-2xl   font-extrabold text-agdexMain">
                   {" "}
                   Stake To Earn Reward
                 </div>
@@ -88,7 +88,7 @@ export default function PrepPoolsWidget() {
               </div>
               <div className="h-[50px]" />
               <div className="flex flex-col">
-                <div className="text-lg   font-extrabold text-0xyellow">
+                <div className="text-lg   font-extrabold text-agdexMain">
                   {" "}
                   Portfolio
                 </div>
@@ -133,7 +133,7 @@ export default function PrepPoolsWidget() {
                     maxNode={<div className="rounded-xl">max</div>}
                   />
                 </StyledTabsContent>
-                <Button className="w-full h-[50px] mt-6 bg-0xyellow text-xl font-bold">
+                <Button className="w-full h-[50px] mt-6 bg-agdexMain text-xl font-bold">
                   Stake
                 </Button>
               </StyledTabs>
@@ -183,7 +183,7 @@ export default function PrepPoolsWidget() {
                   value={"0%"}
                   percentage={`${0}%`}
                 />
-                <Button className="w-full h-[50px] mt-6 bg-0xyellow text-xl font-bold">
+                <Button className="w-full h-[50px] mt-6 bg-agdexMain text-xl font-bold">
                   Pay
                 </Button>
               </StyledTabs>
@@ -191,7 +191,7 @@ export default function PrepPoolsWidget() {
           </div>
         </Card>
         <Card className="p-6 bg-transparent">
-          <div className="text-2xl   font-bold text-0xyellow">
+          <div className="text-2xl   font-bold text-agdexMain">
             Pool Overview
           </div>
 

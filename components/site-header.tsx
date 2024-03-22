@@ -13,43 +13,9 @@ import { Card } from "./ui/card"
 export function SiteHeader() {
   return (
     <header className="top-0 z-40">
-      <div className="flex flex-row items-center justify-center gap-10 px-20 mt-5">
+      <div className="flex flex-row items-center justify-between gap-10 px-20 mt-5">
         <MainNav items={siteConfig.mainNav} />
         <div className="flex items-center ">
-          <div className="px-1 mr-3">
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div
-                className={buttonVariants({
-                  size: "icon",
-                  variant: "ghost",
-                })}
-              >
-                <Icons.gitHub className="w-5 h-5" />
-                <span className="sr-only">GitHub</span>
-              </div>
-            </Link>
-            <Link
-              href={siteConfig.links.twitter}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div
-                className={buttonVariants({
-                  size: "icon",
-                  variant: "ghost",
-                })}
-              >
-                <Icons.twitter className="w-5 h-5 fill-current" />
-                <span className="sr-only">Twitter</span>
-              </div>
-            </Link>
-            <ThemeToggle />
-          </div>
-          {/* <ConnectButton /> */}
           <ApotosConnectButtonWidget />
         </div>
       </div>

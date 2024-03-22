@@ -197,7 +197,7 @@ export default function TpslTabsPartialPositionWidget({
           className="mt-2 text-0xred hover:text-opacity-100"
           size={22}
         />
-        <AlertDescription className="ml-1 text-0xyellow">
+        <AlertDescription className="ml-1 text-agdexMain">
           Margin settlement has a 10% slippage to prevent order failure due to
           insufficient margin.
         </AlertDescription>

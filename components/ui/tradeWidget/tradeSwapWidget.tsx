@@ -208,7 +208,7 @@ export default function TradeSwapWidget({
       <Button
         disabled={incPositionLoading}
         onClick={() => {}}
-        className={`w-full font-bold text-center rounded-md item-center mt-4  h-9 text-white bg-0xyellow`}
+        className={`w-full font-bold text-center rounded-md item-center mt-4  h-9 text-white bg-agdexMain`}
       >
         Swap
       </Button>

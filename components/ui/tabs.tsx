@@ -35,7 +35,7 @@ const TabsTrigger = React.forwardRef<
       activeStyle = "data-[state=active]:bg-0xred"
       break
     case "swap":
-      activeStyle = "data-[state=active]:bg-0xyellow"
+      activeStyle = "data-[state=active]:bg-agdexMain"
       break
   }
 

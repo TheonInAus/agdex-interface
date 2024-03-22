@@ -89,7 +89,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
           />
           {maxNode && (
             <div
-              className="px-2 py-1 mr-2 text-xs border border-0xyellow text-0xyellow rounded-md hover:cursor-pointer"
+              className="px-2 py-1 mr-2 text-xs border border-agdexMain text-agdexMain rounded-md hover:cursor-pointer"
               onClick={onMaxClick}
             >
               <span>Max</span>

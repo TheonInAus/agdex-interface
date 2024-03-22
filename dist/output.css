@@ -1108,7 +1108,7 @@ body {
   background-color: rgb(255 74 74 / var(--tw-bg-opacity));
 }
 
-.bg-0xyellow {
+.bg-agdexMain {
   --tw-bg-opacity: 1;
   background-color: hsl(20.5 90.2% 48.2% / var(--tw-bg-opacity));
 }
@@ -1342,17 +1342,17 @@ body {
   color: rgb(255 74 74 / var(--tw-text-opacity));
 }
 
-.text-0xyellow {
+.text-agdexMain {
   --tw-text-opacity: 1;
   color: hsl(20.5 90.2% 48.2% / var(--tw-text-opacity));
 }
 
-.text-0xyellow-foreground {
+.text-agdexMain-foreground {
   --tw-text-opacity: 1;
   color: hsl(60 9.1% 97.8% / var(--tw-text-opacity));
 }
 
-.text-0xyellow {
+.text-agdexMain {
   --tw-text-opacity: 1;
   color: rgb(224 162 2 / var(--tw-text-opacity));
 }
@@ -1555,7 +1555,7 @@ body {
   background-color: hsl(0 72.2% 50.6% / 0.9);
 }
 
-.hover\:bg-0xyellow\/90:hover {
+.hover\:bg-agdexMain\/90:hover {
   background-color: hsl(20.5 90.2% 48.2% / 0.9);
 }
 

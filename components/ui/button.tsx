@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-0xyellow text-primary-foreground hover:bg-0xyellow-foreground",
+        default: "bg-agdexMain text-primary-foreground hover:bg-agdexMain-foreground",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -20,7 +20,7 @@ const buttonVariants = cva(
         link: "underline-offset-4 hover:underline text-primary",
         "green": "bg-0xgreen text-0xgreen-foreground hover:bg-0xgreen/90",
         "red": "bg-0xred text-0xred-foreground hover:bg-0xred/90",
-        "yellow": "bg-0xyellow text-0xyellow-foreground hover:bg-0xyellow/90",
+        "yellow": "bg-agdexMain text-agdexMain-foreground hover:bg-agdexMain/90",
       },
       size: {
         default: "h-10 py-2 px-4",

@@ -26,7 +26,7 @@ export function MainNav({ items }: MainNavProps) {
           width={50}
           height={50}
         />
-        <div className="text-0xyellow font-bold text-lg">AGDEX</div>
+        <div className="text-agdexMain font-bold text-lg">AGDEX</div>
       </div>
       {items?.length ? (
         <nav className="flex gap-6 ">
@@ -39,7 +39,7 @@ export function MainNav({ items }: MainNavProps) {
                   className={cn(
                     "flex items-center text-base font-bold",
                     pathname === item.href
-                      ? "underline underline-offset-4 text-0xyellow"
+                      ? "underline underline-offset-4 text-agdexMain"
                       : "text-white"
                   )}
                 >

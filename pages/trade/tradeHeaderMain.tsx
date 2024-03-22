@@ -56,7 +56,7 @@ export default function TradeHeaderWidget({
               <p> todo desc</p>
             </CustomTooltip>
             <div className="flex items-center mt-1">
-              <div className="mr-1 text-lg text-0xyellow">
+              <div className="mr-1 text-lg text-agdexMain">
                 {`${giveMeFormattedToShow(openInterst)} ${
                   currentTokenEntity.name
                 }`}{" "}
