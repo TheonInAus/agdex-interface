@@ -52,7 +52,7 @@ export default function TradingViewWidget({ tokenName }) {
   return (
     <div
       className="tradingview-widget-container"
-      style={{ height: "100%", width: "1100px" }}
+      style={{ height: "100%", width: "837px" }}
     >
       <div id="tradingview_65e52" style={{ height: "600px", width: "100%" }} />
       <div className="tradingview-widget-copyright">

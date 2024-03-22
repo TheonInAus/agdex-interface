@@ -87,8 +87,8 @@ module.exports = {
           foreground: "#DB4242",
         },
         "0xyellow": {
-          DEFAULT: "#E0A202",
-          foreground: "#E0A202",
+          DEFAULT: "#E96E27",
+          foreground: "#BB5A22",
         },
         destructive: {
           DEFAULT: "var(--destructive)",
@@ -101,6 +101,7 @@ module.exports = {
         accent: {
           DEFAULT: "var(--accent)",
           foreground: "var(--accent-foreground)",
+          hover: "var(--accent-hover)"
         },
         popover: {
           DEFAULT: "var(--popover)",

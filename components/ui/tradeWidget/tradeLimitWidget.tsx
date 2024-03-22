@@ -211,7 +211,7 @@ export default function TradeLimitWidget({
         {/* <ListItem keyText="Liq. Price" value={""} /> */}
         <ListItem keyText="Est. Margin" value={""} />
         <div className="flex justify-between">
-          <div className="italic">Fees</div>
+          <div className="text-sm">Fees</div>
           {feesValue > 0 ? (
             <CustomTooltip
               triggerContent={<div className="font-bold">{feesValue}</div>}

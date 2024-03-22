@@ -23,7 +23,7 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({
       <TooltipUI>
         <TooltipTriggerUI
           asChild
-          className="italic underline decoration-dashed underline-offset-2"
+          className="  underline decoration-dashed underline-offset-2"
         >
           {triggerContent}
         </TooltipTriggerUI>

@@ -52,8 +52,8 @@ export default function PrepPoolsWidget() {
 
   return (
     <section className="container flex items-center justify-center gap-6 pt-6 pb-8">
-      <div className="flex flex-col w-full gap-4">
-        <Card>
+      <div className="flex flex-col gap-4 w-[1250px]">
+        <Card className="bg-transparent">
           <div className="flex flex-row items-center justify-between px-10 py-4">
             <TokenPairWidget token1={currentTokenEntity.name} token2={"USDX"} />
             <Stats title={"Price"} value={`$ 100`} />
@@ -63,9 +63,9 @@ export default function PrepPoolsWidget() {
             <Stats title={"Stake Reward"} value={`0%`} />
           </div>
         </Card>
-        <div className="w-full text-lg italic font-bold text-center">
+        <div className="w-full text-base   font-bold text-center bg-popover">
           Mint ALP Tokens to earn fees from swaps and leverage tradings.
-          <a href="google.com" className="text-blue-500 underline">
+          <a href="google.com" className="text-0xyellow underline ml-2">
             Learn more
           </a>
         </div>
@@ -74,7 +74,7 @@ export default function PrepPoolsWidget() {
           <div className="flex flex-row justify-between w-full">
             <div className="flex flex-col">
               <div className="flex flex-col">
-                <div className="text-2xl italic font-extrabold text-0xyellow">
+                <div className="text-2xl   font-extrabold text-0xyellow">
                   {" "}
                   Stake To Earn Reward
                 </div>
@@ -88,7 +88,7 @@ export default function PrepPoolsWidget() {
               </div>
               <div className="h-[50px]" />
               <div className="flex flex-col">
-                <div className="text-lg italic font-extrabold text-0xyellow">
+                <div className="text-lg   font-extrabold text-0xyellow">
                   {" "}
                   Portfolio
                 </div>
@@ -103,7 +103,7 @@ export default function PrepPoolsWidget() {
             </div>
             <div>
               <StyledTabs defaultValue="stake" className="w-[400px] ">
-                <StyledTabsList className="w-[400px] h-[40px] bg-popover">
+                <StyledTabsList className="w-[400px] h-[40px]">
                   <StyledTabsTrigger
                     value="stake"
                     className="flex justify-center w-1/2 h-full"
@@ -119,7 +119,7 @@ export default function PrepPoolsWidget() {
                 </StyledTabsList>
                 <StyledTabsContent value={"stake"}>
                   <InputBox
-                    title="Stake"
+                    title="Stake Amount"
                     value={""}
                     suffix="USDX"
                     maxNode={<div className="rounded-xl">max</div>}
@@ -127,13 +127,13 @@ export default function PrepPoolsWidget() {
                 </StyledTabsContent>
                 <StyledTabsContent value={"unstake"}>
                   <InputBox
-                    title="Unstake"
+                    title="Unstake Amount"
                     value={""}
                     suffix="USDX"
                     maxNode={<div className="rounded-xl">max</div>}
                   />
                 </StyledTabsContent>
-                <Button className="w-full h-[50px] mt-6 bg-accent text-xl font-bold">
+                <Button className="w-full h-[50px] mt-6 bg-0xyellow text-xl font-bold">
                   Stake
                 </Button>
               </StyledTabs>
@@ -141,14 +141,14 @@ export default function PrepPoolsWidget() {
           </div>
         </Card>
 
-        <Card>
+        <Card className="bg-transparent">
           <div className="flex flex-row gap-5 p-2">
             <div className="flex-1">
               <TradingViewWidgetSmall tokenName={currentTokenEntity.name} />
             </div>
             <div>
               <StyledTabs defaultValue="buy" className="w-[400px] ">
-                <StyledTabsList className="w-[400px] h-[40px] bg-popover">
+                <StyledTabsList className="w-[400px] h-[40px]">
                   <StyledTabsTrigger
                     value="buy"
                     className="flex justify-center w-1/2 h-full"
@@ -164,7 +164,7 @@ export default function PrepPoolsWidget() {
                 </StyledTabsList>
                 <StyledTabsContent value={"buy"}>
                   <InputBox
-                    title="Stake"
+                    title="ALP Amount"
                     value={""}
                     suffix="USDX"
                     maxNode={<div className="rounded-xl">max</div>}
@@ -172,7 +172,7 @@ export default function PrepPoolsWidget() {
                 </StyledTabsContent>
                 <StyledTabsContent value={"sell"}>
                   <InputBox
-                    title="Unstake"
+                    title="ALP Amount"
                     value={""}
                     suffix="USDX"
                     maxNode={<div className="rounded-xl">max</div>}
@@ -182,21 +182,20 @@ export default function PrepPoolsWidget() {
                   keyText="Fees"
                   value={"0%"}
                   percentage={`${0}%`}
-                  className="w-full px-3 py-5 mt-2 bg-muted"
                 />
-                <Button className="w-full h-[50px] mt-6 bg-accent text-xl font-bold">
+                <Button className="w-full h-[50px] mt-6 bg-0xyellow text-xl font-bold">
                   Pay
                 </Button>
               </StyledTabs>
             </div>
           </div>
         </Card>
-        <Card className="p-6">
-          <div className="text-2xl italic font-bold text-0xyellow">
+        <Card className="p-6 bg-transparent">
+          <div className="text-2xl   font-bold text-0xyellow">
             Pool Overview
           </div>
 
-          <div className="flex flex-row justify-between p-5 italic font-bold">
+          <div className="flex flex-row justify-between p-5  ">
             <div className="w-[10%]">Token</div>
             <div className="w-[10%]">Price</div>
             <div className="w-[20%]">Avaliable</div>

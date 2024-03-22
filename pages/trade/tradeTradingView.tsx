@@ -35,13 +35,13 @@ export default function TradeTradingViewWidget() {
   )
 
   return (
-    <>
-      <Card>
+    <div className="flex justify-center">
+      <Card className="w-[870px] bg-transparent">
         <div style={{ marginBottom: 10 }}>
           <RadioGroup.Root
             defaultValue="1m"
             onValueChange={handleValueChange}
-            className="flex items-center px-3 py-1 space-x-4 rounded-lg bg-accent"
+            className="flex items-center px-3 py-1 space-x-4 rounded-lg bg-popover"
           >
             {["1m", "5m", "15m", "30m", "1h", "4h", "1D", "1W"].map(
               (option) => (
@@ -49,7 +49,7 @@ export default function TradeTradingViewWidget() {
                   key={option}
                   value={option}
                   id={option}
-                  className={`relative flex items-center justify-center p-1 text-lg font-bold italic rounded-md cursor-pointer focus:outline-none ${
+                  className={`relative flex items-center justify-center p-1 text-lg font-bold   rounded-md cursor-pointer focus:outline-none ${
                     klineType === klineValues[option]
                       ? "text-0xyellow"
                       : "text-primary"
@@ -62,8 +62,8 @@ export default function TradeTradingViewWidget() {
           </RadioGroup.Root>
         </div>
         {/* <CustomTradingView symbol={currentTokenEntity.name} type={klineType} /> */}
-        <TradingViewWidget tokenName={currentTokenEntity.name} />
+          <TradingViewWidget tokenName={currentTokenEntity.name} />
       </Card>
-    </>
+    </div>
   )
 }

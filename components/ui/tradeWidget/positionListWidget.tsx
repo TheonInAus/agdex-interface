@@ -38,6 +38,7 @@ import AddMarginWidget from "@/components/ui/tradeWidget/addMarginWidget"
 import ReduceMarginWidget from "@/components/ui/tradeWidget/reduceMarginWidget"
 
 import ClosePositionWidget from "./closePositionWidget"
+import { Separator } from "@radix-ui/react-select"
 
 type PositionInfo = {
   poolAddress: any
@@ -127,7 +128,7 @@ export default function PositionListWidget({
                   />
                   <div className="flex flex-row mt-2">
                     <CustomTooltip
-                      triggerContent={<div className="mr-7">Margin</div>}
+                      triggerContent={<div className="mr-7 text-sm">Margin</div>}
                     >
                       <p>llll</p>
                     </CustomTooltip>
@@ -190,7 +191,7 @@ export default function PositionListWidget({
                     value={x96Price2Readable(position.entryPriceX96)}
                   />
                   <div className="flex mt-2 gap-7">
-                    <CustomTooltip triggerContent={<div>Liq. Price</div>}>
+                    <CustomTooltip triggerContent={<div className="text-sm">Liq. Price</div>}>
                       <p>llll</p>
                     </CustomTooltip>
                     <div className="font-bold">
@@ -212,7 +213,7 @@ export default function PositionListWidget({
                   <div className="flex flex-row">
                     <CustomTooltip
                       triggerContent={
-                        <div className="mr-7">Unrealized Pnl.</div>
+                        <div className="mr-7 text-sm">Unrealized Pnl.</div>
                       }
                     >
                       <p>llll</p>
@@ -291,6 +292,7 @@ export default function PositionListWidget({
                   </Dialog>
                 </div>
               </div>
+              <div className="border-b mt-4 border-b-popover"></div>
               <br></br>
             </div>
           ))}

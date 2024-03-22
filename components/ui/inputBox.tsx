@@ -54,14 +54,14 @@ export const InputBox: React.FC<InputBoxProps> = ({
     <div
       className={`${inputBoxVariants(
         props
-      )} border-noneoutline-none bg-muted rounded-xl`}
+      )} border outline-none bg-transparent rounded-xl`}
     >
       <div className="flex flex-col justify-between w-full h-full ">
         <div className="flex flex-row items-center mb-2">
-          <span className="block text-lg italic font-bold">{title}</span>
+          <span className="block text-lg   font-bold">{title}</span>
           {prefix && (
             <>
-              <span className="block w-full mx-1 italic font-semibold text-right ">
+              <span className="block w-full mx-1   font-semibold text-right ">
                 {prefix}
               </span>
               <Input
@@ -75,7 +75,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
             </>
           )}
           {balanceNode && (
-            <div className="flex flex-row justify-end w-full text-sm italic font-semibold">
+            <div className="flex flex-row justify-end w-full text-sm   font-semibold">
               {balanceNode}
             </div>
           )}
@@ -89,7 +89,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
           />
           {maxNode && (
             <div
-              className="px-2 py-1 mr-2 text-xs border border-gray-300 rounded-md hover:cursor-pointer"
+              className="px-2 py-1 mr-2 text-xs border border-0xyellow text-0xyellow rounded-md hover:cursor-pointer"
               onClick={onMaxClick}
             >
               <span>Max</span>

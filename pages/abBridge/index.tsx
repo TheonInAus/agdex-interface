@@ -8,7 +8,7 @@ export default function ABBridgeWidget() {
       <div className="flex flex-col w-[500px]  gap-4">
         <Card>
           <div className="flex items-center justify-between">
-            <div className="italic font-bold">FROM</div>
+            <div className="  font-bold">FROM</div>
             <div className="text-0xyellow">Connect wallet</div>
           </div>
           <div className="flex flex-row gap-3 p-3 mt-3 bg-0xgrey">
@@ -36,7 +36,7 @@ export default function ABBridgeWidget() {
         <div className="flex justify-center w-full font-bold">Switch</div>
         <Card>
           <div className="flex items-center justify-between">
-            <div className="italic font-bold">TO</div>
+            <div className="  font-bold">TO</div>
             <div className="text-0xyellow">Connect wallet</div>
           </div>
           <div className="flex flex-row gap-3 p-3 mt-3 bg-0xgrey">

@@ -229,13 +229,13 @@ export default function TradeMarketWidget({
         )}
       </div>
       <br></br>
-      <div className="p-2 bg-muted rounded-xl">
+      <div className="py-2">
         <ListItem
           keyText="Entry Price"
           value={giveMeFormattedToShow(Number(tokenPrice))}
         />
         <div className="flex justify-between">
-          <CustomTooltip triggerContent={<div>Price Impact</div>}>
+          <CustomTooltip triggerContent={<div className="text-sm">Price Impact</div>}>
             <p>
               The price impact is the deviation between the estimated
               transaction price of the order and the current index price. When
@@ -307,8 +307,8 @@ export default function TradeMarketWidget({
           keyText="Est. Margin"
           value={`${(Number(usdMargin) - tradingFee).toFixed(2)}`}
         />
-        <div className="flex justify-between">
-          <div className="italic">Fees</div>
+        <div className="flex justify-between items-center">
+          <div className="text-sm">Fees</div>
           {tradingFee + executionFee > 0 ? (
             <CustomTooltip
               triggerContent={
@@ -317,7 +317,7 @@ export default function TradeMarketWidget({
                 )} `}</div>
               }
             >
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <div className="text-xs text-white">Trading Fee</div>
                 <div className="text-xs text-white">-0.82 USDT</div>
               </div>

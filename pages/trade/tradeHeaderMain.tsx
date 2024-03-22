@@ -27,13 +27,13 @@ export default function TradeHeaderWidget({
     (state: any) => state.currentTokenEntity
   )
   return (
-    <>
-      <Card>
+    <div className="flex justify-center">
+      <Card className="w-[1250px] bg-transparent">
         <div className="flex items-center justify-start gap-10 py-6 pl-10">
           <TokenPairWidget token1={currentTokenEntity.name} token2={"USDX"} />
           <DropDownBox />
           <div
-            className={`mt-1 mx-2 text-3xl font-bold mr-10 ${
+            className={`mt-1 mx-2 text-xl font-bold mr-10 ${
               priceType ? "text-0xred" : "text-0xgreen"
             }`}
           >
@@ -51,7 +51,7 @@ export default function TradeHeaderWidget({
           />
           <div>
             <CustomTooltip
-              triggerContent={<div className="text-lg">Open Interest</div>}
+              triggerContent={<div className="text-base">Open Interest</div>}
             >
               <p> todo desc</p>
             </CustomTooltip>
@@ -69,6 +69,6 @@ export default function TradeHeaderWidget({
         </div>
         {/* Wide Block 2 */}
       </Card>
-    </>
+    </div>
   )
 }

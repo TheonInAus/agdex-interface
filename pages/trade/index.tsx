@@ -207,14 +207,14 @@ export default function TradePage() {
           openInterst={openInterst}
           openInterstValue={openInterstValue}
         />
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 justify-center">
           <div className="flex flex-col mt-2">
             <TradeTradingViewWidget />
             <TradePositionWidget contractPrice={contractPrice} />
           </div>
           <div className="mt-2">
             {/* Narrow Block 1 */}
-            <Card style={{ width: 400 }}>
+            <Card style={{ width: 372 }} className="bg-transparent">
               <Tabs defaultValue={"long"}>
                 <TabsList style={{ width: "100%" }}>
                   <TabsTrigger style={{ width: "33%" }} value={"long"}>
@@ -317,7 +317,7 @@ export default function TradePage() {
               </Tabs>
             </Card>
             {/* Narrow Block 2 */}
-            <Card className="mt-2" style={{ width: 400 }}>
+            <Card className="mt-2 bg-transparent" style={{ width: 372 }}>
               <div className="w-full">
                 <div className="mt-1 text-lg font-bold">Token/Asset</div>
                 <div className="my-3 border-t border-0xline"></div>

@@ -43,7 +43,7 @@ export default function DropDownBox() {
           variant="ghost"
           role="combobox"
           aria-expanded={open}
-          className="justify-center text-2xl font-extrabold hover:bg-0xtrans"
+          className="justify-center text-xl font-extrabold hover:bg-0xtrans"
         >
           {value
             ? tokens.find((token) => token.name === value)?.symbol

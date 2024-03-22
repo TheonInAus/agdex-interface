@@ -41,9 +41,9 @@ const Stats: React.FC<StatsProps> = ({
 }) => {
   const valueTextColor = textColor || "text-white"
   return (
-    <div className="flex flex-col mr-9">
+    <div className="flex flex-col mr-2">
       <div className="flex items-center gap-0.5">
-        <span className="text-xl text-0xgrey">{title}</span>
+        <span className="text-base text-0xgrey">{title}</span>
         {info ? (
           <TooltipProvider>
             <Tooltip>

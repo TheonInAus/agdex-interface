@@ -9,14 +9,14 @@ import Iconify from "./Iconify"
 const SiteFooter = () => {
   return (
     <footer className="flex flex-col items-center py-4 mt-10 space-y-4 text-white">
-      <div>
+      <div className="flex gap-2 justify-center items-center">
         <Image
-          src="/bronzes_logo.svg"
+          src="/agLogo.svg"
           alt="Logo"
-          width={102}
-          height={36}
-          className="mb-2"
+          width={50}
+          height={50}
         />
+        <div className="text-0xyellow font-bold text-2xl">AGDEX</div>
       </div>
       <div className="flex items-center justify-center space-x-10">
         <Link href={siteConfig.links.twitter}>
