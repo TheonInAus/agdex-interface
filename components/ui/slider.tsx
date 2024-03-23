@@ -34,7 +34,7 @@ const Slider = React.forwardRef<
     <div className="absolute top-full left-[76%] -translate-x-1/2 mt-2 text-xs">
       150x
     </div>
-    <div className="absolute top-1/2 left-[97%] -translate-y-1/2 h-2 w-2 rounded-full bg-agdexMain"></div>
+    <div className="absolute top-1/2 left-[99%] -translate-y-1/2 h-2 w-2 rounded-full bg-agdexMain"></div>
     <div className="absolute top-full left-[97%] -translate-x-1/2 mt-2 text-xs">
       200x
     </div>

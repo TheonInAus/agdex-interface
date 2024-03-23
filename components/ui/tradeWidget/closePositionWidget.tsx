@@ -73,8 +73,8 @@ export default function ClosePositionWidget({
       <InputBox title="Amount" value={""} suffix={"USDX"} />
       <div className="mt-3">
         <div className="flex flex-row justify-between">
-          <div className="text-sm">Pure Reduction</div>
-          <Checkbox className="w-4 h-4" />
+          <div className="text-sm text-white">Pure Reduction</div>
+          <Checkbox className="w-4 h-4 text-white focus:text-white" />
         </div>
         <ListItem keyText={"Max Slippage"} value={""} />
       </div>
@@ -98,7 +98,7 @@ export default function ClosePositionWidget({
       <ListItem keyText={"Est. Close Price"} value={""} />
       <ListItem keyText={"PnL"} value={""} />
       <div className="flex justify-between">
-        <div className="text-xs text-0xgrey">Fees</div>
+        <div className="text-xs text-white">Fees</div>
         {feesValue > 0 ? (
           <CustomTooltip
             triggerContent={

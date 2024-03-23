@@ -49,7 +49,7 @@ const ListItem: React.FC<ListItemProps> = ({
       {...props}
     >
       <div className="flex items-center">
-        <span className="  text-sm">{keyText}</span>
+        <span className="text-white text-sm">{keyText}</span>
         {info ? (
           <TooltipProvider>
             <Tooltip>

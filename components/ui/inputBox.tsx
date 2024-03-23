@@ -54,14 +54,14 @@ export const InputBox: React.FC<InputBoxProps> = ({
     <div
       className={`${inputBoxVariants(
         props
-      )} outline-none bg-[#262626] rounded-xl`}
+      )} outline-none bg-[#242424] rounded-xl`}
     >
       <div className="flex flex-col justify-between w-full h-full ">
         <div className="flex flex-row items-center mb-2">
-          <span className="block text-lg font-bold">{title}</span>
+          <span className="block text-lg font-bold text-white">{title}</span>
           {prefix && (
             <>
-              <span className="block w-full mx-1 font-semibold text-right ">
+              <span className="block w-full mx-1 font-semibold text-right text-white">
                 {prefix}
               </span>
               <Input
@@ -102,7 +102,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
             height={26}
             className="mr-1 rounded shadow-md"
           />
-          <span className="text-lg font-black text-right">{suffix}</span>
+          <span className="text-lg font-black text-right text-white">{suffix}</span>
         </div>
       </div>
     </div>
