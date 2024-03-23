@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 
 // Define variants for the PayInput styling.
 const inputBoxVariants = cva(
-  "flex items-center justify-between p-4 bg-gray-800", // Adjust the classes for the dark grey box
+  "flex items-center justify-between p-4", // Adjust the classes for the dark grey box
   {
     variants: {
       size: {
