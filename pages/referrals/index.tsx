@@ -36,21 +36,21 @@ export default function ReferralsPage() {
                         placeholder="Enjoy the following benefits by binding"
                         className="h-12 border-none rounded-r-none bg-0xdialog-foreground"
                       />
-                      <Button className="h-12 rounded-l-none bg-bronze hover:bg-bronze-foreground">
+                      <Button className="h-12 rounded-l-none bg-agdexMain hover:bg-agdexMain-foreground">
                         Confirm
                       </Button>
                     </div>
                     <ul className="pl-5 mt-4 space-y-2 text-sm list-disc ">
                       <li>
                         Enjoy a{" "}
-                        <span className="font-semibold text-bronze">
+                        <span className="font-semibold text-agdexMain">
                           10% discount
                         </span>{" "}
                         on trading fees.
                       </li>
                       <li>
                         Earn a{" "}
-                        <span className="font-semibold text-bronze">
+                        <span className="font-semibold text-agdexMain">
                           1.1x boosted multiplier
                         </span>{" "}
                         for liquidity mining.
@@ -87,13 +87,13 @@ export default function ReferralsPage() {
                 <div className="flex justify-center gap-4 mt-5">
                   <Button
                     variant="outline"
-                    className="h-10 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                    className="h-10 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
                   >
                     Apply for NFT
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-10 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                    className="h-10 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
                   >
                     Purchase NFT
                   </Button>

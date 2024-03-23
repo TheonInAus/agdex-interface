@@ -235,7 +235,7 @@ export default function TpslTabsEntirePositionWidget({
         </div>
       </div>
       <Button
-        className="w-full mt-4 text-sm text-black bg-bronze hover:bg-bronze-foreground"
+        className="w-full mt-4 text-sm text-black bg-agdexMain hover:bg-agdexMain-foreground"
         disabled={!checkDisabled()}
         onClick={() => {
           handleConfirmClick()

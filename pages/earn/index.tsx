@@ -51,13 +51,13 @@ export default function EarnPage() {
           <div className="flex gap-3">
             <Button
               variant="outline"
-              className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+              className="h-8 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
             >
               Buy
             </Button>
             <Button
               variant="outline"
-              className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+              className="h-8 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
             >
               Add to Wallet
             </Button>
@@ -136,7 +136,7 @@ export default function EarnPage() {
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="ml-1 bg-transparent hover:bg-transparent hover:text-bronze">
+                <Button className="ml-1 bg-transparent hover:bg-transparent hover:text-agdexMain">
                   Claim history
                   <ChevronRight className="w-4 h-4 mt-[2px]" />
                 </Button>
@@ -206,7 +206,7 @@ export default function EarnPage() {
               <DialogTrigger asChild>
                 <Button
                   variant="outline"
-                  className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                  className="h-8 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
                 >
                   Claim
                 </Button>
@@ -268,7 +268,7 @@ export default function EarnPage() {
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-8 hover:border-bronze hover:bg-0xtrans"
+                    className="h-8 hover:border-agdexMain hover:bg-0xtrans"
                   >
                     Stake 0XX
                   </Button>
@@ -356,7 +356,7 @@ export default function EarnPage() {
               <div>
                 <Button
                   variant="outline"
-                  className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                  className="h-8 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
                 >
                   Trade
                 </Button>
@@ -446,7 +446,7 @@ export default function EarnPage() {
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                    className="h-8 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
                   >
                     Stake NFT
                   </Button>
@@ -560,7 +560,7 @@ export default function EarnPage() {
               <div>
                 <Button
                   variant="outline"
-                  className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                  className="h-8 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
                 >
                   Add
                 </Button>
@@ -587,7 +587,7 @@ export default function EarnPage() {
                   <DialogTrigger asChild>
                     <Button
                       variant="outline"
-                      className="h-8 text-sm border-0xgrey hover:border-bronze hover:bg-0xtrans"
+                      className="h-8 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
                     >
                       Contribute
                     </Button>

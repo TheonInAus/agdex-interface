@@ -70,7 +70,7 @@ export default function ClosePositionWidget({
 
   return (
     <>
-      <InputBox title="Amount" value={""} suffix={""} />
+      <InputBox title="Amount" value={""} suffix={"USDX"} />
       <div className="mt-3">
         <div className="flex flex-row justify-between">
           <div className="text-sm">Pure Reduction</div>
@@ -127,7 +127,7 @@ export default function ClosePositionWidget({
       <ListItem keyText={"Receive"} value={""} />
       <Button
         disabled={decPositionLoading}
-        className="w-full mt-3 text-sm text-black bg-bronze hover:bg-bronze-foreground"
+        className="w-full mt-3 text-sm text-black bg-agdexMain hover:bg-agdexMain-foreground"
         onClick={() => {
           handleClosePosition(positionInfo)
         }}

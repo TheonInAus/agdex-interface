@@ -86,7 +86,7 @@ module.exports = {
           DEFAULT: "#FF4A4A",
           foreground: "#DB4242",
         },
-        "agdexMain": {
+        agdexMain: {
           DEFAULT: "#E96E27",
           foreground: "#BB5A22",
         },
@@ -101,7 +101,7 @@ module.exports = {
         accent: {
           DEFAULT: "var(--accent)",
           foreground: "var(--accent-foreground)",
-          hover: "var(--accent-hover)"
+          hover: "var(--accent-hover)",
         },
         popover: {
           DEFAULT: "var(--popover)",

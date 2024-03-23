@@ -19,7 +19,7 @@ const ButtonInput = React.forwardRef<HTMLInputElement, ButtonInputProps>(
             <span className="block text-sm text-0xgrey">{label}</span>
             <Button
               variant="outline"
-              className="hover:border-bronze w-[55px] text-sm ml-2 h-[25px] border-0xgrey"
+              className="hover:border-agdexMain w-[55px] text-sm ml-2 h-[25px] border-0xgrey"
             >
               market
             </Button>
