@@ -58,7 +58,7 @@ export default function PrepPoolsWidget() {
           <div className="flex flex-row items-center justify-between px-10 py-4">
             <TokenPairWidget token1={currentTokenEntity.name} token2={"USDX"} />
             <Stats title={"Price"} value={`$ 100`} />
-            <Stats title={"Total Supple"} value={`0 ALP`} />
+            <Stats title={"Total Supple"} value={`0 AGLP`} />
             <Stats title={"Market Cap"} value={`$ 98`} />
             <Stats title={"APR"} value={`0%`} />
             <Stats title={"Stake Reward"} value={`0%`} />
@@ -66,7 +66,7 @@ export default function PrepPoolsWidget() {
         </Card>
         <div className="w-full text-base flex font-bold justify-center items-center bg-0xbox">
           <Iconify icon="iconoir:light-bulb-on" />
-          <div>Mint ALP Tokens to earn fees from swaps and leverage tradings.</div>
+          <div>Mint AGLP Tokens to earn fees from swaps and leverage tradings.</div>
           <a href="google.com" className="text-agdexMain underline ml-2">
             Learn more
           </a>
@@ -83,8 +83,8 @@ export default function PrepPoolsWidget() {
 
                 <div className="w-[650px] mt-5 font-medium">
                   {" "}
-                  You can stake ALP to receive SUI as the reward. The amount of
-                  SUI you receive is determined by your share in the Stake Pool,
+                  You can stake AGLP to receive AGT as the reward. The amount of
+                  AGT you receive is determined by your share in the Stake Pool,
                   and rewards are settled every second.
                 </div>
               </div>
@@ -95,9 +95,9 @@ export default function PrepPoolsWidget() {
                   Portfolio
                 </div>
                 <div className="flex flex-row justify-between mt-2 w-[500px]">
-                  <UnStats title={"Unstaked"} value={`0 ALP`} />
+                  <UnStats title={"Unstaked"} value={`0 AGLP`} />
                   <div className="h-full border border-muted" />
-                  <UnStats title={"Staked"} value={`0 ALP`} />
+                  <UnStats title={"Staked"} value={`0 AGLP`} />
                   <div className="h-full border border-muted" />
                   <UnStats title={"Claimable rewards"} value={`0 Ap`} />
                 </div>
@@ -155,18 +155,18 @@ export default function PrepPoolsWidget() {
                     value="buy"
                     className="flex justify-center w-1/2 h-full"
                   >
-                    Buy ALP
+                    Buy AGLP
                   </StyledTabsTrigger>
                   <StyledTabsTrigger
                     value="sell"
                     className="flex justify-center w-1/2 h-full"
                   >
-                    Sell ALP
+                    Sell AGLP
                   </StyledTabsTrigger>
                 </StyledTabsList>
                 <StyledTabsContent value={"buy"}>
                   <InputBox
-                    title="ALP Amount"
+                    title="AGLP Amount"
                     value={""}
                     suffix="USDX"
                     maxNode={<div className="rounded-xl">max</div>}
@@ -174,7 +174,7 @@ export default function PrepPoolsWidget() {
                 </StyledTabsContent>
                 <StyledTabsContent value={"sell"}>
                   <InputBox
-                    title="ALP Amount"
+                    title="AGLP Amount"
                     value={""}
                     suffix="USDX"
                     maxNode={<div className="rounded-xl">max</div>}
