@@ -1,4 +1,4 @@
-import { PoolDataType } from './../pages/pools/PoolRow';
+import { PoolDataType } from '../pages/aapools/PoolRow';
 import { registerMarketInfos } from "./zAddressHelper"
 
 import React from 'react';

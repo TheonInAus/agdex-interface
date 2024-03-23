@@ -41,7 +41,7 @@
     ".next/types/**/*.ts",
     "hooks/zContractConstantsHelper.js",
     "components/tradingView.js",
-    "pages/pools/poolTradeWidget.xtsx"
+    "pages/aapools/poolTradeWidget.xtsx"
   ],
   "exclude": [
     "node_modules"

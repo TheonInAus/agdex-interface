@@ -18,12 +18,12 @@ export const siteConfig = {
     {
       name: 'Pools',
       title: "Pools",
-      href: "/abPools",
+      href: "/pools",
     },
     {
       name: 'Referrals',
       title: "Referrals",
-      href: "/abReferral",
+      href: "/referral",
     },
     // {
     //   name: 'Earn',
@@ -33,12 +33,12 @@ export const siteConfig = {
     {
       name: 'Bridge',
       title: "Bridge",
-      href: "/abBridge",
+      href: "/bridge",
     },
     {
       name: 'Stats',
       title: "Stats",
-      href: "/Stats",
+      href: "/stats",
     },
 
 
