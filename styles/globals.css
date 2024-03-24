@@ -32,15 +32,15 @@
   /* 暗黑模式 */
   .dark {
     --background: #000000; /* 深蓝背景 */
-    --foreground: #cbd2d9; /* 浅灰色文字 */
+    --foreground: #434343; /* 浅灰色文字 */
     --card: #2A2A2A; /* 暗蓝色卡片 */
-    --card-foreground: #cbd2d9; /* 浅灰色卡片文字 */
-    --popover-foreground: #cbd2d9; /* 浅灰色弹窗文字 */
-    --primary: #FFFFFF; /* 暗柔和蓝色 */
-    --primary-foreground: #e3e8ee; /* 暗模式下的白色 */
-    --secondary: #FFFFFF; /* 暗淡蓝色 */
-    --secondary-foreground: #afc5d9; /* 暗模式下的淡蓝色 */
-    --muted: #FFFFFF; /* 暗非常淡的蓝色 */
+    --card-foreground: #323232; /* 浅灰色卡片文字 */
+    --popover-foreground: #343434; /* 浅灰色弹窗文字 */
+    --primary: #363636; /* 暗柔和蓝色 */
+    --primary-foreground: #2D2D2D; /* 暗模式下的白色 */
+    --secondary: #2D2D2D; /* 暗淡蓝色 */
+    --secondary-foreground: #313131; /* 暗模式下的淡蓝色 */
+    --muted: #2C2C2C; /* 暗非常淡的蓝色 */
     --muted-foreground: #FFFFFF; /* 暗模式下的中等蓝色 */
     --accent: #FFFFFF; /* 暗明亮蓝色 */
     --accent-hover: #FFFFFF; /* 暗明亮蓝色 */
