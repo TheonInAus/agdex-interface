@@ -1,21 +1,7 @@
 import { useState } from "react"
+import { Separator } from "@radix-ui/react-select"
 import { Edit3, ExternalLink, Loader2 } from "lucide-react"
-import { formatEther } from "viem"
 
-import { useCreateDecreasePosition } from "@/hooks/actionTradePosition"
-import { useUserPositionListSingleMock } from "@/hooks/cUserState"
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import {
-  SIDE_LONG,
-  SIDE_SHORT,
-  Side,
-  e6DivideE18,
-  giveMeFormattedToShow,
-  to0xxPriceX96,
-  wrapperFormatEther6e,
-  wrapperFormatEther18e,
-  x96Price2Readable,
-} from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { CustomTooltip } from "@/components/ui/customToolTip"
 import {
@@ -38,8 +24,8 @@ import AddMarginWidget from "@/components/ui/tradeWidget/addMarginWidget"
 import ReduceMarginWidget from "@/components/ui/tradeWidget/reduceMarginWidget"
 
 import ClosePositionWidget from "./closePositionWidget"
-import { Separator } from "@radix-ui/react-select"
 
+type Side = {}
 type PositionInfo = {
   poolAddress: any
   side: Side
@@ -55,15 +41,7 @@ type PositionListWidgetType = {
 export default function PositionListWidget({
   contractPriceAfter,
 }: PositionListWidgetType) {
-  const currentTokenEntity = useTokenConfigStore(
-    (state) => state.currentTokenEntity
-  )
-
-  const {
-    data: positionDataList,
-    isLoading,
-    isError,
-  } = useUserPositionListSingleMock(currentTokenEntity)
+  const positionDataList: any[] = []
 
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
@@ -76,18 +54,7 @@ export default function PositionListWidget({
     }
   }
 
-  const handleSetCurrentPosition = (position: any) => {
-    setCurrentPosition({
-      poolAddress: position.tokenPool,
-      side: position.tokenSide === "Long" ? SIDE_LONG : SIDE_SHORT,
-      marginDelta: 0,
-      sizeDelta: position.size,
-      acceptableTradePriceX96:
-        position.tokenSide === "Long"
-          ? to0xxPriceX96((contractPriceAfter - 1).toString())
-          : to0xxPriceX96((contractPriceAfter + 1).toString()),
-    })
-  }
+  const handleSetCurrentPosition = (position: any) => {}
   const feesValue = 0
 
   return (
@@ -98,7 +65,7 @@ export default function PositionListWidget({
           {positionDataList.map((position, index) => (
             <div key={index}>
               <div className="flex flex-row gap-2 font-extrabold">
-                <div>{`${currentTokenEntity.symbol}`}</div>
+                <div>{`symbol`}</div>
                 <div
                   className={`${
                     position.tokenSide === "Long"
@@ -118,27 +85,18 @@ export default function PositionListWidget({
               </div>
               <div className="flex flex-row justify-between w-full mt-3">
                 <div className="flex flex-col">
-                  <PositionItem
-                    keyText="Size"
-                    value={
-                      giveMeFormattedToShow(
-                        wrapperFormatEther18e(position.size)
-                      ) + ` ${currentTokenEntity.name}`
-                    }
-                  />
+                  <PositionItem keyText="Size" value={`name`} />
                   <div className="flex flex-row mt-2">
                     <CustomTooltip
-                      triggerContent={<div className="mr-7 text-sm">Margin</div>}
+                      triggerContent={
+                        <div className="text-sm mr-7">Margin</div>
+                      }
                     >
                       <p>llll</p>
                     </CustomTooltip>
                     <CustomTooltip
                       triggerContent={
-                        <div className="font-bold">
-                          {giveMeFormattedToShow(
-                            wrapperFormatEther6e(position.margin)
-                          ) + " USDX"}
-                        </div>
+                        <div className="font-bold">{0 + " USDX"}</div>
                       }
                     >
                       <p>llll</p>
@@ -188,55 +146,27 @@ export default function PositionListWidget({
                 <div className="flex flex-col">
                   <PositionItem
                     keyText="Entry Price"
-                    value={x96Price2Readable(position.entryPriceX96)}
+                    value={position.entryPriceX96}
                   />
                   <div className="flex mt-2 gap-7">
-                    <CustomTooltip triggerContent={<div className="text-sm">Liq. Price</div>}>
+                    <CustomTooltip
+                      triggerContent={<div className="text-sm">Liq. Price</div>}
+                    >
                       <p>llll</p>
                     </CustomTooltip>
-                    <div className="font-bold">
-                      {position?.tokenSide === "Long"
-                        ? giveMeFormattedToShow(
-                            Number(x96Price2Readable(position.entryPriceX96)) -
-                              Number(wrapperFormatEther6e(position.margin)) /
-                                Number(wrapperFormatEther18e(position.size))
-                          )
-                        : giveMeFormattedToShow(
-                            Number(x96Price2Readable(position.entryPriceX96)) +
-                              Number(wrapperFormatEther6e(position.margin)) /
-                                Number(wrapperFormatEther18e(position.size))
-                          )}
-                    </div>
+                    <div className="font-bold">xxx</div>
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex flex-row">
                     <CustomTooltip
                       triggerContent={
-                        <div className="mr-7 text-sm">Unrealized Pnl.</div>
+                        <div className="text-sm mr-7">Unrealized Pnl.</div>
                       }
                     >
                       <p>llll</p>
                     </CustomTooltip>
-                    <div
-                      className={`font-bold ${
-                        calUnPnL(
-                          Number(x96Price2Readable(position.entryPriceX96)),
-                          Number(formatEther(position.size)),
-                          position.tokenSide
-                        ) >= 0
-                          ? "text-0xgreen"
-                          : "text-0xred"
-                      }`}
-                    >
-                      {giveMeFormattedToShow(
-                        calUnPnL(
-                          Number(x96Price2Readable(position.entryPriceX96)),
-                          Number(formatEther(position.size)),
-                          position.tokenSide
-                        )
-                      )}
-                    </div>
+                    <div className={`font-bold ${"text-0xgreen"}`}>xxx</div>
 
                     <ExternalLink
                       className="mt-1 ml-1 text-opacity-70 hover:text-opacity-100"
@@ -292,7 +222,7 @@ export default function PositionListWidget({
                   </Dialog>
                 </div>
               </div>
-              <div className="border-b mt-4 border-b-popover"></div>
+              <div className="mt-4 border-b border-b-popover"></div>
               <br></br>
             </div>
           ))}

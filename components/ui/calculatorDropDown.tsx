@@ -4,9 +4,6 @@ import * as React from "react"
 import { CheckIcon, ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import { useTokenConfigWrapperInfo } from "@/hooks/useTokenConfigWrapperInfo"
-import { giveMeFormattedToShow } from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -22,18 +19,12 @@ import {
 } from "@/components/ui/popover"
 
 export default function CalculatorDropDownBox() {
-  const tokens = useTokenConfigWrapperInfo()
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("BTC")
-
-  const setCurrentTokenEntity = useTokenConfigStore(
-    (state: any) => state.setCurrentTokenEntity
-  )
-
+  const tokens: any[] = []
   const handleDropDownSelect = (token: any) => {
     setValue(token.name)
     setOpen(false)
-    setCurrentTokenEntity(token)
   }
 
   return (
@@ -45,10 +36,8 @@ export default function CalculatorDropDownBox() {
           aria-expanded={open}
           className="w-[250px] justify-start text-base font-semibold hover:bg-0xtrans"
         >
-          {value
-            ? tokens.find((token) => token.name === value)?.symbol
-            : "Select Market..."}
-          <ChevronDown className="w-4 h-4 ml-1 opacity-50 shrink-0" />
+          xxx
+          <ChevronDown className="ml-1 opacity-50 size-4 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[250px] p-2">
@@ -56,7 +45,7 @@ export default function CalculatorDropDownBox() {
           <CommandInput placeholder="Search Market..." className="h-9" />
           <CommandEmpty>No Token found.</CommandEmpty>
           <CommandGroup>
-            <div className="text-sm my-2 ml-2 text-0xgrey">Market</div>
+            <div className="my-2 ml-2 text-sm text-0xgrey">Market</div>
             {tokens.map((token) => (
               <CommandItem
                 key={token.name}
@@ -67,7 +56,9 @@ export default function CalculatorDropDownBox() {
               >
                 <div className="flex justify-between w-full">
                   <div className="text-sm text-white">{token.name}</div>
-                    <div className="bg-boxBackground w-12 text-center rounded-md">100X</div>
+                  <div className="w-12 text-center rounded-md bg-boxBackground">
+                    100X
+                  </div>
                 </div>
               </CommandItem>
             ))}

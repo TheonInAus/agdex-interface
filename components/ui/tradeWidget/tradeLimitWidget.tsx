@@ -2,19 +2,6 @@ import { useEffect, useState } from "react"
 import Decimal from "decimal.js"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
-import {
-  useCreateIncreaseOrder,
-  useCreateIncreasePostion,
-} from "@/hooks/actionTradePosition"
-import { useUserUsdxBalance } from "@/hooks/cUserState"
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import { ethMarketAddress } from "@/hooks/zAddressHelper"
-import {
-  SIDE_LONG,
-  Side,
-  giveMeFormattedToShow,
-  to0xxPriceX96,
-} from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { InputBox } from "@/components/ui/inputBox"
@@ -23,6 +10,7 @@ import { Slider } from "@/components/ui/slider"
 
 import { CustomTooltip } from "../customToolTip"
 
+type Side = {}
 type TradeMarketType = {
   side: Side
   marketAndIndexPriceData: any
@@ -49,44 +37,10 @@ export default function TradeLimitWidget({
     }
   }, [limitPrice])
   const limitAcceptableRate = 0.03
-  const {
-    data: balanceData,
-    isError: isBalanceError,
-    isLoading: isBalanceLoading,
-  } = useUserUsdxBalance()
-
-  const currentTokenEntity = useTokenConfigStore(
-    (state: any) => state.currentTokenEntity
-  )
 
   const [ethPrice, setEthPrice] = useState(0)
   const [tokenPrice, setTokenPrice] = useState(0)
   const [contractPrice, setContractPrice] = useState(0)
-
-  useEffect(() => {
-    if (marketAndIndexPriceData) {
-      setEthPrice(marketAndIndexPriceData.indexPrices["ETH"].indexPrice)
-      setTokenPrice(
-        marketAndIndexPriceData.indexPrices[currentTokenEntity.name].indexPrice
-      )
-      setContractPrice(Number(contractPriceAfter))
-    }
-  }, [marketAndIndexPriceData, currentTokenEntity.name, contractPriceAfter])
-
-  const {
-    createIncOrderData,
-    isCreateIncOrderLoading,
-    isCreateIncOrderError,
-    createIncOrderWrite,
-  } = useCreateIncreaseOrder(
-    ethMarketAddress,
-    side,
-    usdMargin,
-    tradingSize,
-    to0xxPriceX96(limitPrice ? limitPrice : "0"),
-    false,
-    to0xxPriceX96(acceptableLimit ? acceptableLimit : "0")
-  )
 
   const handleCheckboxChange = (checked: any) => {
     setIsChecked(checked)
@@ -97,9 +51,7 @@ export default function TradeLimitWidget({
     setLeverageNumber(value)
   }
 
-  const handleIncOrderTemp = () => {
-    createIncOrderWrite()
-  }
+  const handleIncOrderTemp = () => {}
 
   useEffect(() => {
     if (usdMargin !== "") {
@@ -143,17 +95,9 @@ export default function TradeLimitWidget({
           value={usdMargin}
           suffix="USDX"
           balanceNode={
-            isBalanceLoading ? (
-              <div>Fetching balance…</div>
-            ) : isBalanceError ? (
-              <div>Error fetching balance</div>
-            ) : (
-              <div>
-                Balance:{" "}
-                {giveMeFormattedToShow(Number(balanceData?.formatted) || 0)}{" "}
-                {balanceData?.symbol}
-              </div>
-            )
+            <div>
+              Balance: {0} {"balanceData?.symbol"}
+            </div>
           }
           onValueChange={(e) => {
             setUsdMargin(e.target.value)
@@ -237,24 +181,16 @@ export default function TradeLimitWidget({
         </div>
       </div>
       <Button
-        disabled={isCreateIncOrderLoading}
+        disabled={false}
         onClick={() => {
           handleIncOrderTemp()
         }}
-        className={`w-full font-bold text-center rounded-md item-center mt-4 ${
-          side === SIDE_LONG ? "bg-0xgreen" : "bg-0xred"
-        } h-9 text-white`}
+        className={`w-full font-bold text-center rounded-md item-center mt-4 ${"bg-0xgreen"} h-9 text-white`}
       >
-        {isCreateIncOrderLoading ? (
-          <>
-            <Loader className="w-4 h-4 mr-2 animate-spin" />
-            Please wait
-          </>
-        ) : side === SIDE_LONG ? (
-          "Long"
-        ) : (
-          "Short"
-        )}
+        <>
+          <Loader className="mr-2 size-4 animate-spin" />
+          Please wait
+        </>
       </Button>
     </div>
   )

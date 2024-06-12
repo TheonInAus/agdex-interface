@@ -1,5 +1,3 @@
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import { giveMeFormattedToShow } from "@/hooks/zContractHelper"
 import { Card } from "@/components/ui/card"
 import { CustomTooltip } from "@/components/ui/customToolTip"
 import { Stats } from "@/components/ui/stats"
@@ -23,25 +21,22 @@ export default function TradeHeaderWidget({
   openInterst,
   openInterstValue,
 }: TradeHeaderWidgetProps) {
-  const currentTokenEntity = useTokenConfigStore(
-    (state: any) => state.currentTokenEntity
-  )
   return (
     <div className="flex justify-center">
       <Card className="w-[1250px]">
         <div className="flex items-center justify-start gap-10 py-6 pl-10">
-          <TokenPairWidget token1={currentTokenEntity.name} token2={"USDX"} />
+          <TokenPairWidget token1={"ETH"} token2={"USDX"} />
           <DropDownBox />
           <div
             className={`mt-1 mx-2 text-xl font-bold mr-10 ${
               priceType ? "text-0xred" : "text-0xgreen"
             }`}
           >
-            {giveMeFormattedToShow(contractPrice)}
+            {contractPrice}
           </div>
           <Stats
             title={"Index Price"}
-            value={giveMeFormattedToShow(shownIndexPrice)}
+            value={"shownIndexPrice"}
             textColor={priceType ? "text-0xred" : "text-0xgreen"}
           />
           <Stats
@@ -56,14 +51,8 @@ export default function TradeHeaderWidget({
               <p> todo desc</p>
             </CustomTooltip>
             <div className="flex items-center mt-1">
-              <div className="mr-1 text-lg text-agdexMain">
-                {`${giveMeFormattedToShow(openInterst)} ${
-                  currentTokenEntity.name
-                }`}{" "}
-              </div>
-              <div className="text-sm">{`($${giveMeFormattedToShow(
-                openInterstValue
-              )})`}</div>
+              <div className="mr-1 text-lg text-agdexMain">xxx</div>
+              <div className="text-sm">{`($${openInterstValue})`}</div>
             </div>
           </div>
         </div>

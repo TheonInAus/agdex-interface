@@ -2,13 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { AlertCircle } from "lucide-react"
-import { parseEther } from "viem"
 
-import {
-  minExecutionFee,
-  minOrderBookExecutionFee,
-  wrapperFormatEther18e,
-} from "@/hooks/zContractHelper"
+import { wrapperFormatEther18e } from "@/hooks/zContractHelper"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -30,15 +25,13 @@ export default function TpslTabsPartialPositionWidget({
   const [stopLossChecked, setStopLossChecked] = useState(true)
   const [sizeDelta, setSizeDelta] = useState(0)
   const [sizeRate, setSizeRate] = useState(0)
-  const [orderBookExecutionFee, setOrderBookExecutionFee] = useState(
-    minOrderBookExecutionFee
-  )
-  const doubleExecutionFee = minOrderBookExecutionFee * 2n
+  const [orderBookExecutionFee, setOrderBookExecutionFee] = useState(1)
+  const doubleExecutionFee = 1n * 2n
   useEffect(() => {
     if (takeProfitChecked && stopLossChecked) {
-      setOrderBookExecutionFee(doubleExecutionFee)
+      setOrderBookExecutionFee(1)
     } else {
-      setOrderBookExecutionFee(minOrderBookExecutionFee)
+      setOrderBookExecutionFee(2)
     }
   }, [takeProfitChecked, stopLossChecked, doubleExecutionFee])
   const handleSliderValueChange = (value: any) => {
@@ -184,7 +177,7 @@ export default function TpslTabsPartialPositionWidget({
         </div>
         <div className="flex flex-row justify-between">
           <div>Execution Fee</div>
-          <div>{wrapperFormatEther18e(orderBookExecutionFee)} ETH</div>
+          <div>{wrapperFormatEther18e(BigInt(1))} ETH</div>
         </div>
         <div className="mt-4 text-0xgrey">
           When the market price reaches the trigger price, the system will close

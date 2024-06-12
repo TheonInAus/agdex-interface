@@ -2,19 +2,6 @@ import { useEffect, useState } from "react"
 import Decimal from "decimal.js"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
-import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
-import { useUserUsdxBalanceMock } from "@/hooks/cUserState"
-
-import "@/hooks/usePrice"
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import {
-  SIDE_LONG,
-  Side,
-  giveMeFormattedToShow,
-  minExecutionFeeNumber,
-  to0xxPriceX96,
-} from "@/hooks/zContractHelper"
-import { tokenConfig } from "@/hooks/zTokenConfig"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
@@ -34,6 +21,7 @@ import { TpsLInput } from "@/components/ui/tpslIput"
 
 import { Card } from "../card"
 
+type Side = {}
 type TradeMarketType = {
   side: Side
   marketAndIndexPriceData: any
@@ -52,47 +40,13 @@ export default function TradeMarketWidget({
   const [isChecked, setIsChecked] = useState(true)
   const [showSlider, setShowSlider] = useState(true)
   const [priceSlippage, setPriceSlippage] = useState("1")
-  const currentTokenEntity = useTokenConfigStore(
-    (state: any) => state.currentTokenEntity
-  )
 
   const [ethPrice, setEthPrice] = useState(0)
   const [tokenPrice, setTokenPrice] = useState(0)
   const [contractPrice, setContractPrice] = useState(0)
-  useEffect(() => {
-    if (marketAndIndexPriceData) {
-      setEthPrice(marketAndIndexPriceData.indexPrices?.["ETH"]?.indexPrice)
-      setTokenPrice(
-        marketAndIndexPriceData.indexPrices?.[currentTokenEntity.name]
-          ?.indexPrice
-      )
-      setContractPrice(Number(contractPriceAfter))
-    }
-  }, [marketAndIndexPriceData, currentTokenEntity.name, contractPriceAfter])
 
   const [tokenAfterSlippagePrice, setTokenAfterSlippagePrice] = useState(0)
   const [liqPrice, setLiqPrice] = useState(0)
-
-  const executionFee = minExecutionFeeNumber * Number(ethPrice)
-
-  const {
-    data: balanceData,
-    isError: isBalanceError,
-    isLoading: isBalanceLoading,
-  } = useUserUsdxBalanceMock()
-
-  const { incPositionData, incPositionLoading, incPositionWrite } =
-    useCreateIncreasePostion(
-      currentTokenEntity.market,
-      side,
-      usdMargin,
-      tradingSize,
-      to0xxPriceX96(
-        side === SIDE_LONG
-          ? Number(tokenAfterSlippagePrice).toString()
-          : Number(tokenAfterSlippagePrice).toString()
-      )
-    )
 
   const handleCheckboxChange = (checked: any) => {
     setIsChecked(checked)
@@ -103,9 +57,6 @@ export default function TradeMarketWidget({
     setLeverageNumber(value)
   }
 
-  const handleIncPostionTemp = () => {
-    incPositionWrite()
-  }
   const premiumRateX96 = 0.000219
 
   useEffect(() => {
@@ -132,32 +83,6 @@ export default function TradeMarketWidget({
     }
   }, [usdAfterMargin, tokenPrice])
 
-  useEffect(() => {
-    if (contractPrice && priceSlippage) {
-      if (side === SIDE_LONG) {
-        setTokenAfterSlippagePrice(
-          contractPrice * (1 + Number(priceSlippage) / 1000)
-        )
-      } else {
-        setTokenAfterSlippagePrice(
-          contractPrice * (1 - Number(priceSlippage) / 1000)
-        )
-      }
-    }
-  }, [contractPrice, priceSlippage, side])
-
-  useEffect(() => {
-    if (tokenPrice) {
-      if (side === SIDE_LONG) {
-        const liqPrice = tokenPrice * (1 - 1 / leverageNumber)
-        setLiqPrice(liqPrice)
-      } else {
-        const liqPrice = tokenPrice * (1 + 1 / leverageNumber)
-        setLiqPrice(liqPrice)
-      }
-    }
-  }, [leverageNumber, usdMargin, tokenPrice, side])
-
   const tradingFee = 0.3
 
   return (
@@ -166,19 +91,7 @@ export default function TradeMarketWidget({
         title="Pay"
         value={usdMargin}
         suffix="USDX"
-        balanceNode={
-          isBalanceLoading ? (
-            <div>Fetching balance…</div>
-          ) : isBalanceError ? (
-            <div>Error fetching balance</div>
-          ) : (
-            <div>
-              Balance:{" "}
-              {giveMeFormattedToShow(Number(balanceData?.formatted) || 0)}{" "}
-              {balanceData?.symbol}
-            </div>
-          )
-        }
+        balanceNode={<></>}
         onValueChange={(e) => {
           setUsdMargin(e.target.value)
         }}
@@ -187,7 +100,7 @@ export default function TradeMarketWidget({
       <InputBox
         title="Size"
         value={tradingSize}
-        suffix={currentTokenEntity.name}
+        suffix={"currentTokenEntity.name"}
         prefix={`Leverage:`}
         prefixValue={leverageNumber}
         onValueChange={(e) => {
@@ -230,12 +143,11 @@ export default function TradeMarketWidget({
       </div>
       <br></br>
       <div className="py-2">
-        <ListItem
-          keyText="Entry Price"
-          value={giveMeFormattedToShow(Number(tokenPrice))}
-        />
+        <ListItem keyText="Entry Price" value={Number(tokenPrice)} />
         <div className="flex justify-between">
-          <CustomTooltip triggerContent={<div className="text-sm">Price Impact</div>}>
+          <CustomTooltip
+            triggerContent={<div className="text-sm">Price Impact</div>}
+          >
             <p>
               The price impact is the deviation between the estimated
               transaction price of the order and the current index price. When
@@ -248,7 +160,7 @@ export default function TradeMarketWidget({
         <div className="flex">
           <ListItem
             keyText="Acceptable Price"
-            value={giveMeFormattedToShow(tokenAfterSlippagePrice)}
+            value={tokenAfterSlippagePrice}
             percentage={`${Number(priceSlippage) / 100}%`}
             className="w-full"
           />
@@ -299,25 +211,20 @@ export default function TradeMarketWidget({
             </DialogContent>
           </Dialog>
         </div>
-        <ListItem
-          keyText="Liq. Price"
-          value={giveMeFormattedToShow(liqPrice)}
-        />
+        <ListItem keyText="Liq. Price" value={liqPrice} />
         <ListItem
           keyText="Est. Margin"
           value={`${(Number(usdMargin) - tradingFee).toFixed(2)}`}
         />
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <div className="text-sm">Fees</div>
-          {tradingFee + executionFee > 0 ? (
+          {tradingFee > 0 ? (
             <CustomTooltip
               triggerContent={
-                <div className="font-bold">{`$${giveMeFormattedToShow(
-                  tradingFee + executionFee
-                )} `}</div>
+                <div className="font-bold">{`$${tradingFee} `}</div>
               }
             >
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <div className="text-xs text-white">Trading Fee</div>
                 <div className="text-xs text-white">-0.82 USDT</div>
               </div>
@@ -336,36 +243,18 @@ export default function TradeMarketWidget({
             <div className="text-xs text-white">-</div>
           )}
         </div>
-        <ListItem
-          keyText="Trading Fee"
-          value={`$${giveMeFormattedToShow(tradingFee)}`}
-        />
+        <ListItem keyText="Trading Fee" value={`$${tradingFee}`} />
       </div>
       {/* <ListItem
           keyText="HasReferral?"
           value={referralState ? "YES" : "NO"}
         ></ListItem> */}
       <Button
-        disabled={incPositionLoading}
-        onClick={() => {
-          handleIncPostionTemp()
-        }}
-        className={`w-full font-bold text-center rounded-md item-center mt-4 ${
-          side === SIDE_LONG
-            ? "bg-0xgreen hover:bg-0xgreen-foreground"
-            : "bg-0xred hover:bg-0xred-foreground"
-        } h-9 text-white`}
+        disabled={false}
+        onClick={() => {}}
+        className={`w-full font-bold text-center rounded-md item-center mt-4 ${"bg-0xgreen hover:bg-0xgreen-foreground"} h-9 text-white`}
       >
-        {incPositionLoading ? (
-          <>
-            <Loader className="w-4 h-4 mr-2 animate-spin" />
-            Please wait
-          </>
-        ) : side === SIDE_LONG ? (
-          "Long"
-        ) : (
-          "Short"
-        )}
+        {"Long"}
       </Button>
     </div>
   )

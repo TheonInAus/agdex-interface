@@ -17,8 +17,7 @@ export default function IndexPage() {
       <div
         className=" h-[750px] rounded-b-[70px]"
         style={{
-          backgroundImage:
-            "linear-gradient(to top, #AA390C 5%, #E96E27 95%)",
+          backgroundImage: "linear-gradient(to top, #AA390C 5%, #E96E27 95%)",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",

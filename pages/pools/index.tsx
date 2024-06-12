@@ -1,4 +1,3 @@
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { CustomTooltip } from "@/components/ui/customToolTip"
@@ -14,13 +13,10 @@ import {
 } from "@/components/ui/styledTab"
 import TokenPairWidget from "@/components/ui/tokenPair/TokenPairWidget"
 import { UnStats } from "@/components/ui/unStats"
-import TradingViewWidgetSmall from "@/components/tradingViewSmall"
 import Iconify from "@/components/Iconify"
+import TradingViewWidgetSmall from "@/components/tradingViewSmall"
 
 export default function PrepPoolsWidget() {
-  const currentTokenEntity = useTokenConfigStore(
-    (state: any) => state.currentTokenEntity
-  )
   const poolList: any[] = [
     {
       token: "SUI",
@@ -56,7 +52,10 @@ export default function PrepPoolsWidget() {
       <div className="flex flex-col gap-4 w-[1250px]">
         <Card>
           <div className="flex flex-row items-center justify-between px-10 py-4">
-            <TokenPairWidget token1={currentTokenEntity.name} token2={"USDX"} />
+            <TokenPairWidget
+              token1={"currentTokenEntity.name"}
+              token2={"USDX"}
+            />
             <Stats title={"Price"} value={`$ 100`} />
             <Stats title={"Total Supple"} value={`0 AGLP`} />
             <Stats title={"Market Cap"} value={`$ 98`} />
@@ -64,10 +63,12 @@ export default function PrepPoolsWidget() {
             <Stats title={"Stake Reward"} value={`0%`} />
           </div>
         </Card>
-        <div className="w-full text-base flex font-bold justify-center items-center bg-0xbox">
+        <div className="flex items-center justify-center w-full text-base font-bold bg-0xbox">
           <Iconify icon="iconoir:light-bulb-on" />
-          <div>Mint AGLP Tokens to earn fees from swaps and leverage tradings.</div>
-          <a href="google.com" className="text-agdexMain underline ml-2">
+          <div>
+            Mint AGLP Tokens to earn fees from swaps and leverage tradings.
+          </div>
+          <a href="google.com" className="ml-2 underline text-agdexMain">
             Learn more
           </a>
         </div>
@@ -76,7 +77,7 @@ export default function PrepPoolsWidget() {
           <div className="flex flex-row justify-between w-full">
             <div className="flex flex-col">
               <div className="flex flex-col">
-                <div className="text-2xl   font-extrabold text-agdexMain">
+                <div className="text-2xl font-extrabold text-agdexMain">
                   {" "}
                   Stake To Earn Reward
                 </div>
@@ -90,7 +91,7 @@ export default function PrepPoolsWidget() {
               </div>
               <div className="h-[50px]" />
               <div className="flex flex-col">
-                <div className="text-lg   font-extrabold text-agdexMain">
+                <div className="text-lg font-extrabold text-agdexMain">
                   {" "}
                   Portfolio
                 </div>
@@ -146,7 +147,7 @@ export default function PrepPoolsWidget() {
         <Card>
           <div className="flex flex-row gap-5 p-2">
             <div className="flex-1">
-              <TradingViewWidgetSmall tokenName={currentTokenEntity.name} />
+              <TradingViewWidgetSmall tokenName={"currentTokenEntity.name"} />
             </div>
             <div>
               <StyledTabs defaultValue="buy" className="w-[400px] ">
@@ -180,11 +181,7 @@ export default function PrepPoolsWidget() {
                     maxNode={<div className="rounded-xl">max</div>}
                   />
                 </StyledTabsContent>
-                <ListItem
-                  keyText="Fees"
-                  value={"0%"}
-                  percentage={`${0}%`}
-                />
+                <ListItem keyText="Fees" value={"0%"} percentage={`${0}%`} />
                 <Button className="w-full h-[50px] mt-6 bg-agdexMain text-xl font-bold">
                   Pay
                 </Button>
@@ -193,11 +190,9 @@ export default function PrepPoolsWidget() {
           </div>
         </Card>
         <Card>
-          <div className="text-2xl   font-bold text-agdexMain">
-            Pool Overview
-          </div>
+          <div className="text-2xl font-bold text-agdexMain">Pool Overview</div>
 
-          <div className="flex flex-row justify-between p-5  ">
+          <div className="flex flex-row justify-between p-5 ">
             <div className="w-[10%]">Token</div>
             <div className="w-[10%]">Price</div>
             <div className="w-[20%]">Avaliable</div>

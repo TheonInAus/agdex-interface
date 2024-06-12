@@ -3,22 +3,6 @@
 import { useState } from "react"
 import { Loader, Loader2 } from "lucide-react"
 
-import {
-  useCreateDecreasePosition,
-  useCreateIncreasePostion,
-} from "@/hooks/actionTradePosition"
-import { useUserUsdxBalance } from "@/hooks/cUserState"
-import { ethMarketAddress } from "@/hooks/zAddressHelper"
-import {
-  SIDE_LONG,
-  Side,
-  e6DivideE18,
-  giveMeFormattedToShow,
-  minExecutionFee,
-  wrapperFormatEther6e,
-  wrapperFormatEther18e,
-  x96Price2Readable,
-} from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
@@ -29,7 +13,7 @@ import { CustomTooltip } from "../customToolTip"
 type ClosePositionProps = {
   positionInfo?: any
 }
-
+type Side = {}
 type PositionInfo = {
   poolAddress: any
   side: Side
@@ -43,30 +27,9 @@ export default function ClosePositionWidget({
 }: ClosePositionProps) {
   const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
 
-  const { decPositionData, decPositionLoading, decPositionWrite } =
-    useCreateDecreasePosition(
-      currentPosition?.poolAddress,
-      currentPosition?.side || 1,
-      currentPosition?.marginDelta,
-      currentPosition?.sizeDelta.toString(),
-      currentPosition?.acceptableTradePriceX96,
-      ""
-    )
-
-  const handleClosePosition = (position: any) => {
-    decPositionWrite()
-  }
+  const handleClosePosition = (position: any) => {}
 
   const feesValue = 0
-
-  //   const longLiqPrice = giveMeFormattedToShow(
-  //     Number(x96Price2Readable(positionInfo?.entryPriceX96)) -
-  //       newMargin / Number(wrapperFormatEther18e(positionInfo?.size))
-  //   )
-  //   const shortLiqPrice = giveMeFormattedToShow(
-  //     Number(x96Price2Readable(positionInfo?.entryPriceX96)) +
-  //       newMargin / Number(wrapperFormatEther18e(positionInfo?.size))
-  //   )
 
   return (
     <>
@@ -74,7 +37,7 @@ export default function ClosePositionWidget({
       <div className="mt-3">
         <div className="flex flex-row justify-between">
           <div className="text-sm text-white">Pure Reduction</div>
-          <Checkbox className="w-4 h-4 text-white focus:text-white" />
+          <Checkbox className="text-white size-4 focus:text-white" />
         </div>
         <ListItem keyText={"Max Slippage"} value={""} />
       </div>
@@ -84,14 +47,8 @@ export default function ClosePositionWidget({
         <div className="text-0xgreen text-sm mt-[2px]">Long 35.98x</div>
       </div>
       <ListItem keyText={"Leverage"} value={""} />
-      <ListItem
-        keyText={"Margin"}
-        value={wrapperFormatEther6e(positionInfo?.margin)}
-      />
-      <ListItem
-        keyText={"Entry Price"}
-        value={x96Price2Readable(positionInfo?.entryPriceX96)}
-      />
+      <ListItem keyText={"Margin"} value={"positionInfo?.margin"} />
+      <ListItem keyText={"Entry Price"} value={"positionInfo?.entryPriceX96"} />
       <ListItem keyText={"Liq. Price"} value={""} />
       <div className="my-3 border-t border-0xline"></div>
       <ListItem keyText={"Price Impact"} value={""} />
@@ -126,21 +83,15 @@ export default function ClosePositionWidget({
       <div className="my-3 border-t border-0xline"></div>
       <ListItem keyText={"Receive"} value={""} />
       <Button
-        disabled={decPositionLoading}
+        disabled={false}
         className="w-full mt-3 text-sm text-black bg-agdexMain hover:bg-agdexMain-foreground"
         onClick={() => {
           handleClosePosition(positionInfo)
         }}
       >
         {" "}
-        {decPositionLoading ? (
-          <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            Please wait
-          </>
-        ) : (
-          "Close"
-        )}
+        <Loader2 className="mr-2 size-4 animate-spin" />
+        Please wait
       </Button>
     </>
   )

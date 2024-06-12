@@ -1,16 +1,7 @@
 "use client"
 
 import { Edit3 } from "lucide-react"
-import { formatEther } from "viem"
 
-import { useLiqPoolsForAccountMock } from "@/hooks/liquidityPoolInfo"
-import {
-  giveMeFormattedToShow,
-  wrapperFormatEther6e,
-  wrapperParseEther6e,
-  x64Price2Readable,
-  x96Price2Readable,
-} from "@/hooks/zContractHelper"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { PositionItem } from "@/components/ui/positionItem"
@@ -44,9 +35,9 @@ export default function PoolRow({
   onToggle,
 }: PoolPowProps) {
   // const [isExpanded, setIsExpanded] = useState(false)
-  const { liqPoolsData: marketLiqList } = useLiqPoolsForAccountMock(
-    market?.marketAddress
-  )
+  const marketLiqList: any = {
+    liquidityPositionIncreaseds: [],
+  }
 
   return (
     <>
@@ -80,26 +71,20 @@ export default function PoolRow({
                   {marketLiqList &&
                   marketLiqList.liquidityPositionIncreaseds.length > 0 ? (
                     marketLiqList.liquidityPositionIncreaseds.map(
-                      (position, index) => (
+                      (position: any, index: number) => (
                         <div className="flex w-full p-2 mb-1" key={index}>
                           <div className="flex flex-row w-full mt-3">
                             <div className="flex flex-col w-[22%]">
                               <PositionItem
                                 keyText="Liquidity"
-                                value={`${giveMeFormattedToShow(
-                                  Number(
-                                    wrapperFormatEther6e(
-                                      position.liquidityAfter as unknown as bigint
-                                    )
-                                  )
-                                )}`}
+                                value={`${11}`}
                               />
                               <PositionItem
                                 keyText="Utilized Leverage"
                                 value={""}
                               />
                             </div>
-                            <div className="flex flex-col w-[20%]">
+                            <div className="flex flex-col w-1/5">
                               <PositionItem keyText="Leverage" value={""} />
                               <PositionItem
                                 keyText="Temporary Loss"
@@ -109,10 +94,8 @@ export default function PoolRow({
                             <div className="flex flex-col w-[35%]">
                               <PositionItem
                                 keyText="Realized Profit"
-                                value={`${giveMeFormattedToShow(
-                                  Number(
-                                    position.realizedPnLDelta as unknown as string
-                                  )
+                                value={`${Number(
+                                  position.realizedPnLDelta as unknown as string
                                 )}`}
                               />
                               <PositionItem keyText="Risk" value={""} />
@@ -121,13 +104,7 @@ export default function PoolRow({
                               <div className="flex flex-row">
                                 <PositionItem
                                   keyText="Margin"
-                                  value={`${giveMeFormattedToShow(
-                                    Number(
-                                      wrapperFormatEther6e(
-                                        position.marginAfter as unknown as bigint
-                                      )
-                                    )
-                                  )}`}
+                                  value={`${1}`}
                                   info="ll"
                                 />
                                 <button className="ml-1">

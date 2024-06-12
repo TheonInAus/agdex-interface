@@ -4,56 +4,57 @@
 
 @layer base {
   :root {
-    --background: #000000; /* 深蓝背景 */
-    --foreground: #434343; /* 浅灰色文字 */
-    --card: #2A2A2A; /* 暗蓝色卡片 */
-    --card-foreground: #323232; /* 浅灰色卡片文字 */
-    --popover-foreground: #343434; /* 浅灰色弹窗文字 */
-    --primary: #363636; /* 暗柔和蓝色 */
-    --primary-foreground: #2D2D2D; /* 暗模式下的白色 */
-    --secondary: #2D2D2D; /* 暗淡蓝色 */
-    --secondary-foreground: #313131; /* 暗模式下的淡蓝色 */
-    --muted: #2C2C2C; /* 暗非常淡的蓝色 */
-    --muted-foreground: #FFFFFF; /* 暗模式下的中等蓝色 */
-    --accent: #FFFFFF; /* 暗明亮蓝色 */
-    --accent-hover: #FFFFFF; /* 暗明亮蓝色 */
-    --accent-foreground: #cbd2d9; /* 暗蓝色 */
-    --destructive: #ff6b6b; /* 暗模式下的柔和红色 */
-    --destructive-foreground: #FFFFFF; /* 暗模式下的背景色 */
-    --border: #474242; /* 暗模式下的淡灰蓝色边框 */
-    --ring: #0F0F0F; /* 暗模式下的焦点色 */
-    --text-color: #202020; /* 暗模式下的默认文本色 */
-    --shadow-color: 255, 255, 255; /* 暗模式下的阴影色 */
-    --shadow-intensity1: 0.02;
-    --shadow-intensity2: 0.04;
+    --background: #ffffff; /* 纯白背景 */
+    --foreground: #344955; /* 深青色文字 */
+    --card: #fafafa; /* 几乎白色的卡片 */
+    --card-foreground: #344955; /* 深青色卡片文字 */
+    --popover: #f5f5f5; /* 极淡灰色弹窗 */
+    --popover-foreground: #344955; /* 深青色弹窗文字 */
+    --primary: #f9aa33; /* 明亮的橙色 */
+    --primary-foreground: #ffffff; /* 白色 */
+    --secondary: #232f34; /* 深灰蓝 */
+    --secondary-foreground: #f0f0f0; /* 亮灰色 */
+    --muted: #e1e2e1; /* 非常淡的灰色 */
+    --muted-foreground: #505f69; /* 暗灰色 */
+    --accent: #ff5722; /* 明亮的红橙色 */
+    --accent-foreground: #ffffff; /* 白色 */
+    --destructive: #d32f2f; /* 强烈的红色 */
+    --destructive-foreground: #ffffff; /* 白色 */
+    --border: #b0bec5; /* 淡蓝灰色边框 */
+    --input: #eceff1; /* 输入框背景色 */
+    --ring: #f9aa33; /* 焦点色 */
+    --text-color: #344955; /* 默认文本色 */
+    --shadow-color: 50, 50, 50; /* 淡阴影色 */
+    --shadow-intensity1: 0.08;
+    --shadow-intensity2: 0.12;
   }
 
   /* 暗黑模式 */
   .dark {
-    --background: #000000; /* 深蓝背景 */
-    --foreground: #434343; /* 浅灰色文字 */
-    --card: #2A2A2A; /* 暗蓝色卡片 */
-    --card-foreground: #323232; /* 浅灰色卡片文字 */
-    --popover-foreground: #343434; /* 浅灰色弹窗文字 */
-    --primary: #363636; /* 暗柔和蓝色 */
-    --primary-foreground: #2D2D2D; /* 暗模式下的白色 */
-    --secondary: #2D2D2D; /* 暗淡蓝色 */
-    --secondary-foreground: #313131; /* 暗模式下的淡蓝色 */
-    --muted: #2C2C2C; /* 暗非常淡的蓝色 */
-    --muted-foreground: #FFFFFF; /* 暗模式下的中等蓝色 */
-    --accent: #FFFFFF; /* 暗明亮蓝色 */
-    --accent-hover: #FFFFFF; /* 暗明亮蓝色 */
-    --accent-foreground: #cbd2d9; /* 暗蓝色 */
-    --destructive: #ff6b6b; /* 暗模式下的柔和红色 */
-    --destructive-foreground: #FFFFFF; /* 暗模式下的背景色 */
-    --border: #474242; /* 暗模式下的淡灰蓝色边框 */
-    --ring: #0F0F0F; /* 暗模式下的焦点色 */
-    --text-color: #202020; /* 暗模式下的默认文本色 */
+    --background: #263238; /* 深灰蓝背景 */
+    --foreground: #cfd8dc; /* 浅灰蓝色文字 */
+    --card: #37474f; /* 暗灰蓝色卡片 */
+    --card-foreground: #cfd8dc; /* 浅灰蓝色卡片文字 */
+    --popover: #455a64; /* 暗灰色弹窗 */
+    --popover-foreground: #cfd8dc; /* 浅灰蓝色弹窗文字 */
+    --primary: #ffb300; /* 暗模式下的明亮橙色 */
+    --primary-foreground: #263238; /* 暗模式下的深灰蓝背景色 */
+    --secondary: #546e7a; /* 暗模式下的灰蓝色 */
+    --secondary-foreground: #cfd8dc; /* 暗模式下的浅灰色 */
+    --muted: #607d8b; /* 暗模式下的蓝灰色 */
+    --muted-foreground: #cfd8dc; /* 暗模式下的浅灰蓝色 */
+    --accent: #ff7043; /* 暗模式下的浅红橙色 */
+    --accent-foreground: #ffffff; /* 暗模式下的白色 */
+    --destructive: #e53935; /* 暗模式下的红色 */
+    --destructive-foreground: #37474f; /* 暗模式下的背景色 */
+    --border: #546e7a; /* 暗模式下的淡灰蓝色边框 */
+    --input: #455a64; /* 暗模式下的输入框背景色 */
+    --ring: #ffb300; /* 暗模式下的焦点色 */
+    --text-color: #cfd8dc; /* 暗模式下的默认文本色 */
     --shadow-color: 255, 255, 255; /* 暗模式下的阴影色 */
-    --shadow-intensity1: 0.02;
-    --shadow-intensity2: 0.04;
+    --shadow-intensity1: 0.05;
+    --shadow-intensity2: 0.07;
   }
-
   body {
     min-height: 100vh; /* Full viewport height */
     background: var(

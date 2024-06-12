@@ -2,13 +2,8 @@
 
 import React, { useEffect, useState } from "react"
 import { Loader } from "lucide-react"
-import { parseUnits } from "viem"
 
 import { siteConfig } from "@/config/site"
-import { useOpenLiquidityPosition } from "@/hooks/actionLiquidityPosition"
-import { useUserUsdxBalance } from "@/hooks/cUserState"
-import { useAllLiquidityPools } from "@/hooks/liquidityPoolInfo"
-import { giveMeFormattedToShow } from "@/hooks/zContractHelper"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -23,7 +18,6 @@ import PoolCalculatorWidget from "./poolCalculator"
 // import PoolTradeWidget from "./poolTradeWidget"
 
 export default function PoolsPage() {
-  const { poolsConfig } = useAllLiquidityPools()
   const [expandedPool, setExpandedPool] = useState(0)
   const [dataChangeMode, setDataChangeMode] = useState(0)
 
@@ -31,7 +25,7 @@ export default function PoolsPage() {
     setDataChangeMode(2)
     setExpandedPool(index)
   }
-
+  const poolsConfig: any[] = []
   return (
     <section className="container flex items-center justify-center gap-6 pt-6 pb-8">
       <div className="flex flex-row gap-4">

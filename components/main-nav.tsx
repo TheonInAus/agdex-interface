@@ -6,9 +6,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { NavItem } from "@/types/nav"
-import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
 
 interface MainNavProps {
   items?: NavItem[]
@@ -19,14 +17,9 @@ export function MainNav({ items }: MainNavProps) {
 
   return (
     <div className="flex items-center gap-6 md:gap-6 w-[850px]">
-      <div className="flex gap-2 justify-center items-center mr-10">
-        <Image
-          src="/agLogo.svg"
-          alt="Logo"
-          width={50}
-          height={50}
-        />
-        <div className="text-agdexMain font-bold text-lg">AGDEX</div>
+      <div className="flex items-center justify-center gap-2 mr-10">
+        <Image src="/agLogo.svg" alt="Logo" width={50} height={50} />
+        <div className="text-lg font-bold text-agdexMain">AGDEX</div>
       </div>
       {items?.length ? (
         <nav className="flex gap-6 ">

@@ -2,28 +2,6 @@
 
 import React, { useEffect, useState } from "react"
 
-import {
-  useApprovePlugin,
-  useCheckPluginState,
-} from "@/hooks/actionApprovePlugin"
-import {
-  useExeDecreasePosition,
-  useExeIncreasePosition,
-} from "@/hooks/actionMixExecutorHelper"
-import { usePositionAndLiqPositionInfo } from "@/hooks/cPositionState"
-import {
-  useGlobalFundingRate,
-  useMarketPriceState,
-  useTokenMarketAndIndexPriceMock,
-} from "@/hooks/usePrice"
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import { orderBookAddress, positionRouterAddress } from "@/hooks/zAddressHelper"
-import {
-  SIDE_LONG,
-  SIDE_SHORT,
-  giveMeFormattedToShow,
-  x96Price2Readable,
-} from "@/hooks/zContractHelper"
 import { Card } from "@/components/ui/card"
 import { ListItem } from "@/components/ui/listItem"
 import {
@@ -50,7 +28,6 @@ interface MarketData {
   }
 }
 
-// 假设 marketAndIndexPriceData 类型如下
 interface MarketAndIndexPriceData {
   indexPrices: MarketData
   markPrices: MarketData
@@ -58,74 +35,8 @@ interface MarketAndIndexPriceData {
 }
 
 export default function TradePage() {
-  const {
-    data: positionRouterPluginData,
-    isLoading: isPositionRouterPluginLoading,
-    isError: isPositionRouterPluginError,
-  } = useCheckPluginState(positionRouterAddress)
-
-  const {
-    data: orderBookPluginData,
-    isLoading: isOrderBookPluginLoading,
-    isError: isOrderBookPluginError,
-  } = useCheckPluginState(orderBookAddress)
-
-  const { approvePluginWrite: positionRouterWrite } = useApprovePlugin(
-    positionRouterAddress
-  )
-
-  const { approvePluginWrite: orderBookWrite } =
-    useApprovePlugin(orderBookAddress)
-
-  const {
-    data: exeIncPositionData,
-    isLoading: isExeIncPositionLoading,
-    isError: isExeIncPositionError,
-    write: exeIncPositionWrite,
-  } = useExeIncreasePosition()
-
-  const {
-    data: exeDecPositionData,
-    isLoading: isExeDecPositionLoading,
-    isError: isExeDecPositionError,
-    write: exeDecPositionWrite,
-  } = useExeDecreasePosition()
-
-  const approvePositionRouterPluginTemp = () => {
-    positionRouterWrite()
-  }
-
-  const approveOrderBookPluginTemp = () => {
-    orderBookWrite()
-  }
-
-  const currentTokenEntity = useTokenConfigStore(
-    (state: any) => state.currentTokenEntity
-  )
-
-  const {
-    data: marketAndIndexPriceData,
-    error,
-    loading,
-  } = useTokenMarketAndIndexPriceMock()
-
   const [shownIndexPrice, setShownIndexPrice] = useState<number>(0)
   const [change24h, setChange24h] = useState<number>(0)
-  useEffect(() => {
-    if (marketAndIndexPriceData && currentTokenEntity?.name) {
-      const tokenName = currentTokenEntity.name as string
-      const indexPrices = marketAndIndexPriceData.indexPrices as MarketData
-      const markPrices = marketAndIndexPriceData.markPrices as MarketData
-
-      if (indexPrices[tokenName] && markPrices[tokenName]) {
-        const indexPrice = indexPrices[tokenName].indexPrice
-        const price24hPcnt = indexPrices[tokenName].price24hPcnt
-
-        setShownIndexPrice(Number(indexPrice))
-        setChange24h(+price24hPcnt)
-      }
-    }
-  }, [marketAndIndexPriceData, currentTokenEntity])
 
   const premiumRateX96 = 0.000182
   // const { cumulativePremiumRateX96 } = useGlobalFundingRate(
@@ -140,44 +51,15 @@ export default function TradePage() {
     setLastContractPrice(contractPrice)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contractPrice])
-  const {
-    lpNetSize,
-    lpSide,
-    lpEntryPrice,
-    liquidity,
-    liqPnL,
-    longSize,
-    shortSize,
-    longFundingRateGrowthX96,
-    shortFundingRateGrowthX96,
-  } = usePositionAndLiqPositionInfo(currentTokenEntity.market)
+  const lpNetSize = 0
+  let lpSide = 0
+  const liquidity = 0
+  const longSize = 0
+  const shortSize = 0
 
   const [openInterst, setOpenInterst] = useState(0)
   const [openInterstValue, setOpenInterstValue] = useState(0)
   const [balanceRate, setBalanceRate] = useState(0)
-
-  useEffect(() => {
-    const totalSize = lpNetSize + longSize + shortSize
-    setOpenInterst(totalSize)
-    if (shownIndexPrice) {
-      setOpenInterstValue(totalSize * shownIndexPrice)
-    }
-  }, [lpNetSize, longSize, shortSize, shownIndexPrice, currentTokenEntity])
-
-  useEffect(() => {
-    let tempNetSize = lpNetSize
-    if (lpSide === 1) {
-      tempNetSize = -lpNetSize
-    } else {
-      tempNetSize = lpNetSize
-    }
-    if (liquidity === 0) {
-      setBalanceRate(0)
-    } else {
-      const value = (tempNetSize * shownIndexPrice) / liquidity
-      setBalanceRate(value)
-    }
-  }, [lpNetSize, lpSide, liquidity, shownIndexPrice, currentTokenEntity])
 
   const [leverageNumber, setLeverageNumber] = useState(1)
 
@@ -207,7 +89,7 @@ export default function TradePage() {
           openInterst={openInterst}
           openInterstValue={openInterstValue}
         />
-        <div className="flex flex-row gap-2 justify-center">
+        <div className="flex flex-row justify-center gap-2">
           <div className="flex flex-col mt-2">
             <TradeTradingViewWidget />
             <TradePositionWidget contractPrice={contractPrice} />
@@ -242,15 +124,15 @@ export default function TradePage() {
                     </div>
                     <StyledTabsContent value="Market">
                       <TradeMarketWidget
-                        side={SIDE_LONG}
-                        marketAndIndexPriceData={marketAndIndexPriceData}
+                        side={0}
+                        marketAndIndexPriceData={1}
                         contractPriceAfter={contractPrice}
                       />
                     </StyledTabsContent>
                     <StyledTabsContent value="Limit">
                       <TradeLimitWidget
-                        side={SIDE_LONG}
-                        marketAndIndexPriceData={marketAndIndexPriceData}
+                        side={1}
+                        marketAndIndexPriceData={1}
                         contractPriceAfter={contractPrice}
                       />
                     </StyledTabsContent>
@@ -272,14 +154,14 @@ export default function TradePage() {
                     <StyledTabsContent value="Market">
                       <TradeMarketWidget
                         contractPriceAfter={contractPrice}
-                        side={SIDE_SHORT}
-                        marketAndIndexPriceData={marketAndIndexPriceData}
+                        side={1}
+                        marketAndIndexPriceData={0}
                       />
                     </StyledTabsContent>
                     <StyledTabsContent value="Limit">
                       <TradeLimitWidget
-                        side={SIDE_SHORT}
-                        marketAndIndexPriceData={marketAndIndexPriceData}
+                        side={0}
+                        marketAndIndexPriceData={0}
                         contractPriceAfter={contractPrice}
                       />
                     </StyledTabsContent>
@@ -301,14 +183,14 @@ export default function TradePage() {
                     <StyledTabsContent value="Market">
                       <TradeSwapWidget
                         contractPriceAfter={contractPrice}
-                        side={SIDE_SHORT}
-                        marketAndIndexPriceData={marketAndIndexPriceData}
+                        side={1}
+                        marketAndIndexPriceData={0}
                       />
                     </StyledTabsContent>
                     <StyledTabsContent value="Limit">
                       <TradeSwapWidget
-                        side={SIDE_SHORT}
-                        marketAndIndexPriceData={marketAndIndexPriceData}
+                        side={0}
+                        marketAndIndexPriceData={0}
                         contractPriceAfter={contractPrice}
                       />
                     </StyledTabsContent>
@@ -323,13 +205,10 @@ export default function TradePage() {
                 <div className="my-3 border-t border-0xline"></div>
                 <ListItem keyText="Max Leverage" value={"200x"} />
                 <ListItem keyText="Average Leverage" value={"7.71x"} />
-                <ListItem
-                  keyText="Liquidity"
-                  value={giveMeFormattedToShow(liquidity)}
-                />
+                <ListItem keyText="Liquidity" value={liquidity} />
                 <ListItem
                   keyText="Balance Rate"
-                  value={`${giveMeFormattedToShow(balanceRate * 100)}%`}
+                  value={`${balanceRate * 100}%`}
                 />
               </div>
             </Card>

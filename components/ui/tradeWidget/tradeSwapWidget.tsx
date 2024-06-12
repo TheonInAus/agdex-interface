@@ -2,21 +2,6 @@ import { useEffect, useState } from "react"
 import Decimal from "decimal.js"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
-import { useCreateIncreasePostion } from "@/hooks/actionTradePosition"
-import { useUserUsdxBalance } from "@/hooks/cUserState"
-
-import "@/hooks/usePrice"
-import { useMarketPriceState } from "@/hooks/usePrice"
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
-import { btcMarketAddress, ethMarketAddress } from "@/hooks/zAddressHelper"
-import {
-  SIDE_LONG,
-  Side,
-  giveMeFormattedToShow,
-  minExecutionFeeNumber,
-  to0xxPriceX96,
-} from "@/hooks/zContractHelper"
-import { tokenConfig } from "@/hooks/zTokenConfig"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
@@ -36,6 +21,7 @@ import { TpsLInput } from "@/components/ui/tpslIput"
 
 import { Card } from "../card"
 
+type Side = {}
 type TradeMarketType = {
   side: Side
   marketAndIndexPriceData: any
@@ -53,47 +39,13 @@ export default function TradeSwapWidget({
   const [leverageNumber, setLeverageNumber] = useState(1)
   const [isChecked, setIsChecked] = useState(true)
   const [priceSlippage, setPriceSlippage] = useState("1")
-  const currentTokenEntity = useTokenConfigStore(
-    (state: any) => state.currentTokenEntity
-  )
 
   const [ethPrice, setEthPrice] = useState(0)
   const [tokenPrice, setTokenPrice] = useState(0)
   const [contractPrice, setContractPrice] = useState(0)
-  useEffect(() => {
-    if (marketAndIndexPriceData) {
-      setEthPrice(marketAndIndexPriceData.indexPrices?.["ETH"]?.indexPrice)
-      setTokenPrice(
-        marketAndIndexPriceData.indexPrices?.[currentTokenEntity.name]
-          ?.indexPrice
-      )
-      setContractPrice(Number(contractPriceAfter))
-    }
-  }, [marketAndIndexPriceData, currentTokenEntity.name, contractPriceAfter])
 
   const [tokenAfterSlippagePrice, setTokenAfterSlippagePrice] = useState(0)
   const [liqPrice, setLiqPrice] = useState(0)
-
-  const executionFee = minExecutionFeeNumber * Number(ethPrice)
-
-  const {
-    data: balanceData,
-    isError: isBalanceError,
-    isLoading: isBalanceLoading,
-  } = useUserUsdxBalance()
-
-  const { incPositionData, incPositionLoading, incPositionWrite } =
-    useCreateIncreasePostion(
-      currentTokenEntity.market,
-      side,
-      usdMargin,
-      tradingSize,
-      to0xxPriceX96(
-        side === SIDE_LONG
-          ? Number(tokenAfterSlippagePrice).toString()
-          : Number(tokenAfterSlippagePrice).toString()
-      )
-    )
 
   const handleCheckboxChange = (checked: any) => {
     setIsChecked(checked)
@@ -102,8 +54,6 @@ export default function TradeSwapWidget({
   const handleSliderValueChange = (value: any) => {
     setLeverageNumber(value)
   }
-
-  const { premiumRateX96 } = useMarketPriceState(currentTokenEntity.market)
 
   useEffect(() => {
     if (usdMargin !== "") {
@@ -131,27 +81,11 @@ export default function TradeSwapWidget({
 
   useEffect(() => {
     if (contractPrice && priceSlippage) {
-      if (side === SIDE_LONG) {
-        setTokenAfterSlippagePrice(
-          contractPrice * (1 + Number(priceSlippage) / 1000)
-        )
-      } else {
-        setTokenAfterSlippagePrice(
-          contractPrice * (1 - Number(priceSlippage) / 1000)
-        )
-      }
     }
   }, [contractPrice, priceSlippage, side])
 
   useEffect(() => {
     if (tokenPrice) {
-      if (side === SIDE_LONG) {
-        const liqPrice = tokenPrice * (1 - 1 / leverageNumber)
-        setLiqPrice(liqPrice)
-      } else {
-        const liqPrice = tokenPrice * (1 + 1 / leverageNumber)
-        setLiqPrice(liqPrice)
-      }
     }
   }, [leverageNumber, usdMargin, tokenPrice, side])
 
@@ -163,19 +97,7 @@ export default function TradeSwapWidget({
         title="Pay"
         value={usdMargin}
         suffix="USDX"
-        balanceNode={
-          isBalanceLoading ? (
-            <div>Fetching balance…</div>
-          ) : isBalanceError ? (
-            <div>Error fetching balance</div>
-          ) : (
-            <div>
-              Balance:{" "}
-              {giveMeFormattedToShow(Number(balanceData?.formatted) || 0)}{" "}
-              {balanceData?.symbol}
-            </div>
-          )
-        }
+        balanceNode={<div>Balance: {"balanceData?.symbol"}</div>}
         onValueChange={(e) => {
           setUsdMargin(e.target.value)
         }}
@@ -184,7 +106,7 @@ export default function TradeSwapWidget({
       <InputBox
         title="Size"
         value={tradingSize}
-        suffix={currentTokenEntity.name}
+        suffix={"currentTokenEntity.name"}
         prefix={`Leverage:`}
         prefixValue={leverageNumber}
         onValueChange={(e) => {
@@ -206,7 +128,7 @@ export default function TradeSwapWidget({
       />
 
       <Button
-        disabled={incPositionLoading}
+        disabled={false}
         onClick={() => {}}
         className={`w-full font-bold text-center rounded-md item-center mt-4  h-9 text-white bg-agdexMain`}
       >

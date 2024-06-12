@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #000000; /* 深蓝背景 */
+    --foreground: #434343; /* 浅灰色文字 */
+    --card: #2A2A2A; /* 暗蓝色卡片 */
+    --card-foreground: #323232; /* 浅灰色卡片文字 */
+    --popover-foreground: #343434; /* 浅灰色弹窗文字 */
+    --primary: #363636; /* 暗柔和蓝色 */
+    --primary-foreground: #2D2D2D; /* 暗模式下的白色 */
+    --secondary: #2D2D2D; /* 暗淡蓝色 */
+    --secondary-foreground: #313131; /* 暗模式下的淡蓝色 */
+    --muted: #2C2C2C; /* 暗非常淡的蓝色 */
+    --muted-foreground: #FFFFFF; /* 暗模式下的中等蓝色 */
+    --accent: #FFFFFF; /* 暗明亮蓝色 */
+    --accent-hover: #FFFFFF; /* 暗明亮蓝色 */
+    --accent-foreground: #cbd2d9; /* 暗蓝色 */
+    --destructive: #ff6b6b; /* 暗模式下的柔和红色 */
+    --destructive-foreground: #FFFFFF; /* 暗模式下的背景色 */
+    --border: #474242; /* 暗模式下的淡灰蓝色边框 */
+    --ring: #0F0F0F; /* 暗模式下的焦点色 */
+    --text-color: #202020; /* 暗模式下的默认文本色 */
+    --shadow-color: 255, 255, 255; /* 暗模式下的阴影色 */
+    --shadow-intensity1: 0.02;
+    --shadow-intensity2: 0.04;
+  }
+
+  /* 暗黑模式 */
+  .dark {
+    --background: #000000; /* 深蓝背景 */
+    --foreground: #434343; /* 浅灰色文字 */
+    --card: #2A2A2A; /* 暗蓝色卡片 */
+    --card-foreground: #323232; /* 浅灰色卡片文字 */
+    --popover-foreground: #343434; /* 浅灰色弹窗文字 */
+    --primary: #363636; /* 暗柔和蓝色 */
+    --primary-foreground: #2D2D2D; /* 暗模式下的白色 */
+    --secondary: #2D2D2D; /* 暗淡蓝色 */
+    --secondary-foreground: #313131; /* 暗模式下的淡蓝色 */
+    --muted: #2C2C2C; /* 暗非常淡的蓝色 */
+    --muted-foreground: #FFFFFF; /* 暗模式下的中等蓝色 */
+    --accent: #FFFFFF; /* 暗明亮蓝色 */
+    --accent-hover: #FFFFFF; /* 暗明亮蓝色 */
+    --accent-foreground: #cbd2d9; /* 暗蓝色 */
+    --destructive: #ff6b6b; /* 暗模式下的柔和红色 */
+    --destructive-foreground: #FFFFFF; /* 暗模式下的背景色 */
+    --border: #474242; /* 暗模式下的淡灰蓝色边框 */
+    --ring: #0F0F0F; /* 暗模式下的焦点色 */
+    --text-color: #202020; /* 暗模式下的默认文本色 */
+    --shadow-color: 255, 255, 255; /* 暗模式下的阴影色 */
+    --shadow-intensity1: 0.02;
+    --shadow-intensity2: 0.04;
+  }
+
+  body {
+    min-height: 100vh; /* Full viewport height */
+    background: var(
+      --background-color
+    ); /* Use CSS variables or direct values */
+    font-family: "sans-serif", sans-serif;
+    -webkit-font-smoothing: antialiased; /* for smoother fonts on Webkit browsers */
+    /* Add any other global styles */
+    color: var(--text-color);
+  }
+  .underline-effect {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 0.5px; /* Adjust space between text and underline */
+  }
+
+  .underline-effect::after {
+    content: "";
+    display: block;
+    width: 115%;
+    height: 1.5px;
+    background: #ffffff;
+    position: absolute;
+    bottom: 0;
+  }
+  .border {
+    border: 1px solid var(--border);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  .number-input {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+}

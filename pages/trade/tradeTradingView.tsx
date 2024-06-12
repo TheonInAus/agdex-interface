@@ -1,7 +1,6 @@
 import { useState } from "react"
 import * as RadioGroup from "@radix-ui/react-radio-group"
 
-import useTokenConfigStore from "@/hooks/useTokenConfigStore"
 import { Card } from "@/components/ui/card"
 import CustomTradingView from "@/components/ui/tradeWidget/CustomTradingView"
 import TradingViewWidget from "@/components/tradingView"
@@ -29,10 +28,6 @@ export default function TradeTradingViewWidget() {
       setKlineType(newValue)
     }
   }
-
-  const currentTokenEntity = useTokenConfigStore(
-    (state: any) => state.currentTokenEntity
-  )
 
   return (
     <div className="flex justify-center">
@@ -62,7 +57,7 @@ export default function TradeTradingViewWidget() {
           </RadioGroup.Root>
         </div>
         {/* <CustomTradingView symbol={currentTokenEntity.name} type={klineType} /> */}
-          <TradingViewWidget tokenName={currentTokenEntity.name} />
+        <TradingViewWidget tokenName={"ETH"} />
       </Card>
     </div>
   )
