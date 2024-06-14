@@ -39,7 +39,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "hooks/zContractConstantsHelper.js",
+    "chainio/zContractConstantsHelper.js",
     "components/tradingView.js",
     "pages/aapools/poolTradeWidget.xtsx"
   ],

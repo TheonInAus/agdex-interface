@@ -1,8 +1,11 @@
+import { useState } from "react"
+import { PoolInfo, PoolList } from "@/chainio/helper"
+
 import { Card } from "@/components/ui/card"
 import { CustomTooltip } from "@/components/ui/customToolTip"
 import { Stats } from "@/components/ui/stats"
 import TokenPairWidget from "@/components/ui/tokenPair/TokenPairWidget"
-import DropDownBox from "@/components/ui/tradeWidget/dropDownBox"
+import { DropDownBox } from "@/components/ui/tradeWidget/dropDownBox"
 
 interface TradeHeaderWidgetProps {
   priceType: boolean
@@ -21,12 +24,20 @@ export default function TradeHeaderWidget({
   openInterst,
   openInterstValue,
 }: TradeHeaderWidgetProps) {
+  const [currentPool, setCurrentPool] = useState<PoolInfo>(PoolList[0])
+  const handlePoolSelected = (poolInfo: PoolInfo) => {
+    setCurrentPool(poolInfo)
+  }
+
   return (
     <div className="flex justify-center">
       <Card className="w-[1250px]">
         <div className="flex items-center justify-start gap-10 py-6 pl-10">
-          <TokenPairWidget token1={"ETH"} token2={"USDX"} />
-          <DropDownBox />
+          <TokenPairWidget
+            token0={currentPool.token0}
+            token1={currentPool.token1}
+          />
+          <DropDownBox handleSelectedPool={handlePoolSelected} />
           <div
             className={`mt-1 mx-2 text-xl font-bold mr-10 ${
               priceType ? "text-0xred" : "text-0xgreen"
@@ -35,7 +46,7 @@ export default function TradeHeaderWidget({
             {contractPrice}
           </div>
           <Stats
-            title={"Index Price"}
+            title={"Price"}
             value={"shownIndexPrice"}
             textColor={priceType ? "text-0xred" : "text-0xgreen"}
           />

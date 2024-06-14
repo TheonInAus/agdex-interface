@@ -1,9 +1,13 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import { getAccountInfo } from "@/chainio/fetchData"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+
+import { moduleAddress } from "./_app"
 
 export default function IndexPage() {
   const router = useRouter()
@@ -11,7 +15,20 @@ export default function IndexPage() {
     // Navigate to the trade page
     router.push("/trade") // Use the path to your trade page
   }
+  const { account, signAndSubmitTransaction } = useWallet()
+  const [result, setResult] = useState<any>(null)
+  const fetchingData = async () => {
+    const result = await getAccountInfo(account?.address || "")
+    setResult(result)
+  }
 
+  useEffect(() => {
+    if (!account?.address) return
+    fetchingData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address])
+
+  console.log("🚀 ~ IndexPage ~ result:", result)
   return (
     <section className="grid items-center">
       <div

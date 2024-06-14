@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react"
+import { useGetKlineDataMock } from "@/chainio/useKlineData"
 import {
   CrosshairMode,
   DeepPartial,
@@ -6,8 +7,6 @@ import {
   LineData,
   createChart,
 } from "lightweight-charts"
-
-import { useGetKlineDataMock } from "@/hooks/useKlineData"
 
 interface CandleData {
   time: string

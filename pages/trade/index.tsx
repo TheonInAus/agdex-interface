@@ -1,6 +1,14 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import {
+  getAllUserPositions,
+  getAptosCoinBalance,
+  parseAptosDecimal,
+} from "@/chainio/fetchData"
+import { APTOS_COIN_STORE } from "@/chainio/helper"
+import { APTOS_COIN, TableItemRequest } from "@aptos-labs/ts-sdk"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
 import { Card } from "@/components/ui/card"
 import { ListItem } from "@/components/ui/listItem"
@@ -15,6 +23,7 @@ import TradeLimitWidget from "@/components/ui/tradeWidget/tradeLimitWidget"
 import TradeMarketWidget from "@/components/ui/tradeWidget/tradeMarketWidget"
 import TradeSwapWidget from "@/components/ui/tradeWidget/tradeSwapWidget"
 
+import { aptos, moduleAddress } from "../_app"
 import TradeCalculatorWidget from "./tradeCalculator"
 import TradeHeaderWidget from "./tradeHeaderMain"
 import TradePositionWidget from "./tradePositionWidget"
@@ -26,12 +35,6 @@ interface MarketData {
     indexPrice: string
     price24hPcnt: string
   }
-}
-
-interface MarketAndIndexPriceData {
-  indexPrices: MarketData
-  markPrices: MarketData
-  change24h: number
 }
 
 export default function TradePage() {
@@ -75,8 +78,70 @@ export default function TradePage() {
       setLeverageNumber(0)
     }
   }
+  const { account } = useWallet()
 
-  //************************************************** */
+  const resourceType = `${moduleAddress}::market::PositionRecord<${APTOS_COIN}, ${APTOS_COIN}, ${moduleAddress}::pool::LONG>`
+
+  const [openHandler, setOpenHandler] = useState("")
+  const [desHandler, setDesHandler] = useState("")
+
+  const openDesType = `${moduleAddress}::market::OrderRecord<${APTOS_COIN},${APTOS_COIN},${moduleAddress}::pool::LONG,${APTOS_COIN}>`
+
+  const fetchingOpenDes = async () => {}
+
+  const [tableHandle, setTableHandle] = useState("")
+  console.log("🚀 ~ TradePage ~ tableHandle:", tableHandle)
+  const fetchingData2 = async () => {
+    const resource = await aptos.getAccountResource({
+      accountAddress: account?.address || "",
+      resourceType: resourceType,
+    })
+    setTableHandle(resource?.positions.handle)
+  }
+
+  const fetchingData3 = async () => {
+    const positionId = {
+      id: "1",
+      owner: account?.address,
+    }
+    const tableItemRequest: TableItemRequest = {
+      key_type: `${moduleAddress}::market::PositionId<${APTOS_COIN},${APTOS_COIN},${moduleAddress}::pool::LONG>`,
+      value_type: `${moduleAddress}::positions::Position<${APTOS_COIN}>`,
+      key: positionId,
+    }
+    const result = await aptos.getTableItem({
+      handle: tableHandle,
+      data: tableItemRequest,
+    })
+    console.log("🚀 ~ fetchingData3 ~ result:", result)
+    const aptosBalance = await getAptosCoinBalance(
+      account?.address || "",
+      APTOS_COIN_STORE
+    )
+    console.log(
+      "🚀 ~ fetchingData3 ~ resource:",
+      parseAptosDecimal(Number(aptosBalance.result.coin.value))
+    )
+
+    const positions = await getAllUserPositions(
+      account?.address || "",
+      tableHandle
+    )
+    console.log("🚀 ~ fetchingData3 ~ positions:", positions)
+  }
+
+  useEffect(() => {
+    if (tableHandle) {
+      fetchingData3()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tableHandle])
+  useEffect(() => {
+    if (account?.address) {
+      fetchingData2()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address])
 
   return (
     <section className="flex items-center justify-center pt-6">

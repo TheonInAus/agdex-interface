@@ -1,6 +1,7 @@
 "use client"
 
-import * as React from "react"
+import { useState } from "react"
+import { PoolInfo, PoolList } from "@/chainio/helper"
 import { CheckIcon, ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -18,11 +19,21 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export default function DropDownBox() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("ETH")
-  const tokens: any[] = []
-  const handleDropDownSelect = (token: any) => {}
+type DropDownBoxProp = {
+  handleSelectedPool: (poolInfo: PoolInfo) => void
+}
+
+export const DropDownBox: React.FC<DropDownBoxProp> = ({
+  handleSelectedPool,
+}) => {
+  const [open, setOpen] = useState(false)
+  const pools: PoolInfo[] = PoolList
+  const [currentPool, setCurrentPool] = useState<PoolInfo>(PoolList[0])
+  const handleDropDownSelect = (pool: PoolInfo) => {
+    setCurrentPool(pool)
+    handleSelectedPool(pool)
+    setOpen(false)
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -33,7 +44,7 @@ export default function DropDownBox() {
           aria-expanded={open}
           className="justify-center text-xl font-extrabold hover:bg-0xtrans"
         >
-          xxx
+          {currentPool.name}
           <ChevronDown className="ml-1 opacity-50 size-4 shrink-0" />
         </Button>
       </PopoverTrigger>
@@ -42,26 +53,20 @@ export default function DropDownBox() {
           <CommandInput placeholder="Search Token..." className="h-9" />
           <CommandEmpty>No Token found.</CommandEmpty>
           <CommandGroup>
-            {tokens.map((token) => (
+            {pools.map((pool) => (
               <CommandItem
-                key={token.name}
-                value={token.name}
+                key={pool.name}
+                value={pool.name}
                 onSelect={() => {
-                  handleDropDownSelect(token)
+                  handleDropDownSelect(pool)
                 }}
               >
                 <div className="flex justify-between w-full">
-                  <div className="">{token.name}</div>
+                  <div className="">{pool.name}</div>
                   <div className="flex">
-                    <div>{Number(token.price)}</div>
-                    <div
-                      className={`text-sm ml-3 ${
-                        token.percentageChange?.startsWith("-")
-                          ? "text-red-500"
-                          : "text-green-500"
-                      }`}
-                    >
-                      {`${(Number(token.percentageChange) * 100).toFixed(2)}%`}
+                    <div>{"Price"}</div>
+                    <div className={`text-sm ml-3 ${"text-green-500"}`}>
+                      {`pool.percetage%`}
                     </div>
                   </div>
                 </div>

@@ -12,6 +12,7 @@ import { enqueueSnackbar } from "notistack"
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -41,12 +42,12 @@ export default function ApotosConnectButtonWidget() {
   const onDisconnect = async () => {
     try {
       if (connected) {
+        setDialogOpen(false)
         disconnect()
       }
     } catch (error: any) {
       console.log("🚀 ~ wallet error ~ :", error)
     }
-    setDialogOpen(false)
   }
 
   // we are on desktop view
@@ -54,14 +55,6 @@ export default function ApotosConnectButtonWidget() {
 
   const handleButtonClick = () => {
     setDialogOpen(true)
-
-    // if (connected) {
-    //   console.log("🚀 ~ handleButtonClick 1111 ~ :", isWalletReady)
-    //   setIsDialogOpen(true)
-    // } else {
-    //   setIsDialogOpen(false)
-    //   onWalletConnectRequest(currentWallet?.name)
-    // }
   }
 
   const handleWalletConnected = (wallet: Wallet) => {
@@ -79,9 +72,7 @@ export default function ApotosConnectButtonWidget() {
       >
         <>{`${
           connected
-            ? currentWallet?.name +
-              "  " +
-              account?.address
+            ? account?.address
                 ?.substring(0, 6)
                 .concat("...")
                 .concat(
@@ -93,17 +84,22 @@ export default function ApotosConnectButtonWidget() {
             : "Connect Wallet"
         }  `}</>
       </button>
-      <Dialog open={dialogOpen}>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-[425px] bg-0xdialog">
-          <div className="text-xl italic font-extrabold">Wallet Connect</div>
-          {wallets &&
+          <div className="text-xl italic font-extrabold">{`Wallet ${
+            connected ? "Connected" : "Connect"
+          }`}</div>
+          {!connected &&
+            wallets &&
             wallets.length > 0 &&
             wallets.map((wallet, index) => (
               <WalletItemWidget
+                key={index}
                 wallet={wallet}
                 handleWalletConnected={handleWalletConnected}
               />
             ))}
+
           <div className="flex w-full mt-2 justify-evenly">
             <Card>
               <button key={currentWallet?.name} onClick={() => onCopyAddress()}>
@@ -137,9 +133,6 @@ const WalletItemWidget: React.FC<WalletProps> = ({ wallet }) => {
       return
     }
 
-    if (!walletLoadable) {
-      enqueueSnackbar(`${walletName} Can't Loadable`, { variant: "info" })
-    }
     try {
       connect(walletName)
     } catch (error: any) {
@@ -147,13 +140,12 @@ const WalletItemWidget: React.FC<WalletProps> = ({ wallet }) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (connected) {
-  //     enqueueSnackbar(`Connected Success`, { variant: "success" })
-  //     handleWalletConnected(wallet)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [connected])
+  useEffect(() => {
+    if (connected) {
+      enqueueSnackbar(`Connected Success`, { variant: "success" })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connected])
 
   return (
     <Card className="flex flex-row items-center justify-between gap-4 px-2">
@@ -169,9 +161,4 @@ const WalletItemWidget: React.FC<WalletProps> = ({ wallet }) => {
       </Button>
     </Card>
   )
-}
-function handleWalletConnected(
-  wallet: Wallet | AptosStandardSupportedWallet<string>
-) {
-  throw new Error("Function not implemented.")
 }
