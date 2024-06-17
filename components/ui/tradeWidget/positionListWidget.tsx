@@ -1,6 +1,20 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import {
+  calEntryPrice,
+  calEstLiqPrice,
+  calLeverage,
+  calUnPnL,
+  getAllUserPositions,
+  getPositionResources,
+  getTableHandle,
+  parseAptosDecimal,
+} from "@/chainio/fetchData"
+import useTokenStore from "@/chainio/useTokenStore"
+import { APTOS_COIN } from "@aptos-labs/ts-sdk"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import { Separator } from "@radix-ui/react-select"
 import { Edit3, ExternalLink, Loader2 } from "lucide-react"
+import { enqueueSnackbar } from "notistack"
 
 import { Button } from "@/components/ui/button"
 import { CustomTooltip } from "@/components/ui/customToolTip"
@@ -25,81 +39,157 @@ import ReduceMarginWidget from "@/components/ui/tradeWidget/reduceMarginWidget"
 
 import ClosePositionWidget from "./closePositionWidget"
 
-type Side = {}
-type PositionInfo = {
-  poolAddress: any
-  side: Side
-  marginDelta: any
-  sizeDelta: any
-  acceptableTradePriceX96: any
-}
-
 type PositionListWidgetType = {
-  contractPriceAfter: any
+  tokenPrice: any
 }
 
 export default function PositionListWidget({
-  contractPriceAfter,
+  tokenPrice,
 }: PositionListWidgetType) {
-  const positionDataList: any[] = []
-
-  const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
-
-  const calUnPnL = (entryPrice: number, size: number, side: string) => {
-    const diff = contractPriceAfter - entryPrice
-    if (side === "Long") {
-      return diff * size
-    } else {
-      return -diff * size
+  const handleSetCurrentPosition = (position: any) => {}
+  const [longPostionHandle, setLongPositionHandle] = useState("")
+  const [shortPositionHandle, setShortPositionHandle] = useState("")
+  const { account } = useWallet()
+  const { vault, symbol } = useTokenStore()
+  const fetchPositionHandles = async () => {
+    try {
+      const { result } = await getTableHandle(
+        account?.address || "",
+        getPositionResources(
+          vault.tokenAddress as `${string}::${string}::${string}`,
+          symbol.tokenAddress as `${string}::${string}::${string}`,
+          "LONG"
+        )
+      )
+      if (result) {
+        setLongPositionHandle(result.positions.handle)
+      }
+    } catch (error: any) {
+      enqueueSnackbar(`${error?.message}`, { variant: "error" })
+    }
+    try {
+      const { result } = await getTableHandle(
+        account?.address || "",
+        getPositionResources(
+          vault.tokenAddress as `${string}::${string}::${string}`,
+          symbol.tokenAddress as `${string}::${string}::${string}`,
+          "SHORT"
+        )
+      )
+      if (result) {
+        setShortPositionHandle(result.positions.handle)
+      }
+    } catch (error: any) {
+      enqueueSnackbar(`${error?.message}`, { variant: "error" })
     }
   }
+  useEffect(() => {
+    if (account?.address) {
+      fetchPositionHandles()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address])
 
-  const handleSetCurrentPosition = (position: any) => {}
-  const feesValue = 0
+  const [longPositionData, setLongPositionData] = useState<any[]>([])
+  const [shortPositionData, setShortpositionData] = useState<any[]>([])
+  const [combineData, setCombineData] = useState<any[]>([])
+  console.log("🚀 ~ combineData:", combineData)
+  const fetchPositions = async (type: string) => {
+    const result = await getAllUserPositions(
+      account?.address || "",
+      type === "LONG" ? longPostionHandle : shortPositionHandle
+    )
+    console.log("🚀 ~ fetchPositions ~ result:", result)
+    if (type === "LONG") {
+      setLongPositionData(result)
+    } else {
+      setShortpositionData(result)
+    }
+  }
+  useEffect(() => {
+    if (longPostionHandle) {
+      fetchPositions("LONG")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [longPostionHandle])
 
+  useEffect(() => {
+    if (shortPositionHandle) {
+      fetchPositions("SHORT")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shortPositionHandle])
+
+  useEffect(() => {
+    const sideLongPositionData = longPositionData.map((item) => ({
+      ...item,
+      side: "LONG",
+    }))
+    const sideShortPositionData = shortPositionData.map((item) => ({
+      ...item,
+      side: "SHORT",
+    }))
+    const combinedData: any[] = [
+      ...sideLongPositionData,
+      ...sideShortPositionData,
+    ]
+    const sortedData: any[] = combinedData.sort((a, b) => {
+      const dateA = new Date(a.open_timestamp).getTime()
+      const dateB = new Date(b.open_timestamp).getTime()
+      return dateB - dateA
+    })
+    setCombineData(sortedData)
+  }, [longPositionData, shortPositionData])
   return (
     <div>
       <div className="mb-4 border-t border-0xline"></div>
-      {positionDataList.length > 0 ? (
+      {combineData.length > 0 ? (
         <>
-          {positionDataList.map((position, index) => (
+          {combineData.map((position, index) => (
             <div key={index}>
               <div className="flex flex-row gap-2 font-extrabold">
-                <div>{`symbol`}</div>
+                <div>{symbol.name}</div>
                 <div
                   className={`${
-                    position.tokenSide === "Long"
-                      ? "text-0xgreen"
-                      : "text-0xred"
+                    position.side === "LONG" ? "text-0xgreen" : "text-0xred"
                   }`}
                 >
-                  {position.tokenSide}{" "}
-                  {/* {e6DivideE18(
-                    position.margin,
-                    position.size,
-                    BigInt(Math.round(contractPriceAfter))
-                  )} */}
+                  {position.side}{" "}
+                  {calLeverage(
+                    Number(position.decoded_value.position_amount),
+                    Number(position.decoded_value.collateral.value)
+                  )}
                   x
                 </div>
-                <div className="">[ todo measure position risk]</div>
               </div>
               <div className="flex flex-row justify-between w-full mt-3">
                 <div className="flex flex-col">
-                  <PositionItem keyText="Size" value={`name`} />
-                  <div className="flex flex-row mt-2">
+                  <PositionItem
+                    keyText="Size"
+                    value={`${parseAptosDecimal(
+                      Number(position.decoded_value.position_size.value),
+                      18
+                    )} USD`}
+                  />
+                  <div className="flex flex-row items-center mt-2">
                     <CustomTooltip
                       triggerContent={
-                        <div className="text-sm mr-7">Margin</div>
+                        <div className="text-sm mr-7">Collateral</div>
                       }
                     >
-                      <p>llll</p>
+                      <p>{`This is Margin You've put into the Position `}</p>
                     </CustomTooltip>
                     <CustomTooltip
                       triggerContent={
-                        <div className="font-bold">{0 + " USDX"}</div>
+                        <div className="font-bold">
+                          {parseAptosDecimal(
+                            position.decoded_value.collateral.value,
+                            8
+                          ) + " APTOS"}
+                        </div>
                       }
                     >
-                      <p>llll</p>
+                      <p>Margin Based</p>
                     </CustomTooltip>
                     <Dialog>
                       <DialogTrigger asChild>
@@ -146,15 +236,37 @@ export default function PositionListWidget({
                 <div className="flex flex-col">
                   <PositionItem
                     keyText="Entry Price"
-                    value={position.entryPriceX96}
+                    value={calEntryPrice(
+                      parseAptosDecimal(
+                        Number(position.decoded_value.position_size.value),
+                        18
+                      ),
+                      parseAptosDecimal(
+                        Number(position.decoded_value.position_amount),
+                        8
+                      )
+                    )}
                   />
                   <div className="flex mt-2 gap-7">
                     <CustomTooltip
                       triggerContent={<div className="text-sm">Liq. Price</div>}
                     >
-                      <p>llll</p>
+                      <p>Est Liq Price</p>
                     </CustomTooltip>
-                    <div className="font-bold">xxx</div>
+                    <div className="font-bold">
+                      {calEstLiqPrice(
+                        parseAptosDecimal(
+                          Number(position.decoded_value.position_size.value),
+                          18
+                        ),
+                        Number(position.decoded_value.position_amount),
+                        parseAptosDecimal(
+                          position.decoded_value.collateral.value,
+                          8
+                        ),
+                        position.side
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -164,9 +276,23 @@ export default function PositionListWidget({
                         <div className="text-sm mr-7">Unrealized Pnl.</div>
                       }
                     >
-                      <p>llll</p>
+                      <p>UnPNL</p>
                     </CustomTooltip>
-                    <div className={`font-bold ${"text-0xgreen"}`}>xxx</div>
+                    <div className={`font-bold ${"text-0xgreen"}`}>
+                      {calUnPnL(
+                        parseAptosDecimal(
+                          Number(position.decoded_value.position_size.value),
+                          18
+                        ),
+                        Number(position.decoded_value.position_amount),
+                        parseAptosDecimal(
+                          position.decoded_value.collateral.value,
+                          8
+                        ),
+                        tokenPrice,
+                        position.side
+                      )}
+                    </div>
 
                     <ExternalLink
                       className="mt-1 ml-1 text-opacity-70 hover:text-opacity-100"

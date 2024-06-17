@@ -1,5 +1,11 @@
-import { useState } from "react"
-import { PoolInfo, PoolList } from "@/chainio/helper"
+import { useEffect, useState } from "react"
+import {
+  commonTableHandle,
+  getLastPostionData,
+  parseAptosDecimal,
+} from "@/chainio/fetchData"
+import { PoolInfo, PoolList, pythAptosFeeder } from "@/chainio/helper"
+import { usePriceData } from "@/chainio/usePriceData"
 
 import { Card } from "@/components/ui/card"
 import { CustomTooltip } from "@/components/ui/customToolTip"
@@ -9,63 +15,59 @@ import { DropDownBox } from "@/components/ui/tradeWidget/dropDownBox"
 
 interface TradeHeaderWidgetProps {
   priceType: boolean
-  contractPrice: number
-  shownIndexPrice: number
-  change24h: number
-  openInterst: number
-  openInterstValue: number
+  priceData: number
 }
 
 export default function TradeHeaderWidget({
   priceType,
-  contractPrice,
-  shownIndexPrice,
-  change24h,
-  openInterst,
-  openInterstValue,
+  priceData,
 }: TradeHeaderWidgetProps) {
   const [currentPool, setCurrentPool] = useState<PoolInfo>(PoolList[0])
   const handlePoolSelected = (poolInfo: PoolInfo) => {
     setCurrentPool(poolInfo)
   }
 
+  const [lastPosition, setLastPosition] = useState<any>()
+  const fetchLastPosition = async () => {
+    const result = await getLastPostionData(commonTableHandle)
+    if (result && result.length > 0) {
+      setLastPosition(result[0])
+    }
+  }
+  useEffect(() => {
+    fetchLastPosition()
+  }, [])
+
   return (
     <div className="flex justify-center">
       <Card className="w-[1250px]">
         <div className="flex items-center justify-start gap-10 py-6 pl-10">
-          <TokenPairWidget
-            token0={currentPool.token0}
-            token1={currentPool.token1}
-          />
+          <TokenPairWidget token0={currentPool.tokenName} token1={"usdx"} />
           <DropDownBox handleSelectedPool={handlePoolSelected} />
-          <div
-            className={`mt-1 mx-2 text-xl font-bold mr-10 ${
-              priceType ? "text-0xred" : "text-0xgreen"
-            }`}
-          >
-            {contractPrice}
-          </div>
+
           <Stats
             title={"Price"}
-            value={"shownIndexPrice"}
-            textColor={priceType ? "text-0xred" : "text-0xgreen"}
+            value={priceData.toFixed(6)}
+            textColor={priceType ? "text-0xgreen" : "text-0xred"}
           />
           <Stats
-            title={"24h Change"}
-            value={`${change24h}%`}
-            textColor={change24h >= 0 ? "text-0xgreen" : "text-0xred"}
+            title={"Funding(L)"}
+            value={`${(
+              parseAptosDecimal(
+                lastPosition?.decoded_value.last_funding_rate.value.value,
+                18
+              ) * 100
+            ).toFixed(6)}%`}
           />
-          <div>
-            <CustomTooltip
-              triggerContent={<div className="text-base">Open Interest</div>}
-            >
-              <p> todo desc</p>
-            </CustomTooltip>
-            <div className="flex items-center mt-1">
-              <div className="mr-1 text-lg text-agdexMain">xxx</div>
-              <div className="text-sm">{`($${openInterstValue})`}</div>
-            </div>
-          </div>
+          <Stats
+            title={"Funding(S)"}
+            value={`${(
+              parseAptosDecimal(
+                lastPosition?.decoded_value.last_funding_rate.value.value,
+                18
+              ) * 100
+            ).toFixed(6)}%`}
+          />
         </div>
         {/* Wide Block 2 */}
       </Card>

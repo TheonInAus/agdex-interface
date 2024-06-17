@@ -1,9 +1,12 @@
-import * as React from "react"
+import { useState } from "react"
 import Image from "next/image"
+import { VaultInfo, VaultList } from "@/chainio/helper"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+
+import { VaultDropDownBox } from "./tradeWidget/vaultDropDownBox"
 
 // Define variants for the PayInput styling.
 const inputBoxVariants = cva(
@@ -27,10 +30,10 @@ export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
   title: string
   value: string
   prefixValue?: number
-  suffix: string
   prefix?: string
   balanceNode?: React.ReactNode
   maxNode?: React.ReactNode
+
   onMaxClick?: (e: React.MouseEvent<HTMLInputElement>) => void
   onValueChange?: (e: React.ChangeEvent<HTMLInputElement>) => void // Assuming you are handling state in a parent component
   onPrefixChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -41,7 +44,6 @@ export const InputBox: React.FC<InputBoxProps> = ({
   title,
   value,
   prefixValue,
-  suffix,
   prefix,
   balanceNode,
   maxNode,
@@ -56,7 +58,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
         props
       )} outline-none bg-[#242424] rounded-xl`}
     >
-      <div className="flex flex-col justify-between w-full h-full ">
+      <div className="flex flex-col justify-between size-full ">
         <div className="flex flex-row items-center mb-2">
           <span className="block text-lg font-bold text-white">{title}</span>
           {prefix && (
@@ -89,20 +91,13 @@ export const InputBox: React.FC<InputBoxProps> = ({
           />
           {maxNode && (
             <div
-              className="px-2 py-1 mr-2 text-xs border border-agdexMain text-agdexMain rounded-md hover:cursor-pointer"
+              className="px-2 py-1 mr-2 text-xs border rounded-md border-agdexMain text-agdexMain hover:cursor-pointer"
               onClick={onMaxClick}
             >
               <span>Max</span>
             </div>
           )}
-          <Image
-            src={`/token/${suffix.toLowerCase()}.svg`}
-            alt={suffix}
-            width={26}
-            height={26}
-            className="mr-1 rounded shadow-md"
-          />
-          <span className="text-lg font-black text-right text-white">{suffix}</span>
+          <VaultDropDownBox />
         </div>
       </div>
     </div>

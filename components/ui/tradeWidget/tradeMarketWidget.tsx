@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react"
+import { getAptosCoinBalance, parseAptosDecimal } from "@/chainio/fetchData"
+import { APTOS_COIN_STORE, VaultInfo } from "@/chainio/helper"
+import useTokenStore from "@/chainio/useTokenStore"
+import { APTOS_COIN } from "@aptos-labs/ts-sdk"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import Decimal from "decimal.js"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
@@ -25,13 +30,13 @@ type Side = {}
 type TradeMarketType = {
   side: Side
   marketAndIndexPriceData: any
-  contractPriceAfter: any
+  tokenPrice: any
 }
 
 export default function TradeMarketWidget({
   side,
   marketAndIndexPriceData,
-  contractPriceAfter,
+  tokenPrice,
 }: TradeMarketType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
@@ -40,10 +45,6 @@ export default function TradeMarketWidget({
   const [isChecked, setIsChecked] = useState(true)
   const [showSlider, setShowSlider] = useState(true)
   const [priceSlippage, setPriceSlippage] = useState("1")
-
-  const [ethPrice, setEthPrice] = useState(0)
-  const [tokenPrice, setTokenPrice] = useState(0)
-  const [contractPrice, setContractPrice] = useState(0)
 
   const [tokenAfterSlippagePrice, setTokenAfterSlippagePrice] = useState(0)
   const [liqPrice, setLiqPrice] = useState(0)
@@ -84,14 +85,30 @@ export default function TradeMarketWidget({
   }, [usdAfterMargin, tokenPrice])
 
   const tradingFee = 0.3
+  const { vault } = useTokenStore()
+  const { account } = useWallet()
+  const [tokenBalance, setTokenBalance] = useState("0")
 
+  const fetchBalance = async () => {
+    const { result } = await getAptosCoinBalance(
+      account?.address || "",
+      APTOS_COIN_STORE
+    )
+    const temp = parseAptosDecimal(Number(result.coin.value), 8).toFixed(6)
+    setTokenBalance(temp)
+  }
+  useEffect(() => {
+    if (account?.address) {
+      fetchBalance()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address])
   return (
     <div>
       <InputBox
         title="Pay"
         value={usdMargin}
-        suffix="USDX"
-        balanceNode={<></>}
+        balanceNode={<>{`Balance: ${tokenBalance} ${vault.name}`}</>}
         onValueChange={(e) => {
           setUsdMargin(e.target.value)
         }}
@@ -100,7 +117,6 @@ export default function TradeMarketWidget({
       <InputBox
         title="Size"
         value={tradingSize}
-        suffix={"currentTokenEntity.name"}
         prefix={`Leverage:`}
         prefixValue={leverageNumber}
         onValueChange={(e) => {

@@ -1,13 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import {
-  getAllUserPositions,
-  getAptosCoinBalance,
-  parseAptosDecimal,
-} from "@/chainio/fetchData"
-import { APTOS_COIN_STORE } from "@/chainio/helper"
-import { APTOS_COIN, TableItemRequest } from "@aptos-labs/ts-sdk"
+import { pythAptosFeeder } from "@/chainio/helper"
+import { usePriceData } from "@/chainio/usePriceData"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
 import { Card } from "@/components/ui/card"
@@ -23,7 +18,6 @@ import TradeLimitWidget from "@/components/ui/tradeWidget/tradeLimitWidget"
 import TradeMarketWidget from "@/components/ui/tradeWidget/tradeMarketWidget"
 import TradeSwapWidget from "@/components/ui/tradeWidget/tradeSwapWidget"
 
-import { aptos, moduleAddress } from "../_app"
 import TradeCalculatorWidget from "./tradeCalculator"
 import TradeHeaderWidget from "./tradeHeaderMain"
 import TradePositionWidget from "./tradePositionWidget"
@@ -38,33 +32,27 @@ interface MarketData {
 }
 
 export default function TradePage() {
-  const [shownIndexPrice, setShownIndexPrice] = useState<number>(0)
-  const [change24h, setChange24h] = useState<number>(0)
-
-  const premiumRateX96 = 0.000182
-  // const { cumulativePremiumRateX96 } = useGlobalFundingRate(
-  //   currentTokenEntity.market
-  // )
-  const contractPrice = shownIndexPrice * (1 + premiumRateX96)
-
-  const [lastContractPrice, setLastContractPrice] = useState(0)
-  const [priceType, setPriceType] = useState(false)
-  useEffect(() => {
-    setPriceType(contractPrice > lastContractPrice)
-    setLastContractPrice(contractPrice)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contractPrice])
-  const lpNetSize = 0
-  let lpSide = 0
   const liquidity = 0
-  const longSize = 0
-  const shortSize = 0
 
-  const [openInterst, setOpenInterst] = useState(0)
-  const [openInterstValue, setOpenInterstValue] = useState(0)
   const [balanceRate, setBalanceRate] = useState(0)
-
   const [leverageNumber, setLeverageNumber] = useState(1)
+
+  const { priceData, error } = usePriceData(pythAptosFeeder)
+  const [priceType, setPriceType] = useState(false)
+  console.log("🚀 ~ TradePage ~ priceType:", priceType)
+  const [lastPrice, setLastPrice] = useState(0)
+
+  useEffect(() => {
+    if (priceData) {
+      if (priceData >= lastPrice) {
+        setPriceType(true)
+      } else {
+        setPriceType(false)
+      }
+      setLastPrice(priceData)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [priceData])
 
   const handleSliderValueChange = (value: any) => {
     setLeverageNumber(value[0])
@@ -78,86 +66,15 @@ export default function TradePage() {
       setLeverageNumber(0)
     }
   }
-  const { account } = useWallet()
-
-  const resourceType = `${moduleAddress}::market::PositionRecord<${APTOS_COIN}, ${APTOS_COIN}, ${moduleAddress}::pool::LONG>`
-
-  const [openHandler, setOpenHandler] = useState("")
-  const [desHandler, setDesHandler] = useState("")
-
-  const openDesType = `${moduleAddress}::market::OrderRecord<${APTOS_COIN},${APTOS_COIN},${moduleAddress}::pool::LONG,${APTOS_COIN}>`
-
-  const fetchingOpenDes = async () => {}
-
-  const [tableHandle, setTableHandle] = useState("")
-  console.log("🚀 ~ TradePage ~ tableHandle:", tableHandle)
-  const fetchingData2 = async () => {
-    const resource = await aptos.getAccountResource({
-      accountAddress: account?.address || "",
-      resourceType: resourceType,
-    })
-    setTableHandle(resource?.positions.handle)
-  }
-
-  const fetchingData3 = async () => {
-    const positionId = {
-      id: "1",
-      owner: account?.address,
-    }
-    const tableItemRequest: TableItemRequest = {
-      key_type: `${moduleAddress}::market::PositionId<${APTOS_COIN},${APTOS_COIN},${moduleAddress}::pool::LONG>`,
-      value_type: `${moduleAddress}::positions::Position<${APTOS_COIN}>`,
-      key: positionId,
-    }
-    const result = await aptos.getTableItem({
-      handle: tableHandle,
-      data: tableItemRequest,
-    })
-    console.log("🚀 ~ fetchingData3 ~ result:", result)
-    const aptosBalance = await getAptosCoinBalance(
-      account?.address || "",
-      APTOS_COIN_STORE
-    )
-    console.log(
-      "🚀 ~ fetchingData3 ~ resource:",
-      parseAptosDecimal(Number(aptosBalance.result.coin.value))
-    )
-
-    const positions = await getAllUserPositions(
-      account?.address || "",
-      tableHandle
-    )
-    console.log("🚀 ~ fetchingData3 ~ positions:", positions)
-  }
-
-  useEffect(() => {
-    if (tableHandle) {
-      fetchingData3()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tableHandle])
-  useEffect(() => {
-    if (account?.address) {
-      fetchingData2()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account?.address])
 
   return (
     <section className="flex items-center justify-center pt-6">
       <div className="flex flex-col">
-        <TradeHeaderWidget
-          priceType={priceType}
-          contractPrice={contractPrice}
-          shownIndexPrice={shownIndexPrice}
-          change24h={change24h}
-          openInterst={openInterst}
-          openInterstValue={openInterstValue}
-        />
+        <TradeHeaderWidget priceType={priceType} priceData={priceData} />
         <div className="flex flex-row justify-center gap-2">
           <div className="flex flex-col mt-2">
             <TradeTradingViewWidget />
-            <TradePositionWidget contractPrice={contractPrice} />
+            <TradePositionWidget tokenPrice={priceData} />
           </div>
           <div className="mt-2">
             {/* Narrow Block 1 */}
@@ -191,14 +108,14 @@ export default function TradePage() {
                       <TradeMarketWidget
                         side={0}
                         marketAndIndexPriceData={1}
-                        contractPriceAfter={contractPrice}
+                        tokenPrice={priceData}
                       />
                     </StyledTabsContent>
                     <StyledTabsContent value="Limit">
                       <TradeLimitWidget
                         side={1}
                         marketAndIndexPriceData={1}
-                        contractPriceAfter={contractPrice}
+                        tokenPrice={priceData}
                       />
                     </StyledTabsContent>
                   </StyledTabs>
@@ -218,7 +135,7 @@ export default function TradePage() {
                     </div>
                     <StyledTabsContent value="Market">
                       <TradeMarketWidget
-                        contractPriceAfter={contractPrice}
+                        tokenPrice={priceData}
                         side={1}
                         marketAndIndexPriceData={0}
                       />
@@ -227,39 +144,13 @@ export default function TradePage() {
                       <TradeLimitWidget
                         side={0}
                         marketAndIndexPriceData={0}
-                        contractPriceAfter={contractPrice}
+                        tokenPrice={priceData}
                       />
                     </StyledTabsContent>
                   </StyledTabs>
                 </TabsContent>
                 <TabsContent value="swap">
-                  <StyledTabs defaultValue="Market">
-                    <div className="flex flex-row justify-between mt-6">
-                      <StyledTabsList>
-                        <StyledTabsTrigger value="Market">
-                          Market
-                        </StyledTabsTrigger>
-                        <StyledTabsTrigger value="Limit">
-                          Limit
-                        </StyledTabsTrigger>
-                      </StyledTabsList>
-                      <TradeCalculatorWidget />
-                    </div>
-                    <StyledTabsContent value="Market">
-                      <TradeSwapWidget
-                        contractPriceAfter={contractPrice}
-                        side={1}
-                        marketAndIndexPriceData={0}
-                      />
-                    </StyledTabsContent>
-                    <StyledTabsContent value="Limit">
-                      <TradeSwapWidget
-                        side={0}
-                        marketAndIndexPriceData={0}
-                        contractPriceAfter={contractPrice}
-                      />
-                    </StyledTabsContent>
-                  </StyledTabs>
+                  <StyledTabs defaultValue="Market"></StyledTabs>
                 </TabsContent>
               </Tabs>
             </Card>

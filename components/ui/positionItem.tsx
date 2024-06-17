@@ -45,8 +45,8 @@ const PositionItem: React.FC<positionItemProps> = ({
 }) => {
   return (
     <div className={positionItemVariants(props)} {...props}>
-      <div className="flex flex-row">
-        <span className="  text-sm">{keyText}</span>
+      <div className="flex flex-row items-center">
+        <span className="text-sm ">{keyText}</span>
         {info ? (
           <TooltipProvider>
             <Tooltip>

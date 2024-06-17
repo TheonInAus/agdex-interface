@@ -11,11 +11,11 @@ import PositionHistoryWidget from "@/components/ui/tradeWidget/positionHistoryWi
 import PositionListWidget from "@/components/ui/tradeWidget/positionListWidget"
 
 interface TradePositionWidgetProps {
-  contractPrice: number
+  tokenPrice: number
 }
 
 export default function TradePositionWidget({
-  contractPrice,
+  tokenPrice,
 }: TradePositionWidgetProps) {
   return (
     <>
@@ -33,13 +33,13 @@ export default function TradePositionWidget({
             </div>
           </div>
           <StyledTabsContent value="Position" className="ml-3">
-            <PositionListWidget contractPriceAfter={contractPrice} />
+            <PositionListWidget tokenPrice={tokenPrice} />
           </StyledTabsContent>
           <StyledTabsContent value="Orders" className="ml-3">
             <OrderListWidget />
           </StyledTabsContent>
           <StyledTabsContent value="History" className="ml-3">
-            <PositionHistoryWidget contractPriceAfter={contractPrice} />
+            <PositionHistoryWidget contractPriceAfter={tokenPrice} />
           </StyledTabsContent>
         </StyledTabs>
       </Card>

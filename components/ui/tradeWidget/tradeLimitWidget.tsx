@@ -14,13 +14,13 @@ type Side = {}
 type TradeMarketType = {
   side: Side
   marketAndIndexPriceData: any
-  contractPriceAfter: any
+  tokenPrice: any
 }
 
 export default function TradeLimitWidget({
   side,
   marketAndIndexPriceData,
-  contractPriceAfter,
+  tokenPrice,
 }: TradeMarketType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
@@ -39,8 +39,6 @@ export default function TradeLimitWidget({
   const limitAcceptableRate = 0.03
 
   const [ethPrice, setEthPrice] = useState(0)
-  const [tokenPrice, setTokenPrice] = useState(0)
-  const [contractPrice, setContractPrice] = useState(0)
 
   const handleCheckboxChange = (checked: any) => {
     setIsChecked(checked)
@@ -84,7 +82,6 @@ export default function TradeLimitWidget({
         <InputBox
           title="Price"
           value={limitPrice}
-          suffix="USDX"
           onValueChange={(e) => {
             setLimitPrice(e.target.value)
           }}
@@ -93,7 +90,6 @@ export default function TradeLimitWidget({
         <InputBox
           title="Pay"
           value={usdMargin}
-          suffix="USDX"
           balanceNode={
             <div>
               Balance: {0} {"balanceData?.symbol"}
@@ -107,7 +103,6 @@ export default function TradeLimitWidget({
         <InputBox
           title="Size"
           value={tradingSize}
-          suffix="ETH"
           prefix={`Leverage:`}
           prefixValue={leverageNumber}
           onValueChange={(e) => {

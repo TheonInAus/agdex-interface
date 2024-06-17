@@ -43,7 +43,7 @@ const Stats: React.FC<StatsProps> = ({
   return (
     <div className="flex flex-col mr-2">
       <div className="flex items-center gap-0.5">
-        <span className="text-base text-0xgrey">{title}</span>
+        <span className="text-sm text-0xgrey">{title}</span>
         {info ? (
           <TooltipProvider>
             <Tooltip>
@@ -61,11 +61,13 @@ const Stats: React.FC<StatsProps> = ({
             </Tooltip>
           </TooltipProvider>
         ) : (
-          <span className="w-5 h-5"></span>
+          <span className="size-5"></span>
         )}
       </div>
       <div className="flex items-center gap-2">
-        <span className={cn(valueTextColor, "text-lg")}>{value}</span>
+        <span className={cn(valueTextColor, "text-2xl", "font-bold")}>
+          {value}
+        </span>
         {additionalText && (
           <span className="text-sm text-0xgrey">{additionalText}</span>
         )}
