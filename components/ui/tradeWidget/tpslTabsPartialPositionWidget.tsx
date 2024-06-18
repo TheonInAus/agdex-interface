@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { AlertCircle } from "lucide-react"
 
-import { wrapperFormatEther18e } from "@/hooks/zContractHelper"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -37,7 +36,6 @@ export default function TpslTabsPartialPositionWidget({
   const handleSliderValueChange = (value: any) => {
     const rate = value / 100
     setSizeRate(value)
-    setSizeDelta(wrapperFormatEther18e(positionInfo?.size?.toString()) * rate)
   }
 
   //   useEffect(() => {}, [sizeRate, sizeDelta])
@@ -170,14 +168,10 @@ export default function TpslTabsPartialPositionWidget({
       <div className="w-full mt-2 text-sm">
         <div className="flex flex-row justify-between">
           <div className="text-0xgrey">Size</div>
-          <div>
-            {wrapperFormatEther18e(positionInfo?.size)}{" "}
-            {positionInfo?.tokenName}
-          </div>
+          <div>{positionInfo?.tokenName}</div>
         </div>
         <div className="flex flex-row justify-between">
           <div>Execution Fee</div>
-          <div>{wrapperFormatEther18e(BigInt(1))} ETH</div>
         </div>
         <div className="mt-4 text-0xgrey">
           When the market price reaches the trigger price, the system will close

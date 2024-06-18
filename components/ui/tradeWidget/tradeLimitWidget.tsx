@@ -4,11 +4,12 @@ import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
 
 import { CustomTooltip } from "../customToolTip"
+import { PoolInputBox } from "../poolInputBox"
+import { TokenInputBox } from "../tokenInputBox"
 
 type Side = {}
 type TradeMarketType = {
@@ -79,7 +80,7 @@ export default function TradeLimitWidget({
   return (
     <div>
       <div className="w-full">
-        <InputBox
+        <TokenInputBox
           title="Price"
           value={limitPrice}
           onValueChange={(e) => {
@@ -87,7 +88,7 @@ export default function TradeLimitWidget({
           }}
         />
         <br></br>
-        <InputBox
+        <PoolInputBox
           title="Pay"
           value={usdMargin}
           balanceNode={
@@ -100,7 +101,7 @@ export default function TradeLimitWidget({
           }}
         />
         <br></br>
-        <InputBox
+        {/* <InputBox
           title="Size"
           value={tradingSize}
           prefix={`Leverage:`}
@@ -121,7 +122,7 @@ export default function TradeLimitWidget({
               setLeverageNumber(1)
             }
           }}
-        />
+        /> */}
         <br></br>
         <div>
           <div className="flex flex-row items-center justify-between">

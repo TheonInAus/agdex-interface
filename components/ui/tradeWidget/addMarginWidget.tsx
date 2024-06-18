@@ -4,8 +4,9 @@ import { useState } from "react"
 import { Loader } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
+
+import { TokenInputBox } from "../tokenInputBox"
 
 type AddMarginProps = {
   positionInfo?: any
@@ -20,10 +21,9 @@ export default function AddMarginWidget({ positionInfo }: AddMarginProps) {
 
   return (
     <>
-      <InputBox
+      <TokenInputBox
         title="Amount"
         value={afterMargin}
-        suffix={"USDX"}
         maxNode={true}
         onMaxClick={handleMaxClick}
         onValueChange={(e) => {

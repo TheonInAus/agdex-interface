@@ -4,11 +4,11 @@ import { useState } from "react"
 import { Loader, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 
 import { Checkbox } from "../checkbox"
 import { CustomTooltip } from "../customToolTip"
+import { TokenInputBox } from "../tokenInputBox"
 
 type ClosePositionProps = {
   positionInfo?: any
@@ -33,7 +33,7 @@ export default function ClosePositionWidget({
 
   return (
     <>
-      <InputBox title="Amount" value={""} suffix={"USDX"} />
+      <TokenInputBox title="Amount" value={""} />
       <div className="mt-3">
         <div className="flex flex-row justify-between">
           <div className="text-sm text-white">Pure Reduction</div>

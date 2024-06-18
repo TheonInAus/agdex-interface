@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand'
 import { PoolInfo, PoolList, VaultInfo, VaultList } from './helper';
 
 interface TokenState {

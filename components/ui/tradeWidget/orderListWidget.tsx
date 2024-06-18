@@ -16,13 +16,6 @@ import { CustomTooltip } from "../customToolTip"
 import { PositionItem } from "../positionItem"
 
 type Side = {}
-type PositionInfo = {
-  poolAddress: any
-  side: Side
-  marginDelta: any
-  sizeDelta: any
-  acceptableTradePriceX96: any
-}
 
 export default function OrderListWidget() {
   const [longOrderHandleInc, setLongOrderHandleInc] = useState("")
@@ -49,9 +42,7 @@ export default function OrderListWidget() {
         setLongOrderHandleInc(result.open_orders.handle)
         setLongOrderHandleDec(result.decrease_orders.handle)
       }
-    } catch (error: any) {
-      enqueueSnackbar(`${error?.message}`, { variant: "error" })
-    }
+    } catch (error: any) {}
     try {
       const { result } = await getTableHandle(
         account?.address || "",
@@ -66,9 +57,7 @@ export default function OrderListWidget() {
         setShortOrderHandleInc(result.open_orders.handle)
         setShortOrderHandleDec(result.decrease_orders.handle)
       }
-    } catch (error: any) {
-      enqueueSnackbar(`${error?.message}`, { variant: "error" })
-    }
+    } catch (error: any) {}
   }
 
   useEffect(() => {
@@ -185,7 +174,6 @@ export default function OrderListWidget() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shortOrderHandleDec])
-
   return (
     <div>
       <div className="mb-4 border-t border-0xline"></div>
@@ -194,7 +182,7 @@ export default function OrderListWidget() {
           {combineData.map((order, index) => (
             <div key={index}>
               <div className="flex flex-row gap-2 font-extrabold">
-                <div>{`symbol`}</div>
+                <div>{symbol.name}</div>
                 <div
                   className={`${
                     order.side === "LONG" ? "text-0xgreen" : "text-0xred"
@@ -208,8 +196,11 @@ export default function OrderListWidget() {
                   {order.type === "INC" ? (
                     <div className="flex flex-col">
                       <PositionItem
-                        keyText="Take Profit"
-                        value={order.decoded_value.take_profit ? "YES" : "NO"}
+                        keyText="Collateral"
+                        value={parseAptosDecimal(
+                          order.decoded_value.collateral.value,
+                          8
+                        )}
                       />
                       <PositionItem
                         keyText="Amount"

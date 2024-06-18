@@ -1,7 +1,7 @@
-import Iconify from "@/components/Iconify"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import TokenPairWidget from "@/components/ui/tokenPair/TokenPairWidget"
+import Iconify from "@/components/Iconify"
 
 export default function AbRefferalsWidget() {
   return (
@@ -9,22 +9,23 @@ export default function AbRefferalsWidget() {
       <div className="flex flex-col w-full gap-4">
         <Card className="p-5">
           <div className="flex flex-row items-center justify-start gap-10">
-            <TokenPairWidget token1="ETH" token2="BTC" />
-            <div className="text-2xl   font-bold">PrePx Referrals</div>
+            <div className="text-2xl font-bold">PrePx Referrals</div>
           </div>
         </Card>
-        <div className="w-full text-base flex justify-center items-center bg-0xbox">
-        <Iconify icon="iconoir:light-bulb-on" />
-        <div className="font-bold">Earn rebates (20% of the trading fee) through the ABEx referral
-          program. For more information, please read the</div>
-          <a href="google.com" className="text-blue-500 underline ml-1">
+        <div className="flex items-center justify-center w-full text-base bg-0xbox">
+          <Iconify icon="iconoir:light-bulb-on" />
+          <div className="font-bold">
+            Earn rebates (20% of the trading fee) through the ABEx referral
+            program. For more information, please read the
+          </div>
+          <a href="google.com" className="ml-1 text-blue-500 underline">
             referral program details.
           </a>
         </div>
         <Card>
           <div className="flex flex-row justify-between">
             <div className="flex flex-col items-start w-1/2 p-3">
-              <div className="text-xl   font-bold text-agdexMain">
+              <div className="text-xl font-bold text-agdexMain">
                 Your Referral Link
               </div>
               <input
@@ -55,12 +56,12 @@ export default function AbRefferalsWidget() {
                 </div>
                 <div className="my-5 border border-0xline"></div>
                 <div className="flex flex-col items-center justify-between px-10 py-4">
-                  <div className="  font-bold">Trading Volume</div>
+                  <div className="font-bold ">Trading Volume</div>
                   <div className="text-lg font-extrabold text-white">$0</div>
-                  <div className="text-xs   font-medium">
+                  <div className="text-xs font-medium">
                     Rebates earned by this account as
                   </div>
-                  <div className="text-xs   font-medium">a trader.</div>
+                  <div className="text-xs font-medium">a trader.</div>
                 </div>
               </div>
             </div>

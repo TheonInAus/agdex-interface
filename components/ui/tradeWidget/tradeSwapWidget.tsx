@@ -14,7 +14,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
 import { TpsLInput } from "@/components/ui/tpslIput"
@@ -93,7 +92,7 @@ export default function TradeSwapWidget({
 
   return (
     <div>
-      <InputBox
+      {/* <InputBox
         title="Pay"
         value={usdMargin}
         suffix="USDX"
@@ -125,7 +124,7 @@ export default function TradeSwapWidget({
             setLeverageNumber(1)
           }
         }}
-      />
+      /> */}
 
       <Button
         disabled={false}

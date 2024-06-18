@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import {
+  APTOS_ADDRESS,
   calEntryPrice,
   calEstLiqPrice,
   calLeverage,
@@ -56,59 +57,63 @@ export default function PositionListWidget({
       const { result } = await getTableHandle(
         account?.address || "",
         getPositionResources(
-          vault.tokenAddress as `${string}::${string}::${string}`,
-          symbol.tokenAddress as `${string}::${string}::${string}`,
+          vault.tokenAddress as APTOS_ADDRESS,
+          symbol.tokenAddress as APTOS_ADDRESS,
           "LONG"
         )
       )
       if (result) {
         setLongPositionHandle(result.positions.handle)
       }
-    } catch (error: any) {
-      enqueueSnackbar(`${error?.message}`, { variant: "error" })
-    }
+    } catch (error: any) {}
     try {
       const { result } = await getTableHandle(
         account?.address || "",
         getPositionResources(
-          vault.tokenAddress as `${string}::${string}::${string}`,
-          symbol.tokenAddress as `${string}::${string}::${string}`,
+          vault.tokenAddress as APTOS_ADDRESS,
+          symbol.tokenAddress as APTOS_ADDRESS,
           "SHORT"
         )
       )
       if (result) {
         setShortPositionHandle(result.positions.handle)
       }
-    } catch (error: any) {
-      enqueueSnackbar(`${error?.message}`, { variant: "error" })
-    }
+    } catch (error: any) {}
   }
   useEffect(() => {
     if (account?.address) {
       fetchPositionHandles()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account?.address])
+  }, [account?.address, vault, symbol])
 
   const [longPositionData, setLongPositionData] = useState<any[]>([])
   const [shortPositionData, setShortpositionData] = useState<any[]>([])
   const [combineData, setCombineData] = useState<any[]>([])
-  console.log("🚀 ~ combineData:", combineData)
   const fetchPositions = async (type: string) => {
-    const result = await getAllUserPositions(
-      account?.address || "",
-      type === "LONG" ? longPostionHandle : shortPositionHandle
-    )
-    console.log("🚀 ~ fetchPositions ~ result:", result)
-    if (type === "LONG") {
-      setLongPositionData(result)
-    } else {
-      setShortpositionData(result)
+    try {
+      const result = await getAllUserPositions(
+        account?.address || "",
+        type === "LONG" ? longPostionHandle : shortPositionHandle
+      )
+      console.log("🚀 ~ fetchPositions ~ result:", result)
+      if (type === "LONG") {
+        setLongPositionData(result)
+      } else {
+        setShortpositionData(result)
+      }
+    } catch (error) {
+      if (type === "LONG") {
+        setLongPositionData([])
+      } else {
+        setShortpositionData([])
+      }
     }
   }
   useEffect(() => {
     if (longPostionHandle) {
       fetchPositions("LONG")
+    } else {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [longPostionHandle])
@@ -140,6 +145,7 @@ export default function PositionListWidget({
     })
     setCombineData(sortedData)
   }, [longPositionData, shortPositionData])
+
   return (
     <div>
       <div className="mb-4 border-t border-0xline"></div>
@@ -166,9 +172,11 @@ export default function PositionListWidget({
                 <div className="flex flex-col">
                   <PositionItem
                     keyText="Size"
-                    value={`${parseAptosDecimal(
-                      Number(position.decoded_value.position_size.value),
-                      18
+                    value={`${Number(
+                      parseAptosDecimal(
+                        Number(position.decoded_value.position_size.value),
+                        18
+                      ).toFixed(6)
                     )} USD`}
                   />
                   <div className="flex flex-row items-center mt-2">
@@ -259,7 +267,10 @@ export default function PositionListWidget({
                           Number(position.decoded_value.position_size.value),
                           18
                         ),
-                        Number(position.decoded_value.position_amount),
+                        parseAptosDecimal(
+                          Number(position.decoded_value.position_amount),
+                          8
+                        ),
                         parseAptosDecimal(
                           position.decoded_value.collateral.value,
                           8
@@ -270,7 +281,12 @@ export default function PositionListWidget({
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <div className="flex flex-row">
+                  <PositionItem
+                    keyText="Market Price"
+                    value={`${tokenPrice.toFixed(6)} USD`}
+                    info={""}
+                  />
+                  <div className="flex flex-row mt-2">
                     <CustomTooltip
                       triggerContent={
                         <div className="text-sm mr-7">Unrealized Pnl.</div>
@@ -278,29 +294,55 @@ export default function PositionListWidget({
                     >
                       <p>UnPNL</p>
                     </CustomTooltip>
-                    <div className={`font-bold ${"text-0xgreen"}`}>
+                    <div
+                      className={`font-bold ${
+                        Number(
+                          calUnPnL(
+                            parseAptosDecimal(
+                              Number(
+                                position.decoded_value.position_size.value
+                              ),
+                              18
+                            ),
+                            parseAptosDecimal(
+                              Number(position.decoded_value.position_amount),
+                              8
+                            ),
+                            parseAptosDecimal(
+                              position.decoded_value.collateral.value,
+                              8
+                            ),
+                            tokenPrice,
+                            position.side
+                          )
+                        ) >= 0
+                          ? "text-0xgreen"
+                          : "text-0xred"
+                      }`}
+                    >
                       {calUnPnL(
                         parseAptosDecimal(
                           Number(position.decoded_value.position_size.value),
                           18
                         ),
-                        Number(position.decoded_value.position_amount),
+                        parseAptosDecimal(
+                          Number(position.decoded_value.position_amount),
+                          8
+                        ),
                         parseAptosDecimal(
                           position.decoded_value.collateral.value,
                           8
                         ),
                         tokenPrice,
                         position.side
-                      )}
+                      )}{" "}
+                      {"USD"}
                     </div>
 
                     <ExternalLink
                       className="mt-1 ml-1 text-opacity-70 hover:text-opacity-100"
                       size={13}
                     />
-                  </div>
-                  <div className="mt-2">
-                    <PositionItem keyText="Net Funding" value={"-"} info={""} />
                   </div>
                 </div>
                 <div className="flex flex-row">

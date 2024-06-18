@@ -1,6 +1,10 @@
-import { aptos, moduleAddress } from "@/pages/_app";
+import { aptos, coinAddress, moduleAddress } from "@/pages/_app";
+
+export type APTOS_ADDRESS = `${string}::${string}::${string}`
 
 export const commonTableHandle = "0xc086ec2f7155735fdb646b3a33a4ee2706d8fc348372e217b7e1994390d7fd75"
+export const MOCK_USDC_COIN_STORE = `0x1::coin::CoinStore<${coinAddress}::usdc::USDC>`
+export const MOCK_USDT_COIN_STORE = `0x1::coin::CoinStore<${coinAddress}::usdt::USDT>`
 
 export const getPositionResources = (coinType: `${string}::${string}::${string}`, index: `${string}::${string}::${string}`, direction: string) => {
     return `${moduleAddress}::market::PositionRecord<${coinType}, ${index}, ${moduleAddress}::pool::${direction}>` as `${string}::${string}::${string}`
@@ -8,6 +12,10 @@ export const getPositionResources = (coinType: `${string}::${string}::${string}`
 
 export const getOrderRecordResources = (coinType: `${string}::${string}::${string}`, index: `${string}::${string}::${string}`, direction: string, fee: `${string}::${string}::${string}`) => {
     return `${moduleAddress}::market::OrderRecord<${coinType},${index},${moduleAddress}::pool::${direction},${fee}>` as `${string}::${string}::${string}`
+}
+
+export const getPositionConfigResources = (coinType: `${string}::${string}::${string}`, direction: string) => {
+    return `${moduleAddress}::market::WrappedPositionConfig<${coinType},${moduleAddress}::pool::${direction}>` as `${string}::${string}::${string}`
 }
 
 export const getAccountInfo = async (accountAddress: string) => {
@@ -32,6 +40,10 @@ export const parseAptosDecimal = (value: number, decimals: number = 8) => {
     return value / Math.pow(10, decimals);
 }
 
+export const formatAptosDecimal = (value: number, decimals: number = 8) => {
+    return value * Math.pow(10, decimals);
+}
+
 export const calLeverage = (amount: number, collateral: number) => {
     return (amount / collateral).toFixed(6)
 }
@@ -47,12 +59,12 @@ export const calEstLiqPrice = (size: number, amount: number, collateral: number,
     } else {
         liqPrice = entryPrice * (1 + 1 / leverage)
     }
-    return liqPrice.toFixed(10)
+    return liqPrice.toFixed(6)
 }
 export const calUnPnL = (size: number, amount: number, collateral: number, tokenPrice: number, direction: string) => {
     const entryPrice = size / amount
     const leverage = amount / collateral
-    return (tokenPrice - entryPrice) * leverage
+    return ((tokenPrice - entryPrice) * leverage * amount).toFixed(6)
 }
 export const getTableHandle = async (address: string, resourceType: `${string}::${string}::${string}`) => {
     const result = await aptos.getAccountResource({
@@ -138,3 +150,7 @@ export const getAptosCoinBalance = async (accountAddress: string, COIN_STORE: `$
     return { result }
 }
 
+
+export const generateFunctionPath = (modulePath: string, moduleName: string, functionName: string) => {
+    return `${modulePath}::${moduleName}::${functionName}` as APTOS_ADDRESS
+}

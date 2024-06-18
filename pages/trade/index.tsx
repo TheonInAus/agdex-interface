@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { pythAptosFeeder } from "@/chainio/helper"
 import { usePriceData } from "@/chainio/usePriceData"
+import useTokenStore from "@/chainio/useTokenStore"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
 import { Card } from "@/components/ui/card"
@@ -32,14 +32,12 @@ interface MarketData {
 }
 
 export default function TradePage() {
-  const liquidity = 0
-
-  const [balanceRate, setBalanceRate] = useState(0)
-  const [leverageNumber, setLeverageNumber] = useState(1)
-
-  const { priceData, error } = usePriceData(pythAptosFeeder)
+  const { symbol } = useTokenStore()
+  const { priceData, error } = usePriceData(
+    symbol.pythFeederAddress,
+    symbol.decimal
+  )
   const [priceType, setPriceType] = useState(false)
-  console.log("🚀 ~ TradePage ~ priceType:", priceType)
   const [lastPrice, setLastPrice] = useState(0)
 
   useEffect(() => {
@@ -54,19 +52,6 @@ export default function TradePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceData])
 
-  const handleSliderValueChange = (value: any) => {
-    setLeverageNumber(value[0])
-  }
-
-  const handleInputChange = (event: any) => {
-    const value = parseFloat(event.target.value)
-    if (!isNaN(value) && value >= 1 && value <= 100) {
-      setLeverageNumber(value)
-    } else if (event.target.value === "") {
-      setLeverageNumber(0)
-    }
-  }
-
   return (
     <section className="flex items-center justify-center pt-6">
       <div className="flex flex-col">
@@ -78,7 +63,7 @@ export default function TradePage() {
           </div>
           <div className="mt-2">
             {/* Narrow Block 1 */}
-            <Card style={{ width: 372 }}>
+            <Card style={{ width: 372 }} className="py-5">
               <Tabs defaultValue={"long"}>
                 <TabsList style={{ width: "100%" }}>
                   <TabsTrigger style={{ width: "33%" }} value={"long"}>
@@ -105,11 +90,7 @@ export default function TradePage() {
                       <TradeCalculatorWidget />
                     </div>
                     <StyledTabsContent value="Market">
-                      <TradeMarketWidget
-                        side={0}
-                        marketAndIndexPriceData={1}
-                        tokenPrice={priceData}
-                      />
+                      <TradeMarketWidget side={"LONG"} tokenPrice={priceData} />
                     </StyledTabsContent>
                     <StyledTabsContent value="Limit">
                       <TradeLimitWidget
@@ -136,8 +117,7 @@ export default function TradePage() {
                     <StyledTabsContent value="Market">
                       <TradeMarketWidget
                         tokenPrice={priceData}
-                        side={1}
-                        marketAndIndexPriceData={0}
+                        side={"SHORT"}
                       />
                     </StyledTabsContent>
                     <StyledTabsContent value="Limit">
@@ -153,20 +133,6 @@ export default function TradePage() {
                   <StyledTabs defaultValue="Market"></StyledTabs>
                 </TabsContent>
               </Tabs>
-            </Card>
-            {/* Narrow Block 2 */}
-            <Card className="mt-2" style={{ width: 372 }}>
-              <div className="w-full">
-                <div className="mt-1 text-lg font-bold">Token/Asset</div>
-                <div className="my-3 border-t border-0xline"></div>
-                <ListItem keyText="Max Leverage" value={"200x"} />
-                <ListItem keyText="Average Leverage" value={"7.71x"} />
-                <ListItem keyText="Liquidity" value={liquidity} />
-                <ListItem
-                  keyText="Balance Rate"
-                  value={`${balanceRate * 100}%`}
-                />
-              </div>
             </Card>
           </div>
         </div>

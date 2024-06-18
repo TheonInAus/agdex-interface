@@ -23,14 +23,14 @@ import {
 
 type VaultDropDownBoxProp = {}
 
-export const VaultDropDownBox: React.FC<VaultDropDownBoxProp> = ({}) => {
+export const SymbolDropDownBox: React.FC<VaultDropDownBoxProp> = ({}) => {
   const [open, setOpen] = useState(false)
-  const vaults: VaultInfo[] = VaultList
-  const { vault, setVault } = useTokenStore()
+  const pools: PoolInfo[] = PoolList
+  const { symbol, setSymbol } = useTokenStore()
 
-  const handleDropDownSelect = (vault: VaultInfo) => {
+  const handleDropDownSelect = (pool: PoolInfo) => {
     setOpen(false)
-    setVault(vault)
+    setSymbol(pool)
   }
 
   return (
@@ -42,7 +42,7 @@ export const VaultDropDownBox: React.FC<VaultDropDownBoxProp> = ({}) => {
           aria-expanded={open}
           className="justify-center text-xl font-extrabold hover:bg-0xtrans"
         >
-          {vault.name}
+          {symbol.tokenName}
           <ChevronDown className="ml-1 opacity-50 size-4 shrink-0" />
         </Button>
       </PopoverTrigger>
@@ -51,22 +51,22 @@ export const VaultDropDownBox: React.FC<VaultDropDownBoxProp> = ({}) => {
           <CommandInput placeholder="Search Token..." className="h-9" />
           <CommandEmpty>No Token found.</CommandEmpty>
           <CommandGroup>
-            {vaults.map((vault) => (
+            {pools.map((symbol) => (
               <CommandItem
-                key={vault.name}
-                value={vault.name}
+                key={symbol.tokenName}
+                value={symbol.tokenName}
                 onSelect={() => {
-                  handleDropDownSelect(vault)
+                  handleDropDownSelect(symbol)
                 }}
               >
                 <div className="flex justify-between w-full">
                   <Image
-                    src={`/token/${vault.name.toLowerCase()}.svg`}
-                    alt={vault.name}
+                    src={`/token/${symbol.tokenName.toLowerCase()}.svg`}
+                    alt={symbol.name}
                     width={30}
                     height={30}
                   />
-                  <div className="">{vault.name}</div>
+                  <div className="">{symbol.tokenName}</div>
                 </div>
               </CommandItem>
             ))}

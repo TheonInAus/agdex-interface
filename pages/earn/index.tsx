@@ -15,7 +15,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import {
   Select,
@@ -545,7 +544,7 @@ export default function EarnPage() {
               </div>
               <Button className="w-[110px] ml-1 px-0 justify-start bg-transparent text-white hover:bg-transparent hover:text-black">
                 Add now
-                <ChevronRight className="w-4 h-4 mt-[2px]" />
+                <ChevronRight className="size-4 mt-[2px]" />
               </Button>
             </div>
           </StyledTabsContent>
@@ -567,170 +566,6 @@ export default function EarnPage() {
               </div>
             </div>
           </StyledTabsContent>
-          {/* <StyledTabsContent value="RBF Mining" className="ml-3">
-            <div className="flex flex-row mb-1 ml-1 text-sm text-black rounded-lg">
-              <div className="w-[12%]">Pool</div>
-              <CustomTooltip
-                triggerContent={<div className="w-[15%]">APR</div>}
-              >
-                <p className="mb-2">
-                  RBF Mining APR = Daily 0XX Emission Value / Total Contribution
-                  * 365 * 100%
-                </p>
-              </CustomTooltip>
-              <div className="w-[17%]">Daily Emission</div>
-              <div className="w-[17%]">Total Contribution</div>
-              <div className="w-[18%]">My Contribution</div>
-              <div className="w-[16%]">Claimable Rewards</div>
-              <div>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="h-8 text-sm border-0xgrey hover:border-agdexMain hover:bg-0xtrans"
-                    >
-                      Contribute
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px] bg-0xdialog">
-                    <DialogHeader>
-                      <DialogTitle className="mb-3 text-center">
-                        Risk Buffer Fund
-                      </DialogTitle>
-                      <DialogDescription>
-                        <StyledTabs defaultValue="Contribute">
-                          <StyledTabsList className="border-none">
-                            <StyledTabsTrigger
-                              value="Contribute"
-                              className="p-0 mr-3 text-sm"
-                            >
-                              Contribute
-                            </StyledTabsTrigger>
-                            <StyledTabsTrigger
-                              value="Withdraw"
-                              className="p-0 text-sm"
-                            >
-                              Withdraw
-                            </StyledTabsTrigger>
-                          </StyledTabsList>
-                          <StyledTabsContent value="Contribute">
-                            <InputBox
-                              title={"Amount"}
-                              value={"0.00"}
-                              suffix={""}
-                            />
-                            <div className="my-4 text-sm text-white">
-                              Token/Asset
-                            </div>
-                            <ListItem keyText={"Net Performance"} value={""} />
-                            <ListItem
-                              keyText={"Total Contribution"}
-                              value={""}
-                            />
-                            <div className="mt-2 mb-3 border-t border-0xline"></div>
-                            <ListItem keyText={"My Contribution"} value={""} />
-                            <ListItem
-                              keyText={"Unlocking Countdown"}
-                              value={""}
-                            />
-                            <div className="w-full mt-3 bg-0xsmallBoxBackground">
-                              <div className="flex items-start p-2">
-                                <div className="shrink-0 mr-1 mt-[2.5px]">
-                                  <AlertCircle
-                                    className="text-white text-opacity-70 hover:text-opacity-100"
-                                    size={15} // Adjust the size to match your design
-                                  />
-                                </div>
-                                <div className="text-white">
-                                  Your contribution will be locked for 90 days
-                                  (from the last time of contribution). After
-                                  the lock-up period ends, you can withdraw your
-                                  contribution at any time if the net
-                                  performance of the fund is positive.
-                                </div>
-                              </div>
-                              <div className="flex items-start p-2">
-                                <div className="shrink-0 mr-1 mt-[2.5px]">
-                                  <AlertCircle
-                                    className="text-white text-opacity-70 hover:text-opacity-100"
-                                    size={15} // Adjust the size to match your design
-                                  />
-                                </div>
-                                <div className="text-white">
-                                  You cannot withdraw your contribution if the
-                                  fund&apos;s net performance is negative, even
-                                  after the lock-up period has expired, until
-                                  the net performance turns positive.
-                                </div>
-                              </div>
-                            </div>
-                            <Button className="w-full mt-4">
-                              Approve USDT
-                            </Button>
-                          </StyledTabsContent>
-                          <StyledTabsContent value="Withdraw">
-                            <InputBox
-                              title={"Amount"}
-                              value={"0.00"}
-                              suffix={""}
-                            />
-                            <div className="my-4 text-sm text-white">
-                              Token/Asset
-                            </div>
-                            <ListItem keyText={"Net Performance"} value={""} />
-                            <ListItem
-                              keyText={"Total Contribution"}
-                              value={""}
-                            />
-                            <div className="mt-2 mb-3 border-t border-0xline"></div>
-                            <ListItem keyText={"My Contribution"} value={""} />
-                            <ListItem
-                              keyText={"Unlocking Countdown"}
-                              value={""}
-                            />
-                            <div className="w-full mt-3 bg-0xsmallBoxBackground">
-                              <div className="flex items-start p-2">
-                                <div className="shrink-0 mr-1 mt-[2.5px]">
-                                  <AlertCircle
-                                    className="text-white text-opacity-70 hover:text-opacity-100"
-                                    size={15} // Adjust the size to match your design
-                                  />
-                                </div>
-                                <div className="text-white">
-                                  Your contribution will be locked for 90 days
-                                  (from the last time of contribution). After
-                                  the lock-up period ends, you can withdraw your
-                                  contribution at any time if the net
-                                  performance of the fund is positive.
-                                </div>
-                              </div>
-                              <div className="flex items-start p-2">
-                                <div className="shrink-0 mr-1 mt-[2.5px]">
-                                  <AlertCircle
-                                    className="text-white text-opacity-70 hover:text-opacity-100"
-                                    size={15} // Adjust the size to match your design
-                                  />
-                                </div>
-                                <div className="text-white">
-                                  You cannot withdraw your contribution if the
-                                  fund&apos;s net performance is negative, even
-                                  after the lock-up period has expired, until
-                                  the net performance turns positive.
-                                </div>
-                              </div>
-                            </div>
-                            <Button className="w-full mt-4">
-                              Approve Operation (one-time)
-                            </Button>
-                          </StyledTabsContent>
-                        </StyledTabs>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </div>
-          </StyledTabsContent> */}
         </StyledTabs>
       </Card>
     </section>

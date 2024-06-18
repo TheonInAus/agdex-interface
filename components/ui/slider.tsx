@@ -15,28 +15,28 @@ const Slider = React.forwardRef<
     )}
     {...props}
   >
-    <SliderPrimitive.Track className="relative w-full h-1 overflow-hidden rounded-full grow bg-muted outline-none border-none">
+    <SliderPrimitive.Track className="relative w-full h-1 overflow-hidden border-none rounded-full outline-none grow bg-muted">
       <SliderPrimitive.Range className="absolute h-full bg-agdexMain" />
     </SliderPrimitive.Track>
-    <div className="absolute top-1/2 left-[0%] -translate-y-1/2 h-2 w-2 rounded-full bg-agdexMain "></div>
+    <div className="absolute top-1/2 left-[0%] -translate-y-1/2 size-2 rounded-full bg-agdexMain "></div>
     <div className="absolute top-full left-[1%] -translate-x-1/2 mt-2 text-xs">
       1x
     </div>
     <div className="absolute top-1/2 left-[25%] -translate-y-1/2 h-2 w-2 rounded-full bg-agdexMain"></div>
     <div className="absolute top-full left-[26%] -translate-x-1/2 mt-2 text-xs">
-      50x
+      20x
     </div>
     <div className="absolute top-1/2 left-[50%] -translate-y-1/2 h-2 w-2 rounded-full bg-agdexMain"></div>
     <div className="absolute top-full left-[51%] -translate-x-1/2 mt-2 text-xs">
-      100x
+      50x
     </div>
-    <div className="absolute top-1/2 left-[75%] -translate-y-1/2 h-2 w-2 rounded-full bg-agdexMain"></div>
+    <div className="absolute w-2 h-2 -translate-y-1/2 rounded-full top-1/2 left-3/4 bg-agdexMain"></div>
     <div className="absolute top-full left-[76%] -translate-x-1/2 mt-2 text-xs">
-      150x
+      75x
     </div>
     <div className="absolute top-1/2 left-[98%] -translate-y-1/2 h-2 w-2 rounded-full bg-agdexMain"></div>
     <div className="absolute top-full left-[97%] -translate-x-1/2 mt-2 text-xs">
-      200x
+      100x
     </div>
     <SliderPrimitive.Thumb className="block w-4 h-4 transition-colors border-2 border-white rounded-full bg-agdexMain ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
   </SliderPrimitive.Root>

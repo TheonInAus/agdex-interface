@@ -35,7 +35,7 @@ export default function TradingViewWidget({ tokenName }) {
       ) {
         new window.TradingView.widget({
           autosize: true,
-          symbol: `BITSTAMP:${tokenName ?? "ETH"}USD`,
+          symbol: `BINANCE:${tokenName ?? "APT"}USD`,
           interval: "D",
           timezone: "Etc/UTC",
           theme: "dark",

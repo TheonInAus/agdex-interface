@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { PoolInfo, PoolList } from "@/chainio/helper"
+import useTokenStore from "@/chainio/useTokenStore"
 import { CheckIcon, ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -19,19 +20,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-type DropDownBoxProp = {
-  handleSelectedPool: (poolInfo: PoolInfo) => void
-}
+type DropDownBoxProp = {}
 
-export const DropDownBox: React.FC<DropDownBoxProp> = ({
-  handleSelectedPool,
-}) => {
+export const DropDownBox: React.FC<DropDownBoxProp> = ({}) => {
   const [open, setOpen] = useState(false)
   const pools: PoolInfo[] = PoolList
-  const [currentPool, setCurrentPool] = useState<PoolInfo>(PoolList[0])
+  const { symbol, setSymbol } = useTokenStore()
+
   const handleDropDownSelect = (pool: PoolInfo) => {
-    setCurrentPool(pool)
-    handleSelectedPool(pool)
+    setSymbol(pool)
     setOpen(false)
   }
 
@@ -44,7 +41,7 @@ export const DropDownBox: React.FC<DropDownBoxProp> = ({
           aria-expanded={open}
           className="justify-center text-xl font-extrabold hover:bg-0xtrans"
         >
-          {currentPool.name}
+          {symbol.name}
           <ChevronDown className="ml-1 opacity-50 size-4 shrink-0" />
         </Button>
       </PopoverTrigger>

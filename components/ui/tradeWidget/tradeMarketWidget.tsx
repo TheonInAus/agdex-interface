@@ -1,100 +1,84 @@
 import { useEffect, useState } from "react"
-import { getAptosCoinBalance, parseAptosDecimal } from "@/chainio/fetchData"
+import {
+  APTOS_ADDRESS,
+  MOCK_USDC_COIN_STORE,
+  formatAptosDecimal,
+  getAptosCoinBalance,
+  getPositionConfigResources,
+  parseAptosDecimal,
+} from "@/chainio/fetchData"
 import { APTOS_COIN_STORE, VaultInfo } from "@/chainio/helper"
 import useTokenStore from "@/chainio/useTokenStore"
-import { APTOS_COIN } from "@aptos-labs/ts-sdk"
+import { aptos } from "@/pages/_app"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
-import Decimal from "decimal.js"
-import { Edit3, ExternalLink, Loader } from "lucide-react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomTooltip } from "@/components/ui/customToolTip"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { InputBox } from "@/components/ui/inputBox"
 import { ListItem } from "@/components/ui/listItem"
 import { Slider } from "@/components/ui/slider"
 import { TpsLInput } from "@/components/ui/tpslIput"
 
 import { Card } from "../card"
+import { PoolInputBox } from "../poolInputBox"
+import { TokenInputBox } from "../tokenInputBox"
 
-type Side = {}
 type TradeMarketType = {
-  side: Side
-  marketAndIndexPriceData: any
+  side: string
   tokenPrice: any
 }
 
 export default function TradeMarketWidget({
   side,
-  marketAndIndexPriceData,
   tokenPrice,
 }: TradeMarketType) {
-  const [usdMargin, setUsdMargin] = useState("")
-  const [usdAfterMargin, setUsdAfterMargin] = useState("")
-  const [tradingSize, setTradingSize] = useState("")
+  console.log("🚀 ~ side:", side)
+  const [collateral, setCollateral] = useState("")
+  const [amount, setAmount] = useState("")
+  const [positionSize, setPositionSize] = useState("")
   const [leverageNumber, setLeverageNumber] = useState(1)
-  const [isChecked, setIsChecked] = useState(true)
-  const [showSlider, setShowSlider] = useState(true)
-  const [priceSlippage, setPriceSlippage] = useState("1")
-
-  const [tokenAfterSlippagePrice, setTokenAfterSlippagePrice] = useState(0)
-  const [liqPrice, setLiqPrice] = useState(0)
-
-  const handleCheckboxChange = (checked: any) => {
-    setIsChecked(checked)
-    // Now, use the isChecked state to control the visibility of the Slider
-    setShowSlider(checked) // Assuming setShowSlider is defined elsewhere
-  }
+  const { symbol } = useTokenStore()
   const handleSliderValueChange = (value: any) => {
-    setLeverageNumber(value)
+    setLeverageNumber(value[0])
   }
-
-  const premiumRateX96 = 0.000219
 
   useEffect(() => {
-    if (usdMargin !== "") {
-      const tempMargin = parseFloat(usdMargin)
+    if (collateral !== "") {
+      const tempCollateral = parseFloat(collateral)
 
-      setUsdAfterMargin(
-        (isNaN(tempMargin) ? 0 : tempMargin * leverageNumber).toString()
+      setAmount(
+        (isNaN(tempCollateral) ? 0 : tempCollateral * leverageNumber).toString()
       )
     } else {
-      setTradingSize("")
+      setPositionSize("")
     }
-  }, [leverageNumber, usdMargin])
+  }, [leverageNumber, collateral])
 
   useEffect(() => {
-    if (usdAfterMargin !== "" && tokenPrice) {
-      const tradingSize = new Decimal(usdAfterMargin)
-        .dividedBy(new Decimal(tokenPrice))
-        .toFixed(18)
-        .toString()
-      setTradingSize(tradingSize)
+    if (amount !== "" && tokenPrice) {
+      const tempPrice = formatAptosDecimal(tokenPrice, 18)
+      setPositionSize((BigInt(amount) * BigInt(tempPrice)).toString())
     } else {
-      setTradingSize("")
+      setPositionSize("")
     }
-  }, [usdAfterMargin, tokenPrice])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amount, tokenPrice])
 
-  const tradingFee = 0.3
   const { vault } = useTokenStore()
   const { account } = useWallet()
   const [tokenBalance, setTokenBalance] = useState("0")
+  const [estLiqPrice, setEstLiqPrice] = useState(0)
 
   const fetchBalance = async () => {
     const { result } = await getAptosCoinBalance(
       account?.address || "",
-      APTOS_COIN_STORE
+      vault.tokenStore as APTOS_ADDRESS
     )
-    const temp = parseAptosDecimal(Number(result.coin.value), 8).toFixed(6)
+
+    const temp = parseAptosDecimal(
+      Number(result.coin.value),
+      vault.decimal
+    ).toFixed(6)
     setTokenBalance(temp)
   }
   useEffect(() => {
@@ -102,35 +86,90 @@ export default function TradeMarketWidget({
       fetchBalance()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account?.address])
+  }, [account?.address, vault])
+
+  const [wrapperConfig, setWrapperConfig] = useState<any>(null)
+  const [tradingFee, setTradingFee] = useState(0)
+  console.log("🚀 ~ wrapperConfig:", wrapperConfig)
+
+  const fetchConfig = async () => {
+    const result = await aptos.getAccountResource({
+      accountAddress: account?.address || "",
+      resourceType: getPositionConfigResources(
+        symbol.tokenAddress as `${string}::${string}::${string}`,
+        side
+      ),
+    })
+    if (result) {
+      setWrapperConfig(result)
+    }
+  }
+  useEffect(() => {
+    fetchConfig()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [side, symbol])
+
+  useEffect(() => {
+    if (!wrapperConfig) return
+    const open_bps = wrapperConfig.inner.open_fee_bps.value
+    const dec_bps = wrapperConfig.inner.decrease_fee_bps.value
+    if (!collateral) {
+      return
+    }
+    if (side === "LONG") {
+      setTradingFee(Number(collateral) * parseAptosDecimal(open_bps, 18))
+    } else {
+      setTradingFee(Number(collateral) * parseAptosDecimal(dec_bps, 18))
+    }
+  }, [wrapperConfig, collateral, side])
+
+  useEffect(() => {
+    if (tokenPrice && collateral) {
+      let liqPrice = 0
+
+      if (side === "LONG") {
+        liqPrice =
+          (Number(collateral) - tradingFee) *
+          tokenPrice *
+          (1 - 1 / leverageNumber)
+      } else {
+        liqPrice =
+          (Number(collateral) - tradingFee) *
+          tokenPrice *
+          (1 + 1 / leverageNumber)
+      }
+      setEstLiqPrice(liqPrice)
+    }
+  }, [tokenPrice, collateral, side, leverageNumber, tradingFee])
+
   return (
     <div>
-      <InputBox
+      <TokenInputBox
         title="Pay"
-        value={usdMargin}
-        balanceNode={<>{`Balance: ${tokenBalance} ${vault.name}`}</>}
+        value={collateral}
+        balanceNode={<>{`Balance: ${tokenBalance}`}</>}
+        maxNode={<div className="rounded-xl">max</div>}
         onValueChange={(e) => {
-          setUsdMargin(e.target.value)
+          setCollateral(e.target.value)
         }}
       />
       <br></br>
-      <InputBox
+      <PoolInputBox
         title="Size"
-        value={tradingSize}
+        value={positionSize}
         prefix={`Leverage:`}
         prefixValue={leverageNumber}
         onValueChange={(e) => {
-          setTradingSize(e.target.value)
+          setPositionSize(e.target.value)
         }}
         onPrefixChange={(e) => {
           const intValue = parseInt(e.target.value, 10)
-
           if (!isNaN(intValue)) {
             setLeverageNumber(intValue)
           } else if (intValue < 1) {
             setLeverageNumber(1)
-          } else if (intValue > 200) {
-            setLeverageNumber(200)
+          } else if (intValue > 100) {
+            setLeverageNumber(100)
           } else {
             setLeverageNumber(1)
           }
@@ -138,128 +177,28 @@ export default function TradeMarketWidget({
       />
       <br></br>
       <div>
-        <div className="flex flex-row items-center justify-between mb-5">
-          <div className="text-sm">Leverage Slider</div>
-          <Checkbox
-            checked={isChecked}
-            onCheckedChange={handleCheckboxChange}
-          />
-        </div>
-        {showSlider && (
-          <Slider
-            defaultValue={[1]}
-            onValueChange={handleSliderValueChange}
-            max={200}
-            min={1}
-            step={1}
-            value={[leverageNumber]}
-            style={{ marginBottom: 10, marginTop: 10 }}
-          />
-        )}
+        <Slider
+          defaultValue={[1]}
+          onValueChange={handleSliderValueChange}
+          max={100}
+          min={1}
+          step={1}
+          value={[leverageNumber]}
+          style={{ marginBottom: 10, marginTop: 10 }}
+        />
       </div>
       <br></br>
       <div className="py-2">
+        <ListItem keyText="Collateral In" value={vault.name} />
+        <ListItem keyText="Leverage" value={leverageNumber} />
         <ListItem keyText="Entry Price" value={Number(tokenPrice)} />
-        <div className="flex justify-between">
-          <CustomTooltip
-            triggerContent={<div className="text-sm">Price Impact</div>}
-          >
-            <p>
-              The price impact is the deviation between the estimated
-              transaction price of the order and the current index price. When
-              it is positive number, it means that the estimated transaction
-              price is more advantageous, and negative number is vice versa.
-            </p>
-          </CustomTooltip>
-          <div className="font-bold">{premiumRateX96}%</div>
-        </div>
-        <div className="flex">
-          <ListItem
-            keyText="Acceptable Price"
-            value={tokenAfterSlippagePrice}
-            percentage={`${Number(priceSlippage) / 100}%`}
-            className="w-full"
-          />
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="ml-1">
-                <Edit3
-                  className="text-opacity-70 hover:text-opacity-100"
-                  size={13}
-                />
-              </button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] bg-0xdialog w-[370px]">
-              <DialogHeader>
-                <DialogTitle className="mb-2 text-center">
-                  Slippage Settings
-                </DialogTitle>
-                <DialogDescription>
-                  <div className="flex justify-between mb-2">
-                    <div>Max slippage</div>
-                    <label>0.30%</label>
-                  </div>
-                  <div className="flex flex-row justify-between">
-                    <div className="w-[60%]">auto/custom</div>
-                    <div className="w-[40%]">
-                      <TpsLInput
-                        value={priceSlippage}
-                        // className="col-span-3"
-                        suffix="%"
-                        placeholder="TP trigger price"
-                        onChange={(e) => {
-                          setPriceSlippage(e.target.value)
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="mt-5">
-                    If the price change exceeds this percentage, your
-                    transaction will revert.
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="mt-3">
-                <Button className="w-full text-sm bg-boxBackground hover:bg-0xboxBackground-foreground">
-                  Save
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-        <ListItem keyText="Liq. Price" value={liqPrice} />
+        <ListItem keyText="Est. Liq. Price" value={estLiqPrice.toFixed(6)} />
         <ListItem
-          keyText="Est. Margin"
-          value={`${(Number(usdMargin) - tradingFee).toFixed(2)}`}
+          keyText="Fee"
+          value={`${(tradingFee * tokenPrice).toFixed(
+            2
+          )} USD (${tradingFee.toFixed(6)}) ${vault.name}`}
         />
-        <div className="flex items-center justify-between">
-          <div className="text-sm">Fees</div>
-          {tradingFee > 0 ? (
-            <CustomTooltip
-              triggerContent={
-                <div className="font-bold">{`$${tradingFee} `}</div>
-              }
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-xs text-white">Trading Fee</div>
-                <div className="text-xs text-white">-0.82 USDT</div>
-              </div>
-              <div className="text-xs text-0xgrey">
-                (0.050% of the position value)
-              </div>
-              <div className="flex justify-between">
-                <div className="text-xs text-white">Execution Fee Fee</div>
-                <div className="text-xs text-white">
-                  -0.82 USDT{" "}
-                  <span className="text-sm text-0xgrey">(-$0.46)</span>
-                </div>
-              </div>
-            </CustomTooltip>
-          ) : (
-            <div className="text-xs text-white">-</div>
-          )}
-        </div>
-        <ListItem keyText="Trading Fee" value={`$${tradingFee}`} />
       </div>
       {/* <ListItem
           keyText="HasReferral?"

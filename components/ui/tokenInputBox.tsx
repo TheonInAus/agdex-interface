@@ -1,6 +1,3 @@
-import { useState } from "react"
-import Image from "next/image"
-import { VaultInfo, VaultList } from "@/chainio/helper"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { Card } from "@/components/ui/card"
@@ -40,7 +37,7 @@ export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
 }
 
 // The PayInput component definition.
-export const InputBox: React.FC<InputBoxProps> = ({
+export const TokenInputBox: React.FC<InputBoxProps> = ({
   title,
   value,
   prefixValue,
