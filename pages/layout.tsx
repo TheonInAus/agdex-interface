@@ -44,7 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="shortcut icon" href="/favicon-16x16.png" />
       </Head>
 
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <div className="relative flex flex-col min-h-screen">
           <SiteHeader />
           <main className="flex-1">{children}</main>
