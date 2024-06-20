@@ -34,9 +34,9 @@ export default function CalculatorDropDownBox() {
           variant="ghost"
           role="combobox"
           aria-expanded={open}
-          className="w-[250px] justify-start text-base font-semibold hover:bg-0xtrans"
+          className="justify-start w-full text-base font-semibold text-red-600 hover:bg-0xtrans"
         >
-          xxx
+          Comming Soon... But you can play with it .
           <ChevronDown className="ml-1 opacity-50 size-4 shrink-0" />
         </Button>
       </PopoverTrigger>

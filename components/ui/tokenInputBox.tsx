@@ -25,6 +25,7 @@ const inputBoxVariants = cva(
 // Define the props for the PayInput component, extending the variant props.
 export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
   title: string
+  subTitle?: string
   value: string
   prefixValue?: number
   prefix?: string
@@ -39,6 +40,7 @@ export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
 // The PayInput component definition.
 export const TokenInputBox: React.FC<InputBoxProps> = ({
   title,
+  subTitle,
   value,
   prefixValue,
   prefix,
@@ -57,7 +59,10 @@ export const TokenInputBox: React.FC<InputBoxProps> = ({
     >
       <div className="flex flex-col justify-between size-full ">
         <div className="flex flex-row items-center mb-2">
-          <span className="block text-lg font-bold text-white">{title}</span>
+          <div className="flex flex-row items-baseline">
+            <span className="block text-lg font-bold text-white">{title}</span>
+            <span className="block ml-2 text-sm text-gray-400">{subTitle}</span>
+          </div>
           {prefix && (
             <>
               <span className="block w-full mx-1 font-semibold text-right text-white">

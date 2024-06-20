@@ -5,11 +5,12 @@ import {
   formatAptosDecimal,
   getAptosCoinBalance,
   getPositionConfigResources,
+  getVaultTokenBalance,
   parseAptosDecimal,
 } from "@/chainio/fetchData"
 import { APTOS_COIN_STORE, VaultInfo } from "@/chainio/helper"
 import useTokenStore from "@/chainio/useTokenStore"
-import { aptos } from "@/pages/_app"
+import { aptos, moduleAddress } from "@/pages/_app"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -25,19 +26,29 @@ import { TokenInputBox } from "../tokenInputBox"
 
 type TradeMarketType = {
   side: string
-  tokenPrice: any
+  symbolPrice: number
+  vaultPrice: number
 }
 
 export default function TradeMarketWidget({
   side,
-  tokenPrice,
+  symbolPrice,
+  vaultPrice,
 }: TradeMarketType) {
-  console.log("🚀 ~ side:", side)
   const [collateral, setCollateral] = useState("")
   const [amount, setAmount] = useState("")
   const [positionSize, setPositionSize] = useState("")
   const [leverageNumber, setLeverageNumber] = useState(1)
+
   const { symbol } = useTokenStore()
+
+  console.log("🚀 ~ trading amount:", amount)
+  console.log("🚀 ~ trading collateral:", collateral)
+  console.log("🚀 ~ trading side:", side)
+  console.log("🚀 ~ trading positionSize:", positionSize)
+  console.log("🚀 ~ trading leverageNumber:", leverageNumber)
+  console.log("🚀 ~ trading symbol:", symbol)
+
   const handleSliderValueChange = (value: any) => {
     setLeverageNumber(value[0])
   }
@@ -46,40 +57,41 @@ export default function TradeMarketWidget({
     if (collateral !== "") {
       const tempCollateral = parseFloat(collateral)
 
-      setAmount(
-        (isNaN(tempCollateral) ? 0 : tempCollateral * leverageNumber).toString()
+      setPositionSize(
+        (isNaN(tempCollateral)
+          ? 0
+          : (tempCollateral * vaultPrice * leverageNumber) / symbolPrice
+        ).toString()
       )
     } else {
       setPositionSize("")
     }
-  }, [leverageNumber, collateral])
+  }, [leverageNumber, collateral, vaultPrice, symbolPrice])
 
-  useEffect(() => {
-    if (amount !== "" && tokenPrice) {
-      const tempPrice = formatAptosDecimal(tokenPrice, 18)
-      setPositionSize((BigInt(amount) * BigInt(tempPrice)).toString())
-    } else {
-      setPositionSize("")
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount, tokenPrice])
+  // useEffect(() => {
+  //   if (amount !== "" && symbolPrice) {
+  //     setPositionSize((Number(amount) * symbolPrice).toString())
+  //   } else {
+  //     setPositionSize("")
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [amount, symbolPrice])
 
   const { vault } = useTokenStore()
   const { account } = useWallet()
-  const [tokenBalance, setTokenBalance] = useState("0")
+  const [vaultBalance, setVaultBalance] = useState("0")
   const [estLiqPrice, setEstLiqPrice] = useState(0)
 
   const fetchBalance = async () => {
-    const { result } = await getAptosCoinBalance(
-      account?.address || "",
-      vault.tokenStore as APTOS_ADDRESS
-    )
-
-    const temp = parseAptosDecimal(
-      Number(result.coin.value),
-      vault.decimal
-    ).toFixed(6)
-    setTokenBalance(temp)
+    try {
+      const { result } = await getVaultTokenBalance(
+        account?.address || "",
+        vault
+      )
+      setVaultBalance(result)
+    } catch (error) {
+      setVaultBalance("0")
+    }
   }
   useEffect(() => {
     if (account?.address) {
@@ -93,19 +105,23 @@ export default function TradeMarketWidget({
   console.log("🚀 ~ wrapperConfig:", wrapperConfig)
 
   const fetchConfig = async () => {
-    const result = await aptos.getAccountResource({
-      accountAddress: account?.address || "",
-      resourceType: getPositionConfigResources(
-        symbol.tokenAddress as `${string}::${string}::${string}`,
-        side
-      ),
-    })
-    if (result) {
+    try {
+      const result = await aptos.getAccountResource({
+        accountAddress: moduleAddress,
+        resourceType: getPositionConfigResources(
+          symbol.tokenAddress as `${string}::${string}::${string}`,
+          side
+        ),
+      })
       setWrapperConfig(result)
+    } catch (error) {
+      setWrapperConfig(null)
     }
   }
   useEffect(() => {
-    fetchConfig()
+    if (side && symbol) {
+      fetchConfig()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [side, symbol])
 
@@ -124,30 +140,31 @@ export default function TradeMarketWidget({
   }, [wrapperConfig, collateral, side])
 
   useEffect(() => {
-    if (tokenPrice && collateral) {
+    if (symbolPrice && collateral) {
       let liqPrice = 0
 
       if (side === "LONG") {
         liqPrice =
           (Number(collateral) - tradingFee) *
-          tokenPrice *
+          symbolPrice *
           (1 - 1 / leverageNumber)
       } else {
         liqPrice =
           (Number(collateral) - tradingFee) *
-          tokenPrice *
+          symbolPrice *
           (1 + 1 / leverageNumber)
       }
       setEstLiqPrice(liqPrice)
     }
-  }, [tokenPrice, collateral, side, leverageNumber, tradingFee])
+  }, [symbolPrice, collateral, side, leverageNumber, tradingFee])
 
   return (
     <div>
       <TokenInputBox
-        title="Pay"
+        title={`Pay`}
+        subTitle={`$${(Number(collateral) * vaultPrice).toFixed(6)}`}
         value={collateral}
-        balanceNode={<>{`Balance: ${tokenBalance}`}</>}
+        balanceNode={<span>{`Balance: ${vaultBalance}`}</span>}
         maxNode={<div className="rounded-xl">max</div>}
         onValueChange={(e) => {
           setCollateral(e.target.value)
@@ -155,7 +172,11 @@ export default function TradeMarketWidget({
       />
       <br></br>
       <PoolInputBox
-        title="Size"
+        title={side}
+        subTitle={`$${(
+          (Number(positionSize) - tradingFee) *
+          symbolPrice
+        ).toFixed(6)}`}
         value={positionSize}
         prefix={`Leverage:`}
         prefixValue={leverageNumber}
@@ -191,11 +212,11 @@ export default function TradeMarketWidget({
       <div className="py-2">
         <ListItem keyText="Collateral In" value={vault.name} />
         <ListItem keyText="Leverage" value={leverageNumber} />
-        <ListItem keyText="Entry Price" value={Number(tokenPrice)} />
+        <ListItem keyText="Entry Price" value={Number(symbolPrice)} />
         <ListItem keyText="Est. Liq. Price" value={estLiqPrice.toFixed(6)} />
         <ListItem
           keyText="Fee"
-          value={`${(tradingFee * tokenPrice).toFixed(
+          value={`${(tradingFee * vaultPrice).toFixed(
             2
           )} USD (${tradingFee.toFixed(6)}) ${vault.name}`}
         />

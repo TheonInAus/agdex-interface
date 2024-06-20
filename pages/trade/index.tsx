@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { usePriceData } from "@/chainio/usePriceData"
+import { PriceResultType, usePriceData } from "@/chainio/usePriceData"
 import useTokenStore from "@/chainio/useTokenStore"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
@@ -32,34 +32,49 @@ interface MarketData {
 }
 
 export default function TradePage() {
-  const { symbol } = useTokenStore()
-  const { priceData, error } = usePriceData(
-    symbol.pythFeederAddress,
-    symbol.decimal
-  )
+  const { symbol, vault } = useTokenStore()
+  const { priceDatas, error } = usePriceData()
+  const [vaultPrice, setVaultPrice] = useState<number>(0)
+  console.log("🚀 ~ TradePage ~ vaultPrice:", vaultPrice)
+  const [symbolPrice, setSymbolPrice] = useState<number>(0)
+  console.log("🚀 ~ TradePage ~ symbolPrice:", symbolPrice)
+
+  useEffect(() => {
+    if (priceDatas && priceDatas.length > 0) {
+      const vaultData = priceDatas.find(
+        (item) => item.tokenName === vault.name
+      ) as unknown as PriceResultType
+      const symbolData = priceDatas.find(
+        (item) => item.tokenName === symbol.tokenName
+      ) as unknown as PriceResultType
+      setVaultPrice(vaultData.price)
+      setSymbolPrice(symbolData.price)
+    }
+  }, [priceDatas, vault, symbol])
+
   const [priceType, setPriceType] = useState(false)
   const [lastPrice, setLastPrice] = useState(0)
 
   useEffect(() => {
-    if (priceData) {
-      if (priceData >= lastPrice) {
+    if (symbolPrice) {
+      if (symbolPrice >= lastPrice) {
         setPriceType(true)
       } else {
         setPriceType(false)
       }
-      setLastPrice(priceData)
+      setLastPrice(symbolPrice)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [priceData])
+  }, [symbolPrice])
 
   return (
     <section className="flex items-center justify-center pt-6">
       <div className="flex flex-col">
-        <TradeHeaderWidget priceType={priceType} priceData={priceData} />
+        <TradeHeaderWidget priceType={priceType} priceData={symbolPrice} />
         <div className="flex flex-row justify-center gap-2">
           <div className="flex flex-col mt-2">
             <TradeTradingViewWidget />
-            <TradePositionWidget tokenPrice={priceData} />
+            <TradePositionWidget tokenPrice={symbolPrice} />
           </div>
           <div className="mt-2">
             {/* Narrow Block 1 */}
@@ -90,13 +105,17 @@ export default function TradePage() {
                       <TradeCalculatorWidget />
                     </div>
                     <StyledTabsContent value="Market">
-                      <TradeMarketWidget side={"LONG"} tokenPrice={priceData} />
+                      <TradeMarketWidget
+                        side={"LONG"}
+                        symbolPrice={symbolPrice}
+                        vaultPrice={vaultPrice}
+                      />
                     </StyledTabsContent>
                     <StyledTabsContent value="Limit">
                       <TradeLimitWidget
                         side={1}
                         marketAndIndexPriceData={1}
-                        tokenPrice={priceData}
+                        tokenPrice={symbolPrice}
                       />
                     </StyledTabsContent>
                   </StyledTabs>
@@ -116,7 +135,8 @@ export default function TradePage() {
                     </div>
                     <StyledTabsContent value="Market">
                       <TradeMarketWidget
-                        tokenPrice={priceData}
+                        symbolPrice={symbolPrice}
+                        vaultPrice={vaultPrice}
                         side={"SHORT"}
                       />
                     </StyledTabsContent>
@@ -124,7 +144,7 @@ export default function TradePage() {
                       <TradeLimitWidget
                         side={0}
                         marketAndIndexPriceData={0}
-                        tokenPrice={priceData}
+                        tokenPrice={symbolPrice}
                       />
                     </StyledTabsContent>
                   </StyledTabs>

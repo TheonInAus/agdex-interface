@@ -1,10 +1,13 @@
+import { LpToken, LpTokenInfo } from '@/chainio/helper';
 import { aptos, coinAddress, moduleAddress } from "@/pages/_app";
+import { VaultInfo } from "./helper";
 
 export type APTOS_ADDRESS = `${string}::${string}::${string}`
 
 export const commonTableHandle = "0xc086ec2f7155735fdb646b3a33a4ee2706d8fc348372e217b7e1994390d7fd75"
 export const MOCK_USDC_COIN_STORE = `0x1::coin::CoinStore<${coinAddress}::usdc::USDC>`
 export const MOCK_USDT_COIN_STORE = `0x1::coin::CoinStore<${coinAddress}::usdt::USDT>`
+export const MOCK_LP_COIN_STORE = `0x1::coin::CoinStore<${moduleAddress}::lp::LP>`
 
 export const getPositionResources = (coinType: `${string}::${string}::${string}`, index: `${string}::${string}::${string}`, direction: string) => {
     return `${moduleAddress}::market::PositionRecord<${coinType}, ${index}, ${moduleAddress}::pool::${direction}>` as `${string}::${string}::${string}`
@@ -41,7 +44,7 @@ export const parseAptosDecimal = (value: number, decimals: number = 8) => {
 }
 
 export const formatAptosDecimal = (value: number, decimals: number = 8) => {
-    return value * Math.pow(10, decimals);
+    return Number((value * Math.pow(10, decimals)).toFixed(0));
 }
 
 export const calLeverage = (amount: number, collateral: number) => {
@@ -150,6 +153,22 @@ export const getAptosCoinBalance = async (accountAddress: string, COIN_STORE: `$
     return { result }
 }
 
+export const getVaultTokenBalance = async (accountAddress: string, vault: VaultInfo | LpTokenInfo) => {
+    const temp: any = await aptos.getAccountResource<Coin>({
+        accountAddress: accountAddress,
+        resourceType: vault.tokenStore as APTOS_ADDRESS,
+    })
+    let result = "0"
+    if (temp) {
+        result = parseAptosDecimal(
+            Number(temp.coin.value),
+            vault.decimal
+        ).toFixed(6)
+    } else {
+        result = "0"
+    }
+    return { result }
+}
 
 export const generateFunctionPath = (modulePath: string, moduleName: string, functionName: string) => {
     return `${modulePath}::${moduleName}::${functionName}` as APTOS_ADDRESS
