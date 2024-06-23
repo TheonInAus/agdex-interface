@@ -1,60 +1,123 @@
 "use client"
 
 import { useState } from "react"
-import { Loader, Loader2 } from "lucide-react"
+import {
+  formatAptosDecimal,
+  generateFunctionPath,
+  getSideAddress,
+  parseAptosDecimal,
+} from "@/chainio/fetchData"
+import useTokenStore from "@/chainio/useTokenStore"
+import { aptos, moduleAddress } from "@/pages/_app"
+import { APTOS_COIN } from "@aptos-labs/ts-sdk"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
 import { Button } from "@/components/ui/button"
 import { ListItem } from "@/components/ui/listItem"
 
-import { Checkbox } from "../checkbox"
-import { CustomTooltip } from "../customToolTip"
 import { TokenInputBox } from "../tokenInputBox"
 
-type ClosePositionProps = {
-  positionInfo?: any
-}
-type Side = {}
 type PositionInfo = {
-  poolAddress: any
-  side: Side
-  marginDelta: any
-  sizeDelta: any
-  acceptableTradePriceX96: any
+  leverageNumber: any
+  side: string
+  collateral: number
+  positionAmount: number
+  entryPrice: number
+  symbolPrice: number
+  vaultPrice: number
+  liqPrice: number
+  PnL: number
+  positionNum: number
 }
 
 export default function ClosePositionWidget({
-  positionInfo,
-}: ClosePositionProps) {
-  const [currentPosition, setCurrentPosition] = useState<PositionInfo>()
+  leverageNumber,
+  side,
+  collateral,
+  positionAmount,
+  entryPrice,
+  symbolPrice,
+  vaultPrice,
+  liqPrice,
+  PnL,
+  positionNum,
+}: PositionInfo) {
+  const { account, signAndSubmitTransaction } = useWallet()
 
-  const handleClosePosition = (position: any) => {}
+  const { vault, symbol } = useTokenStore()
 
-  const feesValue = 0
+  const handleClosePosition = async () => {
+    const response = await signAndSubmitTransaction({
+      sender: account?.address,
+      data: {
+        function: generateFunctionPath(
+          moduleAddress,
+          "market",
+          "decrease_position"
+        ),
+        typeArguments: [
+          vault.tokenAddress,
+          symbol.tokenAddress,
+          getSideAddress(side),
+          APTOS_COIN,
+        ],
+        functionArguments: [
+          1,
+          10,
+          true,
+          ,
+          formatAptosDecimal(Number(vaultPrice * (1 - 0.01)), 18),
+          side === "LONG"
+            ? formatAptosDecimal(Number(symbolPrice * (1 + 0.01)), 18)
+            : formatAptosDecimal(Number(symbolPrice * (1 - 0.01)), 18),
+          positionNum,
+          [],
+        ],
+      },
+    })
+    try {
+      await aptos.waitForTransaction({ transactionHash: response.hash })
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <>
-      <TokenInputBox title="Amount" value={""} />
-      <div className="mt-3">
+      <TokenInputBox
+        title="Amount"
+        value={parseAptosDecimal(positionAmount, symbol.decimal).toFixed(6)}
+      />
+      {/* <div className="mt-3">
         <div className="flex flex-row justify-between">
           <div className="text-sm text-white">Pure Reduction</div>
           <Checkbox className="text-white size-4 focus:text-white" />
         </div>
         <ListItem keyText={"Max Slippage"} value={""} />
       </div>
-      <div className="my-3 border-t border-0xline"></div>
-      <div className="flex flex-row gap-2 mb-3">
-        <div className="text-base text-white">Token/Asset</div>
-        <div className="text-0xgreen text-sm mt-[2px]">Long 35.98x</div>
+      <div className="my-3 border-t border-0xline"></div> */}
+      <div className="flex flex-row gap-2 my-3">
+        <div className="text-base text-white">{symbol.name}</div>
+        <div
+          className={`${
+            side === "LONG" ? "text-0xgreen" : "text-0xred"
+          } text-sm mt-[2px]`}
+        >
+          {`${side} ${leverageNumber}`}
+        </div>
       </div>
       <ListItem keyText={"Leverage"} value={""} />
-      <ListItem keyText={"Margin"} value={"positionInfo?.margin"} />
-      <ListItem keyText={"Entry Price"} value={"positionInfo?.entryPriceX96"} />
-      <ListItem keyText={"Liq. Price"} value={""} />
+      <ListItem keyText={"Collateral"} value={collateral} />
+      <ListItem keyText={"Entry Price"} value={entryPrice} />
+      <ListItem keyText={"Mark Price"} value={symbolPrice} />
+      <ListItem keyText={"Liq. Price"} value={liqPrice} />
       <div className="my-3 border-t border-0xline"></div>
-      <ListItem keyText={"Price Impact"} value={""} />
-      <ListItem keyText={"Est. Close Price"} value={""} />
-      <ListItem keyText={"PnL"} value={""} />
-      <div className="flex justify-between">
+      <ListItem
+        keyText={"PnL"}
+        value={PnL}
+        className={PnL >= 0 ? "text-0xgreen" : "text-0xred"}
+      />
+      {/* <div className="flex justify-between">
         <div className="text-xs text-white">Fees</div>
         {feesValue > 0 ? (
           <CustomTooltip
@@ -79,20 +142,25 @@ export default function ClosePositionWidget({
         ) : (
           <div className="text-xs text-white">-</div>
         )}
-      </div>
-      <div className="my-3 border-t border-0xline"></div>
-      <ListItem keyText={"Receive"} value={""} />
+      </div> */}
+      {/* <div className="my-3 border-t border-0xline"></div> */}
+      {/* <ListItem keyText={"Receive"} value={""} /> */}
       <Button
         disabled={false}
         className="w-full mt-3 text-sm text-black bg-agdexMain hover:bg-agdexMain-foreground"
         onClick={() => {
-          handleClosePosition(positionInfo)
+          handleClosePosition()
         }}
       >
         {" "}
-        <Loader2 className="mr-2 size-4 animate-spin" />
-        Please wait
+        Close
       </Button>
     </>
   )
+}
+function signAndSubmitTransaction(arg0: {
+  sender: any
+  data: { function: any; typeArguments: string[]; functionArguments: any[] }
+}) {
+  throw new Error("Function not implemented.")
 }

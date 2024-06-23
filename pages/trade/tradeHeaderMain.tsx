@@ -15,7 +15,7 @@ import { Stats } from "@/components/ui/stats"
 import TokenPairWidget from "@/components/ui/tokenPair/TokenPairWidget"
 import { DropDownBox } from "@/components/ui/tradeWidget/dropDownBox"
 
-import { aptos } from "../_app"
+import { aptos, moduleAddress } from "../_app"
 
 interface TradeHeaderWidgetProps {
   priceType: boolean
@@ -28,14 +28,12 @@ export default function TradeHeaderWidget({
 }: TradeHeaderWidgetProps) {
   const { symbol, vault } = useTokenStore()
   const [currentHandle, setCurrentHandle] = useState("")
-  console.log("🚀 ~ currentHandle:", currentHandle)
   const [lastPosition, setLastPosition] = useState<any>()
-  const { account } = useWallet()
 
   const fetchHandle = async () => {
     try {
       const resultLong = await aptos.getAccountResource({
-        accountAddress: account?.address as APTOS_ADDRESS,
+        accountAddress: moduleAddress,
         resourceType: getPositionResources(
           vault.tokenAddress as APTOS_ADDRESS,
           symbol.tokenAddress as APTOS_ADDRESS,
@@ -46,7 +44,7 @@ export default function TradeHeaderWidget({
         setCurrentHandle(resultLong?.positions.handle)
       } else {
         const resultShort = await aptos.getAccountResource({
-          accountAddress: account?.address as APTOS_ADDRESS,
+          accountAddress: moduleAddress,
           resourceType: getPositionResources(
             vault.tokenAddress as APTOS_ADDRESS,
             symbol.tokenAddress as APTOS_ADDRESS,
@@ -84,7 +82,7 @@ export default function TradeHeaderWidget({
       setLastPosition(null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentHandle])
+  }, [currentHandle, vault, symbol])
 
   return (
     <div className="flex justify-center">
@@ -116,7 +114,7 @@ export default function TradeHeaderWidget({
               title={"Funding(S)"}
               value={`${(
                 parseAptosDecimal(
-                  lastPosition?.decoded_value.last_funding_rate.value.value,
+                  lastPosition?.decoded_value.last_reserving_rate.value,
                   18
                 ) * 100
               ).toFixed(6)}%`}

@@ -11,6 +11,7 @@ import {
   parseAptosDecimal,
 } from "@/chainio/fetchData"
 import useTokenStore from "@/chainio/useTokenStore"
+import { moduleAddress } from "@/pages/_app"
 import { APTOS_COIN } from "@aptos-labs/ts-sdk"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import { Separator } from "@radix-ui/react-select"
@@ -29,23 +30,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { PositionItem } from "@/components/ui/positionItem"
-import {
-  StyledTabs,
-  StyledTabsContent,
-  StyledTabsList,
-  StyledTabsTrigger,
-} from "@/components/ui/styledTab"
-import AddMarginWidget from "@/components/ui/tradeWidget/addMarginWidget"
-import ReduceMarginWidget from "@/components/ui/tradeWidget/reduceMarginWidget"
 
 import ClosePositionWidget from "./closePositionWidget"
 
 type PositionListWidgetType = {
-  tokenPrice: any
+  symbolPrice: number
+  vaultPrice: number
 }
 
 export default function PositionListWidget({
-  tokenPrice,
+  symbolPrice,
+  vaultPrice,
 }: PositionListWidgetType) {
   const handleSetCurrentPosition = (position: any) => {}
   const [longPostionHandle, setLongPositionHandle] = useState("")
@@ -55,30 +50,30 @@ export default function PositionListWidget({
   const fetchPositionHandles = async () => {
     try {
       const { result } = await getTableHandle(
-        account?.address || "",
+        moduleAddress,
         getPositionResources(
           vault.tokenAddress as APTOS_ADDRESS,
           symbol.tokenAddress as APTOS_ADDRESS,
           "LONG"
         )
       )
-      if (result) {
-        setLongPositionHandle(result.positions.handle)
-      }
-    } catch (error: any) {}
+      setLongPositionHandle(result.positions.handle)
+    } catch (error: any) {
+      setLongPositionHandle("")
+    }
     try {
       const { result } = await getTableHandle(
-        account?.address || "",
+        moduleAddress,
         getPositionResources(
           vault.tokenAddress as APTOS_ADDRESS,
           symbol.tokenAddress as APTOS_ADDRESS,
           "SHORT"
         )
       )
-      if (result) {
-        setShortPositionHandle(result.positions.handle)
-      }
-    } catch (error: any) {}
+      setShortPositionHandle(result.positions.handle)
+    } catch (error: any) {
+      setLongPositionHandle("")
+    }
   }
   useEffect(() => {
     if (account?.address) {
@@ -90,6 +85,7 @@ export default function PositionListWidget({
   const [longPositionData, setLongPositionData] = useState<any[]>([])
   const [shortPositionData, setShortpositionData] = useState<any[]>([])
   const [combineData, setCombineData] = useState<any[]>([])
+  console.log("🚀 ~ combineData:", combineData)
   const fetchPositions = async (type: string) => {
     try {
       const result = await getAllUserPositions(
@@ -114,6 +110,7 @@ export default function PositionListWidget({
     if (longPostionHandle) {
       fetchPositions("LONG")
     } else {
+      setLongPositionData([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [longPostionHandle])
@@ -121,6 +118,8 @@ export default function PositionListWidget({
   useEffect(() => {
     if (shortPositionHandle) {
       fetchPositions("SHORT")
+    } else {
+      setShortpositionData([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shortPositionHandle])
@@ -190,16 +189,16 @@ export default function PositionListWidget({
                     <CustomTooltip
                       triggerContent={
                         <div className="font-bold">
-                          {parseAptosDecimal(
+                          {`${parseAptosDecimal(
                             position.decoded_value.collateral.value,
-                            8
-                          ) + " APTOS"}
+                            vault.decimal
+                          )} ${vault.name}`}
                         </div>
                       }
                     >
                       <p>Margin Based</p>
                     </CustomTooltip>
-                    <Dialog>
+                    {/* <Dialog>
                       <DialogTrigger asChild>
                         <button className="ml-1">
                           <Edit3
@@ -238,7 +237,7 @@ export default function PositionListWidget({
                           </StyledTabsContent>
                         </StyledTabs>
                       </DialogContent>
-                    </Dialog>
+                    </Dialog> */}
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -251,7 +250,7 @@ export default function PositionListWidget({
                       ),
                       parseAptosDecimal(
                         Number(position.decoded_value.position_amount),
-                        8
+                        vault.decimal
                       )
                     )}
                   />
@@ -269,7 +268,7 @@ export default function PositionListWidget({
                         ),
                         parseAptosDecimal(
                           Number(position.decoded_value.position_amount),
-                          8
+                          symbol.decimal
                         ),
                         parseAptosDecimal(
                           position.decoded_value.collateral.value,
@@ -283,7 +282,7 @@ export default function PositionListWidget({
                 <div className="flex flex-col">
                   <PositionItem
                     keyText="Market Price"
-                    value={`${tokenPrice.toFixed(6)} USD`}
+                    value={`${symbolPrice.toFixed(6)} USD`}
                     info={""}
                   />
                   <div className="flex flex-row mt-2">
@@ -306,13 +305,13 @@ export default function PositionListWidget({
                             ),
                             parseAptosDecimal(
                               Number(position.decoded_value.position_amount),
-                              8
+                              symbol.decimal
                             ),
                             parseAptosDecimal(
                               position.decoded_value.collateral.value,
-                              8
+                              vault.decimal
                             ),
-                            tokenPrice,
+                            symbolPrice,
                             position.side
                           )
                         ) >= 0
@@ -327,13 +326,13 @@ export default function PositionListWidget({
                         ),
                         parseAptosDecimal(
                           Number(position.decoded_value.position_amount),
-                          8
+                          symbol.decimal
                         ),
                         parseAptosDecimal(
                           position.decoded_value.collateral.value,
                           8
                         ),
-                        tokenPrice,
+                        symbolPrice,
                         position.side
                       )}{" "}
                       {"USD"}
@@ -383,7 +382,88 @@ export default function PositionListWidget({
                           Close
                         </DialogTitle>
                         <DialogDescription>
-                          <ClosePositionWidget positionInfo={position} />
+                          <ClosePositionWidget
+                            positionNum={position.decoded_key.id}
+                            leverageNumber={calLeverage(
+                              parseAptosDecimal(
+                                Number(position.decoded_value.position_amount),
+                                symbol.decimal
+                              ),
+                              parseAptosDecimal(
+                                Number(position.decoded_value.collateral.value),
+                                vault.decimal
+                              )
+                            )}
+                            side={position.side}
+                            collateral={parseAptosDecimal(
+                              position.decoded_value.collateral.value,
+                              vault.decimal
+                            )}
+                            positionAmount={Number(
+                              position.decoded_value.position_amount
+                            )}
+                            entryPrice={Number(
+                              calEntryPrice(
+                                parseAptosDecimal(
+                                  Number(
+                                    position.decoded_value.position_size.value
+                                  ),
+                                  18
+                                ),
+                                parseAptosDecimal(
+                                  Number(
+                                    position.decoded_value.position_amount
+                                  ),
+                                  symbol.decimal
+                                )
+                              )
+                            )}
+                            symbolPrice={symbolPrice}
+                            vaultPrice={vaultPrice}
+                            liqPrice={Number(
+                              calEstLiqPrice(
+                                parseAptosDecimal(
+                                  Number(
+                                    position.decoded_value.position_size.value
+                                  ),
+                                  18
+                                ),
+                                parseAptosDecimal(
+                                  Number(
+                                    position.decoded_value.position_amount
+                                  ),
+                                  symbol.decimal
+                                ),
+                                parseAptosDecimal(
+                                  position.decoded_value.collateral.value,
+                                  vault.decimal
+                                ),
+                                position.side
+                              )
+                            )}
+                            PnL={Number(
+                              calUnPnL(
+                                parseAptosDecimal(
+                                  Number(
+                                    position.decoded_value.position_size.value
+                                  ),
+                                  18
+                                ),
+                                parseAptosDecimal(
+                                  Number(
+                                    position.decoded_value.position_amount
+                                  ),
+                                  symbol.decimal
+                                ),
+                                parseAptosDecimal(
+                                  position.decoded_value.collateral.value,
+                                  vault.decimal
+                                ),
+                                symbolPrice,
+                                position.side
+                              )
+                            )}
+                          />
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>

@@ -5,10 +5,11 @@ import TokenPairWidget from "@/components/ui/tokenPair/TokenPairWidget"
 export default function ABBridgeWidget() {
   return (
     <section className="container flex items-center justify-center gap-6 pt-6 pb-8">
-      <div className="flex flex-col w-[500px]  gap-4">
+      <span>Coming Soon ....</span>
+      {/* <div className="flex flex-col w-[500px]  gap-4">
         <Card>
           <div className="flex items-center justify-between">
-            <div className="  font-bold">FROM</div>
+            <div className="font-bold ">FROM</div>
             <div className="text-agdexMain">Connect wallet</div>
           </div>
           <div className="flex flex-row gap-3 p-3 mt-3 bg-0xbox">
@@ -20,7 +21,7 @@ export default function ABBridgeWidget() {
                 <div>Asset</div>
                 <div>-</div>
               </Card>
-              <div className="flex flex-row w-full gap-3 mt-2 h-1/2 bg-transparent">
+              <div className="flex flex-row w-full gap-3 mt-2 bg-transparent h-1/2">
                 <div className="flex flex-col items-start justify-center flex-1 h-full px-3 bg-0xbox">
                   <div>Amount</div>
                   <div>-</div>
@@ -36,7 +37,7 @@ export default function ABBridgeWidget() {
         <div className="flex justify-center w-full font-bold">Switch</div>
         <Card>
           <div className="flex items-center justify-between">
-            <div className="  font-bold">TO</div>
+            <div className="font-bold ">TO</div>
             <div className="text-agdexMain">Connect wallet</div>
           </div>
           <div className="flex flex-row gap-3 p-3 mt-3 bg-0xbox">
@@ -61,7 +62,7 @@ export default function ABBridgeWidget() {
             </div>
           </div>
         </Card>
-      </div>
+      </div> */}
     </section>
   )
 }

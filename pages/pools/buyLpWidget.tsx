@@ -54,16 +54,21 @@ export default function BuyLpWidget({}: BuyLpWidgetProps) {
   }
 
   const handleLpAmountOut = async (colAmount: number) => {
-    const result = await aptos.view({
-      payload: {
-        function: `${moduleAddress}::market::to_lp_amount`,
-        typeArguments: [vault.tokenAddress],
-        functionArguments: [formatAptosDecimal(colAmount, vault.decimal)],
-      },
-    })
-    if (result && result.length > 0) {
-      setLpOut(parseAptosDecimal(Number(result[0]), LpToken.decimal).toFixed(6))
-    }
+    try {
+      const result = await aptos.view({
+        payload: {
+          function: `${moduleAddress}::market::to_lp_amount`,
+          typeArguments: [vault.tokenAddress],
+          functionArguments: [formatAptosDecimal(colAmount, vault.decimal)],
+        },
+      })
+      setLpOut(
+        parseAptosDecimal(
+          (Number(result[0]) * 99) / 100,
+          LpToken.decimal
+        ).toFixed(6)
+      )
+    } catch (error) {}
   }
 
   const handleBuyLP = async () => {

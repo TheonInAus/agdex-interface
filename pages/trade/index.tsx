@@ -23,21 +23,11 @@ import TradeHeaderWidget from "./tradeHeaderMain"
 import TradePositionWidget from "./tradePositionWidget"
 import TradeTradingViewWidget from "./tradeTradingView"
 
-interface MarketData {
-  [key: string]: {
-    markPrice: string
-    indexPrice: string
-    price24hPcnt: string
-  }
-}
-
 export default function TradePage() {
   const { symbol, vault } = useTokenStore()
   const { priceDatas, error } = usePriceData()
   const [vaultPrice, setVaultPrice] = useState<number>(0)
-  console.log("🚀 ~ TradePage ~ vaultPrice:", vaultPrice)
   const [symbolPrice, setSymbolPrice] = useState<number>(0)
-  console.log("🚀 ~ TradePage ~ symbolPrice:", symbolPrice)
 
   useEffect(() => {
     if (priceDatas && priceDatas.length > 0) {
@@ -74,7 +64,10 @@ export default function TradePage() {
         <div className="flex flex-row justify-center gap-2">
           <div className="flex flex-col mt-2">
             <TradeTradingViewWidget />
-            <TradePositionWidget tokenPrice={symbolPrice} />
+            <TradePositionWidget
+              symbolPrice={symbolPrice}
+              vaultPrice={vaultPrice}
+            />
           </div>
           <div className="mt-2">
             {/* Narrow Block 1 */}

@@ -1,69 +1,27 @@
 import { useEffect, useRef, useState } from "react"
-import {
-  APTOS_ADDRESS,
-  formatAptosDecimal,
-  generateFunctionPath,
-  getAptosCoinBalance,
-  parseAptosDecimal,
-} from "@/chainio/fetchData"
-import { LpToken } from "@/chainio/helper"
+import { LpToken, VaultList } from "@/chainio/helper"
+import { usePriceData } from "@/chainio/usePriceData"
 import useTokenStore from "@/chainio/useTokenStore"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { CustomTooltip } from "@/components/ui/customToolTip"
-import { ListItem } from "@/components/ui/listItem"
-import { PositionItem } from "@/components/ui/positionItem"
-import { SimpleInputBox } from "@/components/ui/simpleInputBox"
-import { Stats } from "@/components/ui/stats"
 import {
   StyledTabs,
   StyledTabsContent,
   StyledTabsList,
   StyledTabsTrigger,
 } from "@/components/ui/styledTab"
-import { TokenInputBox } from "@/components/ui/tokenInputBox"
-import TokenPairWidget from "@/components/ui/tokenPair/TokenPairWidget"
-import { UnStats } from "@/components/ui/unStats"
-import Iconify from "@/components/Iconify"
 import TradingViewWidgetSmall from "@/components/tradingViewSmall"
 
 import { aptos, moduleAddress } from "../_app"
 import BuyLpWidget from "./buyLpWidget"
 import SellLpWidget from "./sellLpWidget"
-
-const poolList: any[] = [
-  {
-    token: "SUI",
-    price: "$1.67526",
-    available: "133,256.53",
-    reserve: "133,256.53",
-    targetWeight: "20%",
-    currentWeight: "10%",
-    utilization: "23.46%",
-  },
-  {
-    token: "USDC",
-    price: "$0.99997",
-    available: "2123,256.53",
-    reserve: "33,222.53",
-    targetWeight: "60%",
-    currentWeight: "32%",
-    utilization: "15.46%",
-  },
-  {
-    token: "USDT",
-    price: "$1.0009",
-    available: "755,656.53",
-    reserve: "83,2536.53",
-    targetWeight: "76%",
-    currentWeight: "23%",
-    utilization: "3.46%",
-  },
-]
+import VaultItemWidget from "./vaultItemWidget"
 
 export default function PrepPoolsWidget() {
+  const { priceDatas, error } = usePriceData()
+
   return (
     <section className="container flex items-center justify-center gap-6 pt-6 pb-8">
       <div className="flex flex-col gap-4 w-[1250px]">
@@ -102,24 +60,20 @@ export default function PrepPoolsWidget() {
           <div className="flex flex-row justify-between p-5 ">
             <div className="w-[10%]">Token</div>
             <div className="w-[10%]">Price</div>
-            <div className="w-1/5">Avaliable</div>
-            <div className="w-1/5">Reserve</div>
-            <div className="w-[15%]">Target Weight</div>
-            <div className="w-[15%]">Current Weight</div>
-            <div className="w-[10%]">Utilization</div>
+            <div className="w-[15%] text-right">Avaliable</div>
+            <div className="w-[15%] text-right">Reserve</div>
+            <div className="w-[15%] text-right">Target Weight</div>
+            <div className="w-1/5 text-right">Current Weight</div>
+            <div className="w-1/5 text-right">Utilization</div>
           </div>
           <div className="border bg-0xline" />
           <div>
-            {poolList.map((item, index) => (
-              <div className="flex flex-row justify-between p-5 text-lg font-extrabold">
-                <div className="w-[10%]">{item.token}</div>
-                <div className="w-[10%]">{item.price}</div>
-                <div className="w-[20%]">{item.available}</div>
-                <div className="w-[20%]">{item.reserve}</div>
-                <div className="w-[15%]">{item.targetWeight}</div>
-                <div className="w-[15%]">{item.currentWeight}</div>
-                <div className="w-[10%]">{item.utilization}</div>
-              </div>
+            {VaultList.map((item, index) => (
+              <VaultItemWidget
+                key={index}
+                vaultInfo={item}
+                priceDatas={priceDatas}
+              />
             ))}
           </div>
         </Card>

@@ -21,6 +21,18 @@ export const getPositionConfigResources = (coinType: `${string}::${string}::${st
     return `${moduleAddress}::market::WrappedPositionConfig<${coinType},${moduleAddress}::pool::${direction}>` as `${string}::${string}::${string}`
 }
 
+export const getSideAddress = (side: string) => {
+    return `${moduleAddress}::pool::${side}`
+}
+
+export const getVaultInfo = async (coinType: APTOS_ADDRESS) => {
+    const result = await aptos.getAccountResource({
+        accountAddress: moduleAddress,
+        resourceType: `${moduleAddress}::pool::Vault<${coinType}>`
+    })
+    return { result }
+}
+
 export const getAccountInfo = async (accountAddress: string) => {
     const fund = await aptos.getAccountInfo({ accountAddress });
     return { data: fund }
