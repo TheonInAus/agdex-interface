@@ -1,4 +1,13 @@
 import { useEffect, useState } from "react"
+import {
+  APTOS_ADDRESS,
+  generateFunctionPath,
+  getVaultInfo,
+  getVaultTokenBalance,
+} from "@/chainio/fetchData"
+import useTokenStore from "@/chainio/useTokenStore"
+import { aptos, moduleAddress } from "@/pages/_app"
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import Decimal from "decimal.js"
 import { Edit3, ExternalLink, Loader } from "lucide-react"
 
@@ -19,23 +28,21 @@ import { Slider } from "@/components/ui/slider"
 import { TpsLInput } from "@/components/ui/tpslIput"
 
 import { Card } from "../card"
+import { PoolInputBox } from "../poolInputBox"
+import { TokenInputBox } from "../tokenInputBox"
 
-type Side = {}
-type TradeMarketType = {
-  side: Side
-  marketAndIndexPriceData: any
-  contractPriceAfter: any
+type TradeMarketSwapType = {
+  sourcePrice: any
+  destinationPrice: any
 }
 
 export default function TradeSwapWidget({
-  side,
-  marketAndIndexPriceData,
-  contractPriceAfter,
-}: TradeMarketType) {
+  sourcePrice,
+  destinationPrice,
+}: TradeMarketSwapType) {
   const [usdMargin, setUsdMargin] = useState("")
   const [usdAfterMargin, setUsdAfterMargin] = useState("")
   const [tradingSize, setTradingSize] = useState("")
-  const [leverageNumber, setLeverageNumber] = useState(1)
   const [isChecked, setIsChecked] = useState(true)
   const [priceSlippage, setPriceSlippage] = useState("1")
 
@@ -50,22 +57,119 @@ export default function TradeSwapWidget({
     setIsChecked(checked)
     // Now, use the isChecked state to control the visibility of the Slider
   }
-  const handleSliderValueChange = (value: any) => {
-    setLeverageNumber(value)
+
+  const [source, setSource] = useState("")
+  const [destination, setDestination] = useState("")
+  const [sourceBalance, setSourceBalance] = useState("0")
+  const [destinationBalance, setDestinationBalance] = useState("0")
+
+  const { account, signAndSubmitTransaction } = useWallet()
+
+  /*
+  const handleSwap = async () => {
+    const response = await signAndSubmitTransaction({
+      sender: account?.address,
+      data: {
+        function: generateFunctionPath(
+          moduleAddress,
+          "market",
+          "swap"
+        ),
+        typeArguments: [
+          sourceVault.tokenAddress,
+          destinationVault.tokenAddress,
+        ],
+        functionArguments: [
+          source, //amount_in
+          0,
+          [],
+        ],
+      },
+    })
+    try {
+      const temp = await aptos.waitForTransaction({
+        transactionHash: response.hash,
+      })
+      console.log("🚀 ~ trading handleSwap ~ temp:", temp)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const [wrapperConfig, setWrapperConfig] = useState<any>(null)
+  const [sourceVaultInfo, setSourceVaultInfo] = useState<any>(null)
+  console.log("🚀 ~ vaultInfo:", sourceVaultInfo)
+  const fetchSourceVaultInfo = async () => {
+    try {
+      let { result } = await getVaultInfo(sourceVault.tokenAddress as APTOS_ADDRESS)
+      setSourceVaultInfo(result)
+    } catch (error) {
+      setSourceVaultInfo(null)
+    }
   }
 
   useEffect(() => {
-    if (usdMargin !== "") {
-      const tempMargin = parseFloat(usdMargin)
-
-      setUsdAfterMargin(
-        (isNaN(tempMargin) ? 0 : tempMargin * leverageNumber).toString()
-      )
-    } else {
-      setTradingSize("")
+    if (sourceVault) {
+      fetchSourceVaultInfo()
     }
-  }, [leverageNumber, usdMargin])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sourceVault])
 
+  const [destinationVaultInfo, setDestinationVaultInfo] = useState<any>(null)
+  console.log("🚀 ~ destinationVaultInfo:", destinationVaultInfo)
+  const fetchDestinationVaultInfo = async () => {
+    try {
+      let { result } = await getVaultInfo(destinationVault.tokenAddress as APTOS_ADDRESS)
+      setDestinationVaultInfo(result)
+    } catch (error) {
+      setDestinationVaultInfo(null)
+    }
+  }
+
+  useEffect(() => {
+    if (destinationVault) {
+      fetchDestinationVaultInfo()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destinationVault])
+
+  
+  const fetchSourceBalance = async () => {
+    try {
+      const { result } = await getVaultTokenBalance(
+        account?.address || "",
+        sourceVault
+      )
+      setSourceBalance(result)
+    } catch (error) {
+      setSourceBalance("0")
+    }
+  }
+  useEffect(() => {
+    if (account?.address) {
+      fetchSourceBalance()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address, sourceVault])
+
+  const fetchDestinationBalance = async () => {
+    try {
+      const { result } = await getVaultTokenBalance(
+        account?.address || "",
+        destinationVault
+      )
+      setSourceBalance(result)
+    } catch (error) {
+      setSourceBalance("0")
+    }
+  }
+  useEffect(() => {
+    if (account?.address) {
+      fetchDestinationBalance()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address, destinationVault])
+*/
   useEffect(() => {
     if (usdAfterMargin !== "" && tokenPrice) {
       const tradingSize = new Decimal(usdAfterMargin)
@@ -81,50 +185,55 @@ export default function TradeSwapWidget({
   useEffect(() => {
     if (contractPrice && priceSlippage) {
     }
-  }, [contractPrice, priceSlippage, side])
-
-  useEffect(() => {
-    if (tokenPrice) {
-    }
-  }, [leverageNumber, usdMargin, tokenPrice, side])
+  }, [contractPrice, priceSlippage])
 
   const [tradingFee, setTradingFee] = useState(0)
 
+  useEffect(() => {
+    if (source && sourcePrice !== 0 && destinationPrice !== 0) {
+      setDestination(
+        ((Number(source) * sourcePrice) / destinationPrice).toString()
+      )
+    }
+    if (!source) {
+      setDestination(Number(0.0).toString())
+    }
+  }, [source, sourcePrice, destinationPrice])
+
+  useEffect(() => {
+    if (destination && sourcePrice !== 0 && destinationPrice !== 0) {
+      setSource(
+        ((Number(destination) * destinationPrice) / sourcePrice).toString()
+      )
+    }
+    if (!destination) {
+      setSource(Number(0.0).toString())
+    }
+  }, [destination, sourcePrice, destinationPrice])
+
   return (
     <div>
-      {/* <InputBox
-        title="Pay"
-        value={usdMargin}
-        suffix="USDX"
-        balanceNode={<div>Balance: {"balanceData?.symbol"}</div>}
+      <TokenInputBox
+        title={`Pay`}
+        subTitle={`$${(Number(source) * sourcePrice).toFixed(6)}`}
+        value={source}
+        balanceNode={<span>{`Balance: ${sourceBalance}`}</span>}
+        maxNode={<div className="rounded-xl">max</div>}
         onValueChange={(e) => {
-          setUsdMargin(e.target.value)
+          setSource(e.target.value)
         }}
       />
       <br></br>
-      <InputBox
-        title="Size"
-        value={tradingSize}
-        suffix={"currentTokenEntity.name"}
-        prefix={`Leverage:`}
-        prefixValue={leverageNumber}
+      <TokenInputBox
+        title={`Receive`}
+        subTitle={`$${(Number(destination) * destinationPrice).toFixed(6)}`}
+        value={destination}
+        balanceNode={<span>{`Balance: ${destinationBalance}`}</span>}
+        maxNode={false}
         onValueChange={(e) => {
-          setTradingSize(e.target.value)
+          setDestination(e.target.value)
         }}
-        onPrefixChange={(e) => {
-          const intValue = parseInt(e.target.value, 10)
-
-          if (!isNaN(intValue)) {
-            setLeverageNumber(intValue)
-          } else if (intValue < 1) {
-            setLeverageNumber(1)
-          } else if (intValue > 200) {
-            setLeverageNumber(200)
-          } else {
-            setLeverageNumber(1)
-          }
-        }}
-      /> */}
+      />
 
       <Button
         disabled={false}

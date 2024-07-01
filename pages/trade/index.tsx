@@ -143,7 +143,7 @@ export default function TradePage() {
                   </StyledTabs>
                 </TabsContent>
                 <TabsContent value="swap">
-                  <StyledTabs defaultValue="Market"></StyledTabs>
+                  <TradeSwapWidget sourcePrice={1} destinationPrice={1} />
                 </TabsContent>
               </Tabs>
             </Card>
