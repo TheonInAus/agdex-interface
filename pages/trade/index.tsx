@@ -24,9 +24,10 @@ import TradePositionWidget from "./tradePositionWidget"
 import TradeTradingViewWidget from "./tradeTradingView"
 
 export default function TradePage() {
-  const { symbol, vault } = useTokenStore()
+  const { symbol, vault, vault2 } = useTokenStore()
   const { priceDatas, error } = usePriceData()
   const [vaultPrice, setVaultPrice] = useState<number>(0)
+  const [vault2Price, setVault2Price] = useState<number>(0)
   const [symbolPrice, setSymbolPrice] = useState<number>(0)
 
   useEffect(() => {
@@ -34,13 +35,17 @@ export default function TradePage() {
       const vaultData = priceDatas.find(
         (item) => item.tokenName === vault.name
       ) as unknown as PriceResultType
+      const vault2Data = priceDatas.find(
+        (item) => item.tokenName === vault2.name
+      ) as unknown as PriceResultType
       const symbolData = priceDatas.find(
         (item) => item.tokenName === symbol.tokenName
       ) as unknown as PriceResultType
       setVaultPrice(vaultData.price)
+      setVault2Price(vault2Data.price)
       setSymbolPrice(symbolData.price)
     }
-  }, [priceDatas, vault, symbol])
+  }, [priceDatas, vault, vault2, symbol])
 
   const [priceType, setPriceType] = useState(false)
   const [lastPrice, setLastPrice] = useState(0)
@@ -143,7 +148,7 @@ export default function TradePage() {
                   </StyledTabs>
                 </TabsContent>
                 <TabsContent value="swap">
-                  <TradeSwapWidget sourcePrice={1} destinationPrice={1} />
+                  <TradeSwapWidget sourcePrice={vaultPrice} destinationPrice={vault2Price} />
                 </TabsContent>
               </Tabs>
             </Card>

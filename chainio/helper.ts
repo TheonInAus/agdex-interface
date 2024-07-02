@@ -65,20 +65,22 @@ export const LpToken: LpTokenInfo = {
 }
 
 export const VaultList: VaultInfo[] = [
-    // {
-    //     name: 'APTOS',
-    //     symbol: 'APT',
-    //     tokenAddress: APTOS_COIN,
-    //     tokenStore: APTOS_COIN_STORE,
-    //     decimal: 8
-    // },
-    // {
-    //     name: 'USDT',
-    //     symbol: 'USDT',
-    //     tokenAddress: `${coinAddress}::usdt::USDT`,
-    //     tokenStore: MOCK_USDT_COIN_STORE,
-    //     decimal: 6
-    // },
+    {
+        name: 'APTOS',
+        symbol: 'APT',
+        tokenAddress: APTOS_COIN,
+        tokenStore: APTOS_COIN_STORE,
+        decimal: 8
+    },
+
+    {
+        name: 'USDT',
+        symbol: 'USDT',
+        tokenAddress: `${coinAddress}::usdt::USDT`,
+        tokenStore: MOCK_USDT_COIN_STORE,
+        decimal: 6
+    },
+    
     {
         name: 'USDC',
         symbol: 'USDC',

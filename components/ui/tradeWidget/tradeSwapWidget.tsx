@@ -9,7 +9,7 @@ import useTokenStore from "@/chainio/useTokenStore"
 import { aptos, moduleAddress } from "@/pages/_app"
 import { useWallet } from "@aptos-labs/wallet-adapter-react"
 import Decimal from "decimal.js"
-import { Edit3, ExternalLink, Loader } from "lucide-react"
+import { Edit3, ExternalLink, Loader, Power } from "lucide-react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -30,6 +30,7 @@ import { TpsLInput } from "@/components/ui/tpslIput"
 import { Card } from "../card"
 import { PoolInputBox } from "../poolInputBox"
 import { TokenInputBox } from "../tokenInputBox"
+import { TokenBox } from "../tokenBox"
 
 type TradeMarketSwapType = {
   sourcePrice: any
@@ -45,7 +46,6 @@ export default function TradeSwapWidget({
   const [tradingSize, setTradingSize] = useState("")
   const [isChecked, setIsChecked] = useState(true)
   const [priceSlippage, setPriceSlippage] = useState("1")
-
   const [ethPrice, setEthPrice] = useState(0)
   const [tokenPrice, setTokenPrice] = useState(0)
   const [contractPrice, setContractPrice] = useState(0)
@@ -53,19 +53,118 @@ export default function TradeSwapWidget({
   const [tokenAfterSlippagePrice, setTokenAfterSlippagePrice] = useState(0)
   const [liqPrice, setLiqPrice] = useState(0)
 
-  const handleCheckboxChange = (checked: any) => {
-    setIsChecked(checked)
-    // Now, use the isChecked state to control the visibility of the Slider
+  const { account, signAndSubmitTransaction } = useWallet()
+
+  // Fetch balance--------------------------------------------------
+  const [sourceBalance, setSourceBalance] = useState("0")
+  const [destinationBalance, setDestinationBalance] = useState("0")
+  const { vault, vault2 } = useTokenStore()
+
+  // Fetch source balance
+  const fetchSourceBalance = async () => {
+    try {
+      const { result } = await getVaultTokenBalance(
+        account?.address || "",
+        vault
+      )
+      setSourceBalance(result)
+    } catch (error) {
+      setSourceBalance("0")
+    }
   }
+
+  useEffect(() => {
+    if (account?.address) {
+      fetchSourceBalance()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account?.address, vault])
+
+  // Fetch destination balance
+    const fetchDestinationBalance = async () => {
+      try {
+        const { result } = await getVaultTokenBalance(
+          account?.address || "",
+          vault2
+        )
+        setDestinationBalance(result)
+      } catch (error) {
+        setDestinationBalance("0")
+      }
+    }
+  
+    useEffect(() => {
+      if (account?.address) {
+        fetchDestinationBalance()
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [account?.address, vault2])
+  //------------------------------------------------------------
+
+  const [wrapperConfig, setWrapperConfig] = useState<any>(null)
+
+  // fetch vault information
+  const [sourceVaultInfo, setSourceVaultInfo] = useState<any>(null)
+  console.log("🚀 ~ vaultInfo:", sourceVaultInfo)
+  const fetchSourceVaultInfo = async () => {
+    try {
+      let { result } = await getVaultInfo(vault.tokenAddress as APTOS_ADDRESS)
+      setSourceVaultInfo(result)
+    } catch (error) {
+      setSourceVaultInfo(null)
+    }
+  }
+
+  useEffect(() => {
+    if (vault) {
+      fetchSourceVaultInfo()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vault])
+
+  const [destinationVaultInfo, setDestinationVaultInfo] = useState<any>(null)
+  console.log("🚀 ~ destinationVaultInfo:", destinationVaultInfo)
+  const fetchDestinationVaultInfo = async () => {
+    try {
+      let { result } = await getVaultInfo(vault2.tokenAddress as APTOS_ADDRESS)
+      setDestinationVaultInfo(result)
+    } catch (error) {
+      setDestinationVaultInfo(null)
+    }
+  }
+
+  useEffect(() => {
+    if (vault2) {
+      fetchDestinationVaultInfo()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vault2])
+  //-------------------------------------------------------------
+  /*
+  useEffect(() => {
+    if (contractPrice && priceSlippage) {
+    }
+  }, [contractPrice, priceSlippage])
+
+  const [tradingFee, setTradingFee] = useState(0)
+*/
 
   const [source, setSource] = useState("")
   const [destination, setDestination] = useState("")
-  const [sourceBalance, setSourceBalance] = useState("0")
-  const [destinationBalance, setDestinationBalance] = useState("0")
+  // Respectively change between source number and destination number
+  useEffect(() => {
+    if (source && sourcePrice !== 0 && destinationPrice !== 0) {
+      setDestination(
+        ((Number(source) * sourcePrice) / destinationPrice ).toString()
+      )
+    }
+    if (!source) {
+      setDestination(Number(0.0).toString())
+    }
+  }, [source, sourcePrice, destinationPrice])
+  // -----------------------------------------------------------------
 
-  const { account, signAndSubmitTransaction } = useWallet()
-
-  /*
+  // handle swap event
   const handleSwap = async () => {
     const response = await signAndSubmitTransaction({
       sender: account?.address,
@@ -76,11 +175,11 @@ export default function TradeSwapWidget({
           "swap"
         ),
         typeArguments: [
-          sourceVault.tokenAddress,
-          destinationVault.tokenAddress,
+          vault.tokenAddress,
+          vault2.tokenAddress,
         ],
         functionArguments: [
-          source, //amount_in
+          (Number(source)*Math.pow(10, vault.decimal)).toString(), //amount_in
           0,
           [],
         ],
@@ -95,122 +194,16 @@ export default function TradeSwapWidget({
       console.error(error)
     }
   }
+  //--------------------------------------------------------
 
-  const [wrapperConfig, setWrapperConfig] = useState<any>(null)
-  const [sourceVaultInfo, setSourceVaultInfo] = useState<any>(null)
-  console.log("🚀 ~ vaultInfo:", sourceVaultInfo)
-  const fetchSourceVaultInfo = async () => {
-    try {
-      let { result } = await getVaultInfo(sourceVault.tokenAddress as APTOS_ADDRESS)
-      setSourceVaultInfo(result)
-    } catch (error) {
-      setSourceVaultInfo(null)
-    }
-  }
-
+  // Calculate fee amount
+  const [feeAmount, setFeeAmount] = useState("0");
   useEffect(() => {
-    if (sourceVault) {
-      fetchSourceVaultInfo()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceVault])
-
-  const [destinationVaultInfo, setDestinationVaultInfo] = useState<any>(null)
-  console.log("🚀 ~ destinationVaultInfo:", destinationVaultInfo)
-  const fetchDestinationVaultInfo = async () => {
-    try {
-      let { result } = await getVaultInfo(destinationVault.tokenAddress as APTOS_ADDRESS)
-      setDestinationVaultInfo(result)
-    } catch (error) {
-      setDestinationVaultInfo(null)
-    }
-  }
-
-  useEffect(() => {
-    if (destinationVault) {
-      fetchDestinationVaultInfo()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [destinationVault])
-
-  
-  const fetchSourceBalance = async () => {
-    try {
-      const { result } = await getVaultTokenBalance(
-        account?.address || "",
-        sourceVault
-      )
-      setSourceBalance(result)
-    } catch (error) {
-      setSourceBalance("0")
-    }
-  }
-  useEffect(() => {
-    if (account?.address) {
-      fetchSourceBalance()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account?.address, sourceVault])
-
-  const fetchDestinationBalance = async () => {
-    try {
-      const { result } = await getVaultTokenBalance(
-        account?.address || "",
-        destinationVault
-      )
-      setSourceBalance(result)
-    } catch (error) {
-      setSourceBalance("0")
-    }
-  }
-  useEffect(() => {
-    if (account?.address) {
-      fetchDestinationBalance()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account?.address, destinationVault])
-*/
-  useEffect(() => {
-    if (usdAfterMargin !== "" && tokenPrice) {
-      const tradingSize = new Decimal(usdAfterMargin)
-        .dividedBy(new Decimal(tokenPrice))
-        .toFixed(18)
-        .toString()
-      setTradingSize(tradingSize)
-    } else {
-      setTradingSize("")
-    }
-  }, [usdAfterMargin, tokenPrice])
-
-  useEffect(() => {
-    if (contractPrice && priceSlippage) {
-    }
-  }, [contractPrice, priceSlippage])
-
-  const [tradingFee, setTradingFee] = useState(0)
-
-  useEffect(() => {
-    if (source && sourcePrice !== 0 && destinationPrice !== 0) {
-      setDestination(
-        ((Number(source) * sourcePrice) / destinationPrice).toString()
-      )
-    }
-    if (!source) {
-      setDestination(Number(0.0).toString())
-    }
-  }, [source, sourcePrice, destinationPrice])
-
-  useEffect(() => {
-    if (destination && sourcePrice !== 0 && destinationPrice !== 0) {
-      setSource(
-        ((Number(destination) * destinationPrice) / sourcePrice).toString()
-      )
-    }
-    if (!destination) {
-      setSource(Number(0.0).toString())
-    }
-  }, [destination, sourcePrice, destinationPrice])
-
+    setFeeAmount(
+      "0"
+    )
+  }, 
+  [source, vault, vault2])
   return (
     <div>
       <TokenInputBox
@@ -222,22 +215,24 @@ export default function TradeSwapWidget({
         onValueChange={(e) => {
           setSource(e.target.value)
         }}
+        onMaxClick={() => { setSource(sourceBalance) }}
       />
       <br></br>
-      <TokenInputBox
+      <TokenBox
         title={`Receive`}
         subTitle={`$${(Number(destination) * destinationPrice).toFixed(6)}`}
         value={destination}
         balanceNode={<span>{`Balance: ${destinationBalance}`}</span>}
         maxNode={false}
-        onValueChange={(e) => {
-          setDestination(e.target.value)
-        }}
       />
-
+      
+      <div className="flex flex-row items-center">
+        <span>Fee</span>{feeAmount}
+      </div>
+        
       <Button
         disabled={false}
-        onClick={() => {}}
+        onClick={() => handleSwap()}
         className={`w-full font-bold text-center rounded-md item-center mt-4  h-9 text-white bg-agdexMain`}
       >
         Swap

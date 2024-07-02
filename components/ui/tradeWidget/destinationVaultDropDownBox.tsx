@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { PoolInfo, PoolList, VaultInfo, VaultList } from "@/chainio/helper"
 import useTokenStore from "@/chainio/useTokenStore"
@@ -23,14 +23,30 @@ import {
 
 type VaultDropDownBoxProp = {}
 
-export const SymbolDropDownBox: React.FC<VaultDropDownBoxProp> = ({}) => {
+export const DestinationVaultDropDownBox: React.FC<VaultDropDownBoxProp> = ({}) => {
   const [open, setOpen] = useState(false)
-  const pools: PoolInfo[] = PoolList
-  const { symbol, setSymbol } = useTokenStore()
+  const vaults: VaultInfo[] = VaultList
+  const { vault, vault2, setVault2 } = useTokenStore()
 
-  const handleDropDownSelect = (pool: PoolInfo) => {
+  useEffect(() => {
+    if (vault.name === vault2.name){
+        if (vault.name === vaults[0].name)
+            setVault2(vaults[1])
+        else
+            setVault2(vaults[0])
+    }
+  }, [vault])
+  
+  const handleDropDownSelect = (vault2: VaultInfo) => {
     setOpen(false)
-    setSymbol(pool)
+    if (vault.name === vault2.name){
+        if (vault.name === vaults[0].name)
+            setVault2(vaults[1])
+        else
+            setVault2(vaults[0])
+    } else {
+        setVault2(vault2)
+    }
   }
 
   return (
@@ -42,7 +58,7 @@ export const SymbolDropDownBox: React.FC<VaultDropDownBoxProp> = ({}) => {
           aria-expanded={open}
           className="justify-center text-xl font-extrabold hover:bg-0xtrans"
         >
-          {symbol.tokenName}
+          {vault2.name}
           <ChevronDown className="ml-1 opacity-50 size-4 shrink-0" />
         </Button>
       </PopoverTrigger>
@@ -51,22 +67,22 @@ export const SymbolDropDownBox: React.FC<VaultDropDownBoxProp> = ({}) => {
           <CommandInput placeholder="Search Token..." className="h-9" />
           <CommandEmpty>No Token found.</CommandEmpty>
           <CommandGroup>
-            {pools.map((symbol) => (
+            {vaults.map((vault2) => (
               <CommandItem
-                key={symbol.tokenName}
-                value={symbol.tokenName}
+                key={vault2.name}
+                value={vault2.name}
                 onSelect={() => {
-                  handleDropDownSelect(symbol)
+                  handleDropDownSelect(vault2)
                 }}
               >
                 <div className="flex justify-between w-full">
                   <Image
-                    src={`/token/${symbol.tokenName.toLowerCase()}.svg`}
-                    alt={symbol.name}
+                    src={`/token/${vault2.name.toLowerCase()}.svg`}
+                    alt={vault2.name}
                     width={30}
                     height={30}
                   />
-                  <div className="">{symbol.tokenName}</div>
+                  <div className="">{vault2.name}</div>
                 </div>
               </CommandItem>
             ))}

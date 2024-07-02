@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 
-import { VaultDropDownBox } from "./tradeWidget/vaultDropDownBox"
+import { DestinationVaultDropDownBox } from "./tradeWidget/destinationVaultDropDownBox"
 
 // Define variants for the PayInput styling.
 const inputBoxVariants = cva(
@@ -25,6 +25,7 @@ const inputBoxVariants = cva(
 // Define the props for the PayInput component, extending the variant props.
 export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
   title: string
+  subTitle?: string
   value: string
   prefixValue?: number
   prefix?: string
@@ -37,8 +38,9 @@ export interface InputBoxProps extends VariantProps<typeof inputBoxVariants> {
 }
 
 // The PayInput component definition.
-export const SimpleInputBox: React.FC<InputBoxProps> = ({
+export const TokenBox: React.FC<InputBoxProps> = ({
   title,
+  subTitle,
   value,
   prefixValue,
   prefix,
@@ -57,7 +59,10 @@ export const SimpleInputBox: React.FC<InputBoxProps> = ({
     >
       <div className="flex flex-col justify-between size-full ">
         <div className="flex flex-row items-center mb-2">
-          <span className="block text-lg font-bold text-white">{title}</span>
+          <div className="flex flex-row items-baseline">
+            <span className="block text-lg font-bold text-white">{title}</span>
+            <span className="block ml-2 text-sm text-gray-400">{subTitle}</span>
+          </div>
           {prefix && (
             <>
               <span className="block w-full mx-1 font-semibold text-right text-white">
@@ -85,6 +90,7 @@ export const SimpleInputBox: React.FC<InputBoxProps> = ({
             value={value}
             placeholder="0.00"
             onChange={onValueChange} // Assuming you have a handler function for this
+            disabled
           />
           {maxNode && (
             <div
@@ -94,7 +100,7 @@ export const SimpleInputBox: React.FC<InputBoxProps> = ({
               <span>Max</span>
             </div>
           )}
-          <div>{"AGLP"}</div>
+          <DestinationVaultDropDownBox />
         </div>
       </div>
     </div>
