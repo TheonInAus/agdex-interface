@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
+import { Aptos, MoveObjectType, MoveType, MoveValue } from "@aptos-labs/ts-sdk"
 import {
   APTOS_ADDRESS,
+  fetchSwapRate,
   generateFunctionPath,
   getVaultInfo,
   getVaultTokenBalance,
@@ -198,12 +200,34 @@ export default function TradeSwapWidget({
 
   // Calculate fee amount
   const [feeAmount, setFeeAmount] = useState("0");
+
+  async function getSwapFeeRates() {
+    let [sourceRate, destinationRate] = await fetchSwapRate(vault.tokenAddress, vault2.tokenAddress);
+    console.log([sourceRate, destinationRate]);
+    let swap_in_fee = Number(source) * sourcePrice * Number(sourceRate) / Math.pow(10, 18);
+    let swap_value = Number(source) * sourcePrice - swap_in_fee;
+    let swap_out_fee = swap_value * Number(destinationRate) / Math.pow(10, 18);
+    return swap_in_fee+swap_out_fee;
+  }
+  
   useEffect(() => {
-    setFeeAmount(
-      "0"
-    )
+    fetchSwapRate(vault.tokenAddress, vault2.tokenAddress)
+    .then((data) => {
+      const s = JSON.parse(JSON.stringify(data[0]));
+      const d = JSON.parse(JSON.stringify(data[1]));
+      if (s.value !== "undefined" && d.value !== "undefined") {
+        setFeeAmount(
+          (Number(source) * (Number(s.value)+Number(d.value)) / Math.pow(10, 18)).toString()
+        )
+      }
+      else {
+        setFeeAmount("0");
+      }
+      return;
+    })
   }, 
   [source, vault, vault2])
+
   return (
     <div>
       <TokenInputBox
@@ -225,11 +249,16 @@ export default function TradeSwapWidget({
         balanceNode={<span>{`Balance: ${destinationBalance}`}</span>}
         maxNode={false}
       />
-      
-      <div className="flex flex-row items-center">
-        <span>Fee</span>{feeAmount}
+      <br></br>
+      <div
+      className={` outline-none bg-[#242424] rounded-xl`}>      
+        <div className="flex flex-row items-center mb-2 justify-around">
+          <div className="flex flex-row items-baseline justify-between w-full">
+            <div className="flex text-xl font-bold text-white ml-4">Fee</div>
+            <div className="flex right-0 mr-4 text-sm text-gray-400">{feeAmount}$</div>
+          </div>
       </div>
-        
+    </div>
       <Button
         disabled={false}
         onClick={() => handleSwap()}

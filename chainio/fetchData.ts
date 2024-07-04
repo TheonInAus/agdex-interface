@@ -1,6 +1,7 @@
 import { LpToken, LpTokenInfo } from '@/chainio/helper';
 import { aptos, coinAddress, moduleAddress } from "@/pages/_app";
 import { VaultInfo } from "./helper";
+import { DessertIcon } from 'lucide-react';
 
 export type APTOS_ADDRESS = `${string}::${string}::${string}`
 
@@ -184,4 +185,16 @@ export const getVaultTokenBalance = async (accountAddress: string, vault: VaultI
 
 export const generateFunctionPath = (modulePath: string, moduleName: string, functionName: string) => {
     return `${modulePath}::${moduleName}::${functionName}` as APTOS_ADDRESS
+}
+
+export const fetchSwapRate = (source: string, destination: string) => {
+    let rates =  aptos.view({
+        payload: {
+            function: "0x9e54d3231b270990fde73545f034dfa771696759e4f40ef8d5fc214cf88b4c6f::market::calculate_swap_fee",
+            typeArguments: [source, destination],
+            functionArguments: [],
+        }
+    });
+
+    return rates;
 }

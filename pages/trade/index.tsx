@@ -148,7 +148,19 @@ export default function TradePage() {
                   </StyledTabs>
                 </TabsContent>
                 <TabsContent value="swap">
-                  <TradeSwapWidget sourcePrice={vaultPrice} destinationPrice={vault2Price} />
+                  <StyledTabs defaultValue="Market">
+                    <div className="flex flex-row items-center justify-between mt-6">
+                      <StyledTabsList>
+                        <StyledTabsTrigger value="Market">
+                          Market
+                        </StyledTabsTrigger>
+                      </StyledTabsList>
+                      <TradeCalculatorWidget />
+                    </div>
+                    <StyledTabsContent value="Market">
+                      <TradeSwapWidget sourcePrice={vaultPrice} destinationPrice={vault2Price} />
+                    </StyledTabsContent>
+                  </StyledTabs>
                 </TabsContent>
               </Tabs>
             </Card>
